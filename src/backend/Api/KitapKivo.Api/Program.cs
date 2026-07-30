@@ -1,6 +1,15 @@
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => Results.Ok(new
+{
+    service = "KitapKivo.Api",
+    status = "running"
+}));
+
+app.MapHealthChecks("/health");
 
 app.Run();
