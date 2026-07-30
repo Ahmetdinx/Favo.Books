@@ -12,4 +12,8 @@
     <Project Path="src/backend/Modules/Identity/KitapKivo.Modules.Identity/KitapKivo.Modules.Identity.csproj" />
     <Project Path="src/backend/Modules/Reading/KitapKivo.Modules.Reading/KitapKivo.Modules.Reading.csproj" />
   </Folder>
+  <Folder Name="/Tests/" />
+  <Folder Name="/Tests/Architecture/">
+    <Project Path="tests/Architecture/KitapKivo.ArchitectureTests/KitapKivo.ArchitectureTests.csproj" />
+  </Folder>
 </Solution>
