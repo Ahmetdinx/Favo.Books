@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Identity\KitapKivo.Modules.Identity\KitapKivo.Modules.Identity.csproj" />
+    <ProjectReference Include="..\..\Modules\Catalog\KitapKivo.Modules.Catalog\KitapKivo.Modules.Catalog.csproj" />
+    <ProjectReference Include="..\..\Modules\Reading\KitapKivo.Modules.Reading\KitapKivo.Modules.Reading.csproj" />
+    <ProjectReference Include="..\..\Modules\Community\KitapKivo.Modules.Community\KitapKivo.Modules.Community.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
