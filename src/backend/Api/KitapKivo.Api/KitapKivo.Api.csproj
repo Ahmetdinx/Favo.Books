@@ -7,10 +7,18 @@
     <ProjectReference Include="..\..\Modules\Community\KitapKivo.Modules.Community\KitapKivo.Modules.Community.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c9e18116-3244-4334-8956-34ab862024b3</UserSecretsId>
   </PropertyGroup>
 
 </Project>

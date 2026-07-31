@@ -3,7 +3,7 @@ using KitapKivo.Modules.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
-builder.Services.AddIdentityModule();
+builder.Services.AddIdentityModule(builder.Configuration);
 
 var app = builder.Build();
 
