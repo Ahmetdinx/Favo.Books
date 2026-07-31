@@ -1,6 +1,9 @@
+using KitapKivo.Modules.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
+builder.Services.AddIdentityModule();
 
 var app = builder.Build();
 
