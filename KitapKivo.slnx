@@ -17,6 +17,9 @@
     <File Path="compose.yml" />
   </Folder>
   <Folder Name="/Tests/" />
+  <Folder Name="/Tests/Api/">
+    <Project Path="tests/Api/KitapKivo.Api.IntegrationTests/KitapKivo.Api.IntegrationTests.csproj" />
+  </Folder>
   <Folder Name="/Tests/Architecture/">
     <Project Path="tests/Architecture/KitapKivo.ArchitectureTests/KitapKivo.ArchitectureTests.csproj" />
   </Folder>
