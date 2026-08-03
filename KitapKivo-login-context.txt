@@ -1,0 +1,248 @@
+﻿===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Api\KitapKivo.Api\appsettings.json =====
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Api\KitapKivo.Api\Program.cs =====
+using KitapKivo.Modules.Identity;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHealthChecks();
+builder.Services.AddIdentityModule(builder.Configuration);
+
+var app = builder.Build();
+
+app.MapGet("/", () => Results.Ok(new
+{
+    service = "KitapKivo.Api",
+    status = "running"
+}));
+
+app.MapHealthChecks("/health");
+app.MapIdentityEndpoints();
+
+app.Run();
+
+===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Modules\Identity\KitapKivo.Modules.Identity\Application\Abstractions\Security\IPasswordHasher.cs =====
+namespace KitapKivo.Modules.Identity.Application.Abstractions.Security;
+
+public interface IPasswordHasher
+{
+    string Hash(string password);
+}
+
+===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Modules\Identity\KitapKivo.Modules.Identity\Application\Users\Register\RegisterUserHandler.cs =====
+using KitapKivo.Modules.Identity.Application.Abstractions.Security;
+using KitapKivo.Modules.Identity.Domain.Users;
+using KitapKivo.Modules.Identity.Persistence;
+
+using Microsoft.EntityFrameworkCore;
+
+namespace KitapKivo.Modules.Identity.Application.Users.Register;
+
+public sealed class RegisterUserHandler
+{
+    private readonly IdentityDbContext _dbContext;
+    private readonly IPasswordHasher _passwordHasher;
+
+    public RegisterUserHandler(
+        IdentityDbContext dbContext,
+        IPasswordHasher passwordHasher)
+    {
+        _dbContext = dbContext;
+        _passwordHasher = passwordHasher;
+    }
+
+    public async Task<RegisterUserResult> HandleAsync(
+        RegisterUserCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(command);
+
+        string normalizedEmail = command.Email
+            .Trim()
+            .ToLowerInvariant();
+
+        bool emailAlreadyExists = await _dbContext.Users
+            .AnyAsync(
+                user => user.Email == normalizedEmail,
+                cancellationToken);
+
+        if (emailAlreadyExists)
+        {
+            return RegisterUserResult.EmailAlreadyExists();
+        }
+
+        string passwordHash =
+            _passwordHasher.Hash(command.Password);
+
+        User user = User.Create(
+            normalizedEmail,
+            passwordHash,
+            DateTimeOffset.UtcNow);
+
+        _dbContext.Users.Add(user);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return RegisterUserResult.Success(user.Id);
+    }
+}
+
+===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Modules\Identity\KitapKivo.Modules.Identity\Domain\Users\User.cs =====
+namespace KitapKivo.Modules.Identity.Domain.Users;
+
+public sealed class User
+{
+    private User()
+    {
+    }
+
+    private User(
+        Guid id,
+        string email,
+        string passwordHash,
+        DateTimeOffset createdAtUtc)
+    {
+        Id = id;
+        Email = email;
+        PasswordHash = passwordHash;
+        CreatedAtUtc = createdAtUtc;
+    }
+
+    public Guid Id { get; private set; }
+
+    public string Email { get; private set; } = string.Empty;
+
+    public string PasswordHash { get; private set; } = string.Empty;
+
+    public DateTimeOffset CreatedAtUtc { get; private set; }
+
+    public static User Create(string email,string passwordHash,DateTimeOffset createdAtUtc)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(email);
+        ArgumentException.ThrowIfNullOrWhiteSpace(passwordHash);
+
+        if (createdAtUtc.Offset != TimeSpan.Zero)
+        {
+            throw new ArgumentException("Oluşturulma zamanı UTC olmalıdır.",nameof(createdAtUtc));
+        }
+
+        return new User(Guid.NewGuid(),email.Trim().ToLowerInvariant(),passwordHash,createdAtUtc);
+    }
+}
+
+===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Modules\Identity\KitapKivo.Modules.Identity\IdentityModule.cs =====
+using KitapKivo.Modules.Identity.Persistence;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using KitapKivo.Modules.Identity.Application.Abstractions.Security;
+using KitapKivo.Modules.Identity.Infrastructure.Security;
+using KitapKivo.Modules.Identity.Application.Users.Register;
+
+namespace KitapKivo.Modules.Identity;
+
+public static class IdentityModule
+{
+    public static IServiceCollection AddIdentityModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        string connectionString =
+            configuration.GetConnectionString("Database")
+            ?? throw new InvalidOperationException(
+                "Connection string 'Database' was not found.");
+
+        services.AddDbContext<IdentityDbContext>(options =>
+            options.UseNpgsql(connectionString));
+
+        services.AddSingleton<IPasswordHasher, AspNetCorePasswordHasher>();
+        services.AddScoped<RegisterUserHandler>();
+        return services;
+    }
+}
+
+===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Modules\Identity\KitapKivo.Modules.Identity\Infrastructure\Security\AspNetCorePasswordHasher.cs =====
+using KitapKivo.Modules.Identity.Application.Abstractions.Security;
+
+using Microsoft.AspNetCore.Identity;
+
+namespace KitapKivo.Modules.Identity.Infrastructure.Security;
+
+internal sealed class AspNetCorePasswordHasher : IPasswordHasher
+{
+    private static readonly object HashingContext = new();
+
+    private readonly PasswordHasher<object> _passwordHasher = new();
+
+    public string Hash(string password)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(password);
+
+        return _passwordHasher.HashPassword(
+            HashingContext,
+            password);
+    }
+}
+
+===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Modules\Identity\KitapKivo.Modules.Identity\KitapKivo.Modules.Identity.csproj =====
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\KitapKivo.SharedKernel\KitapKivo.SharedKernel.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+===== C:\Users\ahmet\source\repos\KitapKivo\src\backend\Modules\Identity\KitapKivo.Modules.Identity\Persistence\IdentityDbContext.cs =====
+using KitapKivo.Modules.Identity.Domain.Users;
+
+using Microsoft.EntityFrameworkCore;
+
+namespace KitapKivo.Modules.Identity.Persistence;
+
+public sealed class IdentityDbContext : DbContext
+{
+    public IdentityDbContext(
+        DbContextOptions<IdentityDbContext> options)
+        : base(options)
+    {
+    }
+
+    public DbSet<User> Users => Set<User>();
+
+    protected override void OnModelCreating(
+        ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(IdentityDbContext).Assembly);
+    }
+}
+
