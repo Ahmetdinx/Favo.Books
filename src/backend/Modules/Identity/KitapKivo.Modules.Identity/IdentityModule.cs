@@ -3,6 +3,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using KitapKivo.Modules.Identity.Application.Abstractions.Security;
+using KitapKivo.Modules.Identity.Infrastructure.Security;
+using KitapKivo.Modules.Identity.Application.Users.Register;
 
 namespace KitapKivo.Modules.Identity;
 
@@ -20,6 +23,8 @@ public static class IdentityModule
         services.AddDbContext<IdentityDbContext>(options =>
             options.UseNpgsql(connectionString));
 
+        services.AddSingleton<IPasswordHasher, AspNetCorePasswordHasher>();
+        services.AddScoped<RegisterUserHandler>();
         return services;
     }
 }

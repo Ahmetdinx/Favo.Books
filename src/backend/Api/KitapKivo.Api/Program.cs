@@ -14,5 +14,6 @@ app.MapGet("/", () => Results.Ok(new
 }));
 
 app.MapHealthChecks("/health");
+app.MapIdentityEndpoints();
 
 app.Run();

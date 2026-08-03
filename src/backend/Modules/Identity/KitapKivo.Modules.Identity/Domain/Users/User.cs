@@ -26,25 +26,16 @@ public sealed class User
 
     public DateTimeOffset CreatedAtUtc { get; private set; }
 
-    public static User Create(
-        string email,
-        string passwordHash,
-        DateTimeOffset createdAtUtc)
+    public static User Create(string email,string passwordHash,DateTimeOffset createdAtUtc)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(email);
         ArgumentException.ThrowIfNullOrWhiteSpace(passwordHash);
 
         if (createdAtUtc.Offset != TimeSpan.Zero)
         {
-            throw new ArgumentException(
-                "Oluşturulma zamanı UTC olmalıdır.",
-                nameof(createdAtUtc));
+            throw new ArgumentException("Oluşturulma zamanı UTC olmalıdır.",nameof(createdAtUtc));
         }
 
-        return new User(
-            Guid.NewGuid(),
-            email.Trim().ToLowerInvariant(),
-            passwordHash,
-            createdAtUtc);
+        return new User(Guid.NewGuid(),email.Trim().ToLowerInvariant(),passwordHash,createdAtUtc);
     }
 }
