@@ -1,6 +1,6 @@
 ﻿using KitapKivo.Modules.Identity.Presentation.Users.Login;
 using KitapKivo.Modules.Identity.Presentation.Users.Register;
-
+using KitapKivo.Modules.Identity.Presentation.Users.GetCurrent;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -17,6 +17,7 @@ public static class IdentityEndpoints
 
         group.MapRegisterUserEndpoint();
         group.MapLoginUserEndpoint();
+        group.MapGetCurrentUserEndpoint();
 
         return app;
     }

@@ -8,6 +8,9 @@ using KitapKivo.Modules.Identity.Infrastructure.Security;
 using KitapKivo.Modules.Identity.Application.Users.Register;
 using KitapKivo.Modules.Identity.Application.Users.Login;
 using KitapKivo.Modules.Identity.Infrastructure.Authentication;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KitapKivo.Modules.Identity;
 
@@ -22,6 +25,44 @@ public static class IdentityModule
         services.AddDbContext<IdentityDbContext>(options => options.UseNpgsql(connectionString));
 
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+
+        JwtOptions jwtOptions = configuration
+    .GetRequiredSection(JwtOptions.SectionName)
+    .Get<JwtOptions>()
+    ?? throw new InvalidOperationException("JWT ayarları bulunamadı.");
+
+        if (string.IsNullOrWhiteSpace(jwtOptions.Issuer) ||
+            string.IsNullOrWhiteSpace(jwtOptions.Audience) ||
+            string.IsNullOrWhiteSpace(jwtOptions.Secret) ||
+            jwtOptions.ExpirationMinutes <= 0)
+        {
+            throw new InvalidOperationException("JWT ayarları geçerli değil.");
+        }
+
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.MapInboundClaims = false;
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtOptions.Issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtOptions.Audience,
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtOptions.Secret)),
+
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+        services.AddAuthorization();
 
         services.AddSingleton<IAccessTokenProvider,JwtAccessTokenProvider>();
 
