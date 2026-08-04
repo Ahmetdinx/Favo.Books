@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useAuth, type AuthSession } from '../auth/AuthContext'
+import { useLocation, useNavigate } from 'react-router'
 
 type ValidationProblem = {
     errors?: Record<string, string[]>
@@ -7,6 +8,8 @@ type ValidationProblem = {
 
 function LoginPage() {
     const { signIn } = useAuth()
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -63,8 +66,17 @@ function LoginPage() {
 
             signIn(loginResponse)
 
-            setSuccessMessage('Giriş başarıyla gerçekleştirildi.')
-            setPassword('')
+            const requestedPath = (
+                location.state as { from?: string } | null
+            )?.from
+
+            const destination =
+                requestedPath?.startsWith('/') && requestedPath !== '/login'
+                    ? requestedPath
+                    : '/profile'
+
+            navigate(destination, { replace: true })
+
         } catch {
             setErrorMessage(
                 'Sunucuya ulaşılamadı. API’nin çalıştığından emin olun.',

@@ -547,3 +547,18 @@ section > p:not(.eyebrow) {
     .logout-button:hover {
         text-decoration: underline;
     }
+.profile-details {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.75rem 1.5rem;
+    margin: 2rem 0;
+}
+
+    .profile-details dt {
+        font-weight: 700;
+    }
+
+    .profile-details dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
