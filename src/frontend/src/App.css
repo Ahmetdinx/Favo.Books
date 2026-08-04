@@ -523,3 +523,27 @@ section > p:not(.eyebrow) {
         width: min(100% - 32px, 1180px);
     }
 }
+
+.navigation-user {
+    max-width: 220px;
+    overflow: hidden;
+    color: inherit;
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0.8;
+}
+
+.logout-button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+    .logout-button:hover {
+        text-decoration: underline;
+    }

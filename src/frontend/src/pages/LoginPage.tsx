@@ -1,19 +1,13 @@
 import { useState, type FormEvent } from 'react'
+import { useAuth, type AuthSession } from '../auth/AuthContext'
 
 type ValidationProblem = {
     errors?: Record<string, string[]>
 }
 
-type LoginResponse = {
-    userId: string
-    email: string
-    accessToken: string
-    expiresAtUtc: string
-}
-
-const AUTH_STORAGE_KEY = 'kitapkivo.auth'
-
 function LoginPage() {
+    const { signIn } = useAuth()
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
@@ -65,12 +59,9 @@ function LoginPage() {
                 return
             }
 
-            const loginResponse = (await response.json()) as LoginResponse
+            const loginResponse = (await response.json()) as AuthSession
 
-            sessionStorage.setItem(
-                AUTH_STORAGE_KEY,
-                JSON.stringify(loginResponse),
-            )
+            signIn(loginResponse)
 
             setSuccessMessage('Giriş başarıyla gerçekleştirildi.')
             setPassword('')

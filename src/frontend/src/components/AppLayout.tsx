@@ -1,30 +1,60 @@
-import { NavLink, Outlet } from 'react-router'
+import { NavLink, Outlet, useNavigate } from 'react-router'
+import { useAuth } from '../auth/AuthContext'
 
 function AppLayout() {
-  return (
-    <div className="app">
-      <header className="header">
-        <NavLink className="logo" to="/">
-          KitapKivo
-        </NavLink>
+    const { session, signOut } = useAuth()
+    const navigate = useNavigate()
 
-        <nav className="navigation" aria-label="Ana navigasyon">
-          <NavLink to="/">Ana Sayfa</NavLink>
-          <NavLink to="/login">Giriş Yap</NavLink>
-          <NavLink to="/register">Kayıt Ol</NavLink>
-          <NavLink to="/profile">Profil</NavLink>
-        </nav>
-      </header>
+    function handleSignOut() {
+        signOut()
+        navigate('/', { replace: true })
+    }
 
-      <main className="main-content">
-        <Outlet />
-      </main>
+    return (
+        <div className="app">
+            <header className="header">
+                <NavLink className="logo" to="/">
+                    KitapKivo
+                </NavLink>
 
-      <footer className="footer">
-        © 2026 KitapKivo
-      </footer>
-    </div>
-  )
+                <nav className="navigation" aria-label="Ana navigasyon">
+                    <NavLink to="/">Ana Sayfa</NavLink>
+
+                    {session ? (
+                        <>
+                            <span
+                                className="navigation-user"
+                                title={session.email}
+                            >
+                                {session.email}
+                            </span>
+
+                            <NavLink to="/profile">Profil</NavLink>
+
+                            <button
+                                className="logout-button"
+                                type="button"
+                                onClick={handleSignOut}
+                            >
+                                Çıkış Yap
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <NavLink to="/login">Giriş Yap</NavLink>
+                            <NavLink to="/register">Kayıt Ol</NavLink>
+                        </>
+                    )}
+                </nav>
+            </header>
+
+            <main className="main-content">
+                <Outlet />
+            </main>
+
+            <footer className="footer">© 2026 KitapKivo</footer>
+        </div>
+    )
 }
 
 export default AppLayout
