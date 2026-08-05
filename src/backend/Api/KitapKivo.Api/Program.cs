@@ -1,5 +1,6 @@
 using KitapKivo.Modules.Identity;
 using Microsoft.OpenApi;
+using KitapKivo.Modules.Catalog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddIdentityModule(builder.Configuration);
+builder.Services.AddCatalogModule(builder.Configuration);
 
 var app = builder.Build();
 
