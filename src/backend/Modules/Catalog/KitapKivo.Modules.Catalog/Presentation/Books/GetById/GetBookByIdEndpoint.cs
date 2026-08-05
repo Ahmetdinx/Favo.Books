@@ -1,0 +1,60 @@
+﻿using KitapKivo.Modules.Catalog.Application.Books.GetById;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+
+namespace KitapKivo.Modules.Catalog.Presentation.Books.GetById;
+
+internal static class GetBookByIdEndpoint
+{
+    public static RouteGroupBuilder MapGetBookByIdEndpoint(
+        this RouteGroupBuilder group)
+    {
+        group.MapGet("/books/{bookId:guid}", HandleAsync)
+            .WithName("GetBookById")
+            .Produces<GetBookByIdResponse>(
+                StatusCodes.Status200OK)
+            .Produces(
+                StatusCodes.Status404NotFound);
+
+        return group;
+    }
+
+    private static async Task<IResult> HandleAsync(
+        Guid bookId,
+        GetBookByIdHandler handler,
+        CancellationToken cancellationToken)
+    {
+        GetBookByIdQuery query = new(bookId);
+
+        GetBookByIdResult? result =
+            await handler.HandleAsync(
+                query,
+                cancellationToken);
+
+        if (result is null)
+        {
+            return Results.NotFound();
+        }
+
+        GetBookAuthorResponse[] authors = result.Authors
+            .Select(author =>
+                new GetBookAuthorResponse(
+                    author.AuthorId,
+                    author.Name,
+                    author.DisplayOrder))
+            .ToArray();
+
+        GetBookByIdResponse response = new(
+            result.BookId,
+            result.Title,
+            result.OriginalLanguageCode,
+            result.OriginalTitle,
+            result.Description,
+            result.FirstPublishedYear,
+            authors);
+
+        return Results.Ok(response);
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using KitapKivo.Modules.Catalog.Persistence;
 using KitapKivo.Modules.Catalog.Application.Authors.Create;
 using KitapKivo.Modules.Catalog.Application.Books.Create;
+using KitapKivo.Modules.Catalog.Application.Books.GetById;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,7 @@ public static class CatalogModule
 
         services.AddScoped<CreateAuthorHandler>();
         services.AddScoped<CreateBookHandler>();
+        services.AddScoped<GetBookByIdHandler>();
         return services;
     }
 }
