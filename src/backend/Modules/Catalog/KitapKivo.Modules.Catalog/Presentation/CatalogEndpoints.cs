@@ -1,4 +1,5 @@
 ﻿using KitapKivo.Modules.Catalog.Presentation.Authors.Create;
+using KitapKivo.Modules.Catalog.Presentation.Books.Create;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,7 @@ public static class CatalogEndpoints
             .WithTags("Catalog");
 
         group.MapCreateAuthorEndpoint();
+        group.MapCreateBookEndpoint();
 
         return app;
     }
