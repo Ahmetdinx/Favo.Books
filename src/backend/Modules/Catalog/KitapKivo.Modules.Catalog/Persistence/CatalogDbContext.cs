@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KitapKivo.Modules.Catalog.Persistence;
 
-internal sealed class CatalogDbContext : DbContext
+public sealed class CatalogDbContext : DbContext
 {
     public CatalogDbContext(
         DbContextOptions<CatalogDbContext> options)

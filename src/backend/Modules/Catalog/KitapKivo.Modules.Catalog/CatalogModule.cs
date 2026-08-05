@@ -1,4 +1,5 @@
 ﻿using KitapKivo.Modules.Catalog.Persistence;
+using KitapKivo.Modules.Catalog.Application.Authors.Create;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,7 @@ public static class CatalogModule
         services.AddDbContext<CatalogDbContext>(options =>
             options.UseNpgsql(connectionString));
 
+        services.AddScoped<CreateAuthorHandler>();
         return services;
     }
 }
