@@ -25,7 +25,7 @@ broker, separate read and write databases, or a generic repository layer.
 | Module | Responsibility |
 | --- | --- |
 | `Identity` | Registration, authentication, authorization, account security, and basic profiles |
-| `Catalog` | Books, authors, genres, identifiers, normalized metadata, and Google Books integration |
+| `Catalog` | Books, authors, genres, identifiers, normalized metadata, and external book-data integrations |
 | `Reading` | Personal library entries and reading state |
 | `Community` | Ratings, reviews, and comments on reviews |
 
@@ -62,8 +62,7 @@ Infrastructure -> Feature/Application and Domain abstractions
 ```
 
 The domain does not depend on ASP.NET Core, Entity Framework Core, HTTP,
-PostgreSQL, JWT, JSON serialization, or Google Books.
-
+PostgreSQL, JWT, JSON serialization, or external book-data providers.
 The API project is the composition root. It configures the host, registers
 modules, and maps module endpoints, but it does not contain business rules.
 
@@ -102,26 +101,33 @@ tables. Entity Framework Core already provides repository and unit-of-work
 behavior, so generic repositories are not introduced. A specialized
 repository abstraction is allowed only when the domain model needs one.
 
-## Google Books Integration
+## External Book Data Integration
 
-Google Books is the initial external source for book discovery and metadata.
-It is an infrastructure dependency behind a Catalog-owned abstraction.
+Open Library is the initial and primary external source for book discovery and
+metadata. Wikidata may enrich author identities and related information.
+Google Books is a secondary fallback and comparison source.
+
+All external providers are infrastructure dependencies behind Catalog-owned
+abstractions. Provider-specific response types must not leak into the domain,
+other modules, or public API contracts.
 
 The expected flow is:
 
 1. A user searches through a KitapKivo API endpoint.
-2. `Catalog` queries Google Books and normalizes the response.
+2. `Catalog` queries Open Library and normalizes the response.
 3. Search results may remain transient.
-4. When a user adds, rates, reviews, or otherwise interacts with a book,
+4. Author information may be enriched through Wikidata where appropriate.
+5. When a user adds, rates, reviews, or otherwise interacts with a book,
    `Catalog` creates or reuses a local book record.
-5. The local record stores an internal `BookId`, the Google Books volume ID,
-   and the normalized metadata snapshot needed by KitapKivo.
-6. `Reading` and `Community` reference the internal `BookId`, never the
-   external provider identifier.
+6. The local record stores an internal `BookId`, relevant external provider
+   identifiers, and the normalized metadata snapshot needed by KitapKivo.
+7. `Reading` and `Community` reference the internal `BookId`, never an external
+   provider identifier.
+8. Google Books may be queried when Open Library data is missing or uncertain.
 
-This preserves user-generated data if Google Books is unavailable or changes
-its metadata. Provider credentials and secrets are supplied through
-configuration and are never committed to the repository.
+This preserves user-generated data if an external provider is unavailable or
+changes its metadata. Provider credentials and secrets, when required, are
+supplied through configuration and are never committed to the repository.
 
 ## API Conventions
 

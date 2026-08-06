@@ -24,8 +24,8 @@ The Catalog module currently includes:
 - Book creation with ordered authors
 - Book retrieval by KitapKivo's internal `BookId`
 
-The next development milestone is external book discovery through Google
-Books.
+The next development milestone is external book discovery through Open
+Library.
 
 ## Product Direction
 
