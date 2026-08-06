@@ -23,5 +23,9 @@
   <Folder Name="/Tests/Architecture/">
     <Project Path="tests/Architecture/KitapKivo.ArchitectureTests/KitapKivo.ArchitectureTests.csproj" />
   </Folder>
+  <Folder Name="/Tests/Modules/" />
+  <Folder Name="/Tests/Modules/Catalog/">
+    <Project Path="tests/Modules/Catalog/KitapKivo.Modules.Catalog.UnitTests/KitapKivo.Modules.Catalog.UnitTests.csproj" />
+  </Folder>
   <Project Path="tests/Modules/Identity/KitapKivo.Modules.Identity.UnitTests/KitapKivo.Modules.Identity.UnitTests/KitapKivo.Modules.Identity.UnitTests.csproj" Id="ca182ab6-79ac-4504-8bdc-42b97f08b726" />
 </Solution>

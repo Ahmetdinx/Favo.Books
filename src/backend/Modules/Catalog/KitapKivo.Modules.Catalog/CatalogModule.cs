@@ -3,7 +3,9 @@ using KitapKivo.Modules.Catalog.Application.Authors.Create;
 using KitapKivo.Modules.Catalog.Application.Books.Create;
 using KitapKivo.Modules.Catalog.Application.Books.GetById;
 using KitapKivo.Modules.Catalog.Infrastructure.ExternalBooks.OpenLibrary;
+using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
 
+using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +28,26 @@ public static class CatalogModule
 
         services.Configure<OpenLibraryOptions>(
             configuration.GetSection(OpenLibraryOptions.SectionName));
+
+        services.AddHttpClient<
+    IExternalBookSearchClient,
+    OpenLibrarySearchClient>(
+    (serviceProvider, client) =>
+    {
+        OpenLibraryOptions options = serviceProvider
+            .GetRequiredService<IOptions<OpenLibraryOptions>>()
+            .Value;
+
+        client.BaseAddress = new Uri(
+            $"{options.BaseUrl.TrimEnd('/')}/",
+            UriKind.Absolute);
+
+        client.Timeout =
+            TimeSpan.FromSeconds(options.TimeoutSeconds);
+
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(
+            options.UserAgent);
+    });
 
         services.AddScoped<CreateAuthorHandler>();
         services.AddScoped<CreateBookHandler>();
