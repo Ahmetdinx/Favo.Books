@@ -1,6 +1,7 @@
 ﻿using KitapKivo.Modules.Catalog.Presentation.Authors.Create;
 using KitapKivo.Modules.Catalog.Presentation.Books.Create;
 using KitapKivo.Modules.Catalog.Presentation.Books.GetById;
+using KitapKivo.Modules.Catalog.Presentation.Books.Search;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,7 @@ public static class CatalogEndpoints
 
         group.MapCreateAuthorEndpoint();
         group.MapCreateBookEndpoint();
+        group.MapSearchBooksEndpoint();
         group.MapGetBookByIdEndpoint();
 
         return app;

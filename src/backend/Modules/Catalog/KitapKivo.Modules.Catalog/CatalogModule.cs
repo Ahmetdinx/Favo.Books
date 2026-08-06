@@ -4,6 +4,7 @@ using KitapKivo.Modules.Catalog.Application.Books.Create;
 using KitapKivo.Modules.Catalog.Application.Books.GetById;
 using KitapKivo.Modules.Catalog.Infrastructure.ExternalBooks.OpenLibrary;
 using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
+using KitapKivo.Modules.Catalog.Application.Books.Search;
 
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,7 @@ public static class CatalogModule
         services.AddScoped<CreateAuthorHandler>();
         services.AddScoped<CreateBookHandler>();
         services.AddScoped<GetBookByIdHandler>();
+        services.AddScoped<SearchBooksHandler>();
         return services;
     }
 }
