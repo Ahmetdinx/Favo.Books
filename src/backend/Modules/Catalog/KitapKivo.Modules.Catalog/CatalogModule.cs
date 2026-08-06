@@ -2,6 +2,7 @@
 using KitapKivo.Modules.Catalog.Application.Authors.Create;
 using KitapKivo.Modules.Catalog.Application.Books.Create;
 using KitapKivo.Modules.Catalog.Application.Books.GetById;
+using KitapKivo.Modules.Catalog.Infrastructure.ExternalBooks.OpenLibrary;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,9 @@ public static class CatalogModule
 
         services.AddDbContext<CatalogDbContext>(options =>
             options.UseNpgsql(connectionString));
+
+        services.Configure<OpenLibraryOptions>(
+            configuration.GetSection(OpenLibraryOptions.SectionName));
 
         services.AddScoped<CreateAuthorHandler>();
         services.AddScoped<CreateBookHandler>();
