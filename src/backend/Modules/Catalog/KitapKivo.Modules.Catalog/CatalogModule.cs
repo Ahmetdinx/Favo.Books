@@ -5,6 +5,7 @@ using KitapKivo.Modules.Catalog.Application.Books.GetById;
 using KitapKivo.Modules.Catalog.Infrastructure.ExternalBooks.OpenLibrary;
 using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
 using KitapKivo.Modules.Catalog.Application.Books.Search;
+using KitapKivo.Modules.Catalog.Application.Books.GetExternalDetails;
 
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
@@ -31,9 +32,26 @@ public static class CatalogModule
             configuration.GetSection(OpenLibraryOptions.SectionName));
 
         services.AddHttpClient<
-    IExternalBookSearchClient,
-    OpenLibrarySearchClient>(
-    (serviceProvider, client) =>
+          IExternalBookSearchClient,
+          OpenLibrarySearchClient>(
+          ConfigureOpenLibraryClient);
+
+        services.AddHttpClient<
+            IExternalBookDetailsClient,
+            OpenLibraryBookDetailsClient>(
+            ConfigureOpenLibraryClient);
+
+        services.AddScoped<CreateAuthorHandler>();
+        services.AddScoped<CreateBookHandler>();
+        services.AddScoped<GetBookByIdHandler>();
+        services.AddScoped<SearchBooksHandler>();
+        services.AddScoped<GetExternalBookDetailsHandler>();
+        return services;
+    }
+
+    private static void ConfigureOpenLibraryClient(
+     IServiceProvider serviceProvider,
+     HttpClient client)
     {
         OpenLibraryOptions options = serviceProvider
             .GetRequiredService<IOptions<OpenLibraryOptions>>()
@@ -43,17 +61,10 @@ public static class CatalogModule
             $"{options.BaseUrl.TrimEnd('/')}/",
             UriKind.Absolute);
 
-        client.Timeout =
-            TimeSpan.FromSeconds(options.TimeoutSeconds);
+        client.Timeout = TimeSpan.FromSeconds(
+            options.TimeoutSeconds);
 
         client.DefaultRequestHeaders.UserAgent.ParseAdd(
             options.UserAgent);
-    });
-
-        services.AddScoped<CreateAuthorHandler>();
-        services.AddScoped<CreateBookHandler>();
-        services.AddScoped<GetBookByIdHandler>();
-        services.AddScoped<SearchBooksHandler>();
-        return services;
     }
 }
