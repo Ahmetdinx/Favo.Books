@@ -1,4 +1,5 @@
-﻿using KitapKivo.Modules.Identity.Persistence;
+﻿using KitapKivo.Modules.Catalog.Persistence;
+using KitapKivo.Modules.Identity.Persistence;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -52,12 +53,20 @@ public sealed class KitapKivoWebApplicationFactory
     {
         await _postgresContainer.StartAsync();
 
-        using IServiceScope scope = Services.CreateScope();
+        using IServiceScope scope =
+            Services.CreateScope();
 
-        IdentityDbContext dbContext =
-            scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+        IdentityDbContext identityDbContext =
+            scope.ServiceProvider.GetRequiredService<
+                IdentityDbContext>();
 
-        await dbContext.Database.MigrateAsync();
+        await identityDbContext.Database.MigrateAsync();
+
+        CatalogDbContext catalogDbContext =
+            scope.ServiceProvider.GetRequiredService<
+                CatalogDbContext>();
+
+        await catalogDbContext.Database.MigrateAsync();
     }
 
     public new async Task DisposeAsync()

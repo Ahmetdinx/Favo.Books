@@ -3,6 +3,7 @@ using KitapKivo.Modules.Catalog.Presentation.Books.Create;
 using KitapKivo.Modules.Catalog.Presentation.Books.GetById;
 using KitapKivo.Modules.Catalog.Presentation.Books.Search;
 using KitapKivo.Modules.Catalog.Presentation.Books.GetExternalDetails;
+using KitapKivo.Modules.Catalog.Presentation.Books.ResolveExternal;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,7 @@ public static class CatalogEndpoints
         group.MapSearchBooksEndpoint();
         group.MapGetBookByIdEndpoint();
         group.MapGetExternalBookDetailsEndpoint();
+        group.MapResolveExternalBookEndpoint();
 
         return app;
     }

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="KitapKivo.Modules.Catalog.UnitTests" />
+    <InternalsVisibleTo Include="KitapKivo.Api.IntegrationTests" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
