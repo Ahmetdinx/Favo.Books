@@ -1,5 +1,6 @@
 ﻿using KitapKivo.Modules.Catalog.Persistence;
 using KitapKivo.Modules.Identity.Persistence;
+using KitapKivo.Modules.Reading.Persistence;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -67,6 +68,12 @@ public sealed class KitapKivoWebApplicationFactory
                 CatalogDbContext>();
 
         await catalogDbContext.Database.MigrateAsync();
+
+        ReadingDbContext readingDbContext =
+        scope.ServiceProvider.GetRequiredService<
+        ReadingDbContext>();
+
+        await readingDbContext.Database.MigrateAsync();
     }
 
     public new async Task DisposeAsync()

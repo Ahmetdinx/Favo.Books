@@ -30,4 +30,7 @@
   <Folder Name="/Tests/Modules/Identity/">
     <Project Path="tests/Modules/Identity/KitapKivo.Modules.Identity.UnitTests/KitapKivo.Modules.Identity.UnitTests/KitapKivo.Modules.Identity.UnitTests.csproj" Id="ca182ab6-79ac-4504-8bdc-42b97f08b726" />
   </Folder>
+  <Folder Name="/Tests/Modules/Reading/">
+    <Project Path="tests/Modules/Reading/KitapKivo.Modules.Reading.UnitTests/KitapKivo.Modules.Reading.UnitTests.csproj" />
+  </Folder>
 </Solution>

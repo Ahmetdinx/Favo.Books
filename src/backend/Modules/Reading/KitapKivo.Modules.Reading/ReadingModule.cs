@@ -1,0 +1,25 @@
+﻿using KitapKivo.Modules.Reading.Persistence;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace KitapKivo.Modules.Reading;
+
+public static class ReadingModule
+{
+    public static IServiceCollection AddReadingModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        string connectionString =
+            configuration.GetConnectionString("Database")
+            ?? throw new InvalidOperationException(
+                "Connection string 'Database' was not found.");
+
+        services.AddDbContext<ReadingDbContext>(options =>
+            options.UseNpgsql(connectionString));
+
+        return services;
+    }
+}

@@ -1,6 +1,7 @@
 using KitapKivo.Modules.Identity;
 using Microsoft.OpenApi;
 using KitapKivo.Modules.Catalog;
+using KitapKivo.Modules.Reading;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddCatalogModule(builder.Configuration);
+builder.Services.AddReadingModule(builder.Configuration);
 
 var app = builder.Build();
 
