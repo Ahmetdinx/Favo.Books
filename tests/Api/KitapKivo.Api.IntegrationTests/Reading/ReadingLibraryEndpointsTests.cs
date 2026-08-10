@@ -327,11 +327,214 @@ public sealed class ReadingLibraryEndpointsTests
             HttpStatusCode.Unauthorized,
             response.StatusCode);
     }
+    [Fact]
+    public async Task UpdateLibraryStatus_WithValidRequest_ReturnsOkAndPersistsChange()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
 
-    private static async Task AddBookAsync(
-    HttpClient client,
-    Guid bookId,
-    string status)
+        Guid libraryEntryId =
+            await AddBookAsync(
+                _client,
+                Guid.NewGuid(),
+                "WantToRead");
+
+        var request = new
+        {
+            Status = "Reading"
+        };
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.PatchAsJsonAsync(
+                $"/api/reading/library/{libraryEntryId}/status",
+                request);
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.OK,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Durum güncelleme yanıtının gövdesi boş döndü.");
+
+        JsonElement root = responseBody.RootElement;
+
+        Assert.Equal(
+            libraryEntryId,
+            root.GetProperty("libraryEntryId").GetGuid());
+
+        Assert.Equal(
+            "Reading",
+            root.GetProperty("status").GetString());
+
+        Assert.NotEqual(
+            default(DateTimeOffset),
+            root.GetProperty("updatedAtUtc").GetDateTimeOffset());
+
+        using HttpResponseMessage getResponse =
+            await _client.GetAsync(
+                "/api/reading/library" +
+                "?status=Reading&page=1&pageSize=100");
+
+        Assert.Equal(
+            HttpStatusCode.OK,
+            getResponse.StatusCode);
+
+        using JsonDocument getResponseBody =
+            await getResponse.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Kütüphane yanıtının gövdesi boş döndü.");
+
+        bool containsUpdatedEntry =
+            getResponseBody.RootElement
+                .GetProperty("items")
+                .EnumerateArray()
+                .Any(item =>
+                    item.GetProperty("libraryEntryId").GetGuid() ==
+                    libraryEntryId);
+
+        Assert.True(containsUpdatedEntry);
+    }
+
+    [Fact]
+    public async Task UpdateLibraryStatus_WithInvalidStatus_ReturnsBadRequest()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        Guid libraryEntryId =
+            await AddBookAsync(
+                _client,
+                Guid.NewGuid(),
+                "WantToRead");
+
+        var request = new
+        {
+            Status = "Finished"
+        };
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.PatchAsJsonAsync(
+                $"/api/reading/library/{libraryEntryId}/status",
+                request);
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.BadRequest,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Doğrulama yanıtının gövdesi boş döndü.");
+
+        JsonElement errors =
+            responseBody.RootElement.GetProperty("errors");
+
+        Assert.Equal(
+            "Durum WantToRead, Reading, Read, " +
+            "OnHold veya Dropped olmalıdır.",
+            errors.GetProperty("status")[0].GetString());
+    }
+
+    [Fact]
+    public async Task UpdateLibraryStatus_WhenEntryDoesNotExist_ReturnsNotFound()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        var request = new
+        {
+            Status = "Reading"
+        };
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.PatchAsJsonAsync(
+                $"/api/reading/library/{Guid.NewGuid()}/status",
+                request);
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.NotFound,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Bulunamadı yanıtının gövdesi boş döndü.");
+
+        Assert.Equal(
+            "Kütüphane kaydı bulunamadı.",
+            responseBody.RootElement
+                .GetProperty("message")
+                .GetString());
+    }
+
+    [Fact]
+    public async Task UpdateLibraryStatus_WhenEntryBelongsToAnotherUser_ReturnsNotFound()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        Guid libraryEntryId =
+            await AddBookAsync(
+                _client,
+                Guid.NewGuid(),
+                "WantToRead");
+
+        await AuthenticateAsync(_client);
+
+        var request = new
+        {
+            Status = "Reading"
+        };
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.PatchAsJsonAsync(
+                $"/api/reading/library/{libraryEntryId}/status",
+                request);
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.NotFound,
+            response.StatusCode);
+    }
+
+    [Fact]
+    public async Task UpdateLibraryStatus_WithoutAccessToken_ReturnsUnauthorized()
+    {
+        // Arrange
+        var request = new
+        {
+            Status = "Reading"
+        };
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.PatchAsJsonAsync(
+                $"/api/reading/library/{Guid.NewGuid()}/status",
+                request);
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.Unauthorized,
+            response.StatusCode);
+    }
+
+    private static async Task<Guid> AddBookAsync(
+      HttpClient client,
+      Guid bookId,
+      string status)
     {
         var request = new
         {
@@ -347,6 +550,16 @@ public sealed class ReadingLibraryEndpointsTests
         Assert.Equal(
             HttpStatusCode.Created,
             response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Kütüphaneye ekleme yanıtının gövdesi boş döndü.");
+
+        return responseBody.RootElement
+            .GetProperty("libraryEntryId")
+            .GetGuid();
     }
 
     private static async Task AuthenticateAsync(
@@ -399,4 +612,5 @@ public sealed class ReadingLibraryEndpointsTests
                 "Bearer",
                 accessToken);
     }
+
 }
