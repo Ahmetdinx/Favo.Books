@@ -168,6 +168,187 @@ public sealed class ReadingLibraryEndpointsTests
             response.StatusCode);
     }
 
+    [Fact]
+    public async Task GetLibrary_WithFilterAndPagination_ReturnsMatchingEntries()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        Guid firstReadingBookId = Guid.NewGuid();
+        Guid secondReadingBookId = Guid.NewGuid();
+
+        await AddBookAsync(
+            _client,
+            firstReadingBookId,
+            "Reading");
+
+        await AddBookAsync(
+            _client,
+            Guid.NewGuid(),
+            "WantToRead");
+
+        await AddBookAsync(
+            _client,
+            secondReadingBookId,
+            "Reading");
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                "/api/reading/library" +
+                "?status=Reading&page=1&pageSize=1");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.OK,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Kütüphane yanıtının gövdesi boş döndü.");
+
+        JsonElement root = responseBody.RootElement;
+        JsonElement items = root.GetProperty("items");
+
+        Assert.Equal(2, root.GetProperty("totalCount").GetInt32());
+        Assert.Equal(1, root.GetProperty("page").GetInt32());
+        Assert.Equal(1, root.GetProperty("pageSize").GetInt32());
+        Assert.Equal(1, items.GetArrayLength());
+        Assert.Equal(
+            "Reading",
+            items[0].GetProperty("status").GetString());
+
+        Guid returnedBookId =
+            items[0].GetProperty("bookId").GetGuid();
+
+        Assert.Contains(
+            returnedBookId,
+            new[]
+            {
+            firstReadingBookId,
+            secondReadingBookId
+            });
+    }
+
+    [Fact]
+    public async Task GetLibrary_WithInvalidQuery_ReturnsBadRequest()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                "/api/reading/library" +
+                "?status=Finished&page=0&pageSize=101");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.BadRequest,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Doğrulama yanıtının gövdesi boş döndü.");
+
+        JsonElement errors =
+            responseBody.RootElement.GetProperty("errors");
+
+        Assert.Equal(
+            "Durum WantToRead, Reading, Read, " +
+            "OnHold veya Dropped olmalıdır.",
+            errors.GetProperty("status")[0].GetString());
+
+        Assert.Equal(
+            "Sayfa numarası en az 1 olmalıdır.",
+            errors.GetProperty("page")[0].GetString());
+
+        Assert.Equal(
+            "Sayfa boyutu 1 ile 100 arasında olmalıdır.",
+            errors.GetProperty("pageSize")[0].GetString());
+    }
+
+    [Fact]
+    public async Task GetLibrary_ReturnsOnlyAuthenticatedUsersEntries()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        await AddBookAsync(
+            _client,
+            Guid.NewGuid(),
+            "Read");
+
+        await AuthenticateAsync(_client);
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                "/api/reading/library");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.OK,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Kütüphane yanıtının gövdesi boş döndü.");
+
+        Assert.Equal(
+            0,
+            responseBody.RootElement
+                .GetProperty("totalCount")
+                .GetInt32());
+
+        Assert.Equal(
+            0,
+            responseBody.RootElement
+                .GetProperty("items")
+                .GetArrayLength());
+    }
+
+    [Fact]
+    public async Task GetLibrary_WithoutAccessToken_ReturnsUnauthorized()
+    {
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                "/api/reading/library");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.Unauthorized,
+            response.StatusCode);
+    }
+
+    private static async Task AddBookAsync(
+    HttpClient client,
+    Guid bookId,
+    string status)
+    {
+        var request = new
+        {
+            BookId = bookId,
+            Status = status
+        };
+
+        using HttpResponseMessage response =
+            await client.PostAsJsonAsync(
+                "/api/reading/library",
+                request);
+
+        Assert.Equal(
+            HttpStatusCode.Created,
+            response.StatusCode);
+    }
+
     private static async Task AuthenticateAsync(
         HttpClient client)
     {
