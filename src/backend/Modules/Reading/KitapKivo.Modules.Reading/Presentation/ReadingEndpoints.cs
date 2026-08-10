@@ -1,0 +1,23 @@
+﻿using KitapKivo.Modules.Reading
+    .Presentation.LibraryEntries.Add;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+
+namespace KitapKivo.Modules.Reading;
+
+public static class ReadingEndpoints
+{
+    public static IEndpointRouteBuilder MapReadingEndpoints(
+        this IEndpointRouteBuilder app)
+    {
+        RouteGroupBuilder group = app
+            .MapGroup("/api/reading")
+            .WithTags("Reading");
+
+        group.MapAddBookToLibraryEndpoint();
+
+        return app;
+    }
+}

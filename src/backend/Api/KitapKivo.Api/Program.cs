@@ -52,6 +52,7 @@ app.MapGet("/", () => Results.Ok(new
 app.MapHealthChecks("/health");
 app.MapIdentityEndpoints();
 app.MapCatalogEndpoints();
+app.MapReadingEndpoints();
 
 app.Run();
 public partial class Program;

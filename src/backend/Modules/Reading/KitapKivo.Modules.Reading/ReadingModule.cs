@@ -1,4 +1,5 @@
 ﻿using KitapKivo.Modules.Reading.Persistence;
+using KitapKivo.Modules.Reading.Application.LibraryEntries.Add;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,7 @@ public static class ReadingModule
         services.AddDbContext<ReadingDbContext>(options =>
             options.UseNpgsql(connectionString));
 
+        services.AddScoped<AddBookToLibraryHandler>();
         return services;
     }
 }
