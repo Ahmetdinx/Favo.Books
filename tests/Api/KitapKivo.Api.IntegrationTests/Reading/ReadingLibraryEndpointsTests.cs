@@ -561,6 +561,120 @@ public sealed class ReadingLibraryEndpointsTests
             .GetProperty("libraryEntryId")
             .GetGuid();
     }
+    [Fact]
+    public async Task RemoveBookFromLibrary_WhenEntryExists_ReturnsNoContentAndRemovesEntry()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        Guid libraryEntryId =
+            await AddBookAsync(
+                _client,
+                Guid.NewGuid(),
+                "WantToRead");
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.DeleteAsync(
+                $"/api/reading/library/{libraryEntryId}");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.NoContent,
+            response.StatusCode);
+
+        using HttpResponseMessage getResponse =
+            await _client.GetAsync(
+                "/api/reading/library?page=1&pageSize=100");
+
+        Assert.Equal(
+            HttpStatusCode.OK,
+            getResponse.StatusCode);
+
+        using JsonDocument responseBody =
+            await getResponse.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Kütüphane yanıtının gövdesi boş döndü.");
+
+        bool containsRemovedEntry =
+            responseBody.RootElement
+                .GetProperty("items")
+                .EnumerateArray()
+                .Any(item =>
+                    item.GetProperty("libraryEntryId").GetGuid() ==
+                    libraryEntryId);
+
+        Assert.False(containsRemovedEntry);
+    }
+
+    [Fact]
+    public async Task RemoveBookFromLibrary_WhenEntryDoesNotExist_ReturnsNotFound()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.DeleteAsync(
+                $"/api/reading/library/{Guid.NewGuid()}");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.NotFound,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Bulunamadı yanıtının gövdesi boş döndü.");
+
+        Assert.Equal(
+            "Kütüphane kaydı bulunamadı.",
+            responseBody.RootElement
+                .GetProperty("message")
+                .GetString());
+    }
+
+    [Fact]
+    public async Task RemoveBookFromLibrary_WhenEntryBelongsToAnotherUser_ReturnsNotFound()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        Guid libraryEntryId =
+            await AddBookAsync(
+                _client,
+                Guid.NewGuid(),
+                "WantToRead");
+
+        await AuthenticateAsync(_client);
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.DeleteAsync(
+                $"/api/reading/library/{libraryEntryId}");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.NotFound,
+            response.StatusCode);
+    }
+
+    [Fact]
+    public async Task RemoveBookFromLibrary_WithoutAccessToken_ReturnsUnauthorized()
+    {
+        // Act
+        using HttpResponseMessage response =
+            await _client.DeleteAsync(
+                $"/api/reading/library/{Guid.NewGuid()}");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.Unauthorized,
+            response.StatusCode);
+    }
 
     private static async Task AuthenticateAsync(
         HttpClient client)

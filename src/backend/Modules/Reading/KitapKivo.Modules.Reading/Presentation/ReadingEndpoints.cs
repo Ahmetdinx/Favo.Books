@@ -1,6 +1,7 @@
 ﻿using KitapKivo.Modules.Reading.Presentation.LibraryEntries.Add;
 using KitapKivo.Modules.Reading.Presentation.LibraryEntries.Get;
 using KitapKivo.Modules.Reading.Presentation.LibraryEntries.UpdateStatus;
+using KitapKivo.Modules.Reading.Presentation.LibraryEntries.Remove;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,7 @@ public static class ReadingEndpoints
         group.MapAddBookToLibraryEndpoint();
         group.MapGetLibraryEndpoint();
         group.MapUpdateLibraryStatusEndpoint();
+        group.MapRemoveBookFromLibraryEndpoint();
 
         return app;
     }

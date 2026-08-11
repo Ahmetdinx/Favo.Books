@@ -2,6 +2,7 @@
 using KitapKivo.Modules.Reading.Application.LibraryEntries.Add;
 using KitapKivo.Modules.Reading.Application.LibraryEntries.Get;
 using KitapKivo.Modules.Reading.Application.LibraryEntries.UpdateStatus;
+using KitapKivo.Modules.Reading.Application.LibraryEntries.Remove;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ public static class ReadingModule
         services.AddScoped<AddBookToLibraryHandler>();
         services.AddScoped<GetLibraryHandler>();
         services.AddScoped<UpdateLibraryStatusHandler>();
+        services.AddScoped<RemoveBookFromLibraryHandler>();
         return services;
     }
 }
