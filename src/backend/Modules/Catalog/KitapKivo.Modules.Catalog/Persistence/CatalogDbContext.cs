@@ -3,6 +3,7 @@ using KitapKivo.Modules.Catalog.Domain.Books;
 using KitapKivo.Modules.Catalog.Domain.Editions;
 using KitapKivo.Modules.Catalog.Domain.Publishers;
 using KitapKivo.Modules.Catalog.Domain.Sources;
+using KitapKivo.Modules.Catalog.Domain.Categories;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,10 @@ public sealed class CatalogDbContext : DbContext
 
     internal DbSet<ExternalReference> ExternalReferences =>
         Set<ExternalReference>();
+    internal DbSet<Category> Categories => Set<Category>();
+
+    internal DbSet<BookCategory> BookCategories =>
+        Set<BookCategory>();
 
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)

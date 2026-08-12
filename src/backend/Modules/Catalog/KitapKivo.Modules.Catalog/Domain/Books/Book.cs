@@ -1,6 +1,6 @@
 ﻿using KitapKivo.Modules.Catalog.Domain.Editions;
 using KitapKivo.Modules.Catalog.Domain.Sources;
-
+using KitapKivo.Modules.Catalog.Domain.Categories;
 namespace KitapKivo.Modules.Catalog.Domain.Books;
 
 internal sealed class Book
@@ -53,6 +53,7 @@ internal sealed class Book
     public ICollection<BookAuthor> Authors { get; } = [];
 
     public ICollection<Edition> Editions { get; } = [];
+    public ICollection<BookCategory> Categories { get; } = [];
 
     public ICollection<ExternalReference> ExternalReferences { get; } = [];
 

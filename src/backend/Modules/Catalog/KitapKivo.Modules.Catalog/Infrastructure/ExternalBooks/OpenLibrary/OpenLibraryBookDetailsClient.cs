@@ -4,30 +4,34 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
-using KitapKivo.Modules.Catalog.Infrastructure.ExternalBooks
-    .OpenLibrary.Contracts;
+using KitapKivo.Modules.Catalog.Application
+    .Abstractions.ExternalBooks;
+using KitapKivo.Modules.Catalog.Infrastructure
+    .ExternalBooks.OpenLibrary.Contracts;
 
-namespace KitapKivo.Modules.Catalog.Infrastructure.ExternalBooks
-    .OpenLibrary;
+namespace KitapKivo.Modules.Catalog.Infrastructure
+    .ExternalBooks.OpenLibrary;
 
 internal sealed class OpenLibraryBookDetailsClient(
     HttpClient httpClient,
     IExternalBookSearchClient searchClient)
     : IExternalBookDetailsClient
 {
-    private const string ProviderName = "OpenLibrary";
+    private const string ProviderName =
+        "OpenLibrary";
 
-    private readonly HttpClient _httpClient = httpClient;
+    private readonly HttpClient _httpClient =
+        httpClient;
 
-    private readonly IExternalBookSearchClient _searchClient =
-        searchClient;
+    private readonly IExternalBookSearchClient
+        _searchClient = searchClient;
 
     public async Task<ExternalBookDetails?> GetByIdAsync(
         string externalId,
         CancellationToken cancellationToken = default)
     {
-        string requestedWorkId = NormalizeWorkId(externalId);
+        string requestedWorkId =
+            NormalizeWorkId(externalId);
 
         string requestUri =
             $"{requestedWorkId.TrimStart('/')}.json";
@@ -37,7 +41,8 @@ internal sealed class OpenLibraryBookDetailsClient(
                 requestUri,
                 cancellationToken);
 
-        if (response.StatusCode == HttpStatusCode.NotFound)
+        if (response.StatusCode ==
+            HttpStatusCode.NotFound)
         {
             return null;
         }
@@ -46,7 +51,8 @@ internal sealed class OpenLibraryBookDetailsClient(
 
         OpenLibraryWorkResponse? work =
             await response.Content
-                .ReadFromJsonAsync<OpenLibraryWorkResponse>(
+                .ReadFromJsonAsync<
+                    OpenLibraryWorkResponse>(
                     cancellationToken);
 
         if (work is null)
@@ -55,9 +61,10 @@ internal sealed class OpenLibraryBookDetailsClient(
                 "Open Library returned an empty work response.");
         }
 
-        string workId = string.IsNullOrWhiteSpace(work.Key)
-            ? requestedWorkId
-            : NormalizeWorkId(work.Key);
+        string workId =
+            string.IsNullOrWhiteSpace(work.Key)
+                ? requestedWorkId
+                : NormalizeWorkId(work.Key);
 
         ExternalBookSearchResult searchResult =
             await _searchClient.SearchAsync(
@@ -73,7 +80,8 @@ internal sealed class OpenLibraryBookDetailsClient(
                     workId,
                     StringComparison.OrdinalIgnoreCase));
 
-        string? title = NormalizeOptionalValue(work.Title)
+        string? title =
+            NormalizeOptionalValue(work.Title)
             ?? searchItem?.Title;
 
         if (title is null)
@@ -82,12 +90,23 @@ internal sealed class OpenLibraryBookDetailsClient(
                 "Open Library work title was missing.");
         }
 
+        IReadOnlyList<ExternalBookAuthor>
+            workAuthors =
+                await GetAuthorsAsync(
+                    work.Authors,
+                    cancellationToken);
+
+        IReadOnlyList<ExternalBookAuthor> authors =
+            workAuthors.Count > 0
+                ? workAuthors
+                : searchItem?.Authors ?? [];
+
         return new ExternalBookDetails(
             ProviderName,
             workId,
             title,
             MapDescription(work.Description),
-            searchItem?.Authors ?? [],
+            authors,
             searchItem?.FirstPublishedYear
                 ?? MapFirstPublishedYear(
                     work.FirstPublishDate),
@@ -96,6 +115,80 @@ internal sealed class OpenLibraryBookDetailsClient(
             searchItem?.Isbns ?? [],
             searchItem?.LanguageCodes ?? [],
             NormalizeValues(work.Subjects));
+    }
+
+    private async Task<
+     IReadOnlyList<ExternalBookAuthor>>
+     GetAuthorsAsync(
+         IEnumerable<
+             OpenLibraryWorkAuthorResponse>
+             workAuthors,
+         CancellationToken cancellationToken)
+    {
+        List<OpenLibraryResolvedAuthor>
+            resolvedAuthors = [];
+
+        HashSet<string> resolvedAuthorKeys =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        foreach (
+            OpenLibraryWorkAuthorResponse workAuthor
+            in workAuthors)
+        {
+            string? authorKey =
+                NormalizeAuthorKey(
+                    workAuthor.Author?.Key);
+
+            if (authorKey is null ||
+                !resolvedAuthorKeys.Add(authorKey))
+            {
+                continue;
+            }
+
+            string requestUri =
+                $"{authorKey.TrimStart('/')}.json";
+
+            using HttpResponseMessage response =
+                await _httpClient.GetAsync(
+                    requestUri,
+                    cancellationToken);
+
+            if (response.StatusCode ==
+                HttpStatusCode.NotFound)
+            {
+                continue;
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            OpenLibraryAuthorResponse? author =
+                await response.Content
+                    .ReadFromJsonAsync<
+                        OpenLibraryAuthorResponse>(
+                        cancellationToken);
+
+            string? authorName =
+                NormalizeOptionalValue(
+                    author?.Name);
+
+            if (authorName is null)
+            {
+                continue;
+            }
+
+            IReadOnlyList<string> alternativeNames =
+                NormalizeValues(
+                    author?.AlternativeNames ?? []);
+
+            resolvedAuthors.Add(
+                new OpenLibraryResolvedAuthor(
+                    authorKey,
+                    authorName,
+                    alternativeNames));
+        }
+
+        return OpenLibraryAuthorDeduplicator
+            .Deduplicate(resolvedAuthors);
     }
 
     private static string NormalizeWorkId(
@@ -108,8 +201,8 @@ internal sealed class OpenLibraryBookDetailsClient(
             externalId.Trim();
 
         if (!normalizedExternalId.StartsWith(
-            "/",
-            StringComparison.Ordinal))
+                "/",
+                StringComparison.Ordinal))
         {
             normalizedExternalId =
                 $"/{normalizedExternalId}";
@@ -127,6 +220,44 @@ internal sealed class OpenLibraryBookDetailsClient(
         return normalizedExternalId;
     }
 
+    private static string? NormalizeAuthorKey(
+        string? authorKey)
+    {
+        if (string.IsNullOrWhiteSpace(authorKey))
+        {
+            return null;
+        }
+
+        string normalizedKey =
+            authorKey.Trim();
+
+        if (!normalizedKey.StartsWith(
+                "/",
+                StringComparison.Ordinal))
+        {
+            normalizedKey =
+                $"/{normalizedKey}";
+        }
+
+        Match match = Regex.Match(
+            normalizedKey,
+            @"^/authors/(OL\d+A)$",
+            RegexOptions.IgnoreCase |
+            RegexOptions.CultureInvariant);
+
+        if (!match.Success)
+        {
+            return null;
+        }
+
+        string authorId =
+            match.Groups[1]
+                .Value
+                .ToUpperInvariant();
+
+        return $"/authors/{authorId}";
+    }
+
     private static string? MapDescription(
         JsonElement? description)
     {
@@ -135,15 +266,19 @@ internal sealed class OpenLibraryBookDetailsClient(
             return null;
         }
 
-        JsonElement element = description.Value;
+        JsonElement element =
+            description.Value;
+
         string? value = null;
 
-        if (element.ValueKind == JsonValueKind.String)
+        if (element.ValueKind ==
+            JsonValueKind.String)
         {
             value = element.GetString();
         }
         else if (
-            element.ValueKind == JsonValueKind.Object &&
+            element.ValueKind ==
+                JsonValueKind.Object &&
             element.TryGetProperty(
                 "value",
                 out JsonElement valueElement) &&
@@ -192,13 +327,14 @@ internal sealed class OpenLibraryBookDetailsClient(
             .FirstOrDefault(id => id > 0);
 
         return coverId.HasValue
-            ? $"https://covers.openlibrary.org/b/id/" +
-              $"{coverId.Value}-L.jpg"
+            ? "https://covers.openlibrary.org/" +
+              $"b/id/{coverId.Value}-L.jpg"
             : null;
     }
 
-    private static IReadOnlyList<string> NormalizeValues(
-        IEnumerable<string> values)
+    private static IReadOnlyList<string>
+        NormalizeValues(
+            IEnumerable<string> values)
     {
         return values
             .Where(value =>

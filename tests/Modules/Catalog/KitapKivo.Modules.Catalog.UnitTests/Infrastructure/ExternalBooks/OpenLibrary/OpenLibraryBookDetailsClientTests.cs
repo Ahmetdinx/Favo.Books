@@ -22,6 +22,18 @@ public sealed class OpenLibraryBookDetailsClientTests
               },
               "first_publish_date": "June 1965",
               "covers": [-1, 12345],
+              "authors": [
+                {
+                  "author": {
+                    "key": "/authors/OL60038A"
+                  }
+                },
+                {
+                  "author": {
+                    "key": "/authors/OL99999A"
+                  }
+                }
+              ],
               "subjects": [
                 " Science Fiction ",
                 "science fiction",
@@ -31,8 +43,42 @@ public sealed class OpenLibraryBookDetailsClientTests
             }
             """;
 
+        const string authorJson = """
+            {
+              "key": "/authors/OL60038A",
+              "name": "  Frank Herbert  ",
+              "alternate_names": [
+                "Herbert, Frank",
+                "Фрэнк Герберт",
+                "frank herbert"
+              ]
+            }
+            """;
+
+        const string duplicateAuthorJson = """
+            {
+              "key": "/authors/OL99999A",
+              "name": "  Френк Герберт  "
+            }
+            """;
+
         var httpHandler = new StubHttpMessageHandler(
-            _ => CreateJsonResponse(json));
+            request =>
+                request.RequestUri?.AbsolutePath switch
+                {
+                    "/works/OL45804W.json" =>
+                        CreateJsonResponse(json),
+
+                    "/authors/OL60038A.json" =>
+                        CreateJsonResponse(authorJson),
+
+                    "/authors/OL99999A.json" =>
+                        CreateJsonResponse(
+                            duplicateAuthorJson),
+
+                    _ => new HttpResponseMessage(
+                        HttpStatusCode.NotFound)
+                });
 
         var searchResult = new ExternalBookSearchResult(
             1,
@@ -46,7 +92,10 @@ public sealed class OpenLibraryBookDetailsClientTests
                     [
                         new ExternalBookAuthor(
                             "/authors/OL60038A",
-                            "Frank Herbert")
+                            "Frank Herbert"),
+                        new ExternalBookAuthor(
+                            "/authors/OL99999A",
+                            "Френк Герберт")
                     ],
                     null,
                     "https://example.com/fallback.jpg",
@@ -78,15 +127,26 @@ public sealed class OpenLibraryBookDetailsClientTests
                     cancellationTokenSource.Token));
 
         // Assert
-        Assert.Equal("OpenLibrary", details.Provider);
+        Assert.Equal(
+            "OpenLibrary",
+            details.Provider);
+
         Assert.Equal(
             "/works/OL45804W",
             details.ExternalId);
-        Assert.Equal("Dune", details.Title);
+
+        Assert.Equal(
+            "Dune",
+            details.Title);
+
         Assert.Equal(
             "Epic science fiction novel.",
             details.Description);
-        Assert.Equal(1965, details.FirstPublishedYear);
+
+        Assert.Equal(
+            1965,
+            details.FirstPublishedYear);
+
         Assert.Equal(
             "https://covers.openlibrary.org/b/id/12345-L.jpg",
             details.CoverUrl);
@@ -97,11 +157,15 @@ public sealed class OpenLibraryBookDetailsClientTests
         Assert.Equal(
             "/authors/OL60038A",
             author.ExternalId);
-        Assert.Equal("Frank Herbert", author.Name);
+
+        Assert.Equal(
+            "Frank Herbert",
+            author.Name);
 
         Assert.Equal(
             "9780441013593",
             Assert.Single(details.Isbns));
+
         Assert.Equal(
             "eng",
             Assert.Single(details.LanguageCodes));
@@ -116,19 +180,44 @@ public sealed class OpenLibraryBookDetailsClientTests
                 subject));
 
         Assert.Equal(
-            HttpMethod.Get,
-            httpHandler.Method);
+            3,
+            httpHandler.CallCount);
+
+        Assert.All(
+            httpHandler.RequestUris,
+            requestUri => Assert.NotNull(
+                requestUri));
+
         Assert.Equal(
             new Uri(
                 "https://openlibrary.org/" +
                 "works/OL45804W.json"),
-            httpHandler.RequestUri);
+            httpHandler.RequestUris[0]);
+
+        Assert.Equal(
+            new Uri(
+                "https://openlibrary.org/" +
+                "authors/OL60038A.json"),
+            httpHandler.RequestUris[1]);
+
+        Assert.Equal(
+            new Uri(
+                "https://openlibrary.org/" +
+                "authors/OL99999A.json"),
+            httpHandler.RequestUris[2]);
 
         Assert.Equal(
             "key:/works/OL45804W",
             searchClient.Query);
-        Assert.Equal(1, searchClient.Page);
-        Assert.Equal(1, searchClient.PageSize);
+
+        Assert.Equal(
+            1,
+            searchClient.Page);
+
+        Assert.Equal(
+            1,
+            searchClient.PageSize);
+
         Assert.Equal(
             cancellationTokenSource.Token,
             searchClient.CancellationToken);
@@ -176,15 +265,22 @@ public sealed class OpenLibraryBookDetailsClientTests
         Assert.Equal(
             "/works/OL123W",
             details.ExternalId);
+
         Assert.Equal(
             "Plain description.",
             details.Description);
-        Assert.Equal(2001, details.FirstPublishedYear);
-        Assert.Null(details.CoverUrl);
+
+        Assert.Equal(
+            2001,
+            details.FirstPublishedYear);
+
+        Assert.Null(
+            details.CoverUrl);
     }
 
     [Fact]
-    public async Task GetByIdAsync_ShouldUseSearchData_WhenWorkDataIsMissing()
+    public async Task
+        GetByIdAsync_ShouldUseSearchData_WhenWorkDataIsMissing()
     {
         // Arrange
         const string json = """
@@ -235,15 +331,22 @@ public sealed class OpenLibraryBookDetailsClientTests
                     "/works/OL456W"));
 
         // Assert
-        Assert.Equal("Fallback Title", details.Title);
-        Assert.Equal(1977, details.FirstPublishedYear);
+        Assert.Equal(
+            "Fallback Title",
+            details.Title);
+
+        Assert.Equal(
+            1977,
+            details.FirstPublishedYear);
+
         Assert.Equal(
             "https://example.com/cover.jpg",
             details.CoverUrl);
     }
 
     [Fact]
-    public async Task GetByIdAsync_ShouldReturnNull_WhenWorkDoesNotExist()
+    public async Task
+        GetByIdAsync_ShouldReturnNull_WhenWorkDoesNotExist()
     {
         // Arrange
         var httpHandler = new StubHttpMessageHandler(
@@ -270,12 +373,17 @@ public sealed class OpenLibraryBookDetailsClientTests
                 "/works/OL404W");
 
         // Assert
-        Assert.Null(details);
-        Assert.Equal(0, searchClient.CallCount);
+        Assert.Null(
+            details);
+
+        Assert.Equal(
+            0,
+            searchClient.CallCount);
     }
 
     [Fact]
-    public async Task GetByIdAsync_ShouldThrow_WhenIdIsNotWorkId()
+    public async Task
+        GetByIdAsync_ShouldThrow_WhenIdIsNotWorkId()
     {
         // Arrange
         var httpHandler = new StubHttpMessageHandler(
@@ -301,8 +409,13 @@ public sealed class OpenLibraryBookDetailsClientTests
             client.GetByIdAsync(
                 "/authors/OL123A"));
 
-        Assert.Equal(0, httpHandler.CallCount);
-        Assert.Equal(0, searchClient.CallCount);
+        Assert.Equal(
+            0,
+            httpHandler.CallCount);
+
+        Assert.Equal(
+            0,
+            searchClient.CallCount);
     }
 
     private static ExternalBookSearchResult
@@ -335,6 +448,8 @@ public sealed class OpenLibraryBookDetailsClientTests
     {
         public int CallCount { get; private set; }
 
+        public List<Uri?> RequestUris { get; } = [];
+
         public HttpMethod? Method { get; private set; }
 
         public Uri? RequestUri { get; private set; }
@@ -346,6 +461,7 @@ public sealed class OpenLibraryBookDetailsClientTests
             CallCount++;
             Method = request.Method;
             RequestUri = request.RequestUri;
+            RequestUris.Add(request.RequestUri);
 
             return Task.FromResult(
                 responseFactory(request));

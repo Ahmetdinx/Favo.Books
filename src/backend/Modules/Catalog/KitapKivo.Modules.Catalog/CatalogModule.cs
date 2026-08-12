@@ -7,6 +7,8 @@ using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
 using KitapKivo.Modules.Catalog.Application.Books.Search;
 using KitapKivo.Modules.Catalog.Application.Books.GetExternalDetails;
 using KitapKivo.Modules.Catalog.Application.Books.ResolveExternal;
+using KitapKivo.Modules.Catalog.Application.Books.Browse;
+using KitapKivo.Modules.Catalog.Application.Categories.GetAll;
 
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +50,8 @@ public static class CatalogModule
         services.AddScoped<SearchBooksHandler>();
         services.AddScoped<GetExternalBookDetailsHandler>();
         services.AddScoped<ResolveExternalBookHandler>();
+        services.AddScoped<BrowseBooksHandler>();
+        services.AddScoped<GetCategoriesHandler>();
 
         return services;
     }

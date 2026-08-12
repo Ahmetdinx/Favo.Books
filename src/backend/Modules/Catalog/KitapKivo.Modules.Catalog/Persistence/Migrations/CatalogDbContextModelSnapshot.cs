@@ -112,6 +112,137 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
                     b.ToTable("BookAuthors", "catalog");
                 });
 
+            modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Categories.BookCategory", b =>
+                {
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("BookId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("BookCategories", "catalog");
+                });
+
+            modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Categories.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
+                    b.ToTable("Categories", "catalog");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000001"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Roman",
+                            Slug = "roman"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000002"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Klasikler",
+                            Slug = "klasikler"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000003"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Bilim Kurgu",
+                            Slug = "bilim-kurgu"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000004"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Fantastik",
+                            Slug = "fantastik"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000005"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Polisiye ve Gizem",
+                            Slug = "polisiye-ve-gizem"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000006"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Tarih",
+                            Slug = "tarih"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000007"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Felsefe",
+                            Slug = "felsefe"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000008"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Psikoloji",
+                            Slug = "psikoloji"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000009"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Biyografi",
+                            Slug = "biyografi"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000010"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Şiir",
+                            Slug = "siir"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000011"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Çocuk",
+                            Slug = "cocuk"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000012"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Kişisel Gelişim",
+                            Slug = "kisisel-gelisim"
+                        });
+                });
+
             modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Editions.Edition", b =>
                 {
                     b.Property<Guid>("Id")
@@ -273,6 +404,25 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Categories.BookCategory", b =>
+                {
+                    b.HasOne("KitapKivo.Modules.Catalog.Domain.Books.Book", "Book")
+                        .WithMany("Categories")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KitapKivo.Modules.Catalog.Domain.Categories.Category", "Category")
+                        .WithMany("Books")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Editions.Edition", b =>
                 {
                     b.HasOne("KitapKivo.Modules.Catalog.Domain.Books.Book", "Book")
@@ -333,9 +483,16 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
                 {
                     b.Navigation("Authors");
 
+                    b.Navigation("Categories");
+
                     b.Navigation("Editions");
 
                     b.Navigation("ExternalReferences");
+                });
+
+            modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Categories.Category", b =>
+                {
+                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Editions.Edition", b =>

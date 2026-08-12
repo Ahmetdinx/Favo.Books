@@ -1,9 +1,8 @@
 ﻿using Docker.DotNet.Models;
 
-using KitapKivo.Modules.Catalog.Application
-    .Abstractions.ExternalBooks;
-using KitapKivo.Modules.Catalog.Application
-    .Books.ResolveExternal;
+using KitapKivo.Modules.Catalog.Domain.Categories;
+using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
+using KitapKivo.Modules.Catalog.Application.Books.ResolveExternal;
 using KitapKivo.Modules.Catalog.Domain.Authors;
 using KitapKivo.Modules.Catalog.Domain.Sources;
 using KitapKivo.Modules.Catalog.Persistence;
@@ -122,6 +121,24 @@ public sealed class ResolveExternalBookHandlerTests
                         CatalogSource.OpenLibrary &&
                     reference.ExternalId ==
                         "/authors/OL20001A"));
+
+        string[] categorySlugs =
+    await dbContext.Books
+        .AsNoTracking()
+        .Where(book =>
+            book.Id == result.BookId.Value)
+        .SelectMany(book => book.Categories)
+        .Select(bookCategory =>
+            bookCategory.Category.Slug)
+        .OrderBy(slug => slug)
+        .ToArrayAsync();
+
+        Assert.Equal(
+            [
+                CatalogCategorySlugs.ScienceFiction,
+        CatalogCategorySlugs.Novel
+            ],
+            categorySlugs);
 
         Assert.Equal(1, detailsClient.CallCount);
 

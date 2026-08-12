@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-
-using KitapKivo.Modules.Catalog.Application
-    .Abstractions.ExternalBooks;
+using KitapKivo.Modules.Catalog.Application.Categories.Mapping;
+using KitapKivo.Modules.Catalog.Domain.Categories;
+using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
 using KitapKivo.Modules.Catalog.Domain.Authors;
 using KitapKivo.Modules.Catalog.Domain.Books;
 using KitapKivo.Modules.Catalog.Domain.Sources;
@@ -156,6 +156,33 @@ public sealed class ResolveExternalBookHandler
             book.Authors.Add(bookAuthor);
 
             displayOrder++;
+        }
+
+        string[] mappedCategorySlugs =
+    SubjectCategoryMapper
+        .Map(details.Subjects)
+        .ToArray();
+
+        if (mappedCategorySlugs.Length > 0)
+        {
+            Guid[] categoryIds =
+                await _dbContext.Categories
+                    .AsNoTracking()
+                    .Where(category =>
+                        mappedCategorySlugs.Contains(
+                            category.Slug))
+                    .OrderBy(category => category.Slug)
+                    .Select(category => category.Id)
+                    .ToArrayAsync(cancellationToken);
+
+            foreach (Guid categoryId in categoryIds)
+            {
+                BookCategory bookCategory = new(
+                    book.Id,
+                    categoryId);
+
+                book.Categories.Add(bookCategory);
+            }
         }
 
         ExternalReference bookReference =

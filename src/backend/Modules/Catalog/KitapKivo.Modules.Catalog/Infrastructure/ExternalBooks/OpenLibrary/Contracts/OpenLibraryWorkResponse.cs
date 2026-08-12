@@ -21,6 +21,13 @@ internal sealed class OpenLibraryWorkResponse
     [JsonPropertyName("covers")]
     public int[] CoverIds { get; init; } = [];
 
+    [JsonPropertyName("authors")]
+    public OpenLibraryWorkAuthorResponse[] Authors
+    {
+        get;
+        init;
+    } = [];
+
     [JsonPropertyName("subjects")]
     public string[] Subjects { get; init; } = [];
 }
