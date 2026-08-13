@@ -1,9 +1,10 @@
-﻿using Docker.DotNet.Models;
-
-using KitapKivo.Modules.Catalog.Domain.Categories;
-using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
-using KitapKivo.Modules.Catalog.Application.Books.ResolveExternal;
+﻿using KitapKivo.Modules.Catalog.Application
+    .Abstractions.ExternalBooks;
+using KitapKivo.Modules.Catalog.Application
+    .Books.ResolveExternal;
 using KitapKivo.Modules.Catalog.Domain.Authors;
+using KitapKivo.Modules.Catalog.Domain.Categories;
+using KitapKivo.Modules.Catalog.Domain.Editions;
 using KitapKivo.Modules.Catalog.Domain.Sources;
 using KitapKivo.Modules.Catalog.Persistence;
 
@@ -18,7 +19,8 @@ namespace KitapKivo.Api.IntegrationTests.Catalog;
 public sealed class ResolveExternalBookHandlerTests
     : IClassFixture<KitapKivoWebApplicationFactory>
 {
-    private readonly KitapKivoWebApplicationFactory _factory;
+    private readonly KitapKivoWebApplicationFactory
+        _factory;
 
     public ResolveExternalBookHandlerTests(
         KitapKivoWebApplicationFactory factory)
@@ -27,7 +29,8 @@ public sealed class ResolveExternalBookHandlerTests
     }
 
     [Fact]
-    public async Task HandleAsync_WhenBookDoesNotExist_ShouldCreateBook()
+    public async Task
+        HandleAsync_WhenBookDoesNotExist_ShouldCreateBook()
     {
         // Arrange
         var details = new ExternalBookDetails(
@@ -47,10 +50,31 @@ public sealed class ResolveExternalBookHandlerTests
             ["Science Fiction"]);
 
         var detailsClient =
-            new StubExternalBookDetailsClient(details);
+            new StubExternalBookDetailsClient(
+                details);
+
+        var editionDetails =
+            new ExternalBookEditionDetails(
+                "OpenLibrary",
+                "/books/OL30001M",
+                "Dune",
+                "eng",
+                "Paperback",
+                "0441013597",
+                "9780441013593",
+                412,
+                1965,
+                "https://example.com/dune-edition.jpg",
+                "Ace");
+
+        var editionClient =
+            new StubExternalBookEditionClient(
+                editionDetails);
 
         using WebApplicationFactory<Program> application =
-            CreateApplication(detailsClient);
+            CreateApplication(
+                detailsClient,
+                editionClient);
 
         using IServiceScope scope =
             application.Services.CreateScope();
@@ -75,21 +99,28 @@ public sealed class ResolveExternalBookHandlerTests
                 cancellationTokenSource.Token);
 
         // Assert
-        Assert.True(result.IsSuccess);
-        Assert.True(result.IsCreated);
-        Assert.NotNull(result.BookId);
+        Assert.True(
+            result.IsSuccess);
+
+        Assert.True(
+            result.IsCreated);
+
+        Assert.NotNull(
+            result.BookId);
 
         Assert.True(
             await dbContext.Books
                 .AsNoTracking()
-                .AnyAsync(
-                    book => book.Id == result.BookId.Value));
+                .AnyAsync(book =>
+                    book.Id ==
+                    result.BookId.Value));
 
         Assert.True(
             await dbContext.ExternalReferences
                 .AsNoTracking()
                 .AnyAsync(reference =>
-                    reference.BookId == result.BookId.Value &&
+                    reference.BookId ==
+                        result.BookId.Value &&
                     reference.Source ==
                         CatalogSource.OpenLibrary &&
                     reference.ExternalId ==
@@ -98,11 +129,13 @@ public sealed class ResolveExternalBookHandlerTests
         Guid authorId =
             await dbContext.Books
                 .AsNoTracking()
-                .Where(
-                    book =>
-                        book.Id == result.BookId.Value)
-                .SelectMany(book => book.Authors)
-                .Select(bookAuthor => bookAuthor.AuthorId)
+                .Where(book =>
+                    book.Id ==
+                    result.BookId.Value)
+                .SelectMany(book =>
+                    book.Authors)
+                .Select(bookAuthor =>
+                    bookAuthor.AuthorId)
                 .SingleAsync();
 
         Assert.True(
@@ -110,37 +143,104 @@ public sealed class ResolveExternalBookHandlerTests
                 .AsNoTracking()
                 .AnyAsync(author =>
                     author.Id == authorId &&
-                    author.Name == "Frank Herbert"));
+                    author.Name ==
+                        "Frank Herbert"));
 
         Assert.True(
             await dbContext.ExternalReferences
                 .AsNoTracking()
                 .AnyAsync(reference =>
-                    reference.AuthorId == authorId &&
+                    reference.AuthorId ==
+                        authorId &&
                     reference.Source ==
                         CatalogSource.OpenLibrary &&
                     reference.ExternalId ==
                         "/authors/OL20001A"));
 
         string[] categorySlugs =
-    await dbContext.Books
-        .AsNoTracking()
-        .Where(book =>
-            book.Id == result.BookId.Value)
-        .SelectMany(book => book.Categories)
-        .Select(bookCategory =>
-            bookCategory.Category.Slug)
-        .OrderBy(slug => slug)
-        .ToArrayAsync();
+            await dbContext.Books
+                .AsNoTracking()
+                .Where(book =>
+                    book.Id ==
+                    result.BookId.Value)
+                .SelectMany(book =>
+                    book.Categories)
+                .Select(bookCategory =>
+                    bookCategory.Category.Slug)
+                .OrderBy(slug => slug)
+                .ToArrayAsync();
 
         Assert.Equal(
             [
                 CatalogCategorySlugs.ScienceFiction,
-        CatalogCategorySlugs.Novel
+                CatalogCategorySlugs.Novel
             ],
             categorySlugs);
 
-        Assert.Equal(1, detailsClient.CallCount);
+        Edition edition =
+            await dbContext.Editions
+                .AsNoTracking()
+                .SingleAsync(item =>
+                    item.BookId ==
+                    result.BookId.Value);
+
+        Assert.Equal(
+            "Dune",
+            edition.Title);
+
+        Assert.Equal(
+            "eng",
+            edition.LanguageCode);
+
+        Assert.Equal(
+            EditionFormat.Paperback,
+            edition.Format);
+
+        Assert.Equal(
+            "0441013597",
+            edition.Isbn10);
+
+        Assert.Equal(
+            "9780441013593",
+            edition.Isbn13);
+
+        Assert.Equal(
+            412,
+            edition.PageCount);
+
+        Assert.Equal(
+            1965,
+            edition.PublicationYear);
+
+        Assert.Equal(
+            "https://example.com/dune-edition.jpg",
+            edition.CoverImageUrl);
+
+        Assert.NotNull(
+            edition.PublisherId);
+
+        Assert.True(
+            await dbContext.Publishers
+                .AsNoTracking()
+                .AnyAsync(publisher =>
+                    publisher.Id ==
+                        edition.PublisherId.Value &&
+                    publisher.Name == "Ace"));
+
+        Assert.True(
+            await dbContext.ExternalReferences
+                .AsNoTracking()
+                .AnyAsync(reference =>
+                    reference.EditionId ==
+                        edition.Id &&
+                    reference.Source ==
+                        CatalogSource.OpenLibrary &&
+                    reference.ExternalId ==
+                        "/books/OL30001M"));
+
+        Assert.Equal(
+            1,
+            detailsClient.CallCount);
 
         Assert.Equal(
             "/works/OL10001W",
@@ -149,10 +249,23 @@ public sealed class ResolveExternalBookHandlerTests
         Assert.Equal(
             cancellationTokenSource.Token,
             detailsClient.CancellationToken);
+
+        Assert.Equal(
+            1,
+            editionClient.CallCount);
+
+        Assert.Equal(
+            "/works/OL10001W",
+            editionClient.ExternalWorkId);
+
+        Assert.Equal(
+            cancellationTokenSource.Token,
+            editionClient.CancellationToken);
     }
 
     [Fact]
-    public async Task HandleAsync_WhenBookAlreadyExists_ShouldReturnExistingBook()
+    public async Task
+        HandleAsync_WhenBookAlreadyExists_ShouldReturnExistingBook()
     {
         // Arrange
         var details = new ExternalBookDetails(
@@ -168,7 +281,8 @@ public sealed class ResolveExternalBookHandlerTests
             []);
 
         var detailsClient =
-            new StubExternalBookDetailsClient(details);
+            new StubExternalBookDetailsClient(
+                details);
 
         using WebApplicationFactory<Program> application =
             CreateApplication(detailsClient);
@@ -184,29 +298,40 @@ public sealed class ResolveExternalBookHandlerTests
             scope.ServiceProvider.GetRequiredService<
                 CatalogDbContext>();
 
-        var command = new ResolveExternalBookCommand(
-            "OpenLibrary",
-            "/works/OL10002W");
+        var command =
+            new ResolveExternalBookCommand(
+                "OpenLibrary",
+                "/works/OL10002W");
 
         // Act
         ResolveExternalBookResult firstResult =
-            await handler.HandleAsync(command);
+            await handler.HandleAsync(
+                command);
 
         ResolveExternalBookResult secondResult =
-            await handler.HandleAsync(command);
+            await handler.HandleAsync(
+                command);
 
         // Assert
-        Assert.True(firstResult.IsSuccess);
-        Assert.True(firstResult.IsCreated);
+        Assert.True(
+            firstResult.IsSuccess);
 
-        Assert.True(secondResult.IsSuccess);
-        Assert.False(secondResult.IsCreated);
+        Assert.True(
+            firstResult.IsCreated);
+
+        Assert.True(
+            secondResult.IsSuccess);
+
+        Assert.False(
+            secondResult.IsCreated);
 
         Assert.Equal(
             firstResult.BookId,
             secondResult.BookId);
 
-        Assert.Equal(1, detailsClient.CallCount);
+        Assert.Equal(
+            1,
+            detailsClient.CallCount);
 
         int referenceCount =
             await dbContext.ExternalReferences
@@ -218,15 +343,19 @@ public sealed class ResolveExternalBookHandlerTests
                         "/works/OL10002W" &&
                     reference.BookId.HasValue);
 
-        Assert.Equal(1, referenceCount);
+        Assert.Equal(
+            1,
+            referenceCount);
     }
 
     [Fact]
-    public async Task HandleAsync_WhenExternalBookDoesNotExist_ShouldReturnNotFound()
+    public async Task
+        HandleAsync_WhenExternalBookDoesNotExist_ShouldReturnNotFound()
     {
         // Arrange
         var detailsClient =
-            new StubExternalBookDetailsClient(null);
+            new StubExternalBookDetailsClient(
+                null);
 
         using WebApplicationFactory<Program> application =
             CreateApplication(detailsClient);
@@ -256,9 +385,14 @@ public sealed class ResolveExternalBookHandlerTests
                     "/works/OL404404W"));
 
         // Assert
-        Assert.False(result.IsSuccess);
-        Assert.False(result.IsCreated);
-        Assert.Null(result.BookId);
+        Assert.False(
+            result.IsSuccess);
+
+        Assert.False(
+            result.IsCreated);
+
+        Assert.Null(
+            result.BookId);
 
         Assert.Equal(
             bookCountBefore,
@@ -277,11 +411,14 @@ public sealed class ResolveExternalBookHandlerTests
                     reference.ExternalId ==
                         "/works/OL404404W"));
 
-        Assert.Equal(1, detailsClient.CallCount);
+        Assert.Equal(
+            1,
+            detailsClient.CallCount);
     }
 
     [Fact]
-    public async Task HandleAsync_WhenAuthorAlreadyExists_ShouldReuseAuthor()
+    public async Task
+        HandleAsync_WhenAuthorAlreadyExists_ShouldReuseAuthor()
     {
         // Arrange
         var details = new ExternalBookDetails(
@@ -301,7 +438,8 @@ public sealed class ResolveExternalBookHandlerTests
             []);
 
         var detailsClient =
-            new StubExternalBookDetailsClient(details);
+            new StubExternalBookDetailsClient(
+                details);
 
         using WebApplicationFactory<Program> application =
             CreateApplication(detailsClient);
@@ -314,7 +452,8 @@ public sealed class ResolveExternalBookHandlerTests
                 CatalogDbContext>();
 
         var existingAuthor =
-            new Author("Existing Author");
+            new Author(
+                "Existing Author");
 
         existingAuthor.ExternalReferences.Add(
             ExternalReference.CreateForAuthor(
@@ -322,7 +461,8 @@ public sealed class ResolveExternalBookHandlerTests
                 CatalogSource.OpenLibrary,
                 "/authors/OL20004A"));
 
-        dbContext.Authors.Add(existingAuthor);
+        dbContext.Authors.Add(
+            existingAuthor);
 
         await dbContext.SaveChangesAsync();
 
@@ -338,18 +478,25 @@ public sealed class ResolveExternalBookHandlerTests
                     "/works/OL10004W"));
 
         // Assert
-        Assert.True(result.IsSuccess);
-        Assert.True(result.IsCreated);
-        Assert.NotNull(result.BookId);
+        Assert.True(
+            result.IsSuccess);
+
+        Assert.True(
+            result.IsCreated);
+
+        Assert.NotNull(
+            result.BookId);
 
         Guid linkedAuthorId =
             await dbContext.Books
                 .AsNoTracking()
-                .Where(
-                    book =>
-                        book.Id == result.BookId.Value)
-                .SelectMany(book => book.Authors)
-                .Select(bookAuthor => bookAuthor.AuthorId)
+                .Where(book =>
+                    book.Id ==
+                    result.BookId.Value)
+                .SelectMany(book =>
+                    book.Authors)
+                .Select(bookAuthor =>
+                    bookAuthor.AuthorId)
                 .SingleAsync();
 
         Assert.Equal(
@@ -366,13 +513,24 @@ public sealed class ResolveExternalBookHandlerTests
                         "/authors/OL20004A" &&
                     reference.AuthorId.HasValue);
 
-        Assert.Equal(1, authorReferenceCount);
-        Assert.Equal(1, detailsClient.CallCount);
+        Assert.Equal(
+            1,
+            authorReferenceCount);
+
+        Assert.Equal(
+            1,
+            detailsClient.CallCount);
     }
 
-    private WebApplicationFactory<Program> CreateApplication(
-        IExternalBookDetailsClient detailsClient)
+    private WebApplicationFactory<Program>
+        CreateApplication(
+            IExternalBookDetailsClient detailsClient,
+            IExternalBookEditionClient? editionClient = null)
     {
+        editionClient ??=
+            new StubExternalBookEditionClient(
+                null);
+
         return _factory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureTestServices(services =>
@@ -380,7 +538,14 @@ public sealed class ResolveExternalBookHandlerTests
                 services.RemoveAll<
                     IExternalBookDetailsClient>();
 
-                services.AddSingleton(detailsClient);
+                services.RemoveAll<
+                    IExternalBookEditionClient>();
+
+                services.AddSingleton(
+                    detailsClient);
+
+                services.AddSingleton(
+                    editionClient);
             });
         });
     }
@@ -391,7 +556,11 @@ public sealed class ResolveExternalBookHandlerTests
     {
         public int CallCount { get; private set; }
 
-        public string? ExternalId { get; private set; }
+        public string? ExternalId
+        {
+            get;
+            private set;
+        }
 
         public CancellationToken CancellationToken
         {
@@ -407,7 +576,40 @@ public sealed class ResolveExternalBookHandlerTests
             ExternalId = externalId;
             CancellationToken = cancellationToken;
 
-            return Task.FromResult(result);
+            return Task.FromResult(
+                result);
+        }
+    }
+
+    private sealed class StubExternalBookEditionClient(
+        ExternalBookEditionDetails? result)
+        : IExternalBookEditionClient
+    {
+        public int CallCount { get; private set; }
+
+        public string? ExternalWorkId
+        {
+            get;
+            private set;
+        }
+
+        public CancellationToken CancellationToken
+        {
+            get;
+            private set;
+        }
+
+        public Task<ExternalBookEditionDetails?>
+            GetBestForWorkAsync(
+                string externalWorkId,
+                CancellationToken cancellationToken = default)
+        {
+            CallCount++;
+            ExternalWorkId = externalWorkId;
+            CancellationToken = cancellationToken;
+
+            return Task.FromResult(
+                result);
         }
     }
 }

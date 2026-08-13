@@ -1,9 +1,14 @@
 ﻿using System.Text.RegularExpressions;
-using KitapKivo.Modules.Catalog.Application.Categories.Mapping;
-using KitapKivo.Modules.Catalog.Domain.Categories;
-using KitapKivo.Modules.Catalog.Application.Abstractions.ExternalBooks;
+
+using KitapKivo.Modules.Catalog.Application
+    .Abstractions.ExternalBooks;
+using KitapKivo.Modules.Catalog.Application
+    .Categories.Mapping;
 using KitapKivo.Modules.Catalog.Domain.Authors;
 using KitapKivo.Modules.Catalog.Domain.Books;
+using KitapKivo.Modules.Catalog.Domain.Categories;
+using KitapKivo.Modules.Catalog.Domain.Editions;
+using KitapKivo.Modules.Catalog.Domain.Publishers;
 using KitapKivo.Modules.Catalog.Domain.Sources;
 using KitapKivo.Modules.Catalog.Persistence;
 
@@ -27,17 +32,27 @@ public sealed class ResolveExternalBookHandler
         RegexOptions.IgnoreCase |
         RegexOptions.CultureInvariant);
 
+    private static readonly Regex EditionIdPattern = new(
+        @"^/?books/(OL\d+M)$",
+        RegexOptions.IgnoreCase |
+        RegexOptions.CultureInvariant);
+
     private readonly CatalogDbContext _dbContext;
 
     private readonly IExternalBookDetailsClient
         _detailsClient;
 
+    private readonly IExternalBookEditionClient
+        _editionClient;
+
     public ResolveExternalBookHandler(
         CatalogDbContext dbContext,
-        IExternalBookDetailsClient detailsClient)
+        IExternalBookDetailsClient detailsClient,
+        IExternalBookEditionClient editionClient)
     {
         _dbContext = dbContext;
         _detailsClient = detailsClient;
+        _editionClient = editionClient;
     }
 
     public async Task<ResolveExternalBookResult>
@@ -96,6 +111,11 @@ public sealed class ResolveExternalBookHandler
             }
         }
 
+        ExternalBookEditionDetails? editionDetails =
+            await _editionClient.GetBestForWorkAsync(
+                resolvedExternalId,
+                cancellationToken);
+
         string originalLanguageCode =
             ResolveOriginalLanguageCode(details);
 
@@ -111,8 +131,9 @@ public sealed class ResolveExternalBookHandler
 
         int displayOrder = 0;
 
-        foreach (ExternalBookAuthor externalAuthor
-                 in details.Authors)
+        foreach (
+            ExternalBookAuthor externalAuthor
+            in details.Authors)
         {
             if (string.IsNullOrWhiteSpace(
                     externalAuthor.Name))
@@ -159,9 +180,9 @@ public sealed class ResolveExternalBookHandler
         }
 
         string[] mappedCategorySlugs =
-    SubjectCategoryMapper
-        .Map(details.Subjects)
-        .ToArray();
+            SubjectCategoryMapper
+                .Map(details.Subjects)
+                .ToArray();
 
         if (mappedCategorySlugs.Length > 0)
         {
@@ -171,9 +192,12 @@ public sealed class ResolveExternalBookHandler
                     .Where(category =>
                         mappedCategorySlugs.Contains(
                             category.Slug))
-                    .OrderBy(category => category.Slug)
-                    .Select(category => category.Id)
-                    .ToArrayAsync(cancellationToken);
+                    .OrderBy(category =>
+                        category.Slug)
+                    .Select(category =>
+                        category.Id)
+                    .ToArrayAsync(
+                        cancellationToken);
 
             foreach (Guid categoryId in categoryIds)
             {
@@ -183,6 +207,16 @@ public sealed class ResolveExternalBookHandler
 
                 book.Categories.Add(bookCategory);
             }
+        }
+
+        if (editionDetails is not null)
+        {
+            await AddEditionAsync(
+                book,
+                editionDetails,
+                source,
+                originalLanguageCode,
+                cancellationToken);
         }
 
         ExternalReference bookReference =
@@ -203,6 +237,111 @@ public sealed class ResolveExternalBookHandler
             book.Id);
     }
 
+    private async Task AddEditionAsync(
+        Book book,
+        ExternalBookEditionDetails details,
+        CatalogSource source,
+        string fallbackLanguageCode,
+        CancellationToken cancellationToken)
+    {
+        string editionExternalId =
+            NormalizeEditionId(
+                details.ExternalId);
+
+        string editionTitle =
+            NormalizeOptionalValue(details.Title)
+            ?? book.Title;
+
+        string languageCode =
+            NormalizeOptionalValue(
+                details.LanguageCode)
+            ?.ToLowerInvariant()
+            ?? fallbackLanguageCode;
+
+        Guid? publisherId =
+            await ResolvePublisherIdAsync(
+                details.PublisherName,
+                cancellationToken);
+
+        int? pageCount =
+            details.PageCount is > 0
+                ? details.PageCount
+                : null;
+
+        int? publicationYear =
+            details.PublicationYear is
+                >= 0 and <= 9999
+                    ? details.PublicationYear
+                    : null;
+
+        Edition edition = new(
+            book.Id,
+            editionTitle,
+            languageCode,
+            ResolveEditionFormat(
+                details.Format),
+            publisherId,
+            details.Isbn10,
+            details.Isbn13,
+            pageCount,
+            publicationYear,
+            details.CoverUrl);
+
+        ExternalReference editionReference =
+            ExternalReference.CreateForEdition(
+                edition.Id,
+                source,
+                editionExternalId);
+
+        edition.ExternalReferences.Add(
+            editionReference);
+
+        book.Editions.Add(edition);
+    }
+
+    private async Task<Guid?> ResolvePublisherIdAsync(
+        string? publisherName,
+        CancellationToken cancellationToken)
+    {
+        string? normalizedPublisherName =
+            NormalizeOptionalValue(
+                publisherName);
+
+        if (normalizedPublisherName is null)
+        {
+            return null;
+        }
+
+        string normalizedPublisherKey =
+            normalizedPublisherName
+                .ToUpperInvariant();
+
+        Guid? existingPublisherId =
+            await _dbContext.Publishers
+                .AsNoTracking()
+                .Where(publisher =>
+                    publisher.Name.ToUpper() ==
+                    normalizedPublisherKey)
+                .OrderBy(publisher =>
+                    publisher.CreatedAtUtc)
+                .Select(publisher =>
+                    (Guid?)publisher.Id)
+                .FirstOrDefaultAsync(
+                    cancellationToken);
+
+        if (existingPublisherId.HasValue)
+        {
+            return existingPublisherId.Value;
+        }
+
+        Publisher publisher = new(
+            normalizedPublisherName);
+
+        _dbContext.Publishers.Add(publisher);
+
+        return publisher.Id;
+    }
+
     private async Task<Guid?> FindBookIdAsync(
         CatalogSource source,
         string externalId,
@@ -214,8 +353,10 @@ public sealed class ResolveExternalBookHandler
                 reference.Source == source &&
                 reference.ExternalId == externalId &&
                 reference.BookId.HasValue)
-            .Select(reference => reference.BookId)
-            .SingleOrDefaultAsync(cancellationToken);
+            .Select(reference =>
+                reference.BookId)
+            .SingleOrDefaultAsync(
+                cancellationToken);
     }
 
     private async Task<Guid> ResolveAuthorIdAsync(
@@ -276,7 +417,8 @@ public sealed class ResolveExternalBookHandler
                 StringComparison.OrdinalIgnoreCase))
         {
             throw new ArgumentException(
-                "Only the OpenLibrary provider is supported.",
+                "Only the OpenLibrary provider " +
+                "is supported.",
                 nameof(provider));
         }
 
@@ -295,7 +437,8 @@ public sealed class ResolveExternalBookHandler
         if (!match.Success)
         {
             throw new ArgumentException(
-                "Open Library work identifier is invalid.",
+                "Open Library work identifier " +
+                "is invalid.",
                 nameof(externalId));
         }
 
@@ -310,7 +453,8 @@ public sealed class ResolveExternalBookHandler
     private static string? NormalizeAuthorId(
         string? externalId)
     {
-        if (string.IsNullOrWhiteSpace(externalId))
+        if (string.IsNullOrWhiteSpace(
+                externalId))
         {
             return null;
         }
@@ -331,6 +475,94 @@ public sealed class ResolveExternalBookHandler
         return $"/authors/{authorId}";
     }
 
+    private static string NormalizeEditionId(
+        string externalId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(
+            externalId);
+
+        Match match = EditionIdPattern.Match(
+            externalId.Trim());
+
+        if (!match.Success)
+        {
+            throw new ArgumentException(
+                "Open Library edition identifier " +
+                "is invalid.",
+                nameof(externalId));
+        }
+
+        string editionId =
+            match.Groups[1]
+                .Value
+                .ToUpperInvariant();
+
+        return $"/books/{editionId}";
+    }
+
+    private static EditionFormat ResolveEditionFormat(
+        string? format)
+    {
+        if (string.IsNullOrWhiteSpace(format))
+        {
+            return EditionFormat.Unknown;
+        }
+
+        string normalizedFormat =
+            format.Trim().ToLowerInvariant();
+
+        if (normalizedFormat.Contains(
+                "hardcover",
+                StringComparison.Ordinal) ||
+            normalizedFormat.Contains(
+                "hardback",
+                StringComparison.Ordinal))
+        {
+            return EditionFormat.Hardcover;
+        }
+
+        if (normalizedFormat.Contains(
+                "paperback",
+                StringComparison.Ordinal) ||
+            normalizedFormat.Contains(
+                "softcover",
+                StringComparison.Ordinal) ||
+            normalizedFormat.Contains(
+                "soft cover",
+                StringComparison.Ordinal))
+        {
+            return EditionFormat.Paperback;
+        }
+
+        if (normalizedFormat.Contains(
+                "ebook",
+                StringComparison.Ordinal) ||
+            normalizedFormat.Contains(
+                "e-book",
+                StringComparison.Ordinal) ||
+            normalizedFormat.Contains(
+                "electronic",
+                StringComparison.Ordinal))
+        {
+            return EditionFormat.Ebook;
+        }
+
+        if (normalizedFormat.Contains(
+                "audiobook",
+                StringComparison.Ordinal) ||
+            normalizedFormat.Contains(
+                "audio book",
+                StringComparison.Ordinal) ||
+            normalizedFormat.Contains(
+                "audio cd",
+                StringComparison.Ordinal))
+        {
+            return EditionFormat.Audiobook;
+        }
+
+        return EditionFormat.Other;
+    }
+
     private static string ResolveOriginalLanguageCode(
         ExternalBookDetails details)
     {
@@ -341,5 +573,13 @@ public sealed class ResolveExternalBookHandler
                 ?.Trim();
 
         return languageCode ?? "und";
+    }
+
+    private static string? NormalizeOptionalValue(
+        string? value)
+    {
+        return string.IsNullOrWhiteSpace(value)
+            ? null
+            : value.Trim();
     }
 }
