@@ -1,12 +1,15 @@
-﻿using KitapKivo.Modules.Catalog.Persistence;
+﻿using KitapKivo.Modules.Catalog.Application
+    .Abstractions.ExternalBooks;
+using KitapKivo.Modules.Catalog.Persistence;
 using KitapKivo.Modules.Identity.Persistence;
 using KitapKivo.Modules.Reading.Persistence;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Testcontainers.PostgreSql;
 
@@ -19,13 +22,14 @@ public sealed class KitapKivoWebApplicationFactory
         "integration-tests-only-secret-key-at-least-32-characters";
 
     private readonly PostgreSqlContainer _postgresContainer =
-       new PostgreSqlBuilder("postgres:17-alpine")
-    .WithDatabase("kitapkivo_tests")
-    .WithUsername("postgres")
-    .WithPassword("postgres")
-    .Build();
+        new PostgreSqlBuilder("postgres:17-alpine")
+            .WithDatabase("kitapkivo_tests")
+            .WithUsername("postgres")
+            .WithPassword("postgres")
+            .Build();
 
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    protected override void ConfigureWebHost(
+        IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
 
@@ -48,6 +52,16 @@ public sealed class KitapKivoWebApplicationFactory
         builder.UseSetting(
             "Jwt:ExpirationMinutes",
             "15");
+
+        builder.ConfigureTestServices(services =>
+        {
+            services.RemoveAll<
+                IExternalBookEditionClient>();
+
+            services.AddSingleton<
+                IExternalBookEditionClient,
+                StubExternalBookEditionClient>();
+        });
     }
 
     public async Task InitializeAsync()
@@ -70,8 +84,8 @@ public sealed class KitapKivoWebApplicationFactory
         await catalogDbContext.Database.MigrateAsync();
 
         ReadingDbContext readingDbContext =
-        scope.ServiceProvider.GetRequiredService<
-        ReadingDbContext>();
+            scope.ServiceProvider.GetRequiredService<
+                ReadingDbContext>();
 
         await readingDbContext.Database.MigrateAsync();
     }
@@ -80,5 +94,18 @@ public sealed class KitapKivoWebApplicationFactory
     {
         await base.DisposeAsync();
         await _postgresContainer.DisposeAsync();
+    }
+
+    private sealed class StubExternalBookEditionClient
+        : IExternalBookEditionClient
+    {
+        public Task<ExternalBookEditionDetails?>
+            GetBestForWorkAsync(
+                string externalWorkId,
+                CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<
+                ExternalBookEditionDetails?>(null);
+        }
     }
 }
