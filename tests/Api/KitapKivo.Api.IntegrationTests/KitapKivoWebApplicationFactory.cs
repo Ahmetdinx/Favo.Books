@@ -52,6 +52,10 @@ public sealed class KitapKivoWebApplicationFactory
         builder.UseSetting(
             "Jwt:ExpirationMinutes",
             "15");
+       
+        builder.UseSetting(
+            "Catalog:ImportJobs:WorkerEnabled",
+            "false");
 
         builder.ConfigureTestServices(services =>
         {

@@ -310,6 +310,98 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
                     b.ToTable("Editions", "catalog");
                 });
 
+            modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Imports.CatalogImportJob", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("CompletedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CompletedPageCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ConsecutiveFailureCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CreatedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ExistingCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LastError")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTimeOffset?>("NextAttemptAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("NextPage")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NotFoundCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PageCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PageSize")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProcessedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Provider")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Query")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("StartPage")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset?>("StartedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<int?>("TotalAvailableCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAtUtc");
+
+                    b.HasIndex("Status", "NextAttemptAtUtc", "CreatedAtUtc");
+
+                    b.ToTable("ImportJobs", "catalog", t =>
+                        {
+                            t.HasCheckConstraint("CK_ImportJobs_Counts", "\"CompletedPageCount\" >= 0\r\nAND \"ProcessedCount\" >= 0\r\nAND \"CreatedCount\" >= 0\r\nAND \"ExistingCount\" >= 0\r\nAND \"NotFoundCount\" >= 0\r\nAND \"FailedCount\" >= 0\r\nAND \"ConsecutiveFailureCount\" >= 0");
+
+                            t.HasCheckConstraint("CK_ImportJobs_PageValues", "\"StartPage\" >= 1\r\nAND \"NextPage\" >= 1\r\nAND \"PageSize\" BETWEEN 1 AND 20\r\nAND \"PageCount\" BETWEEN 1 AND 500");
+
+                            t.HasCheckConstraint("CK_ImportJobs_TotalAvailableCount", "\"TotalAvailableCount\" IS NULL\r\nOR \"TotalAvailableCount\" >= 0");
+                        });
+                });
+
             modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Publishers.Publisher", b =>
                 {
                     b.Property<Guid>("Id")

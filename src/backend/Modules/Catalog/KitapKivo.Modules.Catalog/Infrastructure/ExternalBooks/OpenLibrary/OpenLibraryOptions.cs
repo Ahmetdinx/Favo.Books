@@ -6,7 +6,7 @@ internal sealed class OpenLibraryOptions
 
     public string BaseUrl { get; init; } = "https://openlibrary.org";
 
-    public int TimeoutSeconds { get; init; } = 15;
+    public int TimeoutSeconds { get; init; } = 30;
 
     public string UserAgent { get; init; } = "KitapKivo/1.0";
 }

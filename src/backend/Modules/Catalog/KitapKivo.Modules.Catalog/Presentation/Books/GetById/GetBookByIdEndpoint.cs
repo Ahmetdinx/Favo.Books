@@ -46,6 +46,30 @@ internal static class GetBookByIdEndpoint
                     author.DisplayOrder))
             .ToArray();
 
+        GetBookEditionResponse[] editions = result.Editions
+            .Select(edition =>
+            {
+                GetBookPublisherResponse? publisher =
+                    edition.Publisher is null
+                        ? null
+                        : new GetBookPublisherResponse(
+                            edition.Publisher.PublisherId,
+                            edition.Publisher.Name);
+
+                return new GetBookEditionResponse(
+                    edition.EditionId,
+                    edition.Title,
+                    edition.LanguageCode,
+                    edition.Format,
+                    edition.Isbn10,
+                    edition.Isbn13,
+                    edition.PageCount,
+                    edition.PublicationYear,
+                    edition.CoverImageUrl,
+                    publisher);
+            })
+            .ToArray();
+
         GetBookByIdResponse response = new(
             result.BookId,
             result.Title,
@@ -53,7 +77,8 @@ internal static class GetBookByIdEndpoint
             result.OriginalTitle,
             result.Description,
             result.FirstPublishedYear,
-            authors);
+            authors,
+            editions);
 
         return Results.Ok(response);
     }

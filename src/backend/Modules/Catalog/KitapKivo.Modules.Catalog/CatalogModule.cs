@@ -11,13 +11,21 @@ using KitapKivo.Modules.Catalog.Application
 using KitapKivo.Modules.Catalog.Application
     .Books.GetExternalDetails;
 using KitapKivo.Modules.Catalog.Application
+    .Books.ImportExternal;
+using KitapKivo.Modules.Catalog.Application
     .Books.ResolveExternal;
 using KitapKivo.Modules.Catalog.Application
     .Books.Search;
 using KitapKivo.Modules.Catalog.Application
     .Categories.GetAll;
+using KitapKivo.Modules.Catalog.Application
+    .Imports.Create;
+using KitapKivo.Modules.Catalog.Application
+    .Imports.GetById;
 using KitapKivo.Modules.Catalog.Infrastructure
     .ExternalBooks.OpenLibrary;
+using KitapKivo.Modules.Catalog.Infrastructure
+    .Imports;
 using KitapKivo.Modules.Catalog.Persistence;
 
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +57,40 @@ public static class CatalogModule
             configuration.GetSection(
                 OpenLibraryOptions.SectionName));
 
+        services.AddOptions<
+                CatalogImportJobWorkerOptions>()
+            .Bind(
+                configuration.GetSection(
+                    CatalogImportJobWorkerOptions
+                        .SectionName))
+            .Validate(
+                options =>
+                    options.PollIntervalSeconds > 0,
+                "Poll interval must be greater than zero.")
+            .Validate(
+                options =>
+                    options.DelayBetweenPagesSeconds >= 0,
+                "Page delay cannot be negative.")
+            .Validate(
+                options =>
+                    options.MaximumRetryCount > 0,
+                "Maximum retry count must be greater than zero.")
+            .Validate(
+                options =>
+                    options.InitialRetryDelaySeconds > 0,
+                "Initial retry delay must be greater than zero.")
+            .Validate(
+                options =>
+                    options.MaximumRetryDelaySeconds >=
+                    options.InitialRetryDelaySeconds,
+                "Maximum retry delay must be greater than " +
+                "or equal to the initial retry delay.")
+            .Validate(
+                options =>
+                    options.InterruptedJobTimeoutMinutes > 0,
+                "Interrupted job timeout must be greater than zero.")
+            .ValidateOnStart();
+
         services.AddHttpClient<
             IExternalBookSearchClient,
             OpenLibrarySearchClient>(
@@ -75,8 +117,32 @@ public static class CatalogModule
         services.AddScoped<
             ResolveExternalBookHandler>();
 
+        services.AddScoped<
+            ImportExternalBooksHandler>();
+
+        services.AddScoped<
+            CreateCatalogImportJobHandler>();
+
+        services.AddScoped<
+            GetCatalogImportJobByIdHandler>();
+
+        services.AddScoped<
+            CatalogImportJobProcessor>();
+
         services.AddScoped<BrowseBooksHandler>();
         services.AddScoped<GetCategoriesHandler>();
+
+        bool workerEnabled =
+            configuration.GetValue(
+                $"{CatalogImportJobWorkerOptions.SectionName}:" +
+                "WorkerEnabled",
+                true);
+
+        if (workerEnabled)
+        {
+            services.AddHostedService<
+                CatalogImportJobWorker>();
+        }
 
         return services;
     }

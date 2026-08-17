@@ -64,6 +64,55 @@ public sealed class GetBookByIdHandler
                         author.DisplayOrder))
                 .ToArrayAsync(cancellationToken);
 
+        var editionRows =
+            await _dbContext.Editions
+                .AsNoTracking()
+                .Where(edition =>
+                    edition.BookId == query.BookId)
+                .OrderBy(edition =>
+                    edition.CreatedAtUtc)
+                .ThenBy(edition =>
+                    edition.Id)
+                .Select(edition => new
+                {
+                    EditionId = edition.Id,
+                    edition.Title,
+                    edition.LanguageCode,
+                    edition.Format,
+                    edition.Isbn10,
+                    edition.Isbn13,
+                    edition.PageCount,
+                    edition.PublicationYear,
+                    edition.CoverImageUrl,
+                    edition.PublisherId,
+                    PublisherName =
+                        edition.Publisher == null
+                            ? null
+                            : edition.Publisher.Name
+                })
+                .ToArrayAsync(cancellationToken);
+
+        GetBookEditionResult[] editions = editionRows
+            .Select(edition =>
+                new GetBookEditionResult(
+                    edition.EditionId,
+                    edition.Title,
+                    edition.LanguageCode,
+                    edition.Format.ToString(),
+                    edition.Isbn10,
+                    edition.Isbn13,
+                    edition.PageCount,
+                    edition.PublicationYear,
+                    edition.CoverImageUrl,
+                    edition.PublisherId.HasValue &&
+                    !string.IsNullOrWhiteSpace(
+                        edition.PublisherName)
+                        ? new GetBookPublisherResult(
+                            edition.PublisherId.Value,
+                            edition.PublisherName)
+                        : null))
+            .ToArray();
+
         return new GetBookByIdResult(
             book.Id,
             book.Title,
@@ -71,6 +120,7 @@ public sealed class GetBookByIdHandler
             book.OriginalTitle,
             book.Description,
             book.FirstPublishedYear,
-            authors);
+            authors,
+            editions);
     }
 }
