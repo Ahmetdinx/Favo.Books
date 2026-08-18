@@ -9,8 +9,6 @@ using KitapKivo.Modules.Catalog.Presentation
 using KitapKivo.Modules.Catalog.Presentation
     .Books.GetExternalDetails;
 using KitapKivo.Modules.Catalog.Presentation
-    .Books.ImportExternal;
-using KitapKivo.Modules.Catalog.Presentation
     .Books.ResolveExternal;
 using KitapKivo.Modules.Catalog.Presentation
     .Books.Search;
@@ -43,7 +41,6 @@ public static class CatalogEndpoints
         group.MapGetBookByIdEndpoint();
         group.MapGetExternalBookDetailsEndpoint();
         group.MapResolveExternalBookEndpoint();
-        group.MapImportExternalBooksEndpoint();
         group.MapCreateCatalogImportJobEndpoint();
         group.MapGetCatalogImportJobByIdEndpoint();
         group.MapBrowseBooksEndpoint();
