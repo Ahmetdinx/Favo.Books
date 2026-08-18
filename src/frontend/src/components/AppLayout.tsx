@@ -1,26 +1,64 @@
-import { NavLink, Outlet, useNavigate } from 'react-router'
-import { useAuth } from '../auth/AuthContext'
+import { useState } from 'react'
+
+import {
+    NavLink,
+    Outlet,
+    useNavigate,
+} from 'react-router'
+
+import { useAuth } from '../auth/useAuth'
 
 function AppLayout() {
-    const { session, signOut } = useAuth()
+    const {
+        session,
+        isInitializing,
+        signOut,
+    } = useAuth()
+
     const navigate = useNavigate()
 
-    function handleSignOut() {
-        signOut()
-        navigate('/', { replace: true })
+    const [
+        isSigningOut,
+        setIsSigningOut,
+    ] = useState(false)
+
+    async function handleSignOut() {
+        setIsSigningOut(true)
+
+        try {
+            await signOut()
+
+            navigate('/', {
+                replace: true,
+            })
+        } finally {
+            setIsSigningOut(false)
+        }
     }
 
     return (
         <div className="app">
             <header className="header">
-                <NavLink className="logo" to="/">
+                <NavLink
+                    className="logo"
+                    to="/"
+                >
                     KitapKivo
                 </NavLink>
 
-                <nav className="navigation" aria-label="Ana navigasyon">
-                    <NavLink to="/">Ana Sayfa</NavLink>
+                <nav
+                    className="navigation"
+                    aria-label="Ana navigasyon"
+                >
+                    <NavLink to="/">
+                        Ana Sayfa
+                    </NavLink>
 
-                    {session ? (
+                    {isInitializing ? (
+                        <span className="navigation-user">
+                            Oturum kontrol ediliyor...
+                        </span>
+                    ) : session ? (
                         <>
                             <span
                                 className="navigation-user"
@@ -29,20 +67,34 @@ function AppLayout() {
                                 {session.email}
                             </span>
 
-                            <NavLink to="/profile">Profil</NavLink>
+                            <NavLink to="/profile">
+                                Profil
+                            </NavLink>
 
                             <button
                                 className="logout-button"
                                 type="button"
-                                onClick={handleSignOut}
+                                onClick={
+                                    handleSignOut
+                                }
+                                disabled={
+                                    isSigningOut
+                                }
                             >
-                                Çıkış Yap
+                                {isSigningOut
+                                    ? 'Çıkış yapılıyor...'
+                                    : 'Çıkış Yap'}
                             </button>
                         </>
                     ) : (
                         <>
-                            <NavLink to="/login">Giriş Yap</NavLink>
-                            <NavLink to="/register">Kayıt Ol</NavLink>
+                            <NavLink to="/login">
+                                Giriş Yap
+                            </NavLink>
+
+                            <NavLink to="/register">
+                                Kayıt Ol
+                            </NavLink>
                         </>
                     )}
                 </nav>
@@ -52,7 +104,9 @@ function AppLayout() {
                 <Outlet />
             </main>
 
-            <footer className="footer">© 2026 KitapKivo</footer>
+            <footer className="footer">
+                © 2026 KitapKivo
+            </footer>
         </div>
     )
 }

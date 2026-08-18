@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using KitapKivo.Modules.Identity.Application.Abstractions.Security;
+using KitapKivo.Modules.Identity.Infrastructure.Authentication;
 
+using Microsoft.Extensions.Options;
 using KitapKivo.Modules.Identity.Application.Users.Login;
 
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +27,8 @@ internal static class LoginUserEndpoint
     private static async Task<IResult> HandleAsync(
         LoginUserRequest request,
         LoginUserHandler handler,
+        HttpContext httpContext,
+        IOptions<RefreshTokenOptions> refreshTokenOptions,
         CancellationToken cancellationToken)
     {
         Dictionary<string, string[]> errors = Validate(request);
@@ -40,6 +45,20 @@ internal static class LoginUserEndpoint
         {
             return Results.Unauthorized();
         }
+        IssuedRefreshToken refreshToken = result.RefreshToken!;
+
+        httpContext.Response.Cookies.Append(
+            refreshTokenOptions.Value.CookieName,
+            refreshToken.Value,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax,
+                IsEssential = true,
+                Path = "/api/identity",
+                Expires = refreshToken.ExpiresAtUtc
+            });
 
         LoginUserResponse response = new(
             result.UserId!.Value,

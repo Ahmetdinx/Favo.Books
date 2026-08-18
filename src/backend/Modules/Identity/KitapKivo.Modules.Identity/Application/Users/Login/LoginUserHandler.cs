@@ -1,6 +1,7 @@
 ﻿using KitapKivo.Modules.Identity.Application.Abstractions.Security;
 using KitapKivo.Modules.Identity.Domain.Users;
 using KitapKivo.Modules.Identity.Persistence;
+using KitapKivo.Modules.Identity.Domain.RefreshTokens;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -11,15 +12,18 @@ public sealed class LoginUserHandler
     private readonly IdentityDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IAccessTokenProvider _accessTokenProvider;
+    private readonly IRefreshTokenIssuer _refreshTokenIssuer;
 
     public LoginUserHandler(
         IdentityDbContext dbContext,
         IPasswordHasher passwordHasher,
-        IAccessTokenProvider accessTokenProvider)
+        IAccessTokenProvider accessTokenProvider,
+        IRefreshTokenIssuer refreshTokenIssuer)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
         _accessTokenProvider = accessTokenProvider;
+        _refreshTokenIssuer = refreshTokenIssuer;
     }
 
     public async Task<LoginUserResult> HandleAsync(
@@ -57,9 +61,26 @@ public sealed class LoginUserHandler
                 user.Id,
                 user.Email);
 
+
+        IssuedRefreshToken issuedRefreshToken =
+       _refreshTokenIssuer.Issue();
+
+        RefreshToken refreshToken =
+            RefreshToken.Create(
+                user.Id,
+                issuedRefreshToken.Hash,
+                issuedRefreshToken.CreatedAtUtc,
+                issuedRefreshToken.ExpiresAtUtc);
+
+        _dbContext.RefreshTokens.Add(refreshToken);
+
+        await _dbContext.SaveChangesAsync(
+            cancellationToken);
+
         return LoginUserResult.Success(
             user.Id,
             user.Email,
-            accessToken);
+            accessToken,
+            issuedRefreshToken);
     }
 }

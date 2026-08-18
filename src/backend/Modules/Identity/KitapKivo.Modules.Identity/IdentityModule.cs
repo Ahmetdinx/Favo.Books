@@ -11,7 +11,8 @@ using KitapKivo.Modules.Identity.Infrastructure.Authentication;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
+using KitapKivo.Modules.Identity.Application.Users.RefreshSession;
+using KitapKivo.Modules.Identity.Application.Users.LogoutSession;
 namespace KitapKivo.Modules.Identity;
 
 public static class IdentityModule
@@ -62,14 +63,30 @@ public static class IdentityModule
                 };
             });
 
+        services.AddOptions<RefreshTokenOptions>().Bind(configuration.GetRequiredSection(RefreshTokenOptions.SectionName)).Validate(options =>
+         options.ExpirationDays is >= 1 and <= 90,
+     "Refresh token süresi 1-90 gün arasında olmalıdır.").Validate(options =>
+         !string.IsNullOrWhiteSpace(options.CookieName),
+     "Refresh token cookie adı zorunludur.").ValidateOnStart();
+
+
         services.AddAuthorization();
 
         services.AddSingleton<IAccessTokenProvider,JwtAccessTokenProvider>();
 
+        services.AddSingleton<TimeProvider>(TimeProvider.System);
+
+        services.AddSingleton<IRefreshTokenIssuer,RefreshTokenIssuer>();
+
+        services.AddSingleton<IRefreshTokenGenerator,CryptographicRefreshTokenGenerator>();
+
+        services.AddSingleton<IRefreshTokenHasher,Sha256RefreshTokenHasher>();
 
         services.AddSingleton<IPasswordHasher, AspNetCorePasswordHasher>();
         services.AddScoped<RegisterUserHandler>();
         services.AddScoped<LoginUserHandler>();
+        services.AddScoped<RefreshSessionHandler>();
+        services.AddScoped<LogoutSessionHandler>();
         return services;
     }
 }

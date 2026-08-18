@@ -1,87 +1,155 @@
 import {
-    createContext,
-    useContext,
+    useCallback,
+    useEffect,
     useMemo,
+    useRef,
     useState,
     type ReactNode,
 } from 'react'
 
-export type AuthSession = {
-    userId: string
-    email: string
-    accessToken: string
-    expiresAtUtc: string
-}
+import {
+    AuthContext,
+} from './AuthContextDefinition'
 
-type AuthContextValue = {
-    session: AuthSession | null
-    signIn: (session: AuthSession) => void
-    signOut: () => void
-}
+import type {
+    AuthSession,
+} from './authTypes'
 
 type AuthProviderProps = {
     children: ReactNode
 }
 
-const AUTH_STORAGE_KEY = 'kitapkivo.auth'
+export function AuthProvider({
+    children,
+}: AuthProviderProps) {
+    const [session, setSession] =
+        useState<AuthSession | null>(null)
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined)
+    const sessionRef =
+        useRef<AuthSession | null>(null)
 
-function getInitialSession(): AuthSession | null {
-    const storedSession = sessionStorage.getItem(AUTH_STORAGE_KEY)
+    const [isInitializing, setIsInitializing] =
+        useState(true)
 
-    if (!storedSession) {
-        return null
-    }
-
-    try {
-        const session = JSON.parse(storedSession) as AuthSession
-        const expiresAt = Date.parse(session.expiresAtUtc)
-
-        if (
-            !session.userId ||
-            !session.email ||
-            !session.accessToken ||
-            Number.isNaN(expiresAt) ||
-            expiresAt <= Date.now()
-        ) {
-            sessionStorage.removeItem(AUTH_STORAGE_KEY)
-            return null
-        }
-
-        return session
-    } catch {
-        sessionStorage.removeItem(AUTH_STORAGE_KEY)
-        return null
-    }
-}
-
-export function AuthProvider({ children }: AuthProviderProps) {
-    const [session, setSession] = useState<AuthSession | null>(
-        getInitialSession,
-    )
-
-    function signIn(newSession: AuthSession) {
-        sessionStorage.setItem(
-            AUTH_STORAGE_KEY,
-            JSON.stringify(newSession),
+    const refreshPromiseRef =
+        useRef<Promise<AuthSession | null> | null>(
+            null,
         )
 
-        setSession(newSession)
-    }
+    const updateSession = useCallback(
+        (newSession: AuthSession | null) => {
+            sessionRef.current = newSession
+            setSession(newSession)
+        },
+        [],
+    )
 
-    function signOut() {
-        sessionStorage.removeItem(AUTH_STORAGE_KEY)
-        setSession(null)
-    }
+    const getSession = useCallback(() => {
+        return sessionRef.current
+    }, [])
+
+    const signIn = useCallback(
+        (newSession: AuthSession) => {
+            updateSession(newSession)
+        },
+        [updateSession],
+    )
+
+    const refreshSession = useCallback(async () => {
+        if (refreshPromiseRef.current) {
+            return refreshPromiseRef.current
+        }
+
+        const refreshRequest = (async () => {
+            try {
+                const response = await fetch(
+                    '/api/identity/refresh',
+                    {
+                        method: 'POST',
+                        credentials: 'include',
+                    },
+                )
+
+                if (!response.ok) {
+                    updateSession(null)
+                    return null
+                }
+
+                const refreshedSession =
+                    (await response.json()) as AuthSession
+
+                updateSession(refreshedSession)
+
+                return refreshedSession
+            } catch {
+                updateSession(null)
+                return null
+            }
+        })()
+
+        refreshPromiseRef.current =
+            refreshRequest
+
+        try {
+            return await refreshRequest
+        } finally {
+            if (
+                refreshPromiseRef.current ===
+                refreshRequest
+            ) {
+                refreshPromiseRef.current = null
+            }
+        }
+    }, [updateSession])
+
+    const signOut = useCallback(async () => {
+        try {
+            await fetch('/api/identity/logout', {
+                method: 'POST',
+                credentials: 'include',
+            })
+        } catch {
+            // API erişilemese bile yerel oturum kapatılır.
+        } finally {
+            updateSession(null)
+        }
+    }, [updateSession])
+
+    useEffect(() => {
+        let isActive = true
+
+        async function initializeSession() {
+            await refreshSession()
+
+            if (isActive) {
+                setIsInitializing(false)
+            }
+        }
+
+        void initializeSession()
+
+        return () => {
+            isActive = false
+        }
+    }, [refreshSession])
 
     const value = useMemo(
         () => ({
             session,
+            isInitializing,
             signIn,
             signOut,
+            refreshSession,
+            getSession,
         }),
-        [session],
+        [
+            session,
+            isInitializing,
+            signIn,
+            signOut,
+            refreshSession,
+            getSession,
+        ],
     )
 
     return (
@@ -89,16 +157,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
             {children}
         </AuthContext.Provider>
     )
-}
-
-export function useAuth() {
-    const context = useContext(AuthContext)
-
-    if (!context) {
-        throw new Error(
-            'useAuth, AuthProvider içerisinde kullanılmalıdır.',
-        )
-    }
-
-    return context
 }

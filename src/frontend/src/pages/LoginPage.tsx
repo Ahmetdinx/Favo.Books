@@ -1,6 +1,18 @@
-import { useState, type FormEvent } from 'react'
-import { useAuth, type AuthSession } from '../auth/AuthContext'
-import { useLocation, useNavigate } from 'react-router'
+import {
+    useState,
+    type FormEvent,
+} from 'react'
+
+import {
+    useLocation,
+    useNavigate,
+} from 'react-router'
+
+import { useAuth } from '../auth/useAuth'
+
+import type {
+    AuthSession,
+} from '../auth/authTypes'
 
 type ValidationProblem = {
     errors?: Record<string, string[]>
@@ -12,12 +24,27 @@ function LoginPage() {
     const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [errorMessage, setErrorMessage] = useState('')
-    const [successMessage, setSuccessMessage] = useState('')
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [password, setPassword] =
+        useState('')
 
-    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    const [
+        errorMessage,
+        setErrorMessage,
+    ] = useState('')
+
+    const [
+        successMessage,
+        setSuccessMessage,
+    ] = useState('')
+
+    const [
+        isSubmitting,
+        setIsSubmitting,
+    ] = useState(false)
+
+    async function handleSubmit(
+        event: FormEvent<HTMLFormElement>,
+    ) {
         event.preventDefault()
 
         setErrorMessage('')
@@ -25,61 +52,84 @@ function LoginPage() {
         setIsSubmitting(true)
 
         try {
-            const response = await fetch('/api/identity/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            const response = await fetch(
+                '/api/identity/login',
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type':
+                            'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email.trim(),
+                        password,
+                    }),
                 },
-                body: JSON.stringify({
-                    email: email.trim(),
-                    password,
-                }),
-            })
+            )
 
             if (response.status === 400) {
-                const problem = (await response.json()) as ValidationProblem
-                const firstError = Object.values(problem.errors ?? {})
-                    .flat()
-                    .at(0)
+                const problem =
+                    (await response.json()) as
+                    ValidationProblem
+
+                const firstError =
+                    Object.values(
+                        problem.errors ?? {},
+                    )
+                        .flat()
+                        .at(0)
 
                 setErrorMessage(
-                    firstError ?? 'Girdiğiniz bilgileri kontrol edin.',
+                    firstError ??
+                    'Girdiğiniz bilgileri kontrol edin.',
                 )
 
                 return
             }
 
             if (response.status === 401) {
-                setErrorMessage('E-posta adresi veya parola hatalı.')
-                return
-            }
-
-            if (!response.ok) {
                 setErrorMessage(
-                    'Giriş işlemi tamamlanamadı. Lütfen tekrar deneyin.',
+                    'E-posta adresi veya parola hatalı.',
                 )
 
                 return
             }
 
-            const loginResponse = (await response.json()) as AuthSession
+            if (!response.ok) {
+                setErrorMessage(
+                    'Giriş işlemi tamamlanamadı. ' +
+                    'Lütfen tekrar deneyin.',
+                )
+
+                return
+            }
+
+            const loginResponse =
+                (await response.json()) as
+                AuthSession
 
             signIn(loginResponse)
 
             const requestedPath = (
-                location.state as { from?: string } | null
+                location.state as {
+                    from?: string
+                } | null
             )?.from
 
             const destination =
-                requestedPath?.startsWith('/') && requestedPath !== '/login'
+                requestedPath?.startsWith('/') &&
+                    requestedPath !== '/login'
                     ? requestedPath
                     : '/profile'
 
-            navigate(destination, { replace: true })
-
+            navigate(destination, {
+                replace: true,
+            })
         } catch {
             setErrorMessage(
-                'Sunucuya ulaşılamadı. API’nin çalıştığından emin olun.',
+                'Sunucuya ulaşılamadı. ' +
+                'API’nin çalıştığından emin olun.',
             )
         } finally {
             setIsSubmitting(false)
@@ -90,10 +140,14 @@ function LoginPage() {
         <section className="auth-page">
             <h1>Giriş Yap</h1>
 
-            <p>KitapKivo hesabınıza giriş yapın.</p>
+            <p>
+                KitapKivo hesabınıza giriş yapın.
+            </p>
 
             <form onSubmit={handleSubmit}>
-                <label htmlFor="login-email">E-posta</label>
+                <label htmlFor="login-email">
+                    E-posta
+                </label>
 
                 <input
                     id="login-email"
@@ -102,12 +156,18 @@ function LoginPage() {
                     autoComplete="email"
                     maxLength={320}
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event) =>
+                        setEmail(
+                            event.target.value,
+                        )
+                    }
                     disabled={isSubmitting}
                     required
                 />
 
-                <label htmlFor="login-password">Parola</label>
+                <label htmlFor="login-password">
+                    Parola
+                </label>
 
                 <input
                     id="login-password"
@@ -116,29 +176,49 @@ function LoginPage() {
                     autoComplete="current-password"
                     maxLength={128}
                     value={password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(event) =>
+                        setPassword(
+                            event.target.value,
+                        )
+                    }
                     disabled={isSubmitting}
                     required
                 />
 
                 {errorMessage && (
-                    <p className="form-message error-message" role="alert">
+                    <p
+                        className={
+                            'form-message ' +
+                            'error-message'
+                        }
+                        role="alert"
+                    >
                         {errorMessage}
                     </p>
                 )}
 
                 {successMessage && (
-                    <p className="form-message success-message" role="status">
+                    <p
+                        className={
+                            'form-message ' +
+                            'success-message'
+                        }
+                        role="status"
+                    >
                         {successMessage}
                     </p>
                 )}
 
                 <button
-                    className="button primary-button"
+                    className={
+                        'button primary-button'
+                    }
                     type="submit"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+                    {isSubmitting
+                        ? 'Giriş yapılıyor...'
+                        : 'Giriş Yap'}
                 </button>
             </form>
         </section>
