@@ -3,6 +3,16 @@
 namespace KitapKivo.Modules.Catalog.Infrastructure
     .ExternalBooks.OpenLibrary.Contracts;
 
+internal sealed class OpenLibraryWorkEditionsResponse
+{
+    [JsonPropertyName("entries")]
+    public OpenLibraryEditionResponse[] Entries
+    {
+        get;
+        init;
+    } = [];
+}
+
 internal sealed class OpenLibraryEditionResponse
 {
     [JsonPropertyName("key")]

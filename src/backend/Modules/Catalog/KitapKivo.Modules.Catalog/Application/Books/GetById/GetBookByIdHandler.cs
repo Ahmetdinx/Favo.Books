@@ -57,11 +57,39 @@ public sealed class GetBookByIdHandler
                     })
                 .OrderBy(author =>
                     author.DisplayOrder)
+                .ThenBy(author =>
+                    author.AuthorId)
                 .Select(author =>
                     new GetBookAuthorResult(
                         author.AuthorId,
                         author.Name,
                         author.DisplayOrder))
+                .ToArrayAsync(cancellationToken);
+
+        GetBookCategoryResult[] categories =
+            await _dbContext.BookCategories
+                .AsNoTracking()
+                .Where(bookCategory =>
+                    bookCategory.BookId == query.BookId)
+                .Join(
+                    _dbContext.Categories.AsNoTracking(),
+                    bookCategory => bookCategory.CategoryId,
+                    category => category.Id,
+                    (_, category) => new
+                    {
+                        CategoryId = category.Id,
+                        category.Name,
+                        category.Slug
+                    })
+                .OrderBy(category =>
+                    category.Name)
+                .ThenBy(category =>
+                    category.CategoryId)
+                .Select(category =>
+                    new GetBookCategoryResult(
+                        category.CategoryId,
+                        category.Name,
+                        category.Slug))
                 .ToArrayAsync(cancellationToken);
 
         var editionRows =
@@ -113,6 +141,9 @@ public sealed class GetBookByIdHandler
                         : null))
             .ToArray();
 
+        GetBookEditionResult? primaryEdition =
+            SelectPrimaryEdition(editions);
+
         return new GetBookByIdResult(
             book.Id,
             book.Title,
@@ -120,7 +151,52 @@ public sealed class GetBookByIdHandler
             book.OriginalTitle,
             book.Description,
             book.FirstPublishedYear,
+            primaryEdition?.EditionId,
+            primaryEdition?.CoverImageUrl,
             authors,
+            categories,
             editions);
+    }
+
+    private static GetBookEditionResult? SelectPrimaryEdition(
+        IEnumerable<GetBookEditionResult> editions)
+    {
+        return editions
+            .OrderByDescending(edition =>
+                !string.IsNullOrWhiteSpace(
+                    edition.CoverImageUrl))
+            .ThenByDescending(edition =>
+                IsTurkishLanguage(
+                    edition.LanguageCode))
+            .ThenByDescending(edition =>
+                !string.IsNullOrWhiteSpace(
+                    edition.Isbn13))
+            .ThenByDescending(edition =>
+                !string.IsNullOrWhiteSpace(
+                    edition.Isbn10))
+            .ThenByDescending(edition =>
+                edition.Publisher is not null)
+            .ThenByDescending(edition =>
+                edition.PageCount.HasValue)
+            .ThenByDescending(edition =>
+                edition.PublicationYear.HasValue)
+            .ThenByDescending(edition =>
+                edition.PublicationYear)
+            .ThenBy(edition =>
+                edition.EditionId)
+            .FirstOrDefault();
+    }
+
+    private static bool IsTurkishLanguage(
+        string languageCode)
+    {
+        return string.Equals(
+                   languageCode,
+                   "tr",
+                   StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(
+                   languageCode,
+                   "tur",
+                   StringComparison.OrdinalIgnoreCase);
     }
 }

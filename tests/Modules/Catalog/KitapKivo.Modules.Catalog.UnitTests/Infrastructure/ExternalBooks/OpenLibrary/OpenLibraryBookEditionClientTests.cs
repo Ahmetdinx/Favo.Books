@@ -16,49 +16,38 @@ public sealed class OpenLibraryBookEditionClientTests
         GetBestForWorkAsync_ShouldMapBestEdition()
     {
         // Arrange
-        const string searchJson = """
+        const string editionsJson = """
             {
-              "numFound": 1,
-              "docs": [
+              "size": 1,
+              "entries": [
                 {
-                  "key": "/works/OL45804W",
-                  "editions": {
-                    "numFound": 2,
-                    "docs": [
-                      {
-                        "key": "/books/OL7353617M"
-                      }
-                    ]
-                  }
+                  "key": "/books/OL7353617M",
+                  "title": "  Dune  ",
+                  "languages": [
+                    {
+                      "key": "/languages/eng"
+                    }
+                  ],
+                  "physical_format": "  Paperback  ",
+                  "isbn_10": [
+                    "invalid",
+                    " 0441172717 "
+                  ],
+                  "isbn_13": [
+                    "invalid",
+                    "9780441172719"
+                  ],
+                  "number_of_pages": 896,
+                  "publish_date": "August 15, 1999",
+                  "covers": [
+                    -1,
+                    12345
+                  ],
+                  "publishers": [
+                    " ",
+                    "  Ace  "
+                  ]
                 }
-              ]
-            }
-            """;
-
-        const string editionJson = """
-            {
-              "key": "/books/OL7353617M",
-              "title": "  Dune  ",
-              "languages": [
-                {
-                  "key": "/languages/eng"
-                }
-              ],
-              "physical_format": "  Paperback  ",
-              "isbn_10": [
-                "invalid",
-                " 0441172717 "
-              ],
-              "isbn_13": [
-                "invalid",
-                "9780441172719"
-              ],
-              "number_of_pages": 896,
-              "publish_date": "August 15, 1999",
-              "covers": [-1, 12345],
-              "publishers": [
-                " ",
-                "  Ace  "
               ]
             }
             """;
@@ -67,11 +56,8 @@ public sealed class OpenLibraryBookEditionClientTests
             request =>
                 request.RequestUri?.AbsolutePath switch
                 {
-                    "/search.json" =>
-                        CreateJsonResponse(searchJson),
-
-                    "/books/OL7353617M.json" =>
-                        CreateJsonResponse(editionJson),
+                    "/works/OL45804W/editions.json" =>
+                        CreateJsonResponse(editionsJson),
 
                     _ => new HttpResponseMessage(
                         HttpStatusCode.NotFound)
@@ -145,64 +131,105 @@ public sealed class OpenLibraryBookEditionClientTests
             details.PublisherName);
 
         Assert.Equal(
-            2,
+            1,
             httpHandler.CallCount);
 
-        Assert.Equal(
-            2,
-            httpHandler.RequestUris.Count);
+        Assert.Single(
+            httpHandler.RequestUris);
 
         Assert.Equal(
-            "/search.json",
+            "/works/OL45804W/editions.json",
             httpHandler.RequestUris[0]
                 ?.AbsolutePath);
 
-        string searchQuery =
-            Uri.UnescapeDataString(
-                httpHandler.RequestUris[0]
-                    ?.Query ??
-                string.Empty);
-
-        Assert.Contains(
-            "q=key:/works/OL45804W",
-            searchQuery);
-
-        Assert.Contains(
-            "fields=key,editions,editions.key",
-            searchQuery);
-
         Assert.Equal(
-            "/books/OL7353617M.json",
-            httpHandler.RequestUris[1]
-                ?.AbsolutePath);
+            "?limit=20",
+            httpHandler.RequestUris[0]
+                ?.Query);
 
         Assert.True(
-      httpHandler.CancellationToken
-          .CanBeCanceled);
+            httpHandler.CancellationToken
+                .CanBeCanceled);
     }
 
     [Fact]
     public async Task
-        GetBestForWorkAsync_ShouldReturnNull_WhenEditionIsMissing()
+        GetBestForWorkAsync_ShouldSelectHighestQualityEdition()
     {
         // Arrange
-        const string searchJson = """
+        const string editionsJson = """
             {
-              "numFound": 1,
-              "docs": [
+              "size": 3,
+              "entries": [
                 {
-                  "key": "/works/OL45804W",
-                  "editions": {
-                    "numFound": 0,
-                    "docs": []
-                  }
+                  "key": "/books/OL1000001M",
+                  "title": "Incomplete Edition",
+                  "languages": [
+                    {
+                      "key": "/languages/eng"
+                    }
+                  ],
+                  "publish_date": "2025"
+                },
+                {
+                  "key": "/books/OL1000002M",
+                  "title": "English Premium Edition",
+                  "languages": [
+                    {
+                      "key": "/languages/eng"
+                    }
+                  ],
+                  "physical_format": "Hardcover",
+                  "isbn_10": [
+                    "0441172717"
+                  ],
+                  "isbn_13": [
+                    "9780441172719"
+                  ],
+                  "number_of_pages": 896,
+                  "publish_date": "1999",
+                  "covers": [
+                    11111
+                  ],
+                  "publishers": [
+                    "Ace"
+                  ]
+                },
+                {
+                  "key": "/books/OL1000003M",
+                  "title": "Dune: Çöl Gezegeni",
+                  "languages": [
+                    {
+                      "key": "/languages/tur"
+                    }
+                  ],
+                  "physical_format": "Paperback",
+                  "isbn_13": [
+                    "9789752112345"
+                  ],
+                  "number_of_pages": 712,
+                  "publish_date": "2023",
+                  "covers": [
+                    22222
+                  ],
+                  "publishers": [
+                    "İthaki Yayınları"
+                  ]
                 }
               ]
             }
             """;
 
         var httpHandler = new StubHttpMessageHandler(
-            _ => CreateJsonResponse(searchJson));
+            request =>
+                request.RequestUri?.AbsolutePath switch
+                {
+                    "/works/OL45804W/editions.json" =>
+                        CreateJsonResponse(editionsJson),
+
+                    _ => new HttpResponseMessage(
+                        HttpStatusCode.NotFound)
+                });
 
         using var httpClient = new HttpClient(
             httpHandler)
@@ -216,44 +243,59 @@ public sealed class OpenLibraryBookEditionClientTests
                 httpClient);
 
         // Act
-        ExternalBookEditionDetails? details =
-            await client.GetBestForWorkAsync(
-                "/works/OL45804W");
+        ExternalBookEditionDetails details =
+            Assert.IsType<ExternalBookEditionDetails>(
+                await client.GetBestForWorkAsync(
+                    "/works/OL45804W"));
 
         // Assert
-        Assert.Null(details);
+        Assert.Equal(
+            "/books/OL1000003M",
+            details.ExternalId);
+
+        Assert.Equal(
+            "Dune: Çöl Gezegeni",
+            details.Title);
+
+        Assert.Equal(
+            "tur",
+            details.LanguageCode);
+
+        Assert.Equal(
+            "9789752112345",
+            details.Isbn13);
+
+        Assert.Equal(
+            712,
+            details.PageCount);
+
+        Assert.Equal(
+            2023,
+            details.PublicationYear);
+
+        Assert.Equal(
+            "https://covers.openlibrary.org/" +
+            "b/id/22222-L.jpg",
+            details.CoverUrl);
+
+        Assert.Equal(
+            "İthaki Yayınları",
+            details.PublisherName);
 
         Assert.Equal(
             1,
             httpHandler.CallCount);
-
-        Assert.Equal(
-            "/search.json",
-            httpHandler.RequestUris[0]
-                ?.AbsolutePath);
     }
 
     [Fact]
     public async Task
-        GetBestForWorkAsync_ShouldReturnNull_WhenEditionDoesNotExist()
+        GetBestForWorkAsync_ShouldReturnNull_WhenEditionIsMissing()
     {
         // Arrange
-        const string searchJson = """
+        const string editionsJson = """
             {
-              "numFound": 1,
-              "docs": [
-                {
-                  "key": "/works/OL45804W",
-                  "editions": {
-                    "numFound": 1,
-                    "docs": [
-                      {
-                        "key": "/books/OL7353617M"
-                      }
-                    ]
-                  }
-                }
-              ]
+              "size": 0,
+              "entries": []
             }
             """;
 
@@ -261,12 +303,8 @@ public sealed class OpenLibraryBookEditionClientTests
             request =>
                 request.RequestUri?.AbsolutePath switch
                 {
-                    "/search.json" =>
-                        CreateJsonResponse(searchJson),
-
-                    "/books/OL7353617M.json" =>
-                        new HttpResponseMessage(
-                            HttpStatusCode.NotFound),
+                    "/works/OL45804W/editions.json" =>
+                        CreateJsonResponse(editionsJson),
 
                     _ => new HttpResponseMessage(
                         HttpStatusCode.NotFound)
@@ -292,12 +330,55 @@ public sealed class OpenLibraryBookEditionClientTests
         Assert.Null(details);
 
         Assert.Equal(
-            2,
+            1,
             httpHandler.CallCount);
 
         Assert.Equal(
-            "/books/OL7353617M.json",
-            httpHandler.RequestUris[1]
+            "/works/OL45804W/editions.json",
+            httpHandler.RequestUris[0]
+                ?.AbsolutePath);
+
+        Assert.Equal(
+            "?limit=20",
+            httpHandler.RequestUris[0]
+                ?.Query);
+    }
+
+    [Fact]
+    public async Task
+        GetBestForWorkAsync_ShouldReturnNull_WhenWorkEditionsDoNotExist()
+    {
+        // Arrange
+        var httpHandler = new StubHttpMessageHandler(
+            _ => new HttpResponseMessage(
+                HttpStatusCode.NotFound));
+
+        using var httpClient = new HttpClient(
+            httpHandler)
+        {
+            BaseAddress = new Uri(
+                "https://openlibrary.org/")
+        };
+
+        var client =
+            new OpenLibraryBookEditionClient(
+                httpClient);
+
+        // Act
+        ExternalBookEditionDetails? details =
+            await client.GetBestForWorkAsync(
+                "/works/OL45804W");
+
+        // Assert
+        Assert.Null(details);
+
+        Assert.Equal(
+            1,
+            httpHandler.CallCount);
+
+        Assert.Equal(
+            "/works/OL45804W/editions.json",
+            httpHandler.RequestUris[0]
                 ?.AbsolutePath);
     }
 

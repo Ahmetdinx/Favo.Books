@@ -46,6 +46,15 @@ internal static class GetBookByIdEndpoint
                     author.DisplayOrder))
             .ToArray();
 
+        GetBookCategoryResponse[] categories =
+            result.Categories
+                .Select(category =>
+                    new GetBookCategoryResponse(
+                        category.CategoryId,
+                        category.Name,
+                        category.Slug))
+                .ToArray();
+
         GetBookEditionResponse[] editions = result.Editions
             .Select(edition =>
             {
@@ -77,7 +86,10 @@ internal static class GetBookByIdEndpoint
             result.OriginalTitle,
             result.Description,
             result.FirstPublishedYear,
+            result.PrimaryEditionId,
+            result.PrimaryCoverImageUrl,
             authors,
+            categories,
             editions);
 
         return Results.Ok(response);

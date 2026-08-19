@@ -19,8 +19,7 @@ internal sealed class OpenLibraryBookEditionClient(
     private const string ProviderName =
         "OpenLibrary";
 
-    private const string SearchFields =
-        "key,editions,editions.key";
+    private const int EditionCandidateLimit = 20;
 
     private static readonly Regex WorkIdPattern = new(
         @"^/?works/(OL\d+W)$",
@@ -61,53 +60,12 @@ internal sealed class OpenLibraryBookEditionClient(
         string workId =
             NormalizeWorkId(externalWorkId);
 
-        string searchRequestUri =
-            CreateSearchRequestUri(workId);
-
-        OpenLibraryEditionSearchResponse?
-            searchResponse =
-                await _httpClient.GetFromJsonAsync<
-                    OpenLibraryEditionSearchResponse>(
-                    searchRequestUri,
-                    cancellationToken);
-
-        if (searchResponse is null)
-        {
-            throw new JsonException(
-                "Open Library returned an empty " +
-                "edition search response.");
-        }
-
-        OpenLibraryEditionSearchDocument?
-            workDocument =
-                searchResponse.Documents
-                    .FirstOrDefault(document =>
-                        string.Equals(
-                            TryNormalizeWorkId(
-                                document.Key),
-                            workId,
-                            StringComparison
-                                .OrdinalIgnoreCase));
-
-        string? editionId =
-            workDocument?.Editions?.Documents
-                .Select(document =>
-                    TryNormalizeEditionId(
-                        document.Key))
-                .FirstOrDefault(identifier =>
-                    identifier is not null);
-
-        if (editionId is null)
-        {
-            return null;
-        }
-
-        string editionRequestUri =
-            $"{editionId.TrimStart('/')}.json";
+        string editionsRequestUri =
+            CreateEditionsRequestUri(workId);
 
         using HttpResponseMessage response =
             await _httpClient.GetAsync(
-                editionRequestUri,
+                editionsRequestUri,
                 cancellationToken);
 
         if (response.StatusCode ==
@@ -118,22 +76,50 @@ internal sealed class OpenLibraryBookEditionClient(
 
         response.EnsureSuccessStatusCode();
 
-        OpenLibraryEditionResponse? edition =
-            await response.Content
-                .ReadFromJsonAsync<
-                    OpenLibraryEditionResponse>(
-                    cancellationToken);
+        OpenLibraryWorkEditionsResponse?
+            editionsResponse =
+                await response.Content
+                    .ReadFromJsonAsync<
+                        OpenLibraryWorkEditionsResponse>(
+                        cancellationToken);
 
-        if (edition is null)
+        if (editionsResponse is null)
         {
             throw new JsonException(
                 "Open Library returned an empty " +
-                "edition response.");
+                "work editions response.");
         }
 
+        var bestCandidate = editionsResponse.Entries
+            .Select(edition => new
+            {
+                Edition = edition,
+                EditionId =
+                    TryNormalizeEditionId(
+                        edition.Key)
+            })
+            .Where(candidate =>
+                candidate.EditionId is not null)
+            .OrderByDescending(candidate =>
+                CalculateEditionQualityScore(
+                    candidate.Edition))
+            .ThenByDescending(candidate =>
+                MapPublicationYear(
+                    candidate.Edition.PublishDate))
+            .ThenBy(candidate =>
+                candidate.EditionId)
+            .FirstOrDefault();
+
+        if (bestCandidate is null)
+        {
+            return null;
+        }
+
+        OpenLibraryEditionResponse edition =
+            bestCandidate.Edition;
+
         string resolvedEditionId =
-            TryNormalizeEditionId(edition.Key)
-            ?? editionId;
+            bestCandidate.EditionId!;
 
         return new ExternalBookEditionDetails(
             ProviderName,
@@ -159,22 +145,92 @@ internal sealed class OpenLibraryBookEditionClient(
                 edition.Publishers));
     }
 
-    private static string CreateSearchRequestUri(
+    private static string CreateEditionsRequestUri(
         string workId)
     {
-        string query =
-            Uri.EscapeDataString(
-                $"key:{workId}");
-
-        string fields =
-            Uri.EscapeDataString(
-                SearchFields);
-
         return
-            $"search.json?q={query}" +
-            "&page=1" +
-            "&limit=1" +
-            $"&fields={fields}";
+            $"{workId.TrimStart('/')}/editions.json" +
+            $"?limit={EditionCandidateLimit}";
+    }
+
+    private static int CalculateEditionQualityScore(
+        OpenLibraryEditionResponse edition)
+    {
+        int score = 0;
+
+        if (MapCoverUrl(edition.CoverIds) is not null)
+        {
+            score += 200;
+        }
+
+        string? languageCode =
+            MapLanguageCode(edition.Languages);
+
+        if (IsTurkishLanguage(languageCode))
+        {
+            score += 60;
+        }
+        else if (string.Equals(
+                     languageCode,
+                     "eng",
+                     StringComparison.OrdinalIgnoreCase))
+        {
+            score += 10;
+        }
+
+        if (FindIsbn13(edition.Isbn13Values) is not null)
+        {
+            score += 35;
+        }
+
+        if (FindIsbn10(edition.Isbn10Values) is not null)
+        {
+            score += 20;
+        }
+
+        if (edition.NumberOfPages is > 0)
+        {
+            score += 15;
+        }
+
+        if (FindPublisherName(
+                edition.Publishers) is not null)
+        {
+            score += 15;
+        }
+
+        if (NormalizeOptionalValue(
+                edition.PhysicalFormat) is not null)
+        {
+            score += 5;
+        }
+
+        if (MapPublicationYear(
+                edition.PublishDate).HasValue)
+        {
+            score += 5;
+        }
+
+        if (NormalizeOptionalValue(
+                edition.Title) is not null)
+        {
+            score += 5;
+        }
+
+        return score;
+    }
+
+    private static bool IsTurkishLanguage(
+        string? languageCode)
+    {
+        return string.Equals(
+                   languageCode,
+                   "tr",
+                   StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(
+                   languageCode,
+                   "tur",
+                   StringComparison.OrdinalIgnoreCase);
     }
 
     private static string NormalizeWorkId(

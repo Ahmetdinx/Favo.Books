@@ -7,13 +7,21 @@ public sealed record GetBookByIdResponse(
     string? OriginalTitle,
     string? Description,
     int? FirstPublishedYear,
+    Guid? PrimaryEditionId,
+    string? PrimaryCoverImageUrl,
     IReadOnlyList<GetBookAuthorResponse> Authors,
+    IReadOnlyList<GetBookCategoryResponse> Categories,
     IReadOnlyList<GetBookEditionResponse> Editions);
 
 public sealed record GetBookAuthorResponse(
     Guid AuthorId,
     string Name,
     int DisplayOrder);
+
+public sealed record GetBookCategoryResponse(
+    Guid CategoryId,
+    string Name,
+    string Slug);
 
 public sealed record GetBookEditionResponse(
     Guid EditionId,
