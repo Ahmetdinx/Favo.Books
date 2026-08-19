@@ -1,8 +1,14 @@
-﻿using KitapKivo.Modules.Reading.Persistence;
-using KitapKivo.Modules.Reading.Application.LibraryEntries.Add;
-using KitapKivo.Modules.Reading.Application.LibraryEntries.Get;
-using KitapKivo.Modules.Reading.Application.LibraryEntries.UpdateStatus;
-using KitapKivo.Modules.Reading.Application.LibraryEntries.Remove;
+﻿using KitapKivo.Modules.Reading
+    .Application.LibraryEntries.Add;
+using KitapKivo.Modules.Reading
+    .Application.LibraryEntries.Get;
+using KitapKivo.Modules.Reading
+    .Application.LibraryEntries.GetByBook;
+using KitapKivo.Modules.Reading
+    .Application.LibraryEntries.Remove;
+using KitapKivo.Modules.Reading
+    .Application.LibraryEntries.UpdateStatus;
+using KitapKivo.Modules.Reading.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,13 +27,19 @@ public static class ReadingModule
             ?? throw new InvalidOperationException(
                 "Connection string 'Database' was not found.");
 
-        services.AddDbContext<ReadingDbContext>(options =>
-            options.UseNpgsql(connectionString));
+        services.AddDbContext<ReadingDbContext>(
+            options =>
+                options.UseNpgsql(connectionString));
 
         services.AddScoped<AddBookToLibraryHandler>();
         services.AddScoped<GetLibraryHandler>();
-        services.AddScoped<UpdateLibraryStatusHandler>();
-        services.AddScoped<RemoveBookFromLibraryHandler>();
+        services.AddScoped<
+            GetLibraryEntryByBookHandler>();
+        services.AddScoped<
+            UpdateLibraryStatusHandler>();
+        services.AddScoped<
+            RemoveBookFromLibraryHandler>();
+
         return services;
     }
 }

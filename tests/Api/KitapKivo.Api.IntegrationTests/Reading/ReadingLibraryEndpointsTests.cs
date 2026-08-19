@@ -327,6 +327,145 @@ public sealed class ReadingLibraryEndpointsTests
             HttpStatusCode.Unauthorized,
             response.StatusCode);
     }
+
+    [Fact]
+    public async Task
+    GetLibraryEntryByBook_WhenEntryExists_ReturnsOk()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        Guid bookId = Guid.NewGuid();
+
+        Guid libraryEntryId =
+            await AddBookAsync(
+                _client,
+                bookId,
+                "Reading");
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                $"/api/reading/library/books/{bookId}");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.OK,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Kitap kütüphane kaydı yanıtının " +
+                "gövdesi boş döndü.");
+
+        JsonElement root =
+            responseBody.RootElement;
+
+        Assert.Equal(
+            libraryEntryId,
+            root.GetProperty("libraryEntryId")
+                .GetGuid());
+
+        Assert.Equal(
+            bookId,
+            root.GetProperty("bookId")
+                .GetGuid());
+
+        Assert.Equal(
+            "Reading",
+            root.GetProperty("status")
+                .GetString());
+
+        Assert.NotEqual(
+            default(DateTimeOffset),
+            root.GetProperty("createdAtUtc")
+                .GetDateTimeOffset());
+
+        Assert.NotEqual(
+            default(DateTimeOffset),
+            root.GetProperty("updatedAtUtc")
+                .GetDateTimeOffset());
+    }
+
+    [Fact]
+    public async Task
+        GetLibraryEntryByBook_WhenEntryDoesNotExist_ReturnsNotFound()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        Guid bookId = Guid.NewGuid();
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                $"/api/reading/library/books/{bookId}");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.NotFound,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Bulunamadı yanıtının gövdesi boş döndü.");
+
+        Assert.Equal(
+            "Kütüphane kaydı bulunamadı.",
+            responseBody.RootElement
+                .GetProperty("message")
+                .GetString());
+    }
+
+    [Fact]
+    public async Task
+        GetLibraryEntryByBook_WhenEntryBelongsToAnotherUser_ReturnsNotFound()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        Guid bookId = Guid.NewGuid();
+
+        await AddBookAsync(
+            _client,
+            bookId,
+            "WantToRead");
+
+        await AuthenticateAsync(_client);
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                $"/api/reading/library/books/{bookId}");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.NotFound,
+            response.StatusCode);
+    }
+
+    [Fact]
+    public async Task
+        GetLibraryEntryByBook_WithoutAccessToken_ReturnsUnauthorized()
+    {
+        // Arrange
+        Guid bookId = Guid.NewGuid();
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                $"/api/reading/library/books/{bookId}");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.Unauthorized,
+            response.StatusCode);
+    }
+
     [Fact]
     public async Task UpdateLibraryStatus_WithValidRequest_ReturnsOkAndPersistsChange()
     {

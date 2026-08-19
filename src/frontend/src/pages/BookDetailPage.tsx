@@ -9,6 +9,7 @@ import {
 } from 'react-router'
 
 import { getBookById } from '../catalog/catalogApi'
+import ReadingStatusPanel from '../reading/readingStatusPanel'
 
 import type {
     BookDetailsResponse,
@@ -352,6 +353,10 @@ function BookDetailPage() {
                             )}
                         </div>
                     )}
+
+                    <ReadingStatusPanel
+                        bookId={book.bookId}
+                    />
 
                     <dl className="book-detail-facts">
                         <dt>İlk yayın yılı</dt>

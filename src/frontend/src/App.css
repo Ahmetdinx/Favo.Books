@@ -1174,3 +1174,120 @@ section:not(.home-page):not(.catalog-page) {
             margin-bottom: 10px;
         }
 }
+
+.reading-status-panel {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(38, 73, 54, 0.2);
+    border-radius: 1.25rem;
+    background: rgba(248, 245, 237, 0.8);
+}
+
+    .reading-status-panel h2 {
+        margin: 0.25rem 0 0;
+        color: #203d2d;
+        font-size: 1.5rem;
+    }
+
+.reading-status-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+    .reading-status-heading > strong {
+        max-width: 12rem;
+        color: #9a573e;
+        text-align: right;
+    }
+
+.reading-status-description,
+.reading-status-loading {
+    color: #667069;
+    line-height: 1.7;
+}
+
+.reading-status-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.reading-status-button {
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(38, 73, 54, 0.25);
+    border-radius: 0.8rem;
+    background: #f7f3e9;
+    color: #294936;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+    .reading-status-button:hover:not(:disabled) {
+        border-color: #294936;
+        transform: translateY(-1px);
+    }
+
+    .reading-status-button.selected {
+        border-color: #294936;
+        background: #294936;
+        color: #fffaf0;
+    }
+
+    .reading-status-button span {
+        margin-right: 0.4rem;
+    }
+
+    .reading-status-button:disabled,
+    .reading-remove-button:disabled {
+        cursor: wait;
+    }
+
+.reading-remove-button {
+    margin-top: 1rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #9a573e;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+    .reading-remove-button:hover:not(:disabled) {
+        text-decoration: underline;
+    }
+
+.reading-status-message {
+    margin: 1rem 0 0;
+    font-weight: 700;
+}
+
+    .reading-status-message.success {
+        color: #2f6848;
+    }
+
+    .reading-status-message.error {
+        color: #a13f36;
+    }
+
+@media (max-width: 700px) {
+    .reading-status-heading {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+        .reading-status-heading > strong {
+            max-width: none;
+            text-align: left;
+        }
+
+    .reading-status-options {
+        grid-template-columns: 1fr;
+    }
+}

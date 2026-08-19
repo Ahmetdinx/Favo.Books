@@ -1,7 +1,13 @@
-﻿using KitapKivo.Modules.Reading.Presentation.LibraryEntries.Add;
-using KitapKivo.Modules.Reading.Presentation.LibraryEntries.Get;
-using KitapKivo.Modules.Reading.Presentation.LibraryEntries.UpdateStatus;
-using KitapKivo.Modules.Reading.Presentation.LibraryEntries.Remove;
+﻿using KitapKivo.Modules.Reading
+    .Presentation.LibraryEntries.Add;
+using KitapKivo.Modules.Reading
+    .Presentation.LibraryEntries.Get;
+using KitapKivo.Modules.Reading
+    .Presentation.LibraryEntries.GetByBook;
+using KitapKivo.Modules.Reading
+    .Presentation.LibraryEntries.Remove;
+using KitapKivo.Modules.Reading
+    .Presentation.LibraryEntries.UpdateStatus;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,8 +17,9 @@ namespace KitapKivo.Modules.Reading;
 
 public static class ReadingEndpoints
 {
-    public static IEndpointRouteBuilder MapReadingEndpoints(
-        this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder
+        MapReadingEndpoints(
+            this IEndpointRouteBuilder app)
     {
         RouteGroupBuilder group = app
             .MapGroup("/api/reading")
@@ -20,6 +27,7 @@ public static class ReadingEndpoints
 
         group.MapAddBookToLibraryEndpoint();
         group.MapGetLibraryEndpoint();
+        group.MapGetLibraryEntryByBookEndpoint();
         group.MapUpdateLibraryStatusEndpoint();
         group.MapRemoveBookFromLibraryEndpoint();
 
