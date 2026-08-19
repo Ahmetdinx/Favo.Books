@@ -111,10 +111,12 @@ public sealed class ResolveExternalBookHandler
             }
         }
 
-        ExternalBookEditionDetails? editionDetails =
-            await _editionClient.GetBestForWorkAsync(
-                resolvedExternalId,
-                cancellationToken);
+        IReadOnlyList<ExternalBookEditionDetails>
+      editionDetails =
+          await _editionClient
+              .GetBestEditionsForWorkAsync(
+                  resolvedExternalId,
+                  cancellationToken);
 
         string originalLanguageCode =
             ResolveOriginalLanguageCode(details);
@@ -208,12 +210,68 @@ public sealed class ResolveExternalBookHandler
                 book.Categories.Add(bookCategory);
             }
         }
+        HashSet<string> addedEditionExternalIds =
+            new(StringComparer.OrdinalIgnoreCase);
 
-        if (editionDetails is not null)
+        HashSet<string> addedEditionIsbns =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        foreach (
+            ExternalBookEditionDetails editionDetail
+            in editionDetails)
         {
+            string normalizedExternalId =
+                NormalizeEditionId(
+                    editionDetail.ExternalId);
+
+            string? normalizedIsbn10 =
+                NormalizeIsbn(
+                    editionDetail.Isbn10);
+
+            string? normalizedIsbn13 =
+                NormalizeIsbn(
+                    editionDetail.Isbn13);
+
+            bool externalIdAlreadyAdded =
+                addedEditionExternalIds.Contains(
+                    normalizedExternalId);
+
+            bool isbnAlreadyAdded =
+                (
+                    normalizedIsbn10 is not null &&
+                    addedEditionIsbns.Contains(
+                        normalizedIsbn10)
+                ) ||
+                (
+                    normalizedIsbn13 is not null &&
+                    addedEditionIsbns.Contains(
+                        normalizedIsbn13)
+                );
+
+            if (externalIdAlreadyAdded ||
+                isbnAlreadyAdded)
+            {
+                continue;
+            }
+
+            addedEditionExternalIds.Add(
+                normalizedExternalId);
+
+            if (normalizedIsbn10 is not null)
+            {
+                addedEditionIsbns.Add(
+                    normalizedIsbn10);
+            }
+
+            if (normalizedIsbn13 is not null)
+            {
+                addedEditionIsbns.Add(
+                    normalizedIsbn13);
+            }
+
             await AddEditionAsync(
                 book,
-                editionDetails,
+                editionDetail,
                 source,
                 originalLanguageCode,
                 cancellationToken);
@@ -315,6 +373,22 @@ public sealed class ResolveExternalBookHandler
         string normalizedPublisherKey =
             normalizedPublisherName
                 .ToUpperInvariant();
+
+        Guid? trackedPublisherId =
+    _dbContext.Publishers.Local
+        .Where(publisher =>
+            string.Equals(
+                publisher.Name,
+                normalizedPublisherName,
+                StringComparison.OrdinalIgnoreCase))
+        .Select(publisher =>
+            (Guid?)publisher.Id)
+        .FirstOrDefault();
+
+        if (trackedPublisherId.HasValue)
+        {
+            return trackedPublisherId.Value;
+        }
 
         Guid? existingPublisherId =
             await _dbContext.Publishers
@@ -573,6 +647,26 @@ public sealed class ResolveExternalBookHandler
                 ?.Trim();
 
         return languageCode ?? "und";
+    }
+    private static string? NormalizeIsbn(
+    string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return value
+            .Replace(
+                "-",
+                string.Empty,
+                StringComparison.Ordinal)
+            .Replace(
+                " ",
+                string.Empty,
+                StringComparison.Ordinal)
+            .Trim()
+            .ToUpperInvariant();
     }
 
     private static string? NormalizeOptionalValue(

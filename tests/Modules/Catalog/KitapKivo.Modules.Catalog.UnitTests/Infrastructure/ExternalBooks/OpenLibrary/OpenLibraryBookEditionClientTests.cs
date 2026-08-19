@@ -289,6 +289,147 @@ public sealed class OpenLibraryBookEditionClientTests
 
     [Fact]
     public async Task
+    GetBestEditionsForWorkAsync_ShouldReturnBestTurkishAndEnglishEditions()
+    {
+        // Arrange
+        const string editionsJson = """
+        {
+          "size": 3,
+          "entries": [
+            {
+              "key": "/books/OL1000011M",
+              "title": "Incomplete English Edition",
+              "languages": [
+                {
+                  "key": "/languages/eng"
+                }
+              ],
+              "publish_date": "2025"
+            },
+            {
+              "key": "/books/OL1000012M",
+              "title": "Dune",
+              "languages": [
+                {
+                  "key": "/languages/eng"
+                }
+              ],
+              "physical_format": "Hardcover",
+              "isbn_13": [
+                "9780441172719"
+              ],
+              "number_of_pages": 896,
+              "publish_date": "1999",
+              "covers": [
+                11111
+              ],
+              "publishers": [
+                "Ace"
+              ]
+            },
+            {
+              "key": "/books/OL1000013M",
+              "title": "Dune: Çöl Gezegeni",
+              "languages": [
+                {
+                  "key": "/languages/tur"
+                }
+              ],
+              "physical_format": "Paperback",
+              "isbn_13": [
+                "9789752112345"
+              ],
+              "number_of_pages": 712,
+              "publish_date": "2023",
+              "covers": [
+                22222
+              ],
+              "publishers": [
+                "İthaki Yayınları"
+              ]
+            }
+          ]
+        }
+        """;
+
+        var httpHandler = new StubHttpMessageHandler(
+            request =>
+                request.RequestUri?.AbsolutePath switch
+                {
+                    "/works/OL45804W/editions.json" =>
+                        CreateJsonResponse(editionsJson),
+
+                    _ => new HttpResponseMessage(
+                        HttpStatusCode.NotFound)
+                });
+
+        using var httpClient = new HttpClient(
+            httpHandler)
+        {
+            BaseAddress = new Uri(
+                "https://openlibrary.org/")
+        };
+
+        var client =
+            new OpenLibraryBookEditionClient(
+                httpClient);
+
+        // Act
+        IReadOnlyList<ExternalBookEditionDetails>
+            editions =
+                await client
+                    .GetBestEditionsForWorkAsync(
+                        "/works/OL45804W");
+
+        // Assert
+        Assert.Collection(
+            editions,
+            turkishEdition =>
+            {
+                Assert.Equal(
+                    "/books/OL1000013M",
+                    turkishEdition.ExternalId);
+
+                Assert.Equal(
+                    "tur",
+                    turkishEdition.LanguageCode);
+
+                Assert.Equal(
+                    "Dune: Çöl Gezegeni",
+                    turkishEdition.Title);
+
+                Assert.Equal(
+                    "https://covers.openlibrary.org/" +
+                    "b/id/22222-L.jpg",
+                    turkishEdition.CoverUrl);
+            },
+            englishEdition =>
+            {
+                Assert.Equal(
+                    "/books/OL1000012M",
+                    englishEdition.ExternalId);
+
+                Assert.Equal(
+                    "eng",
+                    englishEdition.LanguageCode);
+
+                Assert.Equal(
+                    "Dune",
+                    englishEdition.Title);
+
+                Assert.Equal(
+                    "https://covers.openlibrary.org/" +
+                    "b/id/11111-L.jpg",
+                    englishEdition.CoverUrl);
+            });
+
+        Assert.Equal(
+            1,
+            httpHandler.CallCount);
+    }
+
+    [Fact]
+    public async Task
         GetBestForWorkAsync_ShouldReturnNull_WhenEditionIsMissing()
     {
         // Arrange

@@ -54,6 +54,10 @@ function AppLayout() {
                         Ana Sayfa
                     </NavLink>
 
+                    <NavLink to="/catalog">
+                        Katalog
+                    </NavLink>
+
                     {isInitializing ? (
                         <span className="navigation-user">
                             Oturum kontrol ediliyor...

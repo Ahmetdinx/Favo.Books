@@ -1,13 +1,21 @@
-import { BrowserRouter, Route, Routes } from 'react-router'
+import {
+    BrowserRouter,
+    Route,
+    Routes,
+} from 'react-router'
+
 import './App.css'
+
 import { AuthProvider } from './auth/AuthContext'
 import AppLayout from './components/AppLayout'
 import ProtectedRoute from './components/ProtectedRoute'
+import CatalogPage from './pages/CatalogPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ProfilePage from './pages/ProfilePage'
 import RegisterPage from './pages/RegisterPage'
+import BookDetailPage from './pages/BookDetailPage'
 
 function App() {
     return (
@@ -15,18 +23,44 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route element={<AppLayout />}>
-                        <Route index element={<HomePage />} />
-                        <Route path="login" element={<LoginPage />} />
-                        <Route path="register" element={<RegisterPage />} />
+                        <Route
+                            index
+                            element={<HomePage />}
+                        />
 
-                        <Route element={<ProtectedRoute />}>
+                        <Route
+                            path="catalog"
+                            element={<CatalogPage />}
+                        />
+
+                        <Route
+                            path="catalog/books/:bookId"
+                            element={<BookDetailPage />}
+                        />
+
+                        <Route
+                            path="login"
+                            element={<LoginPage />}
+                        />
+
+                        <Route
+                            path="register"
+                            element={<RegisterPage />}
+                        />
+
+                        <Route
+                            element={<ProtectedRoute />}
+                        >
                             <Route
                                 path="profile"
                                 element={<ProfilePage />}
                             />
                         </Route>
 
-                        <Route path="*" element={<NotFoundPage />} />
+                        <Route
+                            path="*"
+                            element={<NotFoundPage />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>

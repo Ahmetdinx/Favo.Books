@@ -129,25 +129,42 @@ public sealed class BrowseBooksHandler
                 .Select(book =>
                     new BrowseBookItemResult(
                         book.Id,
-                        book.Editions
-                            .Where(edition =>
-                                edition.LanguageCode == "tr")
-                            .OrderByDescending(edition =>
-                                edition.PublicationYear)
-                            .Select(edition => edition.Title)
-                            .FirstOrDefault() ??
-                        book.Title,
+                  book.Editions
+    .Where(edition =>
+        edition.LanguageCode == "tur" ||
+        edition.LanguageCode == "tr")
+    .OrderByDescending(edition =>
+        edition.PublicationYear)
+    .Select(edition =>
+        edition.Title)
+    .FirstOrDefault() ??
+book.Editions
+    .Where(edition =>
+        edition.LanguageCode == "eng" ||
+        edition.LanguageCode == "en")
+    .OrderByDescending(edition =>
+        edition.PublicationYear)
+    .Select(edition =>
+        edition.Title)
+    .FirstOrDefault() ??
+book.Title,
                         book.FirstPublishedYear,
-                        book.Editions
-                            .Where(edition =>
-                                edition.CoverImageUrl != null)
-                            .OrderByDescending(edition =>
-                                edition.LanguageCode == "tr")
-                            .ThenByDescending(edition =>
-                                edition.PublicationYear)
-                            .Select(edition =>
-                                edition.CoverImageUrl)
-                            .FirstOrDefault(),
+     book.Editions
+    .Where(edition =>
+        edition.CoverImageUrl != null)
+    .OrderByDescending(edition =>
+        edition.LanguageCode == "tur" ||
+        edition.LanguageCode == "tr")
+    .ThenByDescending(edition =>
+        edition.LanguageCode == "eng" ||
+        edition.LanguageCode == "en")
+    .ThenByDescending(edition =>
+        edition.PublicationYear)
+    .ThenBy(edition =>
+        edition.Id)
+    .Select(edition =>
+        edition.CoverImageUrl)
+    .FirstOrDefault(),
                         book.Authors
                             .OrderBy(bookAuthor =>
                                 bookAuthor.DisplayOrder)

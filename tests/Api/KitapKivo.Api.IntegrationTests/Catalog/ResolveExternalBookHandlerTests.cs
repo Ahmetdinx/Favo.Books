@@ -265,6 +265,170 @@ public sealed class ResolveExternalBookHandlerTests
 
     [Fact]
     public async Task
+    HandleAsync_WhenTurkishAndEnglishEditionsExist_ShouldCreateBothEditions()
+    {
+        // Arrange
+        var details = new ExternalBookDetails(
+            "OpenLibrary",
+            "/works/OL11005W",
+            "Dune",
+            "Epic science fiction novel.",
+            [
+                new ExternalBookAuthor(
+                "/authors/OL21005A",
+                "Frank Herbert")
+            ],
+            1965,
+            null,
+            ["9780441172719"],
+            ["eng"],
+            ["Science Fiction"]);
+
+        var detailsClient =
+            new StubExternalBookDetailsClient(
+                details);
+
+        ExternalBookEditionDetails[]
+            editionDetails =
+            [
+                new ExternalBookEditionDetails(
+                "OpenLibrary",
+                "/books/OL31005M",
+                "Dune: Çöl Gezegeni",
+                "tur",
+                "Paperback",
+                null,
+                "9789752112345",
+                712,
+                2023,
+                "https://example.com/dune-turkish.jpg",
+                "İthaki Yayınları"),
+
+            new ExternalBookEditionDetails(
+                "OpenLibrary",
+                "/books/OL31006M",
+                "Dune",
+                "eng",
+                "Hardcover",
+                "0441172717",
+                "9780441172719",
+                896,
+                1999,
+                "https://example.com/dune-english.jpg",
+                "Ace")
+            ];
+
+        var editionClient =
+            new StubMultipleExternalBookEditionClient(
+                editionDetails);
+
+        using WebApplicationFactory<Program> application =
+            CreateApplication(
+                detailsClient,
+                editionClient);
+
+        using IServiceScope scope =
+            application.Services.CreateScope();
+
+        ResolveExternalBookHandler handler =
+            scope.ServiceProvider.GetRequiredService<
+                ResolveExternalBookHandler>();
+
+        CatalogDbContext dbContext =
+            scope.ServiceProvider.GetRequiredService<
+                CatalogDbContext>();
+
+        // Act
+        ResolveExternalBookResult result =
+            await handler.HandleAsync(
+                new ResolveExternalBookCommand(
+                    "OpenLibrary",
+                    "/works/OL11005W"));
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.True(result.IsCreated);
+        Assert.NotNull(result.BookId);
+
+        Edition[] editions =
+            await dbContext.Editions
+                .AsNoTracking()
+                .Where(edition =>
+                    edition.BookId ==
+                    result.BookId.Value)
+                .OrderBy(edition =>
+                    edition.LanguageCode)
+                .ToArrayAsync();
+
+        Assert.Equal(
+            2,
+            editions.Length);
+
+        Edition turkishEdition =
+            Assert.Single(
+                editions,
+                edition =>
+                    edition.LanguageCode == "tur");
+
+        Assert.Equal(
+            "Dune: Çöl Gezegeni",
+            turkishEdition.Title);
+
+        Assert.Equal(
+            "9789752112345",
+            turkishEdition.Isbn13);
+
+        Assert.Equal(
+            "https://example.com/dune-turkish.jpg",
+            turkishEdition.CoverImageUrl);
+
+        Edition englishEdition =
+            Assert.Single(
+                editions,
+                edition =>
+                    edition.LanguageCode == "eng");
+
+        Assert.Equal(
+            "Dune",
+            englishEdition.Title);
+
+        Assert.Equal(
+            "9780441172719",
+            englishEdition.Isbn13);
+
+        Assert.Equal(
+            "https://example.com/dune-english.jpg",
+            englishEdition.CoverImageUrl);
+
+        Guid[] editionIds = editions
+            .Select(edition => edition.Id)
+            .ToArray();
+
+        int editionReferenceCount =
+            await dbContext.ExternalReferences
+                .AsNoTracking()
+                .CountAsync(reference =>
+                    reference.Source ==
+                        CatalogSource.OpenLibrary &&
+                    reference.EditionId.HasValue &&
+                    editionIds.Contains(
+                        reference.EditionId.Value));
+
+        Assert.Equal(
+            2,
+            editionReferenceCount);
+
+        Assert.Equal(
+            1,
+            editionClient.CallCount);
+
+        Assert.Equal(
+            "/works/OL11005W",
+            editionClient.ExternalWorkId);
+    }
+
+    [Fact]
+    public async Task
         HandleAsync_WhenBookAlreadyExists_ShouldReturnExistingBook()
     {
         // Arrange
@@ -610,6 +774,53 @@ public sealed class ResolveExternalBookHandlerTests
 
             return Task.FromResult(
                 result);
+        }
+    }
+
+    private sealed class
+    StubMultipleExternalBookEditionClient(
+        IReadOnlyList<
+            ExternalBookEditionDetails> results)
+    : IExternalBookEditionClient
+    {
+        public int CallCount { get; private set; }
+
+        public string? ExternalWorkId
+        {
+            get;
+            private set;
+        }
+
+        public CancellationToken CancellationToken
+        {
+            get;
+            private set;
+        }
+
+        public Task<ExternalBookEditionDetails?>
+            GetBestForWorkAsync(
+                string externalWorkId,
+                CancellationToken cancellationToken = default)
+        {
+            CallCount++;
+            ExternalWorkId = externalWorkId;
+            CancellationToken = cancellationToken;
+
+            return Task.FromResult(
+                results.FirstOrDefault());
+        }
+
+        public Task<
+            IReadOnlyList<ExternalBookEditionDetails>>
+            GetBestEditionsForWorkAsync(
+                string externalWorkId,
+                CancellationToken cancellationToken = default)
+        {
+            CallCount++;
+            ExternalWorkId = externalWorkId;
+            CancellationToken = cancellationToken;
+
+            return Task.FromResult(results);
         }
     }
 }
