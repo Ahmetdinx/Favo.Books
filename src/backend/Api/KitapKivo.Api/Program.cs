@@ -3,12 +3,15 @@ using Microsoft.OpenApi;
 using KitapKivo.Modules.Catalog;
 using KitapKivo.Modules.Reading;
 using KitapKivo.Api.Infrastructure.Errors;
+using KitapKivo.Modules.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
+builder.Services.AddProfilesModule(
+    builder.Configuration);
 builder.Services.AddExceptionHandler<
     GlobalExceptionHandler>();
 builder.Services.AddSwaggerGen(options =>
@@ -59,6 +62,7 @@ app.MapHealthChecks("/health");
 app.MapIdentityEndpoints();
 app.MapCatalogEndpoints();
 app.MapReadingEndpoints();
+app.MapProfilesEndpoints();
 
 app.Run();
 public partial class Program;

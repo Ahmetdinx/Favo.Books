@@ -10,6 +10,7 @@ import {
 
 import { getBookById } from '../catalog/catalogApi'
 import ReadingStatusPanel from '../reading/readingStatusPanel'
+import BookProfileActionsPanel from '../profile/BookProfileActionsPanel'
 
 import type {
     BookDetailsResponse,
@@ -355,6 +356,10 @@ function BookDetailPage() {
                     )}
 
                     <ReadingStatusPanel
+                        bookId={book.bookId}
+                    />
+
+                    <BookProfileActionsPanel
                         bookId={book.bookId}
                     />
 

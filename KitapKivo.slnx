@@ -10,6 +10,7 @@
     <Project Path="src/backend/Modules/Catalog/KitapKivo.Modules.Catalog/KitapKivo.Modules.Catalog.csproj" />
     <Project Path="src/backend/Modules/Community/KitapKivo.Modules.Community/KitapKivo.Modules.Community.csproj" />
     <Project Path="src/backend/Modules/Identity/KitapKivo.Modules.Identity/KitapKivo.Modules.Identity.csproj" />
+    <Project Path="src/backend/Modules/Profiles/KitapKivo.Modules.Profiles/KitapKivo.Modules.Profiles.csproj" />
     <Project Path="src/backend/Modules/Reading/KitapKivo.Modules.Reading/KitapKivo.Modules.Reading.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
@@ -29,6 +30,9 @@
   </Folder>
   <Folder Name="/Tests/Modules/Identity/">
     <Project Path="tests/Modules/Identity/KitapKivo.Modules.Identity.UnitTests/KitapKivo.Modules.Identity.UnitTests/KitapKivo.Modules.Identity.UnitTests.csproj" Id="ca182ab6-79ac-4504-8bdc-42b97f08b726" />
+  </Folder>
+  <Folder Name="/Tests/Modules/Profiles/">
+    <Project Path="tests/Modules/Profiles/KitapKivo.Modules.Profiles.UnitTests/KitapKivo.Modules.Profiles.UnitTests.csproj" />
   </Folder>
   <Folder Name="/Tests/Modules/Reading/">
     <Project Path="tests/Modules/Reading/KitapKivo.Modules.Reading.UnitTests/KitapKivo.Modules.Reading.UnitTests.csproj" />

@@ -5,6 +5,7 @@
     <ProjectReference Include="..\..\Modules\Catalog\KitapKivo.Modules.Catalog\KitapKivo.Modules.Catalog.csproj" />
     <ProjectReference Include="..\..\Modules\Reading\KitapKivo.Modules.Reading\KitapKivo.Modules.Reading.csproj" />
     <ProjectReference Include="..\..\Modules\Community\KitapKivo.Modules.Community\KitapKivo.Modules.Community.csproj" />
+    <ProjectReference Include="..\..\Modules\Profiles\KitapKivo.Modules.Profiles\KitapKivo.Modules.Profiles.csproj" />
   </ItemGroup>
 
   <ItemGroup>

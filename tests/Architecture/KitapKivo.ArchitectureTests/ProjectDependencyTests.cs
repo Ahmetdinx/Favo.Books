@@ -13,6 +13,7 @@ public sealed class ProjectDependencyTests
     [InlineData("Catalog")]
     [InlineData("Reading")]
     [InlineData("Community")]
+    [InlineData("Profiles")]
     public void Modules_should_reference_only_SharedKernel(string moduleName)
     {
         var projectName = $"KitapKivo.Modules.{moduleName}";
@@ -61,12 +62,13 @@ public sealed class ProjectDependencyTests
             "KitapKivo.Api.csproj");
 
         var expectedReferences = new[]
-        {
-            "KitapKivo.Modules.Catalog",
-            "KitapKivo.Modules.Community",
-            "KitapKivo.Modules.Identity",
-            "KitapKivo.Modules.Reading"
-        };
+     {
+    "KitapKivo.Modules.Catalog",
+    "KitapKivo.Modules.Community",
+    "KitapKivo.Modules.Identity",
+    "KitapKivo.Modules.Profiles",
+    "KitapKivo.Modules.Reading"
+    };
 
         var references = GetProjectReferences(projectPath);
 
