@@ -3,7 +3,10 @@ import type {
     AddBookToLibraryResponse,
     LibraryEntry,
     LibraryEntryStatus,
+    LibraryPageRequest,
+    LibraryPageResponse,
     UpdateLibraryStatusResponse,
+    LibrarySummaryResponse,
 } from './readingTypes'
 
 export type AuthenticatedFetch = (
@@ -153,4 +156,79 @@ export async function removeBookFromLibrary(
             response,
         )
     }
+
+
+}
+
+export async function getLibrary(
+    authenticatedFetch: AuthenticatedFetch,
+    request: LibraryPageRequest,
+    signal?: AbortSignal,
+): Promise<LibraryPageResponse> {
+    const parameters = new URLSearchParams()
+
+    if (request.status) {
+        parameters.set(
+            'status',
+            request.status,
+        )
+    }
+
+    parameters.set(
+        'page',
+        request.page.toString(),
+    )
+
+    parameters.set(
+        'pageSize',
+        request.pageSize.toString(),
+    )
+
+    const response = await authenticatedFetch(
+        '/api/reading/library?' +
+        parameters.toString(),
+        {
+            method: 'GET',
+            signal,
+            headers: {
+                Accept: 'application/json',
+            },
+        },
+    )
+
+    if (!response.ok) {
+        throwRequestError(
+            'Get library request',
+            response,
+        )
+    }
+
+    return (await response.json()) as
+        LibraryPageResponse
+}
+
+export async function getLibrarySummary(
+    authenticatedFetch: AuthenticatedFetch,
+    signal?: AbortSignal,
+): Promise<LibrarySummaryResponse> {
+    const response = await authenticatedFetch(
+        '/api/reading/library/summary',
+        {
+            method: 'GET',
+            signal,
+            headers: {
+                Accept: 'application/json',
+            },
+        },
+    )
+
+    if (!response.ok) {
+        throwRequestError(
+            'Get library summary request',
+            response,
+        )
+    }
+
+    return (await response.json()) as
+        LibrarySummaryResponse
 }

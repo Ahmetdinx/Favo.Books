@@ -815,6 +815,169 @@ public sealed class ReadingLibraryEndpointsTests
             response.StatusCode);
     }
 
+    [Fact]
+    public async Task
+    GetLibrarySummary_ReturnsCountsByStatus()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        await AddBookAsync(
+            _client,
+            Guid.NewGuid(),
+            "WantToRead");
+
+        await AddBookAsync(
+            _client,
+            Guid.NewGuid(),
+            "WantToRead");
+
+        await AddBookAsync(
+            _client,
+            Guid.NewGuid(),
+            "Reading");
+
+        await AddBookAsync(
+            _client,
+            Guid.NewGuid(),
+            "Read");
+
+        await AddBookAsync(
+            _client,
+            Guid.NewGuid(),
+            "OnHold");
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                "/api/reading/library/summary");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.OK,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Kitaplık özeti yanıtının " +
+                "gövdesi boş döndü.");
+
+        JsonElement root =
+            responseBody.RootElement;
+
+        Assert.Equal(
+            5,
+            root.GetProperty("totalCount")
+                .GetInt32());
+
+        Assert.Equal(
+            2,
+            root.GetProperty("wantToReadCount")
+                .GetInt32());
+
+        Assert.Equal(
+            1,
+            root.GetProperty("readingCount")
+                .GetInt32());
+
+        Assert.Equal(
+            1,
+            root.GetProperty("readCount")
+                .GetInt32());
+
+        Assert.Equal(
+            1,
+            root.GetProperty("onHoldCount")
+                .GetInt32());
+
+        Assert.Equal(
+            0,
+            root.GetProperty("droppedCount")
+                .GetInt32());
+    }
+
+    [Fact]
+    public async Task
+        GetLibrarySummary_ReturnsOnlyAuthenticatedUsersCounts()
+    {
+        // Arrange
+        await AuthenticateAsync(_client);
+
+        await AddBookAsync(
+            _client,
+            Guid.NewGuid(),
+            "Read");
+
+        await AuthenticateAsync(_client);
+
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                "/api/reading/library/summary");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.OK,
+            response.StatusCode);
+
+        using JsonDocument responseBody =
+            await response.Content
+                .ReadFromJsonAsync<JsonDocument>()
+            ?? throw new InvalidOperationException(
+                "Kitaplık özeti yanıtının " +
+                "gövdesi boş döndü.");
+
+        JsonElement root =
+            responseBody.RootElement;
+
+        Assert.Equal(
+            0,
+            root.GetProperty("totalCount")
+                .GetInt32());
+
+        Assert.Equal(
+            0,
+            root.GetProperty("wantToReadCount")
+                .GetInt32());
+
+        Assert.Equal(
+            0,
+            root.GetProperty("readingCount")
+                .GetInt32());
+
+        Assert.Equal(
+            0,
+            root.GetProperty("readCount")
+                .GetInt32());
+
+        Assert.Equal(
+            0,
+            root.GetProperty("onHoldCount")
+                .GetInt32());
+
+        Assert.Equal(
+            0,
+            root.GetProperty("droppedCount")
+                .GetInt32());
+    }
+
+    [Fact]
+    public async Task
+        GetLibrarySummary_WithoutAccessToken_ReturnsUnauthorized()
+    {
+        // Act
+        using HttpResponseMessage response =
+            await _client.GetAsync(
+                "/api/reading/library/summary");
+
+        // Assert
+        Assert.Equal(
+            HttpStatusCode.Unauthorized,
+            response.StatusCode);
+    }
+
     private static async Task AuthenticateAsync(
         HttpClient client)
     {

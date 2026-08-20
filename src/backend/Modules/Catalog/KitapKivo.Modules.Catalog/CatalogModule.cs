@@ -27,6 +27,8 @@ using KitapKivo.Modules.Catalog.Infrastructure
 using KitapKivo.Modules.Catalog.Infrastructure
     .Imports;
 using KitapKivo.Modules.Catalog.Persistence;
+using KitapKivo.Modules.Catalog.Application
+    .Books.GetSummaries;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -130,6 +132,7 @@ public static class CatalogModule
             CatalogImportJobProcessor>();
 
         services.AddScoped<BrowseBooksHandler>();
+        services.AddScoped<GetBookSummariesHandler>();
         services.AddScoped<GetCategoriesHandler>();
 
         bool workerEnabled =

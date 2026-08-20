@@ -1,5 +1,7 @@
 import type {
     BookDetailsResponse,
+    BookSummariesRequest,
+    BookSummariesResponse,
     BrowseBooksRequest,
     BrowseBooksResponse,
 } from './catalogTypes'
@@ -84,4 +86,38 @@ export async function getBookById(
 
     return (await response.json()) as
         BookDetailsResponse
+}
+
+export async function getBookSummaries(
+    request: BookSummariesRequest,
+    signal?: AbortSignal,
+): Promise<BookSummariesResponse> {
+    if (request.bookIds.length === 0) {
+        return {
+            items: [],
+        }
+    }
+
+    const response = await fetch(
+        '/api/catalog/books/summaries',
+        {
+            method: 'POST',
+            signal,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        },
+    )
+
+    if (!response.ok) {
+        throw new Error(
+            'Book summaries request failed: ' +
+            response.status,
+        )
+    }
+
+    return (await response.json()) as
+        BookSummariesResponse
 }

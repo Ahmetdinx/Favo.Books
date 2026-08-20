@@ -88,3 +88,19 @@ export type BookDetailsResponse = {
     categories: BookDetailsCategory[]
     editions: BookEdition[]
 }
+export type BookSummary = {
+    bookId: string
+    title: string
+    firstPublishedYear: number | null
+    coverImageUrl: string | null
+    authors: BrowseBookAuthor[]
+    categories: BrowseBookCategory[]
+}
+
+export type BookSummariesRequest = {
+    bookIds: string[]
+}
+
+export type BookSummariesResponse = {
+    items: BookSummary[]
+}

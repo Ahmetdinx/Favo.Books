@@ -31,3 +31,23 @@ export type UpdateLibraryStatusResponse = {
     status: LibraryEntryStatus
     updatedAtUtc: string
 }
+export type LibraryPageRequest = {
+    status?: LibraryEntryStatus
+    page: number
+    pageSize: number
+}
+
+export type LibraryPageResponse = {
+    totalCount: number
+    page: number
+    pageSize: number
+    items: LibraryEntry[]
+}
+export type LibrarySummaryResponse = {
+    totalCount: number
+    wantToReadCount: number
+    readingCount: number
+    readCount: number
+    onHoldCount: number
+    droppedCount: number
+}

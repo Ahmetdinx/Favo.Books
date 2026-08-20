@@ -18,6 +18,8 @@ using KitapKivo.Modules.Catalog.Presentation
     .Imports.Create;
 using KitapKivo.Modules.Catalog.Presentation
     .Imports.GetById;
+using KitapKivo.Modules.Catalog.Presentation
+    .Books.GetSummaries;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -44,7 +46,9 @@ public static class CatalogEndpoints
         group.MapCreateCatalogImportJobEndpoint();
         group.MapGetCatalogImportJobByIdEndpoint();
         group.MapBrowseBooksEndpoint();
+        group.MapGetBookSummariesEndpoint();
         group.MapGetCategoriesEndpoint();
+
 
         return app;
     }

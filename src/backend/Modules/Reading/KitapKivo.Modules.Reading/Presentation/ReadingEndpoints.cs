@@ -5,6 +5,8 @@ using KitapKivo.Modules.Reading
 using KitapKivo.Modules.Reading
     .Presentation.LibraryEntries.GetByBook;
 using KitapKivo.Modules.Reading
+    .Presentation.LibraryEntries.GetSummary;
+using KitapKivo.Modules.Reading
     .Presentation.LibraryEntries.Remove;
 using KitapKivo.Modules.Reading
     .Presentation.LibraryEntries.UpdateStatus;
@@ -27,6 +29,7 @@ public static class ReadingEndpoints
 
         group.MapAddBookToLibraryEndpoint();
         group.MapGetLibraryEndpoint();
+        group.MapGetLibrarySummaryEndpoint();
         group.MapGetLibraryEntryByBookEndpoint();
         group.MapUpdateLibraryStatusEndpoint();
         group.MapRemoveBookFromLibraryEndpoint();

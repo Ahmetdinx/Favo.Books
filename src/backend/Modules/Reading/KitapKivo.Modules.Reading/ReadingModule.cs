@@ -5,6 +5,8 @@ using KitapKivo.Modules.Reading
 using KitapKivo.Modules.Reading
     .Application.LibraryEntries.GetByBook;
 using KitapKivo.Modules.Reading
+    .Application.LibraryEntries.GetSummary;
+using KitapKivo.Modules.Reading
     .Application.LibraryEntries.Remove;
 using KitapKivo.Modules.Reading
     .Application.LibraryEntries.UpdateStatus;
@@ -23,20 +25,32 @@ public static class ReadingModule
         IConfiguration configuration)
     {
         string connectionString =
-            configuration.GetConnectionString("Database")
+            configuration.GetConnectionString(
+                "Database")
             ?? throw new InvalidOperationException(
-                "Connection string 'Database' was not found.");
+                "Connection string 'Database' " +
+                "was not found.");
 
         services.AddDbContext<ReadingDbContext>(
             options =>
-                options.UseNpgsql(connectionString));
+                options.UseNpgsql(
+                    connectionString));
 
-        services.AddScoped<AddBookToLibraryHandler>();
-        services.AddScoped<GetLibraryHandler>();
+        services.AddScoped<
+            AddBookToLibraryHandler>();
+
+        services.AddScoped<
+            GetLibraryHandler>();
+
+        services.AddScoped<
+            GetLibrarySummaryHandler>();
+
         services.AddScoped<
             GetLibraryEntryByBookHandler>();
+
         services.AddScoped<
             UpdateLibraryStatusHandler>();
+
         services.AddScoped<
             RemoveBookFromLibraryHandler>();
 
