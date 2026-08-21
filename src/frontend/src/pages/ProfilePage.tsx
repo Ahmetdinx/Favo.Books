@@ -14,6 +14,8 @@ import {
 
 import { useAuth } from '../auth/useAuth'
 
+import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
+
 import {
     getBookSummaries,
 } from '../catalog/catalogApi'
@@ -658,6 +660,7 @@ function ProfilePage() {
                 </aside>
             </header>
 
+            <ProfileFeaturedBooksSection />
             <section
                 className="profile-summary-section"
                 aria-labelledby={

@@ -9,4 +9,5 @@ internal sealed class OpenLibraryOptions
     public int TimeoutSeconds { get; init; } = 30;
 
     public string UserAgent { get; init; } = "KitapKivo/1.0";
+    public int RequestsPerSecond { get; init; } = 1;
 }
