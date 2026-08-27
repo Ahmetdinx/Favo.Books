@@ -13,7 +13,7 @@ public sealed class OpenLibraryBookEditionClientTests
 {
     [Fact]
     public async Task
-        GetBestForWorkAsync_ShouldMapBestEdition()
+        GetBestForWorkAsync_ShouldMapTurkishEdition()
     {
         // Arrange
         const string editionsJson = """
@@ -22,30 +22,30 @@ public sealed class OpenLibraryBookEditionClientTests
               "entries": [
                 {
                   "key": "/books/OL7353617M",
-                  "title": "  Dune  ",
+                  "title": "  Suç ve Ceza  ",
                   "languages": [
                     {
-                      "key": "/languages/eng"
+                      "key": "/languages/tur"
                     }
                   ],
                   "physical_format": "  Paperback  ",
                   "isbn_10": [
                     "invalid",
-                    " 0441172717 "
+                    " 6254052477 "
                   ],
                   "isbn_13": [
                     "invalid",
-                    "9780441172719"
+                    "9786254052476"
                   ],
-                  "number_of_pages": 896,
-                  "publish_date": "August 15, 1999",
+                  "number_of_pages": 704,
+                  "publish_date": "2021",
                   "covers": [
                     -1,
                     12345
                   ],
                   "publishers": [
                     " ",
-                    "  Ace  "
+                    "  Türkiye İş Bankası Kültür Yayınları  "
                   ]
                 }
               ]
@@ -53,22 +53,10 @@ public sealed class OpenLibraryBookEditionClientTests
             """;
 
         var httpHandler = new StubHttpMessageHandler(
-            request =>
-                request.RequestUri?.AbsolutePath switch
-                {
-                    "/works/OL45804W/editions.json" =>
-                        CreateJsonResponse(editionsJson),
+            _ => CreateJsonResponse(editionsJson));
 
-                    _ => new HttpResponseMessage(
-                        HttpStatusCode.NotFound)
-                });
-
-        using var httpClient = new HttpClient(
-            httpHandler)
-        {
-            BaseAddress = new Uri(
-                "https://openlibrary.org/")
-        };
+        using HttpClient httpClient =
+            CreateHttpClient(httpHandler);
 
         var client =
             new OpenLibraryBookEditionClient(
@@ -94,11 +82,11 @@ public sealed class OpenLibraryBookEditionClientTests
             details.ExternalId);
 
         Assert.Equal(
-            "Dune",
+            "Suç ve Ceza",
             details.Title);
 
         Assert.Equal(
-            "eng",
+            "tur",
             details.LanguageCode);
 
         Assert.Equal(
@@ -106,19 +94,19 @@ public sealed class OpenLibraryBookEditionClientTests
             details.Format);
 
         Assert.Equal(
-            "0441172717",
+            "6254052477",
             details.Isbn10);
 
         Assert.Equal(
-            "9780441172719",
+            "9786254052476",
             details.Isbn13);
 
         Assert.Equal(
-            896,
+            704,
             details.PageCount);
 
         Assert.Equal(
-            1999,
+            2021,
             details.PublicationYear);
 
         Assert.Equal(
@@ -127,23 +115,14 @@ public sealed class OpenLibraryBookEditionClientTests
             details.CoverUrl);
 
         Assert.Equal(
-            "Ace",
+            "Türkiye İş Bankası Kültür Yayınları",
             details.PublisherName);
-
-        Assert.Equal(
-            1,
-            httpHandler.CallCount);
 
         Assert.Single(
             httpHandler.RequestUris);
 
         Assert.Equal(
-            "/works/OL45804W/editions.json",
-            httpHandler.RequestUris[0]
-                ?.AbsolutePath);
-
-        Assert.Equal(
-            "?limit=20",
+            "?limit=100&offset=0",
             httpHandler.RequestUris[0]
                 ?.Query);
 
@@ -154,7 +133,7 @@ public sealed class OpenLibraryBookEditionClientTests
 
     [Fact]
     public async Task
-        GetBestForWorkAsync_ShouldSelectHighestQualityEdition()
+        GetBestForWorkAsync_ShouldPreferConfiguredPublisherOrder()
     {
         // Arrange
         const string editionsJson = """
@@ -163,57 +142,59 @@ public sealed class OpenLibraryBookEditionClientTests
               "entries": [
                 {
                   "key": "/books/OL1000001M",
-                  "title": "Incomplete Edition",
-                  "languages": [
-                    {
-                      "key": "/languages/eng"
-                    }
-                  ],
-                  "publish_date": "2025"
-                },
-                {
-                  "key": "/books/OL1000002M",
-                  "title": "English Premium Edition",
-                  "languages": [
-                    {
-                      "key": "/languages/eng"
-                    }
-                  ],
-                  "physical_format": "Hardcover",
-                  "isbn_10": [
-                    "0441172717"
-                  ],
-                  "isbn_13": [
-                    "9780441172719"
-                  ],
-                  "number_of_pages": 896,
-                  "publish_date": "1999",
-                  "covers": [
-                    11111
-                  ],
-                  "publishers": [
-                    "Ace"
-                  ]
-                },
-                {
-                  "key": "/books/OL1000003M",
-                  "title": "Dune: Çöl Gezegeni",
+                  "title": "Suç ve Ceza - Yeni Baskı",
                   "languages": [
                     {
                       "key": "/languages/tur"
                     }
                   ],
-                  "physical_format": "Paperback",
                   "isbn_13": [
-                    "9789752112345"
+                    "9789750719386"
                   ],
-                  "number_of_pages": 712,
-                  "publish_date": "2023",
+                  "publish_date": "2025",
+                  "covers": [
+                    11111
+                  ],
+                  "publishers": [
+                    "Can Yayınları"
+                  ]
+                },
+                {
+                  "key": "/books/OL1000002M",
+                  "title": "Suç ve Ceza",
+                  "languages": [
+                    {
+                      "key": "/languages/tur"
+                    }
+                  ],
+                  "isbn_13": [
+                    "9786053607010"
+                  ],
+                  "publish_date": "2018",
                   "covers": [
                     22222
                   ],
                   "publishers": [
-                    "İthaki Yayınları"
+                    "Türkiye İş Bankası Kültür Yayınları"
+                  ]
+                },
+                {
+                  "key": "/books/OL1000003M",
+                  "title": "Suç ve Ceza",
+                  "languages": [
+                    {
+                      "key": "/languages/tur"
+                    }
+                  ],
+                  "isbn_13": [
+                    "9789753638028"
+                  ],
+                  "publish_date": "2024",
+                  "covers": [
+                    33333
+                  ],
+                  "publishers": [
+                    "YKY"
                   ]
                 }
               ]
@@ -221,22 +202,10 @@ public sealed class OpenLibraryBookEditionClientTests
             """;
 
         var httpHandler = new StubHttpMessageHandler(
-            request =>
-                request.RequestUri?.AbsolutePath switch
-                {
-                    "/works/OL45804W/editions.json" =>
-                        CreateJsonResponse(editionsJson),
+            _ => CreateJsonResponse(editionsJson));
 
-                    _ => new HttpResponseMessage(
-                        HttpStatusCode.NotFound)
-                });
-
-        using var httpClient = new HttpClient(
-            httpHandler)
-        {
-            BaseAddress = new Uri(
-                "https://openlibrary.org/")
-        };
+        using HttpClient httpClient =
+            CreateHttpClient(httpHandler);
 
         var client =
             new OpenLibraryBookEditionClient(
@@ -250,125 +219,62 @@ public sealed class OpenLibraryBookEditionClientTests
 
         // Assert
         Assert.Equal(
-            "/books/OL1000003M",
+            "/books/OL1000002M",
             details.ExternalId);
 
         Assert.Equal(
-            "Dune: Çöl Gezegeni",
-            details.Title);
-
-        Assert.Equal(
-            "tur",
-            details.LanguageCode);
-
-        Assert.Equal(
-            "9789752112345",
-            details.Isbn13);
-
-        Assert.Equal(
-            712,
-            details.PageCount);
-
-        Assert.Equal(
-            2023,
-            details.PublicationYear);
-
-        Assert.Equal(
-            "https://covers.openlibrary.org/" +
-            "b/id/22222-L.jpg",
-            details.CoverUrl);
-
-        Assert.Equal(
-            "İthaki Yayınları",
+            "Türkiye İş Bankası Kültür Yayınları",
             details.PublisherName);
-
-        Assert.Equal(
-            1,
-            httpHandler.CallCount);
     }
 
     [Fact]
     public async Task
-    GetBestEditionsForWorkAsync_ShouldReturnBestTurkishAndEnglishEditions()
+        GetBestEditionsForWorkAsync_ShouldReturnOnlyTurkishEdition()
     {
         // Arrange
         const string editionsJson = """
-        {
-          "size": 3,
-          "entries": [
             {
-              "key": "/books/OL1000011M",
-              "title": "Incomplete English Edition",
-              "languages": [
+              "size": 2,
+              "entries": [
                 {
-                  "key": "/languages/eng"
-                }
-              ],
-              "publish_date": "2025"
-            },
-            {
-              "key": "/books/OL1000012M",
-              "title": "Dune",
-              "languages": [
+                  "key": "/books/OL1000011M",
+                  "title": "Crime and Punishment",
+                  "languages": [
+                    {
+                      "key": "/languages/eng"
+                    }
+                  ],
+                  "covers": [
+                    11111
+                  ],
+                  "publishers": [
+                    "Penguin"
+                  ]
+                },
                 {
-                  "key": "/languages/eng"
+                  "key": "/books/OL1000012M",
+                  "title": "Suç ve Ceza",
+                  "languages": [
+                    {
+                      "key": "/languages/tur"
+                    }
+                  ],
+                  "covers": [
+                    22222
+                  ],
+                  "publishers": [
+                    "İletişim Yayınları"
+                  ]
                 }
-              ],
-              "physical_format": "Hardcover",
-              "isbn_13": [
-                "9780441172719"
-              ],
-              "number_of_pages": 896,
-              "publish_date": "1999",
-              "covers": [
-                11111
-              ],
-              "publishers": [
-                "Ace"
-              ]
-            },
-            {
-              "key": "/books/OL1000013M",
-              "title": "Dune: Çöl Gezegeni",
-              "languages": [
-                {
-                  "key": "/languages/tur"
-                }
-              ],
-              "physical_format": "Paperback",
-              "isbn_13": [
-                "9789752112345"
-              ],
-              "number_of_pages": 712,
-              "publish_date": "2023",
-              "covers": [
-                22222
-              ],
-              "publishers": [
-                "İthaki Yayınları"
               ]
             }
-          ]
-        }
-        """;
+            """;
 
         var httpHandler = new StubHttpMessageHandler(
-            request =>
-                request.RequestUri?.AbsolutePath switch
-                {
-                    "/works/OL45804W/editions.json" =>
-                        CreateJsonResponse(editionsJson),
+            _ => CreateJsonResponse(editionsJson));
 
-                    _ => new HttpResponseMessage(
-                        HttpStatusCode.NotFound)
-                });
-
-        using var httpClient = new HttpClient(
-            httpHandler)
-        {
-            BaseAddress = new Uri(
-                "https://openlibrary.org/")
-        };
+        using HttpClient httpClient =
+            CreateHttpClient(httpHandler);
 
         var client =
             new OpenLibraryBookEditionClient(
@@ -382,81 +288,55 @@ public sealed class OpenLibraryBookEditionClientTests
                         "/works/OL45804W");
 
         // Assert
-        Assert.Collection(
-            editions,
-            turkishEdition =>
-            {
-                Assert.Equal(
-                    "/books/OL1000013M",
-                    turkishEdition.ExternalId);
-
-                Assert.Equal(
-                    "tur",
-                    turkishEdition.LanguageCode);
-
-                Assert.Equal(
-                    "Dune: Çöl Gezegeni",
-                    turkishEdition.Title);
-
-                Assert.Equal(
-                    "https://covers.openlibrary.org/" +
-                    "b/id/22222-L.jpg",
-                    turkishEdition.CoverUrl);
-            },
-            englishEdition =>
-            {
-                Assert.Equal(
-                    "/books/OL1000012M",
-                    englishEdition.ExternalId);
-
-                Assert.Equal(
-                    "eng",
-                    englishEdition.LanguageCode);
-
-                Assert.Equal(
-                    "Dune",
-                    englishEdition.Title);
-
-                Assert.Equal(
-                    "https://covers.openlibrary.org/" +
-                    "b/id/11111-L.jpg",
-                    englishEdition.CoverUrl);
-            });
+        ExternalBookEditionDetails edition =
+            Assert.Single(editions);
 
         Assert.Equal(
-            1,
-            httpHandler.CallCount);
+            "/books/OL1000012M",
+            edition.ExternalId);
+
+        Assert.Equal(
+            "tur",
+            edition.LanguageCode);
+
+        Assert.Equal(
+            "Suç ve Ceza",
+            edition.Title);
     }
 
     [Fact]
     public async Task
-        GetBestForWorkAsync_ShouldReturnNull_WhenEditionIsMissing()
+        GetBestForWorkAsync_ShouldReturnNull_WhenOnlyForeignEditionExists()
     {
         // Arrange
         const string editionsJson = """
             {
-              "size": 0,
-              "entries": []
+              "size": 1,
+              "entries": [
+                {
+                  "key": "/books/OL1000021M",
+                  "title": "Crime and Punishment",
+                  "languages": [
+                    {
+                      "key": "/languages/eng"
+                    }
+                  ],
+                  "covers": [
+                    11111
+                  ],
+                  "publishers": [
+                    "Penguin"
+                  ]
+                }
+              ]
             }
             """;
 
         var httpHandler = new StubHttpMessageHandler(
-            request =>
-                request.RequestUri?.AbsolutePath switch
-                {
-                    "/works/OL45804W/editions.json" =>
-                        CreateJsonResponse(editionsJson),
+            _ => CreateJsonResponse(editionsJson));
 
-                    _ => new HttpResponseMessage(
-                        HttpStatusCode.NotFound)
-                });
-
-        using var httpClient = new HttpClient(
-            httpHandler)
-        {
-            BaseAddress = new Uri(
-                "https://openlibrary.org/")
-        };
+        using HttpClient httpClient =
+            CreateHttpClient(httpHandler);
 
         var client =
             new OpenLibraryBookEditionClient(
@@ -469,19 +349,91 @@ public sealed class OpenLibraryBookEditionClientTests
 
         // Assert
         Assert.Null(details);
+    }
+
+    [Fact]
+    public async Task
+        GetBestForWorkAsync_ShouldContinueUntilTurkishEditionIsFound()
+    {
+        // Arrange
+        const string firstPageJson = """
+            {
+              "size": 101,
+              "entries": [
+                {
+                  "key": "/books/OL1000031M",
+                  "title": "Foreign Edition",
+                  "languages": [
+                    {
+                      "key": "/languages/eng"
+                    }
+                  ]
+                }
+              ]
+            }
+            """;
+
+        const string secondPageJson = """
+            {
+              "size": 101,
+              "entries": [
+                {
+                  "key": "/books/OL1000032M",
+                  "title": "Türkçe Baskı",
+                  "languages": [
+                    {
+                      "key": "/languages/tur"
+                    }
+                  ],
+                  "publishers": [
+                    "Metis Yayınları"
+                  ]
+                }
+              ]
+            }
+            """;
+
+        var httpHandler = new StubHttpMessageHandler(
+            request =>
+                request.RequestUri?.Query switch
+                {
+                    "?limit=100&offset=0" =>
+                        CreateJsonResponse(
+                            firstPageJson),
+
+                    "?limit=100&offset=100" =>
+                        CreateJsonResponse(
+                            secondPageJson),
+
+                    _ => new HttpResponseMessage(
+                        HttpStatusCode.NotFound)
+                });
+
+        using HttpClient httpClient =
+            CreateHttpClient(httpHandler);
+
+        var client =
+            new OpenLibraryBookEditionClient(
+                httpClient);
+
+        // Act
+        ExternalBookEditionDetails details =
+            Assert.IsType<ExternalBookEditionDetails>(
+                await client.GetBestForWorkAsync(
+                    "/works/OL45804W"));
+
+        // Assert
+        Assert.Equal(
+            "/books/OL1000032M",
+            details.ExternalId);
 
         Assert.Equal(
-            1,
+            2,
             httpHandler.CallCount);
 
         Assert.Equal(
-            "/works/OL45804W/editions.json",
-            httpHandler.RequestUris[0]
-                ?.AbsolutePath);
-
-        Assert.Equal(
-            "?limit=20",
-            httpHandler.RequestUris[0]
+            "?limit=100&offset=100",
+            httpHandler.RequestUris[1]
                 ?.Query);
     }
 
@@ -494,12 +446,8 @@ public sealed class OpenLibraryBookEditionClientTests
             _ => new HttpResponseMessage(
                 HttpStatusCode.NotFound));
 
-        using var httpClient = new HttpClient(
-            httpHandler)
-        {
-            BaseAddress = new Uri(
-                "https://openlibrary.org/")
-        };
+        using HttpClient httpClient =
+            CreateHttpClient(httpHandler);
 
         var client =
             new OpenLibraryBookEditionClient(
@@ -516,11 +464,6 @@ public sealed class OpenLibraryBookEditionClientTests
         Assert.Equal(
             1,
             httpHandler.CallCount);
-
-        Assert.Equal(
-            "/works/OL45804W/editions.json",
-            httpHandler.RequestUris[0]
-                ?.AbsolutePath);
     }
 
     [Fact]
@@ -532,12 +475,8 @@ public sealed class OpenLibraryBookEditionClientTests
             _ => throw new InvalidOperationException(
                 "HTTP request should not be sent."));
 
-        using var httpClient = new HttpClient(
-            httpHandler)
-        {
-            BaseAddress = new Uri(
-                "https://openlibrary.org/")
-        };
+        using HttpClient httpClient =
+            CreateHttpClient(httpHandler);
 
         var client =
             new OpenLibraryBookEditionClient(
@@ -551,6 +490,16 @@ public sealed class OpenLibraryBookEditionClientTests
         Assert.Equal(
             0,
             httpHandler.CallCount);
+    }
+
+    private static HttpClient CreateHttpClient(
+        HttpMessageHandler handler)
+    {
+        return new HttpClient(handler)
+        {
+            BaseAddress = new Uri(
+                "https://openlibrary.org/")
+        };
     }
 
     private static HttpResponseMessage

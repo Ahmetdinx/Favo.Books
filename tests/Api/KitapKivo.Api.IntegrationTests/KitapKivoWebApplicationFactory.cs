@@ -53,7 +53,7 @@ public sealed class KitapKivoWebApplicationFactory
         builder.UseSetting(
             "Jwt:ExpirationMinutes",
             "15");
-       
+
         builder.UseSetting(
             "Catalog:ImportJobs:WorkerEnabled",
             "false");
@@ -116,8 +116,36 @@ public sealed class KitapKivoWebApplicationFactory
                 string externalWorkId,
                 CancellationToken cancellationToken = default)
         {
+            string editionExternalId =
+                externalWorkId.Replace(
+                    "/works/",
+                    "/books/",
+                    StringComparison.OrdinalIgnoreCase);
+
+            if (editionExternalId.EndsWith(
+                    "W",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                editionExternalId =
+                    $"{editionExternalId[..^1]}M";
+            }
+
+            var edition =
+                new ExternalBookEditionDetails(
+                    "OpenLibrary",
+                    editionExternalId,
+                    "Türkçe Test Baskısı",
+                    "tur",
+                    "Paperback",
+                    null,
+                    null,
+                    320,
+                    2024,
+                    null,
+                    null);
+
             return Task.FromResult<
-                ExternalBookEditionDetails?>(null);
+                ExternalBookEditionDetails?>(edition);
         }
     }
 }

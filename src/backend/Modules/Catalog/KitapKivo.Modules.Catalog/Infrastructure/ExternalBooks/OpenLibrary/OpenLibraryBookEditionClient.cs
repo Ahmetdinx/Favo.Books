@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -19,7 +20,7 @@ internal sealed class OpenLibraryBookEditionClient(
     private const string ProviderName =
         "OpenLibrary";
 
-    private const int EditionCandidateLimit = 20;
+    private const int EditionPageSize = 100;
 
     private static readonly Regex WorkIdPattern = new(
         @"^/?works/(OL\d+W)$",
@@ -75,83 +76,81 @@ internal sealed class OpenLibraryBookEditionClient(
         string workId =
             NormalizeWorkId(externalWorkId);
 
-        string editionsRequestUri =
-            CreateEditionsRequestUri(workId);
-
-        using HttpResponseMessage response =
-            await _httpClient.GetAsync(
-                editionsRequestUri,
-                cancellationToken);
-
-        if (response.StatusCode ==
-            HttpStatusCode.NotFound)
-        {
-            return [];
-        }
-
-        response.EnsureSuccessStatusCode();
-
-        OpenLibraryWorkEditionsResponse?
-            editionsResponse =
-                await response.Content
-                    .ReadFromJsonAsync<
-                        OpenLibraryWorkEditionsResponse>(
-                        cancellationToken);
-
-        if (editionsResponse is null)
-        {
-            throw new JsonException(
-                "Open Library returned an empty " +
-                "work editions response.");
-        }
-
-        OpenLibraryEditionCandidate[] candidates =
-            editionsResponse.Entries
-                .Select(CreateCandidate)
-                .OfType<
-                    OpenLibraryEditionCandidate>()
-                .ToArray();
-
-        if (candidates.Length == 0)
-        {
-            return [];
-        }
-
         List<OpenLibraryEditionCandidate>
-            selectedCandidates = [];
+            turkishCandidates = [];
 
-        AddCandidate(
-            selectedCandidates,
-            SelectBestCandidate(
-                candidates.Where(candidate =>
-                    IsTurkishLanguage(
-                        candidate.LanguageCode))));
+        int offset = 0;
 
-        AddCandidate(
-            selectedCandidates,
-            SelectBestCandidate(
-                candidates.Where(candidate =>
-                    IsEnglishLanguage(
-                        candidate.LanguageCode))));
-
-        if (selectedCandidates.Count == 0)
+        while (true)
         {
-            AddCandidate(
-                selectedCandidates,
-                SelectBestCandidate(candidates));
+            string requestUri =
+                CreateEditionsRequestUri(
+                    workId,
+                    offset);
+
+            using HttpResponseMessage response =
+                await _httpClient.GetAsync(
+                    requestUri,
+                    cancellationToken);
+
+            if (response.StatusCode ==
+                HttpStatusCode.NotFound)
+            {
+                return [];
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            OpenLibraryWorkEditionsResponse?
+                editionsResponse =
+                    await response.Content
+                        .ReadFromJsonAsync<
+                            OpenLibraryWorkEditionsResponse>(
+                            cancellationToken);
+
+            if (editionsResponse is null)
+            {
+                throw new JsonException(
+                    "Open Library returned an empty " +
+                    "work editions response.");
+            }
+
+            turkishCandidates.AddRange(
+                editionsResponse.Entries
+                    .Select(CreateCandidate)
+                    .OfType<
+                        OpenLibraryEditionCandidate>());
+
+            if (editionsResponse.Entries.Length == 0)
+            {
+                break;
+            }
+
+            offset += EditionPageSize;
+
+            if (offset >= editionsResponse.Size)
+            {
+                break;
+            }
         }
 
-        return selectedCandidates
-            .Select(MapCandidate)
-            .ToArray();
+        OpenLibraryEditionCandidate? selectedCandidate =
+            SelectBestCandidate(
+                turkishCandidates);
+
+        return selectedCandidate is null
+            ? []
+            : [MapCandidate(selectedCandidate)];
     }
 
     private static string CreateEditionsRequestUri(
-        string workId)
+        string workId,
+        int offset)
     {
         return
             $"{workId.TrimStart('/')}/editions.json" +
-            $"?limit={EditionCandidateLimit}";
+            $"?limit={EditionPageSize}" +
+            $"&offset={offset}";
     }
 
     private static OpenLibraryEditionCandidate?
@@ -161,20 +160,27 @@ internal sealed class OpenLibraryBookEditionClient(
         string? externalId =
             TryNormalizeEditionId(edition.Key);
 
-        if (externalId is null)
-        {
-            return null;
-        }
-
         string? languageCode =
             NormalizeLanguageCode(
                 MapLanguageCode(
                     edition.Languages));
 
+        string? title =
+            NormalizeOptionalValue(
+                edition.Title);
+
+        if (externalId is null ||
+            languageCode is null ||
+            !IsTurkishLanguage(languageCode) ||
+            title is null)
+        {
+            return null;
+        }
+
         return new OpenLibraryEditionCandidate(
             edition,
             externalId,
-            languageCode);
+            languageCode!);
     }
 
     private static OpenLibraryEditionCandidate?
@@ -184,38 +190,33 @@ internal sealed class OpenLibraryBookEditionClient(
                 candidates)
     {
         return candidates
-            .OrderByDescending(candidate =>
-                CalculateEditionQualityScore(
-                    candidate.Edition))
+            .OrderBy(candidate =>
+                GetPublisherPriority(
+                    candidate.Edition.Publishers))
+            .ThenByDescending(candidate =>
+                MapCoverUrl(
+                    candidate.Edition.CoverIds)
+                is not null)
+            .ThenByDescending(candidate =>
+                FindIsbn13(
+                    candidate.Edition.Isbn13Values)
+                is not null)
+            .ThenByDescending(candidate =>
+                FindIsbn10(
+                    candidate.Edition.Isbn10Values)
+                is not null)
+            .ThenByDescending(candidate =>
+                candidate.Edition.NumberOfPages is > 0)
+            .ThenByDescending(candidate =>
+                NormalizeOptionalValue(
+                    candidate.Edition.PhysicalFormat)
+                is not null)
             .ThenByDescending(candidate =>
                 MapPublicationYear(
                     candidate.Edition.PublishDate))
             .ThenBy(candidate =>
                 candidate.ExternalId)
             .FirstOrDefault();
-    }
-
-    private static void AddCandidate(
-        ICollection<OpenLibraryEditionCandidate>
-            selectedCandidates,
-        OpenLibraryEditionCandidate? candidate)
-    {
-        if (candidate is null)
-        {
-            return;
-        }
-
-        bool alreadySelected =
-            selectedCandidates.Any(selected =>
-                string.Equals(
-                    selected.ExternalId,
-                    candidate.ExternalId,
-                    StringComparison.OrdinalIgnoreCase));
-
-        if (!alreadySelected)
-        {
-            selectedCandidates.Add(candidate);
-        }
     }
 
     private static ExternalBookEditionDetails
@@ -248,72 +249,148 @@ internal sealed class OpenLibraryBookEditionClient(
                 edition.Publishers));
     }
 
-    private static int CalculateEditionQualityScore(
-        OpenLibraryEditionResponse edition)
+    private static int GetPublisherPriority(
+        IEnumerable<string> publisherNames)
     {
-        int score = 0;
+        int bestPriority = int.MaxValue;
 
-        if (MapCoverUrl(edition.CoverIds) is not null)
+        foreach (string publisherName
+                 in publisherNames)
         {
-            score += 200;
+            string? normalizedName =
+                NormalizeOptionalValue(
+                    publisherName);
+
+            if (normalizedName is null)
+            {
+                continue;
+            }
+
+            int priority =
+                GetPublisherPriority(
+                    normalizedName);
+
+            if (priority < bestPriority)
+            {
+                bestPriority = priority;
+            }
         }
 
-        string? languageCode =
-            NormalizeLanguageCode(
-                MapLanguageCode(
-                    edition.Languages));
+        return bestPriority;
+    }
 
-        if (IsTurkishLanguage(languageCode))
-        {
-            score += 60;
-        }
-        else if (IsEnglishLanguage(languageCode))
-        {
-            score += 10;
-        }
+    private static int GetPublisherPriority(
+        string publisherName)
+    {
+        string key =
+            NormalizePublisherKey(
+                publisherName);
 
-        if (FindIsbn13(
-                edition.Isbn13Values) is not null)
+        if (key.Contains(
+                "BANKA",
+                StringComparison.Ordinal) &&
+            key.Contains(
+                "KULTUR",
+                StringComparison.Ordinal))
         {
-            score += 35;
-        }
-
-        if (FindIsbn10(
-                edition.Isbn10Values) is not null)
-        {
-            score += 20;
+            return 0;
         }
 
-        if (edition.NumberOfPages is > 0)
+        if (string.Equals(
+                key,
+                "YKY",
+                StringComparison.Ordinal) ||
+            key.Contains(
+                "YAPIKREDI",
+                StringComparison.Ordinal))
         {
-            score += 15;
+            return 1;
         }
 
-        if (FindPublisherName(
-                edition.Publishers) is not null)
+        if (key.Contains(
+                "METIS",
+                StringComparison.Ordinal))
         {
-            score += 15;
+            return 2;
         }
 
-        if (NormalizeOptionalValue(
-                edition.PhysicalFormat) is not null)
+        if (key.Contains(
+                "ILETISIM",
+                StringComparison.Ordinal))
         {
-            score += 5;
+            return 3;
         }
 
-        if (MapPublicationYear(
-                edition.PublishDate).HasValue)
+        if (string.Equals(
+                key,
+                "CAN",
+                StringComparison.Ordinal) ||
+            key.Contains(
+                "CANYAYIN",
+                StringComparison.Ordinal))
         {
-            score += 5;
+            return 4;
         }
 
-        if (NormalizeOptionalValue(
-                edition.Title) is not null)
+        if (string.Equals(
+                key,
+                "ALFA",
+                StringComparison.Ordinal) ||
+            key.Contains(
+                "ALFAYAYIN",
+                StringComparison.Ordinal))
         {
-            score += 5;
+            return 5;
         }
 
-        return score;
+        if (key.Contains(
+                "DOGUBATI",
+                StringComparison.Ordinal))
+        {
+            return 6;
+        }
+
+        return int.MaxValue;
+    }
+
+    private static string NormalizePublisherKey(
+        string publisherName)
+    {
+        string decomposedName =
+            publisherName
+                .Trim()
+                .Normalize(
+                    NormalizationForm.FormD);
+
+        StringBuilder builder = new(
+            decomposedName.Length);
+
+        foreach (char character in decomposedName)
+        {
+            UnicodeCategory category =
+                CharUnicodeInfo.GetUnicodeCategory(
+                    character);
+
+            if (category ==
+                UnicodeCategory.NonSpacingMark)
+            {
+                continue;
+            }
+
+            if (char.IsLetterOrDigit(character))
+            {
+                char normalizedCharacter =
+                    character is 'ı' or 'İ'
+                        ? 'I'
+                        : char.ToUpperInvariant(
+                            character);
+
+                builder.Append(
+                    normalizedCharacter);
+            }
+        }
+
+        return builder.ToString();
     }
 
     private static bool IsTurkishLanguage(
@@ -326,19 +403,6 @@ internal sealed class OpenLibraryBookEditionClient(
                string.Equals(
                    languageCode,
                    "tur",
-                   StringComparison.OrdinalIgnoreCase);
-    }
-
-    private static bool IsEnglishLanguage(
-        string? languageCode)
-    {
-        return string.Equals(
-                   languageCode,
-                   "en",
-                   StringComparison.OrdinalIgnoreCase) ||
-               string.Equals(
-                   languageCode,
-                   "eng",
                    StringComparison.OrdinalIgnoreCase);
     }
 
@@ -356,7 +420,6 @@ internal sealed class OpenLibraryBookEditionClient(
             .ToLowerInvariant() switch
         {
             "tr" or "tur" => "tur",
-            "en" or "eng" => "eng",
             var normalizedCode => normalizedCode
         };
     }
@@ -367,35 +430,14 @@ internal sealed class OpenLibraryBookEditionClient(
         ArgumentException.ThrowIfNullOrWhiteSpace(
             externalWorkId);
 
-        string? normalizedWorkId =
-            TryNormalizeWorkId(
-                externalWorkId);
-
-        if (normalizedWorkId is null)
-        {
-            throw new ArgumentException(
-                "Open Library work identifier is invalid.",
-                nameof(externalWorkId));
-        }
-
-        return normalizedWorkId;
-    }
-
-    private static string? TryNormalizeWorkId(
-        string? externalWorkId)
-    {
-        if (string.IsNullOrWhiteSpace(
-                externalWorkId))
-        {
-            return null;
-        }
-
         Match match = WorkIdPattern.Match(
             externalWorkId.Trim());
 
         if (!match.Success)
         {
-            return null;
+            throw new ArgumentException(
+                "Open Library work identifier is invalid.",
+                nameof(externalWorkId));
         }
 
         string workId =
@@ -451,9 +493,16 @@ internal sealed class OpenLibraryBookEditionClient(
 
             if (match.Success)
             {
-                return match.Groups[1]
-                    .Value
-                    .ToLowerInvariant();
+                string languageCode =
+                    match.Groups[1]
+                        .Value
+                        .ToLowerInvariant();
+
+                if (IsTurkishLanguage(
+                        languageCode))
+                {
+                    return "tur";
+                }
             }
         }
 
@@ -545,9 +594,22 @@ internal sealed class OpenLibraryBookEditionClient(
         IEnumerable<string> publishers)
     {
         return publishers
-            .Select(NormalizeOptionalValue)
-            .FirstOrDefault(publisher =>
-                publisher is not null);
+            .Select((publisher, index) => new
+            {
+                Name = NormalizeOptionalValue(
+                    publisher),
+                Index = index
+            })
+            .Where(publisher =>
+                publisher.Name is not null)
+            .OrderBy(publisher =>
+                GetPublisherPriority(
+                    publisher.Name!))
+            .ThenBy(publisher =>
+                publisher.Index)
+            .Select(publisher =>
+                publisher.Name)
+            .FirstOrDefault();
     }
 
     private static string? NormalizeOptionalValue(
@@ -562,5 +624,5 @@ internal sealed class OpenLibraryBookEditionClient(
         OpenLibraryEditionCandidate(
             OpenLibraryEditionResponse Edition,
             string ExternalId,
-            string? LanguageCode);
+            string LanguageCode);
 }

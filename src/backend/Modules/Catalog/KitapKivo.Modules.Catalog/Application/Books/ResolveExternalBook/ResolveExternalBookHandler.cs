@@ -112,19 +112,46 @@ public sealed class ResolveExternalBookHandler
         }
 
         IReadOnlyList<ExternalBookEditionDetails>
-      editionDetails =
-          await _editionClient
-              .GetBestEditionsForWorkAsync(
-                  resolvedExternalId,
-                  cancellationToken);
+          editionDetails =
+              await _editionClient
+                  .GetBestEditionsForWorkAsync(
+                      resolvedExternalId,
+                      cancellationToken);
+
+        ExternalBookEditionDetails?
+            selectedTurkishEdition =
+                editionDetails.FirstOrDefault(
+                    edition =>
+                        IsTurkishLanguageCode(
+                            edition.LanguageCode));
+
+        string? turkishTitle =
+            NormalizeOptionalValue(
+                selectedTurkishEdition?.Title);
+
+        if (selectedTurkishEdition is null ||
+            turkishTitle is null)
+        {
+            return ResolveExternalBookResult.NotFound();
+        }
+
+        editionDetails = [selectedTurkishEdition];
 
         string originalLanguageCode =
             ResolveOriginalLanguageCode(details);
 
+        string? originalTitle =
+            string.Equals(
+                turkishTitle,
+                details.Title,
+                StringComparison.OrdinalIgnoreCase)
+                ? null
+                : details.Title;
+
         Book book = new(
-            details.Title,
+            turkishTitle,
             originalLanguageCode,
-            null,
+            originalTitle,
             details.Description,
             details.FirstPublishedYear);
 
@@ -636,7 +663,18 @@ public sealed class ResolveExternalBookHandler
 
         return EditionFormat.Other;
     }
-
+    private static bool IsTurkishLanguageCode(
+    string? languageCode)
+    {
+        return string.Equals(
+                   languageCode,
+                   "tr",
+                   StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(
+                   languageCode,
+                   "tur",
+                   StringComparison.OrdinalIgnoreCase);
+    }
     private static string ResolveOriginalLanguageCode(
         ExternalBookDetails details)
     {

@@ -58,7 +58,7 @@ public sealed class ResolveExternalBookHandlerTests
                 "OpenLibrary",
                 "/books/OL30001M",
                 "Dune",
-                "eng",
+                "tur",
                 "Paperback",
                 "0441013597",
                 "9780441013593",
@@ -189,7 +189,7 @@ public sealed class ResolveExternalBookHandlerTests
             edition.Title);
 
         Assert.Equal(
-            "eng",
+            "tur",
             edition.LanguageCode);
 
         Assert.Equal(
@@ -265,7 +265,7 @@ public sealed class ResolveExternalBookHandlerTests
 
     [Fact]
     public async Task
-    HandleAsync_WhenTurkishAndEnglishEditionsExist_ShouldCreateBothEditions()
+    HandleAsync_WhenTurkishAndEnglishEditionsExist_ShouldCreateOnlyTurkishEdition()
     {
         // Arrange
         var details = new ExternalBookDetails(
@@ -360,9 +360,7 @@ public sealed class ResolveExternalBookHandlerTests
                     edition.LanguageCode)
                 .ToArrayAsync();
 
-        Assert.Equal(
-            2,
-            editions.Length);
+        Assert.Single(editions);
 
         Edition turkishEdition =
             Assert.Single(
@@ -382,24 +380,6 @@ public sealed class ResolveExternalBookHandlerTests
             "https://example.com/dune-turkish.jpg",
             turkishEdition.CoverImageUrl);
 
-        Edition englishEdition =
-            Assert.Single(
-                editions,
-                edition =>
-                    edition.LanguageCode == "eng");
-
-        Assert.Equal(
-            "Dune",
-            englishEdition.Title);
-
-        Assert.Equal(
-            "9780441172719",
-            englishEdition.Isbn13);
-
-        Assert.Equal(
-            "https://example.com/dune-english.jpg",
-            englishEdition.CoverImageUrl);
-
         Guid[] editionIds = editions
             .Select(edition => edition.Id)
             .ToArray();
@@ -415,7 +395,7 @@ public sealed class ResolveExternalBookHandlerTests
                         reference.EditionId.Value));
 
         Assert.Equal(
-            2,
+            1,
             editionReferenceCount);
 
         Assert.Equal(
@@ -772,8 +752,46 @@ public sealed class ResolveExternalBookHandlerTests
             ExternalWorkId = externalWorkId;
             CancellationToken = cancellationToken;
 
-            return Task.FromResult(
-                result);
+            ExternalBookEditionDetails resolvedResult =
+                result ??
+                CreateTurkishEdition(
+                    externalWorkId);
+
+            return Task.FromResult<
+                ExternalBookEditionDetails?>(
+                    resolvedResult);
+        }
+
+        private static ExternalBookEditionDetails
+            CreateTurkishEdition(
+                string externalWorkId)
+        {
+            string editionExternalId =
+                externalWorkId.Replace(
+                    "/works/",
+                    "/books/",
+                    StringComparison.OrdinalIgnoreCase);
+
+            if (editionExternalId.EndsWith(
+                    "W",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                editionExternalId =
+                    $"{editionExternalId[..^1]}M";
+            }
+
+            return new ExternalBookEditionDetails(
+                "OpenLibrary",
+                editionExternalId,
+                "Türkçe Test Baskısı",
+                "tur",
+                "Paperback",
+                null,
+                null,
+                320,
+                2024,
+                null,
+                null);
         }
     }
 

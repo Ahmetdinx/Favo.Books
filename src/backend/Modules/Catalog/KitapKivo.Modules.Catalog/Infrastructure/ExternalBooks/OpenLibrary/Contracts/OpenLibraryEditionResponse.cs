@@ -5,6 +5,9 @@ namespace KitapKivo.Modules.Catalog.Infrastructure
 
 internal sealed class OpenLibraryWorkEditionsResponse
 {
+    [JsonPropertyName("size")]
+    public int Size { get; init; }
+
     [JsonPropertyName("entries")]
     public OpenLibraryEditionResponse[] Entries
     {
