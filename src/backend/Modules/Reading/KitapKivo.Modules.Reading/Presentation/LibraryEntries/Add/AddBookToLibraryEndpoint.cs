@@ -20,6 +20,7 @@ internal static class AddBookToLibraryEndpoint
         group.MapPost("/library", HandleAsync)
             .WithName("AddBookToLibrary")
             .RequireAuthorization()
+            .ProducesProblem(StatusCodes.Status404NotFound)
             .Produces<AddBookToLibraryResponse>(
                 StatusCodes.Status201Created)
             .ProducesValidationProblem(
@@ -79,6 +80,14 @@ internal static class AddBookToLibraryEndpoint
             await handler.HandleAsync(
                 command,
                 cancellationToken);
+
+        if (result.Error == AddBookToLibraryError.BookNotFound)
+        {
+            return Results.Problem(
+                statusCode: StatusCodes.Status404NotFound,
+                title: "Kitap bulunamadı.",
+                detail: "Seçilen kitap katalogda bulunamadı.");
+        }
 
         if (!result.IsSuccess)
         {

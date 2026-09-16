@@ -23,6 +23,7 @@ internal static class SetBedsideBookEndpoint
                 HandleAsync)
             .WithName("SetBedsideBook")
             .RequireAuthorization()
+            .ProducesProblem(StatusCodes.Status404NotFound)
             .Produces<SetBedsideBookResponse>(
                 StatusCodes.Status200OK)
             .ProducesValidationProblem(
@@ -86,10 +87,18 @@ internal static class SetBedsideBookEndpoint
                 request.BookId,
                 request.PersonalNote);
 
-        SetBedsideBookResult result =
+        SetBedsideBookResult? result =
             await handler.HandleAsync(
                 command,
                 cancellationToken);
+
+        if (result is null)
+        {
+            return Results.Problem(
+                statusCode: StatusCodes.Status404NotFound,
+                title: "Kitap bulunamadı.",
+                detail: "Seçilen kitap katalogda bulunamadı.");
+        }
 
         SetBedsideBookResponse response =
             new(

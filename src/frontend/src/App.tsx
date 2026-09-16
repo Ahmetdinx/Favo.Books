@@ -16,6 +16,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import ProfilePage from './pages/ProfilePage'
 import RegisterPage from './pages/RegisterPage'
 import BookDetailPage from './pages/BookDetailPage'
+import './LibraryTheme.css'
 
 function App() {
     return (

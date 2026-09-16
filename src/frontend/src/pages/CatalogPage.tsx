@@ -9,7 +9,7 @@ import {
     useSearchParams,
 } from 'react-router'
 
-import { browseBooks } from '../catalog/catalogApi'
+import { browseBooks, getCatalogCategories, type CatalogCategory } from '../catalog/catalogApi'
 
 import type {
     BrowseBooksResponse,
@@ -132,6 +132,22 @@ function CatalogPage() {
             null,
         )
 
+    const [categories, setCategories] = useState<CatalogCategory[]>([])
+    const [categoryError, setCategoryError] = useState(false)
+    const [categoriesLoading, setCategoriesLoading] = useState(true)
+    const [categoryRetry, setCategoryRetry] = useState(0)
+
+    useEffect(() => {
+        const controller = new AbortController()
+        setCategoriesLoading(true)
+        setCategoryError(false)
+        void getCatalogCategories(controller.signal)
+            .then(items => { if (!controller.signal.aborted) setCategories(items) })
+            .catch(() => { if (!controller.signal.aborted) setCategoryError(true) })
+            .finally(() => { if (!controller.signal.aborted) setCategoriesLoading(false) })
+        return () => controller.abort()
+    }, [categoryRetry])
+
     const [isLoading, setIsLoading] =
         useState(true)
 
@@ -172,15 +188,14 @@ function CatalogPage() {
                         controller.signal,
                     )
 
-                setResult(response)
+                if (!controller.signal.aborted) setResult(response)
             } catch {
                 if (
                     !controller.signal.aborted
                 ) {
                     setErrorMessage(
                         'Kitaplar yüklenemedi. ' +
-                        'API’nin çalıştığından ' +
-                        'emin olup tekrar deneyin.',
+                        'Lütfen biraz sonra tekrar deneyin.',
                     )
                 }
             } finally {
@@ -268,7 +283,7 @@ function CatalogPage() {
 
         window.scrollTo({
             top: 0,
-            behavior: 'smooth',
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
         })
     }
 
@@ -348,6 +363,19 @@ function CatalogPage() {
                 </label>
 
                 <label className="catalog-field">
+                    <span>Kitap türleri</span>
+                    <select value={category} disabled={categoriesLoading || categoryError}
+                        onChange={event => handleCategoryChange(event.target.value)}>
+                        <option value="">{categoriesLoading ? 'Türler yükleniyor…' : 'Tüm türler'}</option>
+                        {category && !categories.some(item => item.slug === category) &&
+                            <option value={category}>{category}</option>}
+                        {categories.map(item => <option key={item.categoryId} value={item.slug}>
+                            {item.name} ({item.bookCount})
+                        </option>)}
+                    </select>
+                </label>
+
+                <label className="catalog-field">
                     <span>Sıralama</span>
 
                     <select
@@ -382,11 +410,16 @@ function CatalogPage() {
                 </button>
             </form>
 
+            {categoryError && <p className="catalog-category-error" role="alert">
+                Kitap türleri yüklenemedi. <button type="button"
+                    onClick={() => setCategoryRetry(value => value + 1)}>Tekrar dene</button>
+            </p>}
+
             {category && (
                 <div className="catalog-active-filter">
                     <span>
-                        Kategori:
-                        <strong>{category}</strong>
+                        Kitap türü:
+                        <strong>{categories.find(item => item.slug === category)?.name ?? category}</strong>
                     </span>
 
                     <button

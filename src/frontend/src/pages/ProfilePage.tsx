@@ -993,6 +993,7 @@ function ProfilePage() {
                                                         />
                                                     )}
 
+                                                </div>
                                                     <span
                                                         className={
                                                             'profile-book-status ' +
@@ -1006,7 +1007,6 @@ function ProfilePage() {
                                                             ]
                                                         }
                                                     </span>
-                                                </div>
 
                                                 <div className="profile-book-content">
                                                     {book

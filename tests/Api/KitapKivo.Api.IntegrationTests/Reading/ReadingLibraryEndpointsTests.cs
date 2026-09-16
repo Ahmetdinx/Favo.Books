@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -17,12 +17,32 @@ public sealed class ReadingLibraryEndpointsTests
     }
 
     [Fact]
+    public async Task AddBookToLibrary_WithMissingCatalogBook_ReturnsNotFoundWithoutWriting()
+    {
+        await AuthenticateAsync(_client);
+        using HttpResponseMessage response = await _client.PostAsJsonAsync(
+            "/api/reading/library",
+            new { BookId = Guid.NewGuid(), Status = "WantToRead" });
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
+        using JsonDocument problem = (await response.Content.ReadFromJsonAsync<JsonDocument>())!;
+        Assert.Equal(404, problem.RootElement.GetProperty("status").GetInt32());
+        Assert.Equal("Kitap bulunamadı.", problem.RootElement.GetProperty("title").GetString());
+
+        using HttpResponseMessage library = await _client.GetAsync("/api/reading/library");
+        Assert.Equal(HttpStatusCode.OK, library.StatusCode);
+        using JsonDocument body = (await library.Content.ReadFromJsonAsync<JsonDocument>())!;
+        Assert.Equal(0, body.RootElement.GetProperty("items").GetArrayLength());
+    }
+
+    [Fact]
     public async Task AddBookToLibrary_WithValidRequest_ReturnsCreated()
     {
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid bookId = Guid.NewGuid();
+        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
 
         var request = new
         {
@@ -67,7 +87,7 @@ public sealed class ReadingLibraryEndpointsTests
 
         var request = new
         {
-            BookId = Guid.NewGuid(),
+            BookId = await CatalogTestData.CreateBookAsync(_client),
             Status = "Reading"
         };
 
@@ -174,8 +194,8 @@ public sealed class ReadingLibraryEndpointsTests
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid firstReadingBookId = Guid.NewGuid();
-        Guid secondReadingBookId = Guid.NewGuid();
+        Guid firstReadingBookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid secondReadingBookId = await CatalogTestData.CreateBookAsync(_client);
 
         await AddBookAsync(
             _client,
@@ -184,7 +204,7 @@ public sealed class ReadingLibraryEndpointsTests
 
         await AddBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "WantToRead");
 
         await AddBookAsync(
@@ -280,7 +300,7 @@ public sealed class ReadingLibraryEndpointsTests
 
         await AddBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "Read");
 
         await AuthenticateAsync(_client);
@@ -335,7 +355,7 @@ public sealed class ReadingLibraryEndpointsTests
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid bookId = Guid.NewGuid();
+        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
 
         Guid libraryEntryId =
             await AddBookAsync(
@@ -396,7 +416,7 @@ public sealed class ReadingLibraryEndpointsTests
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid bookId = Guid.NewGuid();
+        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
 
         // Act
         using HttpResponseMessage response =
@@ -428,7 +448,7 @@ public sealed class ReadingLibraryEndpointsTests
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid bookId = Guid.NewGuid();
+        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
 
         await AddBookAsync(
             _client,
@@ -475,7 +495,7 @@ public sealed class ReadingLibraryEndpointsTests
         Guid libraryEntryId =
             await AddBookAsync(
                 _client,
-                Guid.NewGuid(),
+                await CatalogTestData.CreateBookAsync(_client),
                 "WantToRead");
 
         var request = new
@@ -549,7 +569,7 @@ public sealed class ReadingLibraryEndpointsTests
         Guid libraryEntryId =
             await AddBookAsync(
                 _client,
-                Guid.NewGuid(),
+                await CatalogTestData.CreateBookAsync(_client),
                 "WantToRead");
 
         var request = new
@@ -627,7 +647,7 @@ public sealed class ReadingLibraryEndpointsTests
         Guid libraryEntryId =
             await AddBookAsync(
                 _client,
-                Guid.NewGuid(),
+                await CatalogTestData.CreateBookAsync(_client),
                 "WantToRead");
 
         await AuthenticateAsync(_client);
@@ -709,7 +729,7 @@ public sealed class ReadingLibraryEndpointsTests
         Guid libraryEntryId =
             await AddBookAsync(
                 _client,
-                Guid.NewGuid(),
+                await CatalogTestData.CreateBookAsync(_client),
                 "WantToRead");
 
         // Act
@@ -785,7 +805,7 @@ public sealed class ReadingLibraryEndpointsTests
         Guid libraryEntryId =
             await AddBookAsync(
                 _client,
-                Guid.NewGuid(),
+                await CatalogTestData.CreateBookAsync(_client),
                 "WantToRead");
 
         await AuthenticateAsync(_client);
@@ -824,27 +844,27 @@ public sealed class ReadingLibraryEndpointsTests
 
         await AddBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "WantToRead");
 
         await AddBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "WantToRead");
 
         await AddBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "Reading");
 
         await AddBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "Read");
 
         await AddBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "OnHold");
 
         // Act
@@ -907,7 +927,7 @@ public sealed class ReadingLibraryEndpointsTests
 
         await AddBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "Read");
 
         await AuthenticateAsync(_client);

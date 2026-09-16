@@ -11,6 +11,7 @@ import {
 import { getBookById } from '../catalog/catalogApi'
 import ReadingStatusPanel from '../reading/readingStatusPanel'
 import BookProfileActionsPanel from '../profile/BookProfileActionsPanel'
+import BookRatingPanel from '../community/BookRatingPanel'
 
 import type {
     BookDetailsResponse,
@@ -363,6 +364,7 @@ function BookDetailPage() {
                         bookId={book.bookId}
                     />
 
+
                     <dl className="book-detail-facts">
                         <dt>İlk yayın yılı</dt>
                         <dd>
@@ -383,16 +385,10 @@ function BookDetailPage() {
                         </dd>
                     </dl>
 
-                    <div className="book-detail-description">
-                        <h2>Kitap hakkında</h2>
-
-                        <p>
-                            {book.description ??
-                                'Bu kitap için henüz açıklama bulunmuyor.'}
-                        </p>
-                    </div>
                 </div>
             </div>
+
+            <BookRatingPanel bookId={book.bookId} />
 
             <section className="book-editions-section">
                 <div className="book-editions-header">

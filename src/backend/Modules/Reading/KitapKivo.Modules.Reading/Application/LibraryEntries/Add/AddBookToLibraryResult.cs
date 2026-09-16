@@ -4,7 +4,8 @@
 internal enum AddBookToLibraryError
 {
     None = 0,
-    AlreadyExists = 1
+    AlreadyExists = 1,
+    BookNotFound = 2
 }
 
 internal sealed record AddBookToLibraryResult(
@@ -13,6 +14,11 @@ internal sealed record AddBookToLibraryResult(
 {
     public bool IsSuccess =>
         Error == AddBookToLibraryError.None;
+
+    public static AddBookToLibraryResult BookNotFound()
+    {
+        return new(null, AddBookToLibraryError.BookNotFound);
+    }
 
     public static AddBookToLibraryResult Success(
         Guid libraryEntryId)

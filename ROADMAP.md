@@ -1,136 +1,72 @@
 # KitapKivo Roadmap
 
-This roadmap is ordered by dependency and learning value. Each item should be
-delivered through a small, reviewable commit. Scope may change through an ADR
-or an explicit product decision.
+Updated 2026-09-16. Checked items denote implementation in code, not production
+certification. Deliver each feature with its API behavior, relevant tests and UI.
 
-## Product and Data Decisions
+## Implemented foundation
 
-- [x] Define the initial product scope and architecture.
-- [x] Define the MVP social scope: personal libraries, ratings, reviews, and
-      comments on reviews.
-- [x] Keep in-app book reading outside the product scope.
-- [x] Keep user-to-user following outside the initial MVP.
-- [x] Select Open Library as the primary book discovery and metadata source.
-- [x] Select Wikidata for author and relationship enrichment.
-- [x] Keep Google Books as a secondary fallback and comparison source.
-- [x] Keep commercial ISBN providers outside the MVP until data gaps are
-      measured.
-- [x] Avoid scraping Millî Kütüphane pages.
+- [x] .NET 10 solution, module registration and project dependency tests.
+- [x] PostgreSQL persistence and migrations for Identity, Catalog, Reading, Profiles.
+- [x] Central exception handling and ProblemDetails; Swagger and health endpoint.
+- [x] Registration, JWT authentication, refresh sessions and logout.
+- [x] Local catalog models, creation, browse/search, categories, details and summaries.
+- [x] Open Library client abstractions, search, details and local record resolution.
+- [x] Background import jobs, retry behavior and outgoing Open Library request gate.
+- [x] Turkish-edition requirement for newly resolved external books.
+- [x] Personal library and five reading states, ownership checks and summary.
+- [x] Profile bedside book and influential book selections.
+- [x] Keep external imports Turkish-edition-only and clear non-Turkish cover URLs.
+- [x] Add seven-criterion 1-10 ratings, weighted overall and book-detail UI.
+- [x] Clean local books without a covered Turkish edition, with recovery snapshots.
+- [x] Web authentication, local catalog, book details and private profile.
+- [x] Validate Catalog book existence before Reading/Profiles book writes.
+- [x] Update project context and onboarding documentation.
 
-## Phase 1 - Backend Foundation
+## Milestone 1: Trust the existing user journey
 
-- [x] Pin the .NET SDK with `global.json`.
-- [x] Add shared build rules with `Directory.Build.props`.
-- [x] Create the API, Shared Kernel, and initial module projects.
-- [x] Configure project references and module registration.
-- [x] Add architecture tests for dependency boundaries.
-- [x] Add Swagger/OpenAPI and a health endpoint.
-- [ ] Add centralized exception handling and `ProblemDetails`.
+- [x] Run the PostgreSQL integration suite; fix old foreign-cover expectations and rerun affected tests.
+- [ ] Align development and integration PostgreSQL versions.
+- [ ] Verify clean setup and all five persistent module migrations from the README.
+- [ ] Browser-check login, refresh, logout, catalog, library and profile selections.
+- [ ] Add E2E coverage for the core user journey.
+- [ ] Verify concurrent duplicate writes produce controlled responses.
+- [ ] Define catalog write/import authorization policies.
 
-## Phase 2 - Identity and Persistence
+Acceptance: a new developer can start the app; users can manage real catalog books
+without dangling references; missing books do not overwrite profile selections.
 
-- [x] Configure PostgreSQL and local development settings.
-- [x] Establish the Identity-owned schema and migrations.
-- [x] Implement the initial user domain model.
-- [x] Add user domain tests.
-- [x] Implement user registration.
-- [x] Implement JWT login and authentication.
-- [x] Add authenticated profile access.
-- [x] Add PostgreSQL-backed API integration test infrastructure.
-- [x] Add authentication endpoint integration tests.
-- [ ] Add refresh-token handling if required by the final session strategy.
+## Milestone 2: Complete book discovery
 
-## Phase 3 - Catalog Foundation
+- [ ] Separate missing book, missing Turkish edition and upstream failure outcomes.
+- [ ] Measure metadata gaps and older records affected by the Turkish-edition policy.
+- [ ] Connect external search/details/resolution to the web discovery flow.
+- [ ] Cover empty results, missing metadata, retry and cancellation experiences.
 
-- [x] Define the `Author`, `Book`, and `BookAuthor` domain models.
-- [x] Add Catalog-owned PostgreSQL persistence and migrations.
-- [x] Implement author creation.
-- [x] Implement book creation with ordered authors.
-- [x] Retrieve a local book through KitapKivo's internal `BookId`.
-- [ ] Add Catalog domain and integration test coverage.
+Acceptance: a supported book absent from the local catalog can be discovered and
+added by the user without developer intervention, with understandable failure states.
 
-## Phase 4 - External Book Discovery
+## Milestone 3: Community MVP
 
-- [ ] Define the Open Library client abstraction, options, and external
-      contracts.
-- [ ] Implement the Open Library HTTP client.
-- [ ] Map Open Library data into normalized Catalog search results.
-- [ ] Expose the public book-search endpoint.
-- [ ] Add search validation, resilience, and tests.
-- [ ] Enrich author information through Wikidata where appropriate.
-- [ ] Retrieve external book details.
-- [ ] Create or reuse a local Catalog record when the user first interacts
-      with an external book.
-- [ ] Use Google Books as a secondary fallback for missing or uncertain
-      records.
-- [ ] Measure coverage gaps before evaluating additional data providers.
+- [x] Seven independent criterion scores, specified weights, criterion averages and legacy-vote migration.
+- [ ] Catalog sorting/filtering by overall or selected criterion, before pagination.
+- [ ] Publish/edit/delete reviews, ownership, pagination and spoiler behavior.
+- [ ] Add/edit/delete review comments with ownership checks.
+- [ ] Connect all three flows to book details and add domain/API tests.
 
-## Phase 5 - Personal Library
+Acceptance: two users can rate, review and discuss a book without modifying each
+other's content. Following, likes and activity feeds are not required.
 
-- [ ] Add a book to the user's personal library.
-- [ ] List the user's personal library.
-- [ ] Remove a book from the user's personal library.
-- [ ] Define and implement reading states.
-- [ ] Add ownership and authorization rules.
-- [ ] Add domain and integration tests.
+## Milestone 4: Public release readiness
 
-## Phase 6 - Community
+- [ ] CI for backend tests and frontend build/lint.
+- [ ] Production secrets, deployment and database migration strategy.
+- [ ] Backup and restore verification, operational logs and import job visibility.
+- [ ] Incoming request limits, account recovery decision and security checks.
+- [ ] Responsive layout, accessibility and critical browser E2E checks.
+- [ ] Deploy and verify the first public MVP.
 
-- [ ] Create or update a book rating.
-- [ ] Publish, edit, and delete a review.
-- [ ] Add, edit, and delete comments on reviews.
-- [ ] Display aggregate ratings and paginated reviews.
-- [ ] Add ownership, authorization, and moderation-ready rules.
-- [ ] Add domain and integration tests.
+## Deferred candidates
 
-## Phase 7 - Web Application
-
-- [x] Establish the React and Vite frontend.
-- [x] Implement registration and login forms.
-- [x] Connect authentication forms to the Identity API.
-- [x] Add authentication session management and protected routes.
-- [x] Complete the authenticated profile flow.
-- [ ] Implement external book search.
-- [ ] Implement book details.
-- [ ] Implement the personal library.
-- [ ] Implement ratings, reviews, and comments.
-- [ ] Establish the visual Kivo identity and responsive design system.
-- [ ] Add end-to-end tests for critical user journeys.
-
-## Phase 8 - Production Readiness
-
-- [ ] Add structured logging and production observability.
-- [ ] Define production configuration and secret management.
-- [ ] Establish the production database migration strategy.
-- [ ] Add continuous integration and deployment workflows.
-- [ ] Add rate limiting and external API protection.
-- [ ] Complete security, performance, accessibility, and reliability checks.
-- [ ] Deploy the first public MVP.
-
-## Future Data Sources
-
-- Agreements with Turkish publishers or distributors for current Turkish
-  editions
-- Millî Kütüphane verification or institutional collaboration
-- Commercial ISBN providers if measured coverage gaps justify their cost
-
-## Later Product Candidates
-
-- User-to-user following
-- Likes and activity feeds
-- Notifications
-- Dedicated administration and moderation interfaces
-- Personalized recommendations
-- Dedicated search infrastructure
-- Caching
-- Service extraction when measured operational needs justify it
-
-## Current Milestone
-
-Integrate Open Library as KitapKivo's primary external book discovery source.
-
-The next planned implementation commit is:
-
-```text
-feat(catalog): add Open Library client foundation
+Wikidata enrichment, Google Books fallback, agreements for Turkish edition data,
+recommendations, following, likes, feeds, notifications and dedicated admin UI.
+Measure data gaps before adding commercial providers. Do not scrape Milli Kutuphane.

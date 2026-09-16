@@ -1,120 +1,115 @@
 # KitapKivo Project Context
 
-## Current State
+Updated 2026-09-16 from the codebase. This file describes implementation status,
+not a claim that the application has passed production or browser verification.
 
-KitapKivo currently consists of a modular .NET 10 backend and a React
-frontend.
+## Current implementation
 
-The backend includes API, Shared Kernel, Identity, Catalog, Reading, and
-Community projects. Architecture tests protect the selected dependency
-boundaries, and the API exposes health-check infrastructure.
+The .NET 10 modular monolith contains Identity, Catalog, Reading, Profiles and
+Community. All five modules now have implemented behavior; Community currently
+contains ratings. React/TypeScript/Vite supplies the web frontend.
 
-The Identity module uses PostgreSQL and supports user registration, login,
-JWT authentication, and authenticated profile access. These flows are
-covered by domain and API integration tests.
+- Identity: registration, login, JWT, rotating refresh sessions and logout.
+- Catalog: authors, books, editions, publishers, categories, local browse/search,
+  details and batch summaries; Open Library discovery, resolution and import jobs.
+- Reading: personal library add/list/remove, status changes, book lookup and summary.
+  States: WantToRead, Reading, Read, OnHold, Dropped.
+- Profiles: one bedside book and five influential positions with personal notes.
+- Community: seven required 1-10 criterion scores, weighted overall, public criterion
+  averages, create/update/remove and the user's detailed evaluation on book details.
+- API: centralized exceptions, ProblemDetails, development Swagger and health.
+- Frontend: local catalog, book details, login/register and protected personal profile.
 
-The frontend includes authentication forms, session management, protected
-routes, and an authenticated profile flow.
+Last committed feature before this continuation: `57f5578` (2026-08-27), requiring
+Turkish editions for newly resolved external catalog books. Existing records are
+reused before that validation; the change does not retrofit older catalog data.
+External book absence and missing suitable Turkish edition currently share the
+resolution NotFound outcome.
 
-The Catalog module currently includes:
+## Current continuation
 
-- `Author`, `Book`, and `BookAuthor` domain and persistence models
-- PostgreSQL-backed EF Core persistence
-- Author creation
-- Book creation with ordered authors
-- Book retrieval by KitapKivo's internal `BookId`
+Library addition and profile book selection now validate local BookId through
+IBookCatalog before writing. Catalog implements the read-only contract; Reading
+and Profiles do not access Catalog persistence. Missing books return HTTP 404
+ProblemDetails. Existing profile selections survive rejected replacements.
+See ADR 0004 for boundaries and limitations. No migration is required.
 
-The next development milestone is external book discovery through Open
-Library.
+Catalog accepts only external books with a Turkish edition. A data migration clears
+cover URLs from all existing non-Turkish editions while retaining their edition and
+book rows. Browse, summary and detail responses also refuse to expose a non-Turkish
+cover even before cleanup is applied. The migration was applied to the local
+development database on 2026-09-16.
 
-## Product Direction
+Community stores one unique evaluation per user/book, containing seven integer
+scores from 1 to 10. Theme, language, characters, structure, impact and experience
+each contribute 15%; pace contributes 10%. Overall is calculated server-side.
+Criterion averages are calculated separately; no-vote averages are null. Legacy
+1-5 votes are preserved but excluded from detailed averages. Both Community
+migrations were applied locally on 2026-09-16. See ADR 0005.
 
-KitapKivo is not an in-browser book-reading platform and will not host
-copyrighted book content.
+At the user's explicit request, local catalog cleanup removed 154 of 257 books
+without a covered Turkish edition on 2026-09-16. 103 books remain. Four library
+entries, one bedside selection and one influential selection were removed with
+their books. Recovery copies are in schema catalog_cleanup_20260916074514901.
+The maintenance report then found zero remaining candidates. See the maintenance
+tool README for the rule, execution and recovery. Cover existence means a nonblank
+stored URL, not verification of the remote image. This one-time cleanup does not
+change the existing import requirement: a Turkish edition is required, a cover is not.
 
-Its purpose is to provide book lovers with:
+Successful API integration scenarios now create actual catalog books rather than
+using arbitrary GUIDs. Regression cases cover missing books and unchanged profile
+selections. Verification for detailed ratings: 143 unit/architecture tests, 13
+Community API tests, one migration preservation/constraint test and two frontend
+calculation tests passed. Frontend build/lint passed. PostgreSQL tests ran in Docker.
+The full API run passed 106/109 tests; three old foreign-cover expectations were
+updated to the requested Turkish-cover rule, and all six tests in the affected
+classes then passed. Browser smoke-check confirmed 103 catalog results, the guest
+rating panel and its seven weights at a narrow viewport. Authenticated browser
+E2E coverage remains pending; authenticated rating flows passed API tests.
 
-- Enjoyable book discovery
-- Personal libraries
-- Meaningful ratings and literary reviews
-- Community-driven recommendations
-- Suggestions based on previously read books and created libraries
-- A visually distinctive and pleasant experience
+## Product and data rules
 
-The long-term Kivo product family may also include cinema, television, and
-anime-focused applications. These products should share a recognizable Kivo
-identity while remaining separate experiences.
+Catalog expansion on 2026-09-16 added exactly 1,000 new books, bringing the local
+total to 1,103. All 1,000 have a Turkish edition with a provider cover ID and author
+metadata; verification found zero foreign-language new editions and zero duplicate
+ISBN-13s involving new books. The explicit CatalogSeed tool reused normal Catalog
+resolution with cached edition-specific Open Library search data. 319 candidates
+were skipped and no persistence failures occurred. Source pages and created IDs
+are in `artifacts/catalog-import-20260916`; see the tool README for import rules.
+The book-detail "Kitap hakkında" section is temporarily hidden in the frontend;
+existing database descriptions are retained. Build/lint and browser checks passed.
 
-## Product Decisions
+The web UI now uses a quieter reading-room palette with a darker warm background,
+smaller covers and compact profile/book-detail controls. Detailed ratings occupy a
+separate full-width section (two form columns on desktop, one on mobile). Catalog
+has a category dropdown sourced from `/api/catalog/categories`, including counts,
+URL-backed selection, reset-to-page-one behavior and retry on category load failure.
+Path navigation has a brief spine-like rotation, disabled for reduced-motion users.
+Frontend build/lint passed. Browser checks covered category filtering (Biyografi:
+3 of 103 books), login, adding a book to the reading list, bedside selection and
+desktop/390px profile and rating layouts. The disposable test account was removed.
 
-- Open Library is the initial and primary source for book discovery and metadata.
-- Wikidata will enrich author identities, biographical information, awards, and
-  relationships between authors and works.
-- Google Books is a secondary fallback and comparison source for records that
-  cannot be found reliably through Open Library. It will not be KitapKivo's
-  primary catalog source.
-- External search results can remain transient.
-- A local Catalog record is created or reused when a user first interacts with
-  an external book.
-- User-generated data references KitapKivo's internal `BookId`.
-- Current Turkish editions may later be obtained through agreements with
-  Turkish publishers or distributors.
-- Millî Kütüphane data will not be collected through page scraping. It may be
-  used for verification or through a future institutional collaboration.
-- Commercial ISBN providers are outside the MVP and will be considered only
-  after measuring gaps in the free data sources.
+- User data references internal BookId, never an external provider identifier.
+- Work-level Book and language/publisher-specific Edition are distinct concepts.
+- Open Library is implemented; Wikidata and Google Books are future additions.
+- The web catalog currently reads local data, not the external search endpoint.
+- No in-app reading or copyrighted book-file hosting.
+- MVP social scope: ratings, reviews and review comments.
+- Following, likes, feeds, notifications and a dedicated admin UI remain deferred.
 
-## Architecture Decisions
+## Next work, in order
 
-- Modular monolith
-- Vertical slices inside business modules
-- Clean Architecture dependency direction
-- Tactical Domain-Driven Design where business rules need it
-- Lightweight CQRS without event sourcing or separate read/write databases
-- ASP.NET Core Minimal APIs
-- EF Core with PostgreSQL
-- A schema and `DbContext` owned by each persistent module
-- Architecture tests to protect module boundaries
-- React frontend communicating with the backend API
-- JWT-based authentication
+1. Exercise login, local book discovery, library changes, detailed evaluations
+   and profile selections together in a browser; add repeatable E2E coverage.
+2. Define authorization policies for catalog writes and bulk import jobs; currently
+   these require authentication but do not have a dedicated management policy.
+3. Add catalog sorting/filtering by weighted overall or a chosen criterion through
+   a module contract/read model; order the full result set before pagination.
+4. Connect external search/resolution to a user-facing discovery flow.
+5. Distinguish missing Turkish editions from absent books and upstream failures;
+   continue Community with reviews, then comments.
+6. Add E2E tests, CI, production configuration, migrations/backup procedures and
+   operational visibility before public launch.
 
-## Core Modules
-
-- `Identity`
-- `Catalog`
-- `Reading`
-- `Community`
-
-## Completed Milestones
-
-1. Established the .NET 10 solution and modular backend structure.
-2. Added shared build rules and architecture boundary tests.
-3. Added the API foundation and health endpoint.
-4. Implemented the Identity domain model and PostgreSQL persistence.
-5. Implemented registration, login, JWT authentication, and identity tests.
-6. Established the React frontend and completed the authenticated profile
-   flow.
-7. Added the initial Catalog domain and PostgreSQL persistence model.
-8. Implemented author creation, book creation, and book retrieval use cases.
-
-## Next Development Milestone
-
-Integrate Open Library as KitapKivo's first external book discovery source.
-
-The work should be delivered incrementally:
-
-1. Define the Open Library client abstraction, options, and external contracts.
-2. Implement the HTTP client and map external data into normalized Catalog
-   search results.
-3. Expose a book-search endpoint.
-4. Add validation, resilience, and tests.
-5. Enrich author information through Wikidata where appropriate.
-6. Create or reuse a local Catalog record when the user first interacts with
-   an external book.
-7. Use Google Books only as a secondary fallback for missing or uncertain
-   records.
-
-## Next Planned Commit
-
-```text
-feat(catalog): add Open Library client foundation
+See README for setup and ROADMAP for acceptance criteria. Preserve module
+boundaries; do not add cross-module DbContext access or a generic repository.

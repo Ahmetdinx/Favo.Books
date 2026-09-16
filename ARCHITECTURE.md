@@ -2,8 +2,8 @@
 
 ## Status
 
-Accepted on 2026-07-30. This document describes the initial target
-architecture. Decisions may evolve through Architecture Decision Records
+Accepted on 2026-07-30; updated for current implementation on 2026-09-16.
+Decisions may evolve through Architecture Decision Records
 (ADRs), but module boundaries must not be changed implicitly.
 
 ## Architectural Style
@@ -27,6 +27,7 @@ broker, separate read and write databases, or a generic repository layer.
 | `Identity` | Registration, authentication, authorization, account security, and basic profiles |
 | `Catalog` | Books, authors, genres, identifiers, normalized metadata, and external book-data integrations |
 | `Reading` | Personal library entries and reading state |
+| `Profiles` | Bedside book, influential books, and personal notes |
 | `Community` | Ratings, reviews, and comments on reviews |
 
 The term "follow" is reserved for a future user-to-user relationship.
@@ -52,6 +53,13 @@ use case requires them.
 - Circular project references are forbidden and will be protected by
   architecture tests.
 
+`IBookCatalog` is a minimal read-only contract in SharedKernel, implemented by
+Catalog and consumed by Reading and Profiles before book writes. It exposes only
+an existence query, not persistence or domain types (see ADR 0004).
+Current architecture tests enforce project references; namespace and domain-layer
+dependency enforcement is not yet comprehensive. Community currently implements
+ratings; reviews and review comments remain pending.
+
 ## Dependency Direction
 
 Within a module, dependencies point toward the domain:
@@ -73,11 +81,12 @@ Features are grouped by use case rather than by technical type:
 ```text
 KitapKivo.Modules.Catalog/
 ├── Domain/
-├── Features/
-│   ├── SearchBooks/
-│   └── GetBookDetails/
+├── Application/
+│   └── Books/Search/
+├── Presentation/
+│   └── Books/Search/
 ├── Infrastructure/
-├── Contracts/
+├── Persistence/
 └── CatalogModule.cs
 ```
 
@@ -93,10 +102,12 @@ The application uses one PostgreSQL database with a schema per module:
 identity
 catalog
 reading
+profiles
 community
 ```
 
-Each module owns its `DbContext`, entity configurations, migrations, and
+All five schemas are implemented; Community currently contains book ratings.
+Each persistent module owns its `DbContext`, entity configurations, migrations, and
 tables. Entity Framework Core already provides repository and unit-of-work
 behavior, so generic repositories are not introduced. A specialized
 repository abstraction is allowed only when the domain model needs one.
@@ -132,6 +143,9 @@ supplied through configuration and are never committed to the repository.
 ## API Conventions
 
 - ASP.NET Core Minimal APIs grouped under `/api/v1`
+- Current routes use `/api/identity`, `/api/catalog`, `/api/reading`, and
+  `/api/profiles`. The original `/api/v1` convention above is a target, not the
+  current contract; introducing versioned routes requires an explicit decision.
 - Standard `ProblemDetails` error responses
 - Central exception handling
 - OpenAPI documentation
@@ -160,11 +174,12 @@ KitapKivo/
 │   │       ├── Identity/KitapKivo.Modules.Identity/
 │   │       ├── Catalog/KitapKivo.Modules.Catalog/
 │   │       ├── Reading/KitapKivo.Modules.Reading/
+│   │       ├── Profiles/KitapKivo.Modules.Profiles/
 │   │       └── Community/KitapKivo.Modules.Community/
-│   └── frontend/kitapkivo-web/
+│   └── frontend/
 ├── tests/
 │   ├── Architecture/KitapKivo.ArchitectureTests/
-│   ├── Integration/KitapKivo.IntegrationTests/
+│   ├── Api/KitapKivo.Api.IntegrationTests/
 │   └── Modules/
 ├── docs/decisions/
 ├── ARCHITECTURE.md

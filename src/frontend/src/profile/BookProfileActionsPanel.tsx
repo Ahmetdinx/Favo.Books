@@ -37,6 +37,7 @@ const influentialPositions = [
 
 function getActionErrorMessage(
     error: unknown,
+    isBookSelection = false,
 ) {
     if (error instanceof ProfileApiError) {
         if (error.status === 401) {
@@ -54,6 +55,10 @@ function getActionErrorMessage(
         }
 
         if (error.status === 404) {
+            if (isBookSelection) {
+                return 'Bu kitap katalogda bulunamadı. Lütfen kataloğa dönüp başka bir kitap seçin.'
+            }
+
             return (
                 'Profil seçimi bulunamadı. ' +
                 'Bilgiler yenileniyor.'
@@ -326,7 +331,7 @@ function BookProfileActionsPanel({
             )
         } catch (error) {
             setActionErrorMessage(
-                getActionErrorMessage(error),
+                getActionErrorMessage(error, true),
             )
         } finally {
             setIsBedsideSaving(false)
@@ -434,7 +439,7 @@ function BookProfileActionsPanel({
             )
         } catch (error) {
             setActionErrorMessage(
-                getActionErrorMessage(error),
+                getActionErrorMessage(error, true),
             )
         } finally {
             setIsInfluentialSaving(false)

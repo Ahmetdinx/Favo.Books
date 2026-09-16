@@ -22,7 +22,7 @@ public sealed class BrowseBooksHandlerTests
 
     [Fact]
     public async Task
-        HandleAsync_ShouldPreferTurkishEdition_AndFallbackToEnglishEdition()
+        HandleAsync_ShouldPreferTurkishEdition_AndHideEnglishFallbackCover()
     {
         // Arrange
         using IServiceScope scope =
@@ -155,8 +155,6 @@ public sealed class BrowseBooksHandlerTests
             "English Fallback Title",
             englishItem.Title);
 
-        Assert.Equal(
-            "https://example.com/english-fallback.jpg",
-            englishItem.CoverImageUrl);
+        Assert.Null(englishItem.CoverImageUrl);
     }
 }

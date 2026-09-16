@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
     NavLink,
     Outlet,
     useNavigate,
+    useLocation,
 } from 'react-router'
 
 import { useAuth } from '../auth/useAuth'
@@ -16,6 +17,10 @@ function AppLayout() {
     } = useAuth()
 
     const navigate = useNavigate()
+    const location = useLocation()
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' })
+    }, [location.pathname])
 
     const [
         isSigningOut,
@@ -104,7 +109,7 @@ function AppLayout() {
                 </nav>
             </header>
 
-            <main className="main-content">
+            <main className="main-content library-page-turn" key={location.pathname}>
                 <Outlet />
             </main>
 

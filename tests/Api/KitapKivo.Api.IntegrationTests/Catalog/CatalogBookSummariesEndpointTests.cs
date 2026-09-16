@@ -255,10 +255,7 @@ public sealed class CatalogBookSummariesEndpointTests
             englishItem.GetProperty("title")
                 .GetString());
 
-        Assert.Equal(
-            "https://example.com/" +
-            "english-fallback-summary.jpg",
-            englishItem
+        Assert.Null(englishItem
                 .GetProperty("coverImageUrl")
                 .GetString());
 

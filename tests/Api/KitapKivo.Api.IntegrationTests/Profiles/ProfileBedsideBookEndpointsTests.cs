@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -20,6 +20,40 @@ public sealed class
         _client = factory.CreateClient();
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task SetBedsideBook_WithMissingCatalogBook_DoesNotChangeSelection(
+        bool hasSelection)
+    {
+        await AuthenticateAsync(_client);
+        if (hasSelection)
+        {
+            Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+            await SetBedsideBookAsync(_client, bookId, "Keep this note");
+        }
+
+        using HttpResponseMessage before = await _client.GetAsync("/api/profiles/me/bedside-book");
+        string previousSelection = await before.Content.ReadAsStringAsync();
+
+        using HttpResponseMessage response = await _client.PutAsJsonAsync(
+            "/api/profiles/me/bedside-book",
+            new { BookId = Guid.NewGuid(), PersonalNote = "Invalid", PersonalReflection = "Invalid" });
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
+        using JsonDocument problem = (await response.Content.ReadFromJsonAsync<JsonDocument>())!;
+        Assert.Equal(404, problem.RootElement.GetProperty("status").GetInt32());
+        Assert.Equal("Kitap bulunamadı.", problem.RootElement.GetProperty("title").GetString());
+
+        using HttpResponseMessage after = await _client.GetAsync("/api/profiles/me/bedside-book");
+        Assert.Equal(before.StatusCode, after.StatusCode);
+        if (hasSelection)
+        {
+            Assert.Equal(previousSelection, await after.Content.ReadAsStringAsync());
+        }
+    }
+
     [Fact]
     public async Task
         SetBedsideBook_WithValidRequest_PersistsAndReturnsBook()
@@ -27,7 +61,7 @@ public sealed class
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid bookId = Guid.NewGuid();
+        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
 
         // Act
         BedsideBookTestResponse setResult =
@@ -103,11 +137,11 @@ public sealed class
         BedsideBookTestResponse firstResult =
             await SetBedsideBookAsync(
                 _client,
-                Guid.NewGuid(),
+                await CatalogTestData.CreateBookAsync(_client),
                 "İlk başucu kitabım.");
 
         Guid secondBookId =
-            Guid.NewGuid();
+            await CatalogTestData.CreateBookAsync(_client);
 
         // Act
         BedsideBookTestResponse secondResult =
@@ -193,7 +227,7 @@ public sealed class
 
         await SetBedsideBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "Silinecek başucu kitabı.");
 
         // Act
@@ -226,7 +260,7 @@ public sealed class
 
         await SetBedsideBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             "Birinci kullanıcının kitabı.");
 
         await AuthenticateAsync(_client);

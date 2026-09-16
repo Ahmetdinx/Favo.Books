@@ -3,6 +3,7 @@
 using KitapKivo.Modules.Profiles.Persistence;
 
 using Microsoft.EntityFrameworkCore;
+using KitapKivo.SharedKernel.Catalog;
 
 namespace KitapKivo.Modules.Profiles
     .Application.BedsideBooks.Set;
@@ -11,14 +12,17 @@ internal sealed class SetBedsideBookHandler
 {
     private readonly ProfilesDbContext
         _dbContext;
+    private readonly IBookCatalog _bookCatalog;
 
     public SetBedsideBookHandler(
-        ProfilesDbContext dbContext)
+        ProfilesDbContext dbContext,
+        IBookCatalog bookCatalog)
     {
         _dbContext = dbContext;
+        _bookCatalog = bookCatalog;
     }
 
-    public async Task<SetBedsideBookResult>
+    public async Task<SetBedsideBookResult?>
         HandleAsync(
             SetBedsideBookCommand command,
             CancellationToken cancellationToken =
@@ -26,6 +30,11 @@ internal sealed class SetBedsideBookHandler
     {
         ArgumentNullException.ThrowIfNull(
             command);
+
+        if (!await _bookCatalog.ExistsAsync(command.BookId, cancellationToken))
+        {
+            return null;
+        }
 
         BedsideBook? bedsideBook =
             await _dbContext.BedsideBooks

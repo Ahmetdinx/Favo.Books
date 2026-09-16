@@ -25,6 +25,7 @@ internal static class
                 HandleAsync)
             .WithName("SetInfluentialBook")
             .RequireAuthorization()
+            .ProducesProblem(StatusCodes.Status404NotFound)
             .Produces<
                 SetInfluentialBookResponse>(
                     StatusCodes.Status200OK)
@@ -98,7 +99,7 @@ internal static class
                 errors);
         }
 
-        SetInfluentialBookResult result =
+        SetInfluentialBookResult? result =
             await handler.HandleAsync(
                 new SetInfluentialBookCommand(
                     userId,
@@ -106,6 +107,14 @@ internal static class
                     position,
                     request.PersonalReflection),
                 cancellationToken);
+
+        if (result is null)
+        {
+            return Results.Problem(
+                statusCode: StatusCodes.Status404NotFound,
+                title: "Kitap bulunamadı.",
+                detail: "Seçilen kitap katalogda bulunamadı.");
+        }
 
         if (!result.IsSuccess)
         {

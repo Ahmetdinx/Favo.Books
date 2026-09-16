@@ -4,6 +4,7 @@ using KitapKivo.Modules.Catalog.Persistence;
 using KitapKivo.Modules.Identity.Persistence;
 using KitapKivo.Modules.Reading.Persistence;
 using KitapKivo.Modules.Profiles.Persistence;
+using KitapKivo.Modules.Community.Persistence;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -100,6 +101,10 @@ public sealed class KitapKivoWebApplicationFactory
 
         await profilesDbContext.Database
             .MigrateAsync();
+
+        CommunityDbContext communityDbContext =
+            scope.ServiceProvider.GetRequiredService<CommunityDbContext>();
+        await communityDbContext.Database.MigrateAsync();
     }
 
     public new async Task DisposeAsync()

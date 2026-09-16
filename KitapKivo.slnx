@@ -28,6 +28,9 @@
   <Folder Name="/Tests/Modules/Catalog/">
     <Project Path="tests/Modules/Catalog/KitapKivo.Modules.Catalog.UnitTests/KitapKivo.Modules.Catalog.UnitTests.csproj" />
   </Folder>
+  <Folder Name="/Tests/Modules/Community/">
+    <Project Path="tests/Modules/Community/KitapKivo.Modules.Community.UnitTests/KitapKivo.Modules.Community.UnitTests.csproj" />
+  </Folder>
   <Folder Name="/Tests/Modules/Identity/">
     <Project Path="tests/Modules/Identity/KitapKivo.Modules.Identity.UnitTests/KitapKivo.Modules.Identity.UnitTests/KitapKivo.Modules.Identity.UnitTests.csproj" Id="ca182ab6-79ac-4504-8bdc-42b97f08b726" />
   </Folder>

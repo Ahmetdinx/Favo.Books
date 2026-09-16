@@ -149,15 +149,14 @@ book.Editions
     .FirstOrDefault() ??
 book.Title,
                         book.FirstPublishedYear,
-     book.Editions
+book.Editions
     .Where(edition =>
-        edition.CoverImageUrl != null)
+        edition.CoverImageUrl != null &&
+        (edition.LanguageCode == "tur" ||
+         edition.LanguageCode == "tr"))
     .OrderByDescending(edition =>
         edition.LanguageCode == "tur" ||
         edition.LanguageCode == "tr")
-    .ThenByDescending(edition =>
-        edition.LanguageCode == "eng" ||
-        edition.LanguageCode == "en")
     .ThenByDescending(edition =>
         edition.PublicationYear)
     .ThenBy(edition =>

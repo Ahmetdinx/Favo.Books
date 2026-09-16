@@ -21,7 +21,7 @@ public sealed class GetBookByIdHandlerTests
     }
 
     [Fact]
-    public async Task HandleAsync_WhenBookExists_ShouldReturnEditionDetails()
+    public async Task HandleAsync_WhenBookExists_ShouldReturnEditionDetailsWithoutForeignCover()
     {
         // Arrange
         using IServiceScope scope =
@@ -91,9 +91,7 @@ public sealed class GetBookByIdHandlerTests
             edition.Id,
             result.PrimaryEditionId);
 
-        Assert.Equal(
-            "https://example.com/the-hobbit.jpg",
-            result.PrimaryCoverImageUrl);
+        Assert.Null(result.PrimaryCoverImageUrl);
 
         GetBookCategoryResult categoryResult =
             Assert.Single(result.Categories);
@@ -145,9 +143,7 @@ public sealed class GetBookByIdHandlerTests
             2012,
             editionResult.PublicationYear);
 
-        Assert.Equal(
-            "https://example.com/the-hobbit.jpg",
-            editionResult.CoverImageUrl);
+        Assert.Null(editionResult.CoverImageUrl);
 
         Assert.NotNull(editionResult.Publisher);
 

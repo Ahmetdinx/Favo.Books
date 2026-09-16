@@ -4,6 +4,7 @@ using KitapKivo.Modules.Catalog;
 using KitapKivo.Modules.Reading;
 using KitapKivo.Api.Infrastructure.Errors;
 using KitapKivo.Modules.Profiles;
+using KitapKivo.Modules.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddCatalogModule(builder.Configuration);
 builder.Services.AddReadingModule(builder.Configuration);
+builder.Services.AddCommunityModule(builder.Configuration);
 
 
 var app = builder.Build();
@@ -63,6 +65,7 @@ app.MapIdentityEndpoints();
 app.MapCatalogEndpoints();
 app.MapReadingEndpoints();
 app.MapProfilesEndpoints();
+app.MapCommunityEndpoints();
 
 app.Run();
 public partial class Program;

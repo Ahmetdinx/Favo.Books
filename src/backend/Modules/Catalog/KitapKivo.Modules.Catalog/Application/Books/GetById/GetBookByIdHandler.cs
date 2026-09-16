@@ -111,7 +111,9 @@ public sealed class GetBookByIdHandler
                     edition.Isbn13,
                     edition.PageCount,
                     edition.PublicationYear,
-                    edition.CoverImageUrl,
+                    CoverImageUrl = IsTurkishLanguage(edition.LanguageCode)
+                        ? edition.CoverImageUrl
+                        : null,
                     edition.PublisherId,
                     PublisherName =
                         edition.Publisher == null
@@ -163,14 +165,11 @@ public sealed class GetBookByIdHandler
     {
         return editions
             .OrderByDescending(edition =>
-                !string.IsNullOrWhiteSpace(
-                    edition.CoverImageUrl))
-       .ThenByDescending(edition =>
     IsTurkishLanguage(
         edition.LanguageCode))
 .ThenByDescending(edition =>
-    IsEnglishLanguage(
-        edition.LanguageCode))
+                !string.IsNullOrWhiteSpace(
+                    edition.CoverImageUrl))
 .ThenByDescending(edition =>
     !string.IsNullOrWhiteSpace(
         edition.Isbn13))
@@ -200,18 +199,6 @@ public sealed class GetBookByIdHandler
                string.Equals(
                    languageCode,
                    "tur",
-                   StringComparison.OrdinalIgnoreCase);
-    }
-    private static bool IsEnglishLanguage(
-    string languageCode)
-    {
-        return string.Equals(
-                   languageCode,
-                   "en",
-                   StringComparison.OrdinalIgnoreCase) ||
-               string.Equals(
-                   languageCode,
-                   "eng",
                    StringComparison.OrdinalIgnoreCase);
     }
 }

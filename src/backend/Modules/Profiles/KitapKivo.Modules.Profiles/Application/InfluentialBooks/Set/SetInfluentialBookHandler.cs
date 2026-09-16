@@ -3,6 +3,7 @@
 using KitapKivo.Modules.Profiles.Persistence;
 
 using Microsoft.EntityFrameworkCore;
+using KitapKivo.SharedKernel.Catalog;
 
 namespace KitapKivo.Modules.Profiles
     .Application.InfluentialBooks.Set;
@@ -11,14 +12,17 @@ internal sealed class SetInfluentialBookHandler
 {
     private readonly ProfilesDbContext
         _dbContext;
+    private readonly IBookCatalog _bookCatalog;
 
     public SetInfluentialBookHandler(
-        ProfilesDbContext dbContext)
+        ProfilesDbContext dbContext,
+        IBookCatalog bookCatalog)
     {
         _dbContext = dbContext;
+        _bookCatalog = bookCatalog;
     }
 
-    public async Task<SetInfluentialBookResult>
+    public async Task<SetInfluentialBookResult?>
         HandleAsync(
             SetInfluentialBookCommand command,
             CancellationToken cancellationToken =
@@ -26,6 +30,11 @@ internal sealed class SetInfluentialBookHandler
     {
         ArgumentNullException.ThrowIfNull(
             command);
+
+        if (!await _bookCatalog.ExistsAsync(command.BookId, cancellationToken))
+        {
+            return null;
+        }
 
         bool bookAlreadyExists =
             await _dbContext.InfluentialBooks

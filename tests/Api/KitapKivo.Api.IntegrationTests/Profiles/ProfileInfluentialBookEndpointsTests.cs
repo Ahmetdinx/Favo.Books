@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -20,6 +20,37 @@ public sealed class
         _client = factory.CreateClient();
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task SetInfluentialBook_WithMissingCatalogBook_DoesNotChangeSelection(
+        bool hasSelection)
+    {
+        await AuthenticateAsync(_client);
+        if (hasSelection)
+        {
+            Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+            await SetInfluentialBookAsync(_client, bookId, 1, "Keep this note");
+        }
+
+        using HttpResponseMessage before = await _client.GetAsync("/api/profiles/me/influential-books");
+        string previousSelection = await before.Content.ReadAsStringAsync();
+
+        using HttpResponseMessage response = await _client.PutAsJsonAsync(
+            "/api/profiles/me/influential-books/1",
+            new { BookId = Guid.NewGuid(), PersonalNote = "Invalid", PersonalReflection = "Invalid" });
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
+        using JsonDocument problem = (await response.Content.ReadFromJsonAsync<JsonDocument>())!;
+        Assert.Equal(404, problem.RootElement.GetProperty("status").GetInt32());
+        Assert.Equal("Kitap bulunamadı.", problem.RootElement.GetProperty("title").GetString());
+
+        using HttpResponseMessage after = await _client.GetAsync("/api/profiles/me/influential-books");
+        Assert.Equal(before.StatusCode, after.StatusCode);
+        Assert.Equal(previousSelection, await after.Content.ReadAsStringAsync());
+    }
+
     [Fact]
     public async Task
         GetInfluentialBooks_ReturnsBooksOrderedByPosition()
@@ -27,9 +58,9 @@ public sealed class
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid thirdBookId = Guid.NewGuid();
-        Guid firstBookId = Guid.NewGuid();
-        Guid fifthBookId = Guid.NewGuid();
+        Guid thirdBookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid firstBookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid fifthBookId = await CatalogTestData.CreateBookAsync(_client);
 
         await SetInfluentialBookAsync(
             _client,
@@ -134,12 +165,12 @@ public sealed class
             firstResult =
                 await SetInfluentialBookAsync(
                     _client,
-                    Guid.NewGuid(),
+                    await CatalogTestData.CreateBookAsync(_client),
                     2,
                     "İlk kitap.");
 
         Guid secondBookId =
-            Guid.NewGuid();
+            await CatalogTestData.CreateBookAsync(_client);
 
         // Act
         InfluentialBookTestResponse
@@ -177,7 +208,7 @@ public sealed class
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid bookId = Guid.NewGuid();
+        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
 
         await SetInfluentialBookAsync(
             _client,
@@ -293,7 +324,7 @@ public sealed class
 
         await SetInfluentialBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             4,
             "Silinecek kitap.");
 
@@ -344,7 +375,7 @@ public sealed class
 
         await SetInfluentialBookAsync(
             _client,
-            Guid.NewGuid(),
+            await CatalogTestData.CreateBookAsync(_client),
             1,
             "Birinci kullanıcının kitabı.");
 

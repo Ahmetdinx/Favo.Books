@@ -2,6 +2,7 @@
 using KitapKivo.Modules.Reading.Persistence;
 
 using Microsoft.EntityFrameworkCore;
+using KitapKivo.SharedKernel.Catalog;
 
 namespace KitapKivo.Modules.Reading
     .Application.LibraryEntries.Add;
@@ -9,11 +10,14 @@ namespace KitapKivo.Modules.Reading
 internal sealed class AddBookToLibraryHandler
 {
     private readonly ReadingDbContext _dbContext;
+    private readonly IBookCatalog _bookCatalog;
 
     public AddBookToLibraryHandler(
-        ReadingDbContext dbContext)
+        ReadingDbContext dbContext,
+        IBookCatalog bookCatalog)
     {
         _dbContext = dbContext;
+        _bookCatalog = bookCatalog;
     }
 
     public async Task<AddBookToLibraryResult> HandleAsync(
@@ -21,6 +25,11 @@ internal sealed class AddBookToLibraryHandler
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(command);
+
+        if (!await _bookCatalog.ExistsAsync(command.BookId, cancellationToken))
+        {
+            return AddBookToLibraryResult.BookNotFound();
+        }
 
         bool alreadyExists =
             await _dbContext.LibraryEntries

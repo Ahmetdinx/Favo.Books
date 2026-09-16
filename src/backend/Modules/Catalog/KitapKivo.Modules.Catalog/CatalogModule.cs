@@ -31,6 +31,8 @@ using KitapKivo.Modules.Catalog.Infrastructure
 using KitapKivo.Modules.Catalog.Persistence;
 
 using Microsoft.EntityFrameworkCore;
+using KitapKivo.Modules.Catalog.Application.Books;
+using KitapKivo.SharedKernel.Catalog;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -155,6 +157,7 @@ public static class CatalogModule
             .AddHttpMessageHandler<
                 OpenLibraryRateLimitHandler>();
 
+        services.AddScoped<IBookCatalog, BookCatalog>();
         services.AddScoped<CreateAuthorHandler>();
         services.AddScoped<CreateBookHandler>();
         services.AddScoped<GetBookByIdHandler>();

@@ -2046,6 +2046,7 @@ section:not(.home-page):not(.catalog-page):not(.profile-page) {
         color: #a13f36;
     }
 
+
 @media (max-width: 620px) {
     .profile-book-actions > summary {
         align-items: flex-start;

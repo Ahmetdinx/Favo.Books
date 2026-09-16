@@ -6,6 +6,15 @@ import type {
     BrowseBooksResponse,
 } from './catalogTypes'
 
+export type CatalogCategory = { categoryId: string; name: string; slug: string; bookCount: number }
+
+export async function getCatalogCategories(signal?: AbortSignal): Promise<CatalogCategory[]> {
+    const response = await fetch('/api/catalog/categories', { signal })
+    if (!response.ok) throw new Error('Kitap türleri yüklenemedi.')
+    const result = await response.json() as { items: CatalogCategory[] }
+    return result.items
+}
+
 export async function browseBooks(
     request: BrowseBooksRequest,
     signal?: AbortSignal,

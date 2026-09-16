@@ -56,7 +56,7 @@ const statusLabels:
     Dropped: 'Yarım bıraktım',
 }
 
-function getErrorMessage(error: unknown) {
+function getErrorMessage(error: unknown, isAddingBook = false) {
     if (error instanceof ReadingApiError) {
         if (error.status === 401) {
             return (
@@ -73,6 +73,10 @@ function getErrorMessage(error: unknown) {
         }
 
         if (error.status === 404) {
+            if (isAddingBook) {
+                return 'Bu kitap katalogda bulunamadı. Lütfen kataloğa dönüp başka bir kitap seçin.'
+            }
+
             return (
                 'Kütüphane kaydı bulunamadı. ' +
                 'Durum bilgisi yenilendi.'
@@ -269,7 +273,7 @@ function ReadingStatusPanel({
             }
 
             setActionErrorMessage(
-                getErrorMessage(error),
+                getErrorMessage(error, !libraryEntry),
             )
         } finally {
             setIsSaving(false)

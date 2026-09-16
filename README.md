@@ -1,54 +1,113 @@
 # KitapKivo
 
-KitapKivo is a book discovery and literary community platform designed to help
-readers discover meaningful books, organize their reading lives, and share
-thoughtful opinions with other book lovers.
+KitapKivo helps readers discover books, manage a personal library, and express
+which books matter to them. Ratings are implemented; reviews and comments are the
+next major product area. It does not host book files or provide in-app reading.
 
-## Project Status
+## Current status
 
-The project is currently under active development.
+Updated 2026-09-16. Implemented in code:
 
-The modular .NET backend, authentication flow, React frontend foundation, and
-initial Catalog use cases are complete. The next milestone is external book
-discovery through Open Library.
+- Modular .NET 10 API, PostgreSQL persistence, exception handling and ProblemDetails.
+- Registration, JWT login, refresh-token sessions and logout.
+- Local catalog browsing, book details, categories, authors and editions.
+- Open Library search/details, local resolution and background import jobs.
+- Turkish-edition selection for newly resolved external books.
+- Personal library, five reading states and reading summary.
+- Profile bedside book and up to five influential books, with personal notes.
+- Community: seven required 1-10 criterion scores per user/book, weighted overall,
+  criterion averages, vote count, editing and removal.
+- Catalog existence validation before library/profile book writes.
+- React/TypeScript catalog, book details, authentication and private profile pages.
 
-## Initial Product Scope
+The web catalog currently searches local records. External discovery exists in
+backend APIs but is not yet connected to a complete user-facing discovery flow.
+Community reviews and comments are not implemented yet. Public deployment and
+browser E2E verification remain pending. Existing invalid book references are not
+repaired automatically.
 
-- Discover books through external data sources.
-- Add books to a personal library.
-- Rate and review books.
-- Comment on reviews.
-- Receive meaningful book suggestions in later stages.
+## Development
 
-User-to-user following, likes, activity feeds, notifications, and a dedicated
-administration panel are outside the initial MVP.
+Use .NET SDK 10.0.302 (see global.json), Node.js/npm compatible with the frontend
+lockfile, and Docker with Compose for PostgreSQL and integration tests. Node
+24.19.0 was used during the project review.
 
-KitapKivo will not host copyrighted book content or provide in-app book reading.
+From the repository root:
 
-## External Data Strategy
+1. Create an untracked `.env` with `POSTGRES_DB`, `POSTGRES_USER`, and
+   `POSTGRES_PASSWORD`. These values configure Compose, not the API.
+2. Run `docker compose up -d postgres`.
+3. Configure the API with .NET user secrets or environment variables. Required
+   keys are `ConnectionStrings:Database`, `Jwt:Issuer`, `Jwt:Audience`,
+   `Jwt:Secret`, `Jwt:ExpirationMinutes`, `RefreshToken:ExpirationDays`, and
+   `RefreshToken:CookieName`. Use a strong JWT secret of at least 32 bytes.
+   Environment variables use double underscores, e.g. `Jwt__Secret`.
+   The database connection must match your Compose credentials.
+4. Run `dotnet restore KitapKivo.slnx` and apply the module migrations described
+   below. The API does not automatically migrate the development database.
+5. Run `dotnet run --project src/backend/Api/KitapKivo.Api --launch-profile http`.
+6. In a second terminal, run `npm ci` then `npm run dev` in `src/frontend`.
 
-- Open Library is the primary book discovery and metadata source.
-- Wikidata will enrich author identities and related information.
-- Google Books is a secondary fallback and comparison source.
-- Current Turkish editions may later be obtained through agreements with
-  publishers or distributors.
-- Commercial ISBN providers will only be evaluated after measuring data gaps.
+The API listens at `http://localhost:5117`; Vite proxies `/api` to this address.
+Swagger is available at `/swagger` in Development and health at `/health`.
+The health endpoint currently confirms application health, not database readiness.
+Open Library options use `Catalog:OpenLibrary`; background worker options use
+`Catalog:ImportJobs`. Disable the worker with
+`Catalog__ImportJobs__WorkerEnabled=false` when background imports are unwanted.
 
-## Architecture
+### Database migrations
 
-KitapKivo uses a modular monolith with vertical slices, Clean Architecture
-dependency rules, tactical Domain-Driven Design, and lightweight CQRS.
+Install a compatible .NET 10 `dotnet-ef` tool if it is not already available.
+Run the following from the repository root with Development configuration and
+API secrets available. In PowerShell, set `$env:ASPNETCORE_ENVIRONMENT='Development'`.
 
-- [Architecture](ARCHITECTURE.md)
+```powershell
+dotnet ef database update --project src/backend/Modules/Identity/KitapKivo.Modules.Identity --startup-project src/backend/Api/KitapKivo.Api --context IdentityDbContext
+dotnet ef database update --project src/backend/Modules/Catalog/KitapKivo.Modules.Catalog --startup-project src/backend/Api/KitapKivo.Api --context CatalogDbContext
+dotnet ef database update --project src/backend/Modules/Reading/KitapKivo.Modules.Reading --startup-project src/backend/Api/KitapKivo.Api --context ReadingDbContext
+dotnet ef database update --project src/backend/Modules/Profiles/KitapKivo.Modules.Profiles --startup-project src/backend/Api/KitapKivo.Api --context ProfilesDbContext
+dotnet ef database update --project src/backend/Modules/Community/KitapKivo.Modules.Community --startup-project src/backend/Api/KitapKivo.Api --context CommunityDbContext
+```
+
+The current Catalog migration clears stored cover URLs for every non-Turkish
+edition (`LanguageCode` other than `tr`/`tur`). This cleanup is intentionally
+irreversible because the removed external URLs cannot be reconstructed reliably.
+That migration leaves book and edition rows in place. The separate, explicitly run
+[catalog cleanup tool](tools/KitapKivo.Maintenance/README.md) removes books with no
+Turkish edition containing a cover, archives affected records and clears linked
+library/profile/rating records in one transaction. It is not run on startup.
+
+The Community detailed-rating migration preserves old 1-5 votes as legacy data.
+They are excluded from new averages until users submit all seven criterion scores.
+See [ADR 0005](docs/decisions/0005-detailed-book-ratings.md) for weights and contracts.
+
+### Verification
+
+```powershell
+dotnet test KitapKivo.slnx
+```
+
+Integration tests use isolated PostgreSQL Testcontainers and require a running
+Docker engine. They do not use the development database. The test image is
+currently PostgreSQL 17, while Compose uses 18.4; aligning these remains pending.
+
+When Docker is unavailable, run only architecture and unit tests:
+
+```powershell
+dotnet test KitapKivo.slnx --filter 'FullyQualifiedName!~KitapKivo.Api.IntegrationTests'
+```
+
+In `src/frontend`, run `npm run build`, `npm run lint` and `npm run test:ratings` (Node 24).
+Browser E2E tests have
+not yet been added. Passing these commands does not verify live external data.
+
+## Project guide
+
+- [Current context and next task](PROJECT_CONTEXT.md)
 - [Roadmap](ROADMAP.md)
-- [Current project context](PROJECT_CONTEXT.md)
+- [Architecture](ARCHITECTURE.md)
 - [Architecture decisions](docs/decisions/)
 
-## Technology Stack
-
-- .NET 10
-- ASP.NET Core Minimal APIs
-- Entity Framework Core
-- PostgreSQL
-- React
-- Vite
+Open Library is the implemented external provider. Wikidata enrichment and Google
+Books fallback are planned, not implemented. User following, likes, feeds,
+notifications, and a dedicated administration panel remain outside the initial MVP.
