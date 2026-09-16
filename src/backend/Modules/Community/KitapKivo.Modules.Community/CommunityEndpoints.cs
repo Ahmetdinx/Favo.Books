@@ -11,6 +11,7 @@ public static class CommunityEndpoints
     {
         RouteGroupBuilder group = app.MapGroup("/api/community").WithTags("Community");
         group.MapBookRatingEndpoints();
+        group.MapRecommendationEndpoints();
         return app;
     }
 }

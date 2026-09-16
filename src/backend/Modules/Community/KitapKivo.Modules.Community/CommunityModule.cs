@@ -18,6 +18,8 @@ public static class CommunityModule
         services.AddScoped<GetBookRatingsHandler>();
         services.AddScoped<SetBookRatingHandler>();
         services.AddScoped<RemoveBookRatingHandler>();
+        services.AddScoped<GetRatingPromptsHandler>();
+        services.AddScoped<BookRecommendations>();
         return services;
     }
 }

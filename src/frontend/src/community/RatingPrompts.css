@@ -1,0 +1,22 @@
+.rating-prompts { margin: 24px 0; padding: 20px; border: 1px solid var(--library-line); border-radius: 10px; background: var(--library-paper); }
+.rating-prompts > header { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
+.rating-prompts h2 { margin: 7px 0; font: 1.4rem Georgia, serif; color: var(--library-ink); }
+.rating-prompts header p:last-child { max-width: 65ch; color: var(--library-muted); font-size: .85rem; line-height: 1.65; }
+.rating-prompts ul { list-style: none; padding: 0; margin: 16px 0; }
+.rating-prompts li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--library-line); }
+.rating-prompt-book { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.rating-prompt-mark { color: var(--library-accent); font-size: 1.4rem; }
+.rating-prompts h3 { margin: 0; font: 1.05rem Georgia, serif; overflow-wrap: anywhere; }
+.rating-prompts h3 a:hover { text-decoration: underline; }
+.rating-prompt-book p { color: var(--library-muted); font-size: .78rem; margin: 5px 0 0; }
+.rating-prompts li > a { flex-shrink: 0; }
+.rating-prompts small { color: var(--library-muted); font-size: .75rem; }
+.rating-prompts-dismiss, .rating-prompts-restore, .rating-prompts-status button { border: 0; background: transparent; color: var(--library-accent); font: inherit; font-size: .8rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 8px 0; }
+.rating-prompts-dismiss { flex-shrink: 0; }
+.rating-prompts-status { color: var(--library-muted); font-size: .8rem; }
+@media (max-width: 520px) {
+    .rating-prompts { padding: 16px; }
+    .rating-prompts > header { flex-direction: column; gap: 0; }
+    .rating-prompts li { align-items: start; flex-direction: column; gap: 10px; }
+    .rating-prompts li > a { margin-left: 25px; }
+}

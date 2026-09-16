@@ -99,6 +99,54 @@ desktop/390px profile and rating layouts. The disposable test account was remove
 
 ## Next work, in order
 
+### Current book-only recommendation groundwork
+
+The profile now gently invites users to evaluate up to three recently completed,
+unrated books. `GET /api/community/me/rating-prompts` requires authentication,
+uses the caller's identity and disables caching. Community reads completed book
+IDs through Reading's `ICompletedBooks` contract, excludes detailed votes before
+limiting results and ignores missing catalog books. Legacy votes remain eligible.
+The UI supports temporary dismissal, retry and refresh on window focus. Links
+open and focus the book's seven-criterion form; returning after a saved rating
+removes that book from the prompt list. No migration is needed.
+
+Personalized book discovery v1 is now available on the signed-in home page and
+profile. `GET/PUT /api/community/me/reading-preferences` stores up to five genre
+slugs and three criterion keys per account. `GET /api/community/me/recommendations`
+returns six books with factual reasons. All routes require authentication; reads
+use no-store. Preferences persist in community.ReadingPreferences via migration
+20260916122641_AddReadingPreferences (applied to local development).
+
+Community consumes Catalog's IDiscoveryCatalog and Reading's IReadingHistory.
+Only covered Turkish editions qualify. Read/Reading books and the user's detailed
+votes are excluded; WantToRead books may appear. Own overall scores >=7 supply
+genre/author similarity signals. Explicit preferences are separate from rating
+scores. Criterion evidence needs at least three detailed votes; five neutral
+prior votes moderate small samples. Empty histories use clearly labeled discovery
+suggestions. This is deterministic content-based ranking, not collaborative
+filtering or a calibrated probability. See docs/decisions/0006-book-recommendations.md.
+
+Validation: frontend build/lint, 32 Community unit tests, 18 rating/discovery API
+tests and seven architecture tests pass. Browser verification covered saving
+Bilim Kurgu + Tempo, changed reasons, persistence after reload, and desktop/390px
+layouts. The disposable account and its preferences were removed. Next product
+steps: recommendation feedback and diversity, then repeatable browser E2E tests.
+Film/series support remains deferred.
+
+Recommendation feedback now persists per (UserId, BookId) in
+community.RecommendationFeedback (migration 20260916132629, applied locally).
+PUT/DELETE `/api/community/me/recommendations/{bookId}/feedback` sets interested,
+dismissed, or clears feedback. Interest supplies a weaker +1 genre/author signal;
+dismissal excludes only the exact book. It does not alter ratings or library
+status. The recommendation response includes the caller's feedback history,
+including unavailable catalog books, so undo remains available after navigation.
+UI refresh preserves unsaved preference drafts. After a successful write, undo
+controls remain usable even if recommendation refresh fails. Validation: 34
+Community unit tests and 19 rating/discovery API tests passed; browser verified
+interest, dismissal, replacement recommendations and undo on a disposable account.
+
+### Existing engineering backlog
+
 1. Exercise login, local book discovery, library changes, detailed evaluations
    and profile selections together in a browser; add repeatable E2E coverage.
 2. Define authorization policies for catalog writes and bulk import jobs; currently

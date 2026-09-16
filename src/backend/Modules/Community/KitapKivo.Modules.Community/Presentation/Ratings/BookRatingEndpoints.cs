@@ -11,6 +11,10 @@ internal static class BookRatingEndpoints
 {
     public static RouteGroupBuilder MapBookRatingEndpoints(this RouteGroupBuilder group)
     {
+        group.MapGet("/me/rating-prompts", GetPromptsAsync)
+            .WithName("GetMyRatingPrompts")
+            .RequireAuthorization()
+            .Produces<RatingPromptsResult>();
         group.MapGet("/books/{bookId:guid}/ratings", GetAsync)
             .WithName("GetBookRatings")
             .Produces<RatingResult>()
@@ -27,6 +31,17 @@ internal static class BookRatingEndpoints
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
         return group;
+    }
+
+    private static async Task<IResult> GetPromptsAsync(
+        ClaimsPrincipal user, HttpContext httpContext, GetRatingPromptsHandler handler,
+        CancellationToken cancellationToken)
+    {
+        httpContext.Response.Headers.CacheControl = "no-store";
+        var userId = TryGetUserId(user);
+        return userId.HasValue
+            ? Results.Ok(await handler.HandleAsync(userId.Value, cancellationToken))
+            : Results.Unauthorized();
     }
 
     private static async Task<IResult> GetAsync(

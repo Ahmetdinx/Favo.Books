@@ -1,6 +1,12 @@
 import { Link } from 'react-router'
+import { useAuth } from '../auth/useAuth'
+import BookRecommendations from '../community/BookRecommendations'
+import RatingPrompts from '../community/RatingPrompts'
 
 function HomePage() {
+    const { session, isInitializing } = useAuth()
+    if (isInitializing) return <p role="status">Kitaplığın hazırlanıyor…</p>
+    if (session) return <div><BookRecommendations home /><RatingPrompts /></div>
     return (
         <section className="home-page">
             <div className="hero-copy">

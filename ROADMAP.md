@@ -48,6 +48,10 @@ added by the user without developer intervention, with understandable failure st
 ## Milestone 3: Community MVP
 
 - [x] Seven independent criterion scores, specified weights, criterion averages and legacy-vote migration.
+- [x] Private profile reminders for up to three read books without detailed ratings, with direct links to the rating form and optional dismissal.
+- [x] Capture reading preferences and deliver explainable personalized book recommendations; distinguish criterion importance from a book's criterion scores.
+- [x] Persist recommendation interest/dismissal feedback with undo and account isolation.
+- [ ] Add recommendation diversity; measure quality and replace full in-memory catalog/rating scans with a bounded read model before scaling.
 - [ ] Catalog sorting/filtering by overall or selected criterion, before pagination.
 - [ ] Publish/edit/delete reviews, ownership, pagination and spoiler behavior.
 - [ ] Add/edit/delete review comments with ownership checks.
@@ -68,5 +72,6 @@ other's content. Following, likes and activity feeds are not required.
 ## Deferred candidates
 
 Wikidata enrichment, Google Books fallback, agreements for Turkish edition data,
-recommendations, following, likes, feeds, notifications and dedicated admin UI.
+following, likes, feeds, notifications and dedicated admin UI. Film/series support
+remains outside the current book-only scope.
 Measure data gaps before adding commercial providers. Do not scrape Milli Kutuphane.

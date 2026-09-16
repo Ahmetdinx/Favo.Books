@@ -81,6 +81,43 @@ namespace KitapKivo.Modules.Community.Persistence.Migrations
                             t.HasCheckConstraint("CK_BookRatings_CompleteScores", "(\n    \"LegacyScore\" IS NOT NULL AND \"LegacyScore\" BETWEEN 1 AND 5\n    AND \"Theme\" IS NULL AND \"Language\" IS NULL AND \"Characters\" IS NULL\n    AND \"Structure\" IS NULL AND \"Pace\" IS NULL AND \"Impact\" IS NULL\n    AND \"Experience\" IS NULL AND \"OverallScore\" IS NULL\n)\nOR\n(\n    \"LegacyScore\" IS NULL\n    AND \"Theme\" IS NOT NULL AND \"Theme\" BETWEEN 1 AND 10\n    AND \"Language\" IS NOT NULL AND \"Language\" BETWEEN 1 AND 10\n    AND \"Characters\" IS NOT NULL AND \"Characters\" BETWEEN 1 AND 10\n    AND \"Structure\" IS NOT NULL AND \"Structure\" BETWEEN 1 AND 10\n    AND \"Pace\" IS NOT NULL AND \"Pace\" BETWEEN 1 AND 10\n    AND \"Impact\" IS NOT NULL AND \"Impact\" BETWEEN 1 AND 10\n    AND \"Experience\" IS NOT NULL AND \"Experience\" BETWEEN 1 AND 10\n    AND \"OverallScore\" IS NOT NULL\n    AND \"OverallScore\" =\n        (15 * (\"Theme\" + \"Language\" + \"Characters\" + \"Structure\" + \"Impact\" + \"Experience\")\n         + 10 * \"Pace\") / 100.0\n)");
                         });
                 });
+
+            modelBuilder.Entity("KitapKivo.Modules.Community.Domain.Ratings.ReadingPreference", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.PrimitiveCollection<string[]>("Categories")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.PrimitiveCollection<string[]>("Criteria")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("ReadingPreferences", "community");
+                });
+
+            modelBuilder.Entity("KitapKivo.Modules.Community.Domain.Ratings.RecommendationFeedback", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Choice")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)");
+
+                    b.HasKey("UserId", "BookId");
+
+                    b.ToTable("RecommendationFeedback", "community");
+                });
 #pragma warning restore 612, 618
         }
     }

@@ -1,0 +1,34 @@
+.personal-discovery { margin: 28px 0; color: var(--library-ink); }
+.personal-discovery :is(h1, h2) { font: 1.7rem Georgia, serif; margin: 8px 0 12px; }
+.discovery-intro, .discovery-hint, .discovery-footnote { color: var(--library-muted); line-height: 1.65; font-size: .9rem; max-width: 80ch; }
+.reading-preferences { margin: 20px 0; background: var(--library-paper); border: 1px solid var(--library-line); border-radius: 10px; padding: 18px; }
+.reading-preferences summary { cursor: pointer; font-weight: 600; }
+.reading-preferences summary span { display: inline-block; margin-left: 12px; font-weight: 400; font-size: .8rem; }
+.reading-preferences form > p { font-size: .85rem; line-height: 1.7; color: var(--library-muted); }
+.reading-preferences fieldset { border: 0; padding: 12px 0; margin: 12px 0; min-width: 0; }
+.reading-preferences legend small { font-weight: 400; color: var(--library-muted); margin-left: 8px; }
+.preference-options { display: flex; flex-wrap: wrap; gap: 10px; }
+.preference-options label { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--library-line); border-radius: 8px; font-size: .85rem; cursor: pointer; }
+.preference-options input { width: 16px; height: 16px; accent-color: var(--library-accent); }
+.preference-options label:has(:checked) { background: var(--library-line); }
+.preference-options label:has(:disabled) { opacity: .6; }
+.recommendation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.recommendation-grid article { padding: 18px; border: 1px solid var(--library-line); background: var(--library-paper); border-radius: 10px; }
+.recommendation-book { display: flex; align-items: center; gap: 14px; }
+.recommendation-book img { width: 58px; height: 86px; object-fit: cover; border-radius: 3px; flex-shrink: 0; }
+.recommendation-book h3 { font: 1.1rem/1.4 Georgia, serif; overflow-wrap: anywhere; margin: 0; }
+.recommendation-grid ul { padding-left: 17px; color: var(--library-muted); font-size: .82rem; line-height: 1.6; }
+.recommendation-grid small, .discovery-footnote { color: var(--library-muted); font-size: .75rem; }
+.recommendation-feedback-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.recommendation-feedback-actions button, .recommendation-feedback-history button, .recommendation-refresh { border: 1px solid var(--library-line); border-radius: 6px; padding: 8px 10px; background: transparent; color: var(--library-ink); cursor: pointer; font: inherit; font-size: .78rem; }
+.recommendation-feedback-actions button[aria-pressed="true"] { background: var(--library-line); }
+.recommendation-feedback-history { margin: 16px 0; padding: 16px; border: 1px solid var(--library-line); border-radius: 8px; }
+.recommendation-feedback-history summary { cursor: pointer; }
+.recommendation-feedback-history p { font-size: .85rem; line-height: 1.6; color: var(--library-muted); }
+.recommendation-feedback-history ul { padding: 0; list-style: none; max-height: 320px; overflow-y: auto; }
+.recommendation-feedback-history li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; font-size: .85rem; }
+.recommendation-feedback-history li span { overflow-wrap: anywhere; min-width: 0; }
+.recommendation-feedback-history button { flex-shrink: 0; }
+.personal-discovery button:disabled { cursor: wait; opacity: .6; }
+@media(max-width: 900px) { .recommendation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media(max-width: 580px) { .recommendation-grid { grid-template-columns: 1fr; } .reading-preferences summary span { display: block; margin: 8px 0 0; } }

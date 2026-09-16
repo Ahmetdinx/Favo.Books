@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
 import { getBookRatings, RatingApiError, removeBookRating, setBookRating } from './communityApi'
@@ -32,6 +32,9 @@ function formatScore(value: number) {
 }
 
 function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
+    const { hash } = useLocation()
+    const panel = useRef<HTMLElement | null>(null)
+    const followedAnchor = useRef(false)
     const authenticatedFetch = useAuthenticatedFetch()
     const [summary, setSummary] = useState<BookRatingSummary | null>(null)
     const [draft, setDraft] = useState<RatingDraft>(emptyRatingDraft)
@@ -41,6 +44,14 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
     const [message, setMessage] = useState('')
     const [reload, setReload] = useState(0)
     const pendingWrite = useRef<AbortController | null>(null)
+
+    useEffect(() => {
+        if (hash !== '#book-rating') { followedAnchor.current = false; return }
+        if (isLoading || !summary || followedAnchor.current) return
+        followedAnchor.current = true
+        panel.current?.scrollIntoView({ block: 'start', behavior: 'instant' })
+        panel.current?.focus({ preventScroll: true })
+    }, [hash, isLoading, summary])
 
     useEffect(() => {
         const controller = new AbortController()
@@ -112,7 +123,7 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
     const hasRating = !!summary?.currentUserRating || summary?.currentUserLegacyScore != null
 
     return (
-        <section className="detailed-rating" aria-labelledby="book-rating-title" aria-busy={isLoading || isSaving}>
+        <section ref={panel} id="book-rating" tabIndex={-1} className="detailed-rating" aria-labelledby="book-rating-title" aria-busy={isLoading || isSaving}>
             <header className="detailed-rating-header">
                 <div>
                     <p className="eyebrow">Okurların değerlendirmesi</p>

@@ -15,6 +15,8 @@ import {
 import { useAuth } from '../auth/useAuth'
 
 import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
+import RatingPrompts from '../community/RatingPrompts'
+import BookRecommendations from '../community/BookRecommendations'
 
 import {
     getBookSummaries,
@@ -660,6 +662,8 @@ function ProfilePage() {
                 </aside>
             </header>
 
+            <RatingPrompts />
+            <BookRecommendations />
             <ProfileFeaturedBooksSection />
             <section
                 className="profile-summary-section"

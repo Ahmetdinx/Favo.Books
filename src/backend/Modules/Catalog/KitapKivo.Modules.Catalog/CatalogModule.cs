@@ -56,6 +56,7 @@ public static class CatalogModule
             options =>
                 options.UseNpgsql(
                     connectionString));
+        services.AddScoped<IDiscoveryCatalog, DiscoveryCatalog>();
 
         services.AddOptions<OpenLibraryOptions>()
             .Bind(

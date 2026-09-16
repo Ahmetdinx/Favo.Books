@@ -187,6 +187,179 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
         Assert.Equal(HttpStatusCode.NotFound, missing.StatusCode);
     }
 
+    [Fact]
+    public async Task RatingPrompts_ArePrivateAndOnlyIncludeOwnUnratedReadBooks()
+    {
+        using HttpResponseMessage guest = await _client.GetAsync("/api/community/me/rating-prompts");
+        Assert.Equal(HttpStatusCode.Unauthorized, guest.StatusCode);
+        await AuthenticateAsync();
+        Guid anotherUsersBook = await CatalogTestData.CreateBookAsync(_client);
+        await AddToLibraryAsync(anotherUsersBook, "Read");
+        await AuthenticateAsync();
+        Guid read = await CatalogTestData.CreateBookAsync(_client);
+        Guid reading = await CatalogTestData.CreateBookAsync(_client);
+        Guid wanted = await CatalogTestData.CreateBookAsync(_client);
+        await AddToLibraryAsync(read, "Read");
+        await AddToLibraryAsync(reading, "Reading");
+        await AddToLibraryAsync(wanted, "WantToRead");
+        Assert.Equal(new[] { read }, await GetPromptsAsync());
+        using JsonDocument rated = await SetAsync(read, Scores(8));
+        Assert.Empty(await GetPromptsAsync());
+        using HttpResponseMessage deleted = await _client.DeleteAsync($"/api/community/books/{read}/rating");
+        Assert.Equal(HttpStatusCode.NoContent, deleted.StatusCode);
+        Assert.Equal(new[] { read }, await GetPromptsAsync());
+    }
+
+    [Fact]
+    public async Task RatingPrompts_ShowThreeMostRecentlyCompletedBooks()
+    {
+        await AuthenticateAsync();
+        List<Guid> books = [];
+        for (int i = 0; i < 5; i++)
+        {
+            Guid book = await CatalogTestData.CreateBookAsync(_client);
+            books.Add(book);
+            await AddToLibraryAsync(book, "Read");
+        }
+        Assert.Equal(books.AsEnumerable().Reverse().Take(3), await GetPromptsAsync());
+        using JsonDocument rated = await SetAsync(books[^1], Scores(7));
+        Assert.Equal(books.Take(4).Reverse().Take(3), await GetPromptsAsync());
+    }
+
+    [Fact]
+    public async Task RatingPrompts_IncludeLegacyVotesUntilUpgraded()
+    {
+        Guid userId = await AuthenticateAsync();
+        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        await AddToLibraryAsync(bookId, "Read");
+        using (IServiceScope scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<CommunityDbContext>();
+            Guid id = Guid.NewGuid();
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            await db.Database.ExecuteSqlInterpolatedAsync($"""
+                INSERT INTO community."BookRatings" ("Id", "UserId", "BookId", "LegacyScore", "CreatedAtUtc", "UpdatedAtUtc")
+                VALUES ({id}, {userId}, {bookId}, 5, {now}, {now})
+                """);
+        }
+        Assert.Equal(new[] { bookId }, await GetPromptsAsync());
+        using JsonDocument upgraded = await SetAsync(bookId, Scores(9));
+        Assert.Empty(await GetPromptsAsync());
+    }
+
+    [Fact]
+    public async Task Preferences_AreValidatedPersistedAndIsolatedByUser()
+    {
+        using HttpResponseMessage anonymous = await _client.GetAsync("/api/community/me/recommendations");
+        Assert.Equal(HttpStatusCode.Unauthorized, anonymous.StatusCode);
+        using HttpResponseMessage anonymousWrite = await _client.PutAsJsonAsync("/api/community/me/reading-preferences", new { Categories = Array.Empty<string>(), Criteria = new[] { "pace" } });
+        Assert.Equal(HttpStatusCode.Unauthorized, anonymousWrite.StatusCode);
+        await AuthenticateAsync();
+        using HttpResponseMessage saved = await _client.PutAsJsonAsync("/api/community/me/reading-preferences", new { Categories = Array.Empty<string>(), Criteria = new[] { "pace", "language" } });
+        Assert.Equal(HttpStatusCode.NoContent, saved.StatusCode);
+        foreach (var criteria in new[] { new[] { "unknown" }, new[] { "pace", "pace" }, new[] { "pace", "language", "theme", "impact" } })
+        {
+            using var invalid = await _client.PutAsJsonAsync("/api/community/me/reading-preferences", new { Categories = Array.Empty<string>(), Criteria = criteria });
+            Assert.Equal(HttpStatusCode.BadRequest, invalid.StatusCode);
+        }
+        using var preferenceResponse = await _client.GetAsync("/api/community/me/reading-preferences");
+        Assert.True(preferenceResponse.Headers.CacheControl?.NoStore);
+        using var preference = (await preferenceResponse.Content.ReadFromJsonAsync<JsonDocument>())!;
+        Assert.Equal(2, preference.RootElement.GetProperty("criteria").GetArrayLength());
+        await AuthenticateAsync();
+        using var other = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/reading-preferences"))!;
+        Assert.Empty(other.RootElement.GetProperty("criteria").EnumerateArray());
+    }
+
+    [Fact]
+    public async Task Recommendations_UseCoveredTurkishEditionsAndExcludeStartedBooks()
+    {
+        await AuthenticateAsync();
+        Guid eligible = await CatalogTestData.CreateBookAsync(_client);
+        Guid english = await CatalogTestData.CreateBookAsync(_client);
+        Guid uncovered = await CatalogTestData.CreateBookAsync(_client);
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<KitapKivo.Modules.Catalog.Persistence.CatalogDbContext>();
+            db.Add(new KitapKivo.Modules.Catalog.Domain.Editions.Edition(eligible, "Türkçe kitap", "tur", default, coverImageUrl: "https://example.test/tr.jpg"));
+            db.Add(new KitapKivo.Modules.Catalog.Domain.Editions.Edition(english, "English book", "eng", default, coverImageUrl: "https://example.test/en.jpg"));
+            db.Add(new KitapKivo.Modules.Catalog.Domain.Editions.Edition(uncovered, "Kapaksız", "tr", default));
+            await db.SaveChangesAsync();
+        }
+        using var response = await _client.GetAsync("/api/community/me/recommendations");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.True(response.Headers.CacheControl?.NoStore);
+        using var body = (await response.Content.ReadFromJsonAsync<JsonDocument>())!;
+        var ids = body.RootElement.GetProperty("items").EnumerateArray().Select(b => b.GetProperty("bookId").GetGuid()).ToArray();
+        Assert.Contains(eligible, ids);
+        Assert.DoesNotContain(english, ids);
+        Assert.DoesNotContain(uncovered, ids);
+        await AddToLibraryAsync(eligible, "Reading");
+        using var after = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/recommendations"))!;
+        Assert.DoesNotContain(after.RootElement.GetProperty("items").EnumerateArray(), b => b.GetProperty("bookId").GetGuid() == eligible);
+    }
+
+    [Fact]
+    public async Task RecommendationFeedback_PersistsUpdatesIsolatesAndCanBeUndone()
+    {
+        using var guest = await _client.PutAsJsonAsync($"/api/community/me/recommendations/{Guid.NewGuid()}/feedback", new { Choice = "interested" });
+        Assert.Equal(HttpStatusCode.Unauthorized, guest.StatusCode);
+        await AuthenticateAsync();
+        var firstUserAuthorization = _client.DefaultRequestHeaders.Authorization;
+        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<KitapKivo.Modules.Catalog.Persistence.CatalogDbContext>();
+            db.Add(new KitapKivo.Modules.Catalog.Domain.Editions.Edition(bookId, "Geri bildirim testi", "tr", default, coverImageUrl: "https://example.test/feedback.jpg"));
+            await db.SaveChangesAsync();
+        }
+        string path = $"/api/community/me/recommendations/{bookId}/feedback";
+        using var invalid = await _client.PutAsJsonAsync(path, new { Choice = "bad" });
+        Assert.Equal(HttpStatusCode.BadRequest, invalid.StatusCode);
+        using var missing = await _client.PutAsJsonAsync($"/api/community/me/recommendations/{Guid.NewGuid()}/feedback", new { Choice = "interested" });
+        Assert.Equal(HttpStatusCode.NotFound, missing.StatusCode);
+        using var interest = await _client.PutAsJsonAsync(path, new { Choice = "interested" });
+        Assert.Equal(HttpStatusCode.NoContent, interest.StatusCode);
+        using var first = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/recommendations"))!;
+        Assert.Equal("interested", Assert.Single(first.RootElement.GetProperty("feedback").EnumerateArray()).GetProperty("choice").GetString());
+        using var dismissed = await _client.PutAsJsonAsync(path, new { Choice = "dismissed" });
+        Assert.Equal(HttpStatusCode.NoContent, dismissed.StatusCode);
+        using var second = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/recommendations"))!;
+        Assert.Single(second.RootElement.GetProperty("feedback").EnumerateArray());
+        Assert.DoesNotContain(second.RootElement.GetProperty("items").EnumerateArray(), b => b.GetProperty("bookId").GetGuid() == bookId);
+        await AuthenticateAsync();
+        using var other = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/recommendations"))!;
+        Assert.Empty(other.RootElement.GetProperty("feedback").EnumerateArray());
+        using var otherDelete = await _client.DeleteAsync(path);
+        Assert.Equal(HttpStatusCode.NoContent, otherDelete.StatusCode);
+        _client.DefaultRequestHeaders.Authorization = firstUserAuthorization;
+        using var unchanged = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/recommendations"))!;
+        Assert.Single(unchanged.RootElement.GetProperty("feedback").EnumerateArray());
+        using var undo = await _client.DeleteAsync(path);
+        Assert.Equal(HttpStatusCode.NoContent, undo.StatusCode);
+        using var restored = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/recommendations"))!;
+        Assert.Empty(restored.RootElement.GetProperty("feedback").EnumerateArray());
+        Assert.Contains(restored.RootElement.GetProperty("items").EnumerateArray(), b => b.GetProperty("bookId").GetGuid() == bookId);
+        using var rating = await GetAsync(bookId);
+        Assert.Equal(0, rating.RootElement.GetProperty("ratingCount").GetInt32());
+    }
+
+    private async Task AddToLibraryAsync(Guid bookId, string status)
+    {
+        using HttpResponseMessage response = await _client.PostAsJsonAsync(
+            "/api/reading/library", new { BookId = bookId, Status = status });
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+    }
+
+    private async Task<Guid[]> GetPromptsAsync()
+    {
+        using HttpResponseMessage response = await _client.GetAsync("/api/community/me/rating-prompts");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.True(response.Headers.CacheControl?.NoStore);
+        using JsonDocument body = (await response.Content.ReadFromJsonAsync<JsonDocument>())!;
+        return body.RootElement.GetProperty("bookIds").EnumerateArray().Select(id => id.GetGuid()).ToArray();
+    }
+
     private async Task<JsonDocument> SetAsync(Guid bookId, object scores)
     {
         using HttpResponseMessage response = await _client.PutAsJsonAsync(

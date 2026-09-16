@@ -54,6 +54,11 @@ public static class ReadingModule
         services.AddScoped<
             RemoveBookFromLibraryHandler>();
 
+        services.AddScoped<KitapKivo.SharedKernel.Reading.ICompletedBooks,
+            Application.LibraryEntries.CompletedBooks>();
+        services.AddScoped<KitapKivo.SharedKernel.Reading.IReadingHistory,
+            Application.LibraryEntries.ReadingHistory>();
+
         return services;
     }
 }
