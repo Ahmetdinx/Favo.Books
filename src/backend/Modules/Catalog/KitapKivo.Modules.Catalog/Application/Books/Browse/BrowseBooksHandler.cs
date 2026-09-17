@@ -113,17 +113,20 @@ public sealed class BrowseBooksHandler
                             book.FirstPublishedYear.HasValue)
                         .ThenByDescending(book =>
                             book.FirstPublishedYear)
-                        .ThenBy(book => book.Title),
+                        .ThenBy(book => book.Title)
+                        .ThenBy(book => book.Id),
 
                 _ =>
                     books
                         .OrderByDescending(book =>
                             book.CreatedAtUtc)
                         .ThenBy(book => book.Title)
+                        .ThenBy(book => book.Id)
             };
 
         BrowseBookItemResult[] items =
             await orderedBooks
+                .AsSplitQuery()
                 .Skip((query.Page - 1) * query.PageSize)
                 .Take(query.PageSize)
                 .Select(book =>

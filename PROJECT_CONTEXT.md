@@ -99,6 +99,14 @@ desktop/390px profile and rating layouts. The disposable test account was remove
 
 ## Next work, in order
 
+Catalog performance update (2026-09-17): medium Open Library cover URLs in cards,
+first-two-image priority, async decoding/preconnect, bounded 60-second page/category
+caches, split metadata queries and deterministic paging indexes. Migration
+20260917055222_OptimizeCatalogPaging applied locally. Frontend build/lint, three
+catalog tests and two API tests passed, including an isolated 100k-book fixture.
+Warm first-page measurements were 13–14 ms; one cover sample shrank 63.5% in bytes.
+See docs/catalog-performance.md for methodology and remaining scaling limits.
+
 ### Current book-only recommendation groundwork
 
 The profile now gently invites users to evaluate up to three recently completed,
@@ -161,3 +169,21 @@ interest, dismissal, replacement recommendations and undo on a disposable accoun
 
 See README for setup and ROADMAP for acceptance criteria. Preserve module
 boundaries; do not add cross-module DbContext access or a generic repository.
+
+### Catalog test-data checkpoint (2026-09-17)
+
+The user stopped the 10,000-book import because the current dataset is sufficient.
+Do not resume importing unless explicitly requested. The importer was terminated.
+Verified local catalog total: 9,858 books. The run manifest contains 8,754 distinct
+book IDs, all present in the database, with Turkish-edition cover URLs and authors;
+no foreign editions or duplicate ISBN-13 values were found in this manifest batch.
+Cover URL metadata was checked, not every remote image download.
+Cached source pages and created.jsonl remain in artifacts/catalog-import-20260917;
+the last manifest entry is on page 298. verification.json records the checks.
+The total exceeds the previously recorded baseline (1,103) plus manifest count by
+one. The latest non-manifest book is 6b0510c3-c2e2-4d95-ba34-c863355734b9
+(Taş Can ve Kutsal, created 2026-09-17T06:25:01.340Z). Its provenance has not been
+reconciled; do not assume the manifest identifies every addition or use it as a
+complete rollback inventory. Existing records were preserved.
+Catalog performance changes and seed-tool limit changes remain uncommitted.
+Continue development/testing with this dataset; no further import is pending.

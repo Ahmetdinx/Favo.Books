@@ -1,3 +1,4 @@
+import { createCatalogCache } from './catalogCache.ts'
 import type {
     BookDetailsResponse,
     BookSummariesRequest,
@@ -7,17 +8,24 @@ import type {
 } from './catalogTypes'
 
 export type CatalogCategory = { categoryId: string; name: string; slug: string; bookCount: number }
+const pageCache = createCatalogCache<BrowseBooksResponse>()
+const categoryCache = createCatalogCache<CatalogCategory[]>(1)
 
 export async function getCatalogCategories(signal?: AbortSignal): Promise<CatalogCategory[]> {
+    signal?.throwIfAborted()
+    const cached = categoryCache.get('categories')
+    if (cached) return cached
     const response = await fetch('/api/catalog/categories', { signal })
     if (!response.ok) throw new Error('Kitap türleri yüklenemedi.')
     const result = await response.json() as { items: CatalogCategory[] }
+    if (!signal?.aborted) categoryCache.set('categories', result.items)
     return result.items
 }
 
 export async function browseBooks(
     request: BrowseBooksRequest,
     signal?: AbortSignal,
+    refresh = false,
 ): Promise<BrowseBooksResponse> {
     const parameters = new URLSearchParams()
 
@@ -48,6 +56,10 @@ export async function browseBooks(
     )
 
     parameters.set('sort', request.sort)
+    signal?.throwIfAborted()
+    const cacheKey = parameters.toString()
+    const cached = refresh ? undefined : pageCache.get(cacheKey)
+    if (cached) return cached
 
     const response = await fetch(
         `/api/catalog/books?${parameters.toString()}`,
@@ -65,8 +77,9 @@ export async function browseBooks(
         )
     }
 
-    return (await response.json()) as
-        BrowseBooksResponse
+    const result = await response.json() as BrowseBooksResponse
+    if (!signal?.aborted) pageCache.set(cacheKey, result)
+    return result
 }
 
 export async function getBookById(

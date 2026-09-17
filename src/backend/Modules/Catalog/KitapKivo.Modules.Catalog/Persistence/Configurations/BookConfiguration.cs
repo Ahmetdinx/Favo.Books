@@ -32,7 +32,9 @@ internal sealed class BookConfiguration :
         builder.Property(book => book.CreatedAtUtc)
             .IsRequired();
 
-        builder.HasIndex(book => book.Title);
+        builder.HasIndex(book => new { book.CreatedAtUtc, book.Title, book.Id })
+            .IsDescending(true, false, false);
+        builder.HasIndex(book => new { book.Title, book.Id });
 
         builder.HasIndex(book => book.OriginalTitle);
     }

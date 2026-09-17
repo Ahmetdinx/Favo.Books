@@ -8,6 +8,8 @@ dotnet run --project tools/KitapKivo.CatalogSeed -- 1000 artifacts/catalog-impor
 ```
 
 The number is the desired count of newly created books for this run directory.
+The accepted target range is 1–10,000; scanning stops at empty source results or
+1,000 pages. A target is not a guarantee that enough eligible source books exist.
 Open Library Search is queried with `language:tur`, `lang=tr` and explicit nested
 edition fields. Only returned editions with a Turkish language tag, positive
 edition cover ID, title and work authors are accepted. Work-level covers are never

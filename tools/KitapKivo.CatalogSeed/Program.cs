@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
-if (args.Length != 2 || !int.TryParse(args[0], out var target) || target is < 1 or > 5000)
-    throw new ArgumentException("Usage: CatalogSeed <target-new-books:1..5000> <run-directory>");
+if (args.Length != 2 || !int.TryParse(args[0], out var target) || target is < 1 or > 10000)
+    throw new ArgumentException("Usage: CatalogSeed <target-new-books:1..10000> <run-directory>");
 var runDirectory = Path.GetFullPath(args[1]);
 Directory.CreateDirectory(runDirectory);
 var config = new ConfigurationBuilder().AddUserSecrets(Assembly.Load("KitapKivo.Api"))
@@ -43,7 +43,7 @@ var failures = 0;
 using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
 http.DefaultRequestHeaders.UserAgent.ParseAdd("KitapKivo/1.0 (Turkish-edition catalog import)");
 Console.WriteLine($"Target new books: {target}; already recorded in this run: {created}");
-for (var page = 1; page <= 150 && created < target; page++)
+for (var page = 1; page <= 1000 && created < target; page++)
 {
     var cache = Path.Combine(runDirectory, $"search-{page:D3}.json");
     string json;

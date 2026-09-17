@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test:ratings": "node --experimental-strip-types --test tests/ratingCalculations.test.mjs",
+    "test:catalog": "node --experimental-strip-types --test tests/catalogPerformance.test.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

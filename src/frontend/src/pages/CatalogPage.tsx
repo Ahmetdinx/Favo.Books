@@ -1,5 +1,6 @@
 import {
     useEffect,
+    useRef,
     useState,
     type SyntheticEvent,
 } from 'react'
@@ -10,6 +11,7 @@ import {
 } from 'react-router'
 
 import { browseBooks, getCatalogCategories, type CatalogCategory } from '../catalog/catalogApi'
+import { catalogCoverUrl } from '../catalog/coverImage'
 
 import type {
     BrowseBooksResponse,
@@ -52,11 +54,13 @@ function parseSort(
 type BookCoverProps = {
     coverImageUrl: string | null
     title: string
+    priority: boolean
 }
 
 function BookCover({
     coverImageUrl,
     title,
+    priority,
 }: BookCoverProps) {
     const [hasError, setHasError] =
         useState(false)
@@ -80,9 +84,13 @@ function BookCover({
     return (
         <img
             className="catalog-cover-image"
-            src={coverImageUrl}
+            src={catalogCoverUrl(coverImageUrl)}
             alt={`${title} kitap kapağı`}
-            loading="lazy"
+            width={124}
+            height={184}
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
             onError={() => setHasError(true)}
         />
     )
@@ -160,6 +168,7 @@ function CatalogPage() {
         requestVersion,
         setRequestVersion,
     ] = useState(0)
+    const retriedVersion = useRef(0)
 
     useEffect(() => {
         setDraftQuery(query)
@@ -171,6 +180,8 @@ function CatalogPage() {
             new AbortController()
 
         async function loadBooks() {
+            const refresh = retriedVersion.current !== requestVersion
+            retriedVersion.current = requestVersion
             setIsLoading(true)
             setErrorMessage('')
 
@@ -186,6 +197,7 @@ function CatalogPage() {
                             sort,
                         },
                         controller.signal,
+                        refresh,
                     )
 
                 if (!controller.signal.aborted) setResult(response)
@@ -491,7 +503,7 @@ function CatalogPage() {
                     <>
                         <div className="catalog-grid">
                             {result.items.map(
-                                (book) => (
+                                (book, index) => (
                                     <article
                                         className="catalog-book-card"
                                         key={book.bookId}
@@ -507,6 +519,7 @@ function CatalogPage() {
                                                         book.coverImageUrl
                                                     }
                                                     title={book.title}
+                                                    priority={index < 2}
                                                 />
                                             </div>
                                         </Link>

@@ -86,7 +86,10 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
 
                     b.HasIndex("OriginalTitle");
 
-                    b.HasIndex("Title");
+                    b.HasIndex("Title", "Id");
+
+                    b.HasIndex("CreatedAtUtc", "Title", "Id")
+                        .IsDescending(true, false, false);
 
                     b.ToTable("Books", "catalog");
                 });
