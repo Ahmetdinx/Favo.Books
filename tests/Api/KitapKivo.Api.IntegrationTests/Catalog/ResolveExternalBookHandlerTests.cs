@@ -1,4 +1,5 @@
-﻿using KitapKivo.Modules.Catalog.Application
+using KitapKivo.Modules.Catalog.Application.Books;
+using KitapKivo.Modules.Catalog.Application
     .Abstractions.ExternalBooks;
 using KitapKivo.Modules.Catalog.Application
     .Books.ResolveExternal;
@@ -417,7 +418,7 @@ public sealed class ResolveExternalBookHandlerTests
             "/works/OL10002W",
             "Existing Book",
             null,
-            [],
+            [new ExternalBookAuthor(null, "Test Author")],
             2000,
             null,
             [],
@@ -679,6 +680,9 @@ public sealed class ResolveExternalBookHandlerTests
         {
             builder.ConfigureTestServices(services =>
             {
+                services.RemoveAll<IApprovedNovelCatalog>();
+                services.AddSingleton<IApprovedNovelCatalog>(new FixtureNovelCatalog((IFixtureNovelDetails)detailsClient, id => id == "/works/OL10001W" ? "Dune" : id == "/works/OL11005W" ? "Dune: Çöl Gezegeni" : "Türkçe Test Baskısı"));
+
                 services.RemoveAll<
                     IExternalBookDetailsClient>();
 
@@ -696,8 +700,9 @@ public sealed class ResolveExternalBookHandlerTests
 
     private sealed class StubExternalBookDetailsClient(
         ExternalBookDetails? result)
-        : IExternalBookDetailsClient
+        : IExternalBookDetailsClient, IFixtureNovelDetails
     {
+        public ExternalBookDetails? Fixture(string id) => result;
         public int CallCount { get; private set; }
 
         public string? ExternalId
@@ -790,7 +795,7 @@ public sealed class ResolveExternalBookHandlerTests
                 null,
                 320,
                 2024,
-                null,
+                "https://example.com/turkish-fixture.jpg",
                 null);
         }
     }

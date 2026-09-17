@@ -7,6 +7,13 @@ internal static class SubjectCategoryMapper
 {
     private static readonly CategoryRule[] Rules =
     [
+        new("tarihi-roman", ["historical fiction", "historical novel", "tarihi roman", "tarihî roman"]),
+        new("psikolojik-roman", ["psychological fiction", "psychological novel", "psikolojik roman"]),
+        new("ask-ve-romantik", ["romance fiction", "romance novel", "romantik roman", "aşk roman"]),
+        new("macera", ["adventure fiction", "adventure novel", "macera roman"]),
+        new("gerilim", ["thriller", "suspense fiction", "gerilim roman"]),
+        new("korku", ["horror fiction", "horror novel", "korku roman"]),
+        new("distopya", ["dystopian", "dystopia", "distopya"]),
         new(
             CatalogCategorySlugs.Novel,
             [

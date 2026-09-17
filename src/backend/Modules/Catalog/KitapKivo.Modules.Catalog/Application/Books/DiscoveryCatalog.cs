@@ -9,8 +9,7 @@ internal sealed class DiscoveryCatalog(CatalogDbContext db) : IDiscoveryCatalog
     public async Task<IReadOnlyList<DiscoveryBook>> GetBooksAsync(CancellationToken cancellationToken = default)
     {
         return await db.Books.AsNoTracking()
-            .Where(b => b.Editions.Any(e => (e.LanguageCode == "tur" || e.LanguageCode == "tr")
-                && e.CoverImageUrl != null && e.CoverImageUrl != ""))
+            .EligibleNovels()
             .OrderBy(b => b.Id)
             .Select(b => new DiscoveryBook(b.Id, b.Title,
                 b.Editions.Where(e => (e.LanguageCode == "tur" || e.LanguageCode == "tr")

@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -42,7 +42,7 @@ public sealed class CatalogCategoriesEndpointTests
             responseBody.RootElement;
 
         Assert.Equal(
-            12,
+            11,
             root.GetProperty("totalCount").GetInt32());
 
         JsonElement[] items = root
@@ -50,25 +50,23 @@ public sealed class CatalogCategoriesEndpointTests
             .EnumerateArray()
             .ToArray();
 
-        Assert.Equal(12, items.Length);
+        Assert.Equal(11, items.Length);
 
         Dictionary<string, string> expectedCategories =
             new()
             {
-                ["Roman"] = "roman",
                 ["Klasikler"] = "klasikler",
                 ["Bilim Kurgu"] = "bilim-kurgu",
                 ["Fantastik"] = "fantastik",
                 ["Polisiye ve Gizem"] =
                     "polisiye-ve-gizem",
-                ["Tarih"] = "tarih",
-                ["Felsefe"] = "felsefe",
-                ["Psikoloji"] = "psikoloji",
-                ["Biyografi"] = "biyografi",
-                ["Şiir"] = "siir",
-                ["Çocuk"] = "cocuk",
-                ["Kişisel Gelişim"] =
-                    "kisisel-gelisim"
+                ["Tarihî Roman"] = "tarihi-roman",
+                ["Psikolojik Roman"] = "psikolojik-roman",
+                ["Aşk ve Romantik"] = "ask-ve-romantik",
+                ["Macera"] = "macera",
+                ["Gerilim"] = "gerilim",
+                ["Korku"] = "korku",
+                ["Distopya"] = "distopya"
             };
 
         foreach (JsonElement item in items)

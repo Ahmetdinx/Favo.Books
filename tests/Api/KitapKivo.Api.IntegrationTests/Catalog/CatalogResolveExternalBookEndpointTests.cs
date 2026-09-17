@@ -1,4 +1,5 @@
-﻿using System.Net;
+using KitapKivo.Modules.Catalog.Application.Books;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -108,7 +109,7 @@ public sealed class CatalogResolveExternalBookEndpointTests
             "/works/OL11002W",
             "Existing External Book",
             null,
-            [],
+            [new ExternalBookAuthor(null, "Test Author")],
             2001,
             null,
             [],
@@ -314,6 +315,9 @@ public sealed class CatalogResolveExternalBookEndpointTests
         {
             builder.ConfigureTestServices(services =>
             {
+                services.RemoveAll<IApprovedNovelCatalog>();
+                services.AddSingleton<IApprovedNovelCatalog>(new FixtureNovelCatalog((IFixtureNovelDetails)detailsClient));
+
                 services.RemoveAll<
                     IExternalBookDetailsClient>();
 
@@ -375,8 +379,9 @@ public sealed class CatalogResolveExternalBookEndpointTests
 
     private sealed class StubExternalBookDetailsClient(
         ExternalBookDetails? result)
-        : IExternalBookDetailsClient
+        : IExternalBookDetailsClient, IFixtureNovelDetails
     {
+        public ExternalBookDetails? Fixture(string id) => result;
         public int CallCount { get; private set; }
 
         public string? ExternalId { get; private set; }

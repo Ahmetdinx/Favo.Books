@@ -7,6 +7,25 @@ namespace KitapKivo.Modules.Catalog.UnitTests
 
 public sealed class SubjectCategoryMapperTests
 {
+    [Theory]
+    [InlineData("Historical fiction", "tarihi-roman")]
+    [InlineData("Psikolojik roman", "psikolojik-roman")]
+    [InlineData("Romance novel", "ask-ve-romantik")]
+    [InlineData("Adventure fiction", "macera")]
+    [InlineData("Thriller", "gerilim")]
+    [InlineData("Horror fiction", "korku")]
+    [InlineData("Dystopian fiction", "distopya")]
+    public void Map_RecognizesExplicitNovelGenres(string subject, string slug)
+        => Assert.Contains(slug, SubjectCategoryMapper.Map([subject]));
+
+    [Fact]
+    public void Map_DoesNotTurnGeneralSubjectsIntoNovelGenres()
+    {
+        var result = SubjectCategoryMapper.Map(["History", "Psychology", "Tarih", "Psikoloji"]);
+        Assert.DoesNotContain("tarihi-roman", result);
+        Assert.DoesNotContain("psikolojik-roman", result);
+    }
+
     [Fact]
     public void Map_ShouldReturnMatchingCategories()
     {

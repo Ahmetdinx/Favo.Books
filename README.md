@@ -1,8 +1,18 @@
 # KitapKivo
 
-KitapKivo helps readers discover books, manage a personal library, and express
-which books matter to them. Ratings are implemented; reviews and comments are the
-next major product area. It does not host book files or provide in-app reading.
+KitapKivo is evolving into personalized novel discovery and a shareable virtual
+library, limited to novels with covered Turkish editions. Ratings and recommendations
+exist; novel eligibility, nicknames, public/private profiles and achievements are
+planned. Posts, messages and comment threads are out of scope.
+It does not host book files or provide in-app reading.
+
+See the [revised product plan](docs/novel-product-plan.md) and [roadmap](ROADMAP.md).
+Planned behavior is not yet implemented.
+
+New book imports now require source-reviewed novel identity and a covered Turkish
+edition; free-form book creation is closed. The five-entry curated seed is ordered
+editorially, not by measured readership. Existing catalog visibility has not yet
+been filtered to reviewed novels. See [import policy](docs/novel-import-policy.md).
 
 ## Current status
 
@@ -22,7 +32,7 @@ Updated 2026-09-16. Implemented in code:
 
 The web catalog currently searches local records. External discovery exists in
 backend APIs but is not yet connected to a complete user-facing discovery flow.
-Community reviews and comments are not implemented yet. Public deployment and
+Community reviews and comments are excluded from the revised scope. Public deployment and
 browser E2E verification remain pending. Existing invalid book references are not
 repaired automatically.
 

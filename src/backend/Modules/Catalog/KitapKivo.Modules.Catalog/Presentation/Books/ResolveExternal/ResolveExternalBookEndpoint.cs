@@ -33,6 +33,7 @@ internal static class ResolveExternalBookEndpoint
                 StatusCodes.Status201Created)
             .Produces<ResolveExternalBookResponse>(
                 StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status422UnprocessableEntity)
             .ProducesValidationProblem(
                 StatusCodes.Status400BadRequest)
             .Produces(
@@ -69,6 +70,11 @@ internal static class ResolveExternalBookEndpoint
 
         if (!result.IsSuccess)
         {
+            if (result.RejectionReason is not null)
+                return Results.Problem(statusCode: StatusCodes.Status422UnprocessableEntity,
+                    title: "Kitap katalog ekleme koşullarını karşılamıyor.",
+                    detail: "Kaynakla doğrulanmış roman ve kapaklı Türkçe baskı gerekiyor.",
+                    extensions: new Dictionary<string, object?> { ["code"] = result.RejectionReason });
             return Results.NotFound();
         }
 

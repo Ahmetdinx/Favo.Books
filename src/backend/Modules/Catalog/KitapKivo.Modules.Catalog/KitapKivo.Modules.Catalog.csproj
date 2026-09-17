@@ -17,6 +17,9 @@
     <InternalsVisibleTo Include="KitapKivo.Modules.Catalog.UnitTests" />
     <InternalsVisibleTo Include="KitapKivo.Api.IntegrationTests" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../../../../data/curation/novel-import-priorities-v1.json" LogicalName="novel-import-priorities.json" />
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

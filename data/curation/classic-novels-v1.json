@@ -1,0 +1,47 @@
+{
+  "BatchId": "classic-novels-20260917-v1",
+  "Reviewer": "codex-assisted-source-review",
+  "PolicyVersion": "editorial-novel-v1",
+  "Entries": [
+    {
+      "WorkId": "/works/OL102749W",
+      "ExpectedTitle": "Moby Dick",
+      "ExpectedAuthor": "Herman Melville",
+      "Decision": "Novel",
+      "SourceUrl": "https://www.canyayinlari.com/moby-dick-9789750741388",
+      "EvidenceNote": "2026-09-17: Publisher identifies Melville's work as a novel and classic. Local cached edition ISBN 9789750741388 matches the publisher listing. Work-level form review; cover artwork not visually verified."
+    },
+    {
+      "WorkId": "/works/OL267096W",
+      "ExpectedTitle": "Anna Karenina",
+      "ExpectedAuthor": "Лев Толстой",
+      "Decision": "Novel",
+      "SourceUrl": "https://www.iskultur.com.tr/anna-karenina-2.aspx",
+      "EvidenceNote": "2026-09-17: Publisher identifies Tolstoy's Anna Karenina as a novel. Local work author Лев Толстой is Tolstoy; Turkish title matches. Work-level evidence only: local Iskele edition differs from the cited publisher edition."
+    },
+    {
+      "WorkId": "/works/OL10432709W",
+      "ExpectedTitle": "Karamazov Kardeşler",
+      "ExpectedAuthor": "Фёдор Достоевский",
+      "Decision": "Novel",
+      "SourceUrl": "https://www.iskultur.com.tr/karamazov-kardesler-2.aspx",
+      "EvidenceNote": "2026-09-17: Publisher classifies Dostoyevsky's work as Roman in its classics collection. Local cached edition ISBN 9789944880985 matches. Database author Фёдор Достоевский and cached spelling Fiódor Dostoievski denote Dostoyevsky."
+    },
+    {
+      "WorkId": "/works/OL24331731W",
+      "ExpectedTitle": "Babalar ve Ogullar",
+      "ExpectedAuthor": "Ivan Sergeevich Turgenev",
+      "Decision": "Novel",
+      "SourceUrl": "https://iletisim.com.tr/kitap/babalar-ve-ogullar/9037",
+      "EvidenceNote": "2026-09-17: Publisher describes Turgenev's Babalar ve Ogullar as a novel published in 1862. Title and author match the local work. Form evidence is work-level; the local Akcag edition is not the cited edition."
+    },
+    {
+      "WorkId": "/works/OL27956937W",
+      "ExpectedTitle": "Bin dokuz yüz seksen dört",
+      "ExpectedAuthor": "George Orwell",
+      "Decision": "Novel",
+      "SourceUrl": "https://www.canyayinlari.com/Uploads/Docs/117991/9789750718533.80_preview.pdf",
+      "EvidenceNote": "2026-09-17: Publisher's preview labels George Orwell's Bin Dokuz Yuz Seksen Dort ROMAN. Local title and author match. Work-level form evidence; local edition ISBN 9789750712838 is also listed by Can, but differs from this preview's ISBN."
+    }
+  ]
+}

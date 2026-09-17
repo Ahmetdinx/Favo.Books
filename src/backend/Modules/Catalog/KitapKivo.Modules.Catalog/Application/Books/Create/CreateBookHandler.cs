@@ -1,4 +1,3 @@
-﻿using KitapKivo.Modules.Catalog.Domain.Books;
 using KitapKivo.Modules.Catalog.Persistence;
 
 using Microsoft.EntityFrameworkCore;
@@ -47,30 +46,8 @@ public sealed class CreateBookHandler
                 missingAuthorIds);
         }
 
-        Book book = new(
-            command.Title,
-            command.OriginalLanguageCode,
-            command.OriginalTitle,
-            command.Description,
-            command.FirstPublishedYear);
-
-        for (int index = 0;
-             index < command.AuthorIds.Count;
-             index++)
-        {
-            BookAuthor bookAuthor = new(
-                book.Id,
-                command.AuthorIds[index],
-                index);
-
-            book.Authors.Add(bookAuthor);
-        }
-
-        _dbContext.Books.Add(book);
-
-        await _dbContext.SaveChangesAsync(
-            cancellationToken);
-
-        return CreateBookResult.Success(book.Id);
+        // This legacy command carries neither reviewed work identity nor a covered edition.
+        // Keep validation compatibility, but never persist unreviewed books through this path.
+        return new CreateBookResult(null, [], "novel_review_required");
     }
 }

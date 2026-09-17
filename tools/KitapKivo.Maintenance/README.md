@@ -1,5 +1,18 @@
 # Catalog cleanup
 
+Novel cleanup uses `report --confirmed-non-novels` and then
+`apply --confirmed-non-novels`. It selects only books whose latest editorial
+review is `NotNovel`. Missing reviews, `Unknown` decisions and subject-classifier
+candidates never authorize deletion. Unknown books are excluded from catalog and
+recommendation queries but remain stored with their user records.
+
+Backups include `catalog_NovelReviews` and `community_RecommendationFeedback`.
+Reviews are explicitly removed after backup because their book foreign key is
+restrictive. Restore reviews after books, preserving review IDs; advance the
+identity sequence if restoration introduces a higher ID. Restore feedback with
+the other user records. Report mode was checked on 2026-09-17: 9,858 books,
+zero confirmed non-novels eligible for deletion; no records were deleted.
+
 Explicit, one-time maintenance outside module request handlers. Run with the API's
 user secrets or `ConnectionStrings__Database` environment variable; credentials
 are never printed. Stop API/import workers before applying maintenance.
@@ -13,7 +26,7 @@ dotnet run --project tools/KitapKivo.Maintenance -- report
 A book is selected when none of its editions has BOTH language `tr`/`tur`
 (case/whitespace normalized) AND a nonblank cover URL. A foreign cover alone does
 not save a book. Remote URL availability is not checked. This does not change the
-import policy: new imports require Turkish editions, but may lack covers.
+import policy: new imports require reviewed novels and covered Turkish editions.
 
 `report` performs no persistent writes. `apply` locks affected tables, selects
 candidates, copies all affected rows to a timestamped `catalog_cleanup_*` schema,

@@ -375,7 +375,7 @@ function CatalogPage() {
                 </label>
 
                 <label className="catalog-field">
-                    <span>Kitap türleri</span>
+                    <span>Roman türleri</span>
                     <select value={category} disabled={categoriesLoading || categoryError}
                         onChange={event => handleCategoryChange(event.target.value)}>
                         <option value="">{categoriesLoading ? 'Türler yükleniyor…' : 'Tüm türler'}</option>
@@ -423,14 +423,14 @@ function CatalogPage() {
             </form>
 
             {categoryError && <p className="catalog-category-error" role="alert">
-                Kitap türleri yüklenemedi. <button type="button"
+                Roman türleri yüklenemedi. <button type="button"
                     onClick={() => setCategoryRetry(value => value + 1)}>Tekrar dene</button>
             </p>}
 
             {category && (
                 <div className="catalog-active-filter">
                     <span>
-                        Kitap türü:
+                        Roman türü:
                         <strong>{categories.find(item => item.slug === category)?.name ?? category}</strong>
                     </span>
 

@@ -3,9 +3,11 @@
 
 public sealed record ResolveExternalBookResult(
     Guid? BookId,
-    bool IsCreated)
+    bool IsCreated,
+    string? RejectionReason = null)
 {
     public bool IsSuccess => BookId.HasValue;
+    public static ResolveExternalBookResult Rejected(string reason) => new(null, false, reason);
 
     public static ResolveExternalBookResult Created(
         Guid bookId)

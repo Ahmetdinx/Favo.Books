@@ -138,5 +138,18 @@ internal sealed class CategoryConfiguration :
                 Slug = "kisisel-gelisim",
                 CreatedAtUtc = seedDateUtc
             });
+
+        var novelGenres = new (string Name, string Slug)[]
+        {
+            ("Tarihî Roman", "tarihi-roman"), ("Psikolojik Roman", "psikolojik-roman"),
+            ("Aşk ve Romantik", "ask-ve-romantik"), ("Macera", "macera"),
+            ("Gerilim", "gerilim"), ("Korku", "korku"), ("Distopya", "distopya")
+        };
+        for (var i = 0; i < novelGenres.Length; i++)
+            builder.HasData(new
+            {
+                Id = Guid.Parse($"10000000-0000-0000-0000-{i + 13:000000000000}"),
+                Name = novelGenres[i].Name, Slug = novelGenres[i].Slug, CreatedAtUtc = seedDateUtc
+            });
     }
 }

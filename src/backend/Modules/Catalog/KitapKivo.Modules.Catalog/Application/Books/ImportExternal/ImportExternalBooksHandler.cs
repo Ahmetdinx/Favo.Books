@@ -72,6 +72,11 @@ public sealed class ImportExternalBooksHandler
 
                 if (!resolveResult.IsSuccess)
                 {
+                    if (resolveResult.RejectionReason is not null)
+                    {
+                        failures.Add(CreateFailure(item, resolveResult.RejectionReason));
+                        continue;
+                    }
                     notFoundCount++;
                     continue;
                 }

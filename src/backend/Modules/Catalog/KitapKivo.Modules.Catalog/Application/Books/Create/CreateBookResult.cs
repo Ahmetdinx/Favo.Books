@@ -2,7 +2,8 @@
 
 public sealed record CreateBookResult(
     Guid? BookId,
-    IReadOnlyCollection<Guid> MissingAuthorIds)
+    IReadOnlyCollection<Guid> MissingAuthorIds,
+    string? RejectionReason = null)
 {
     public bool IsSuccess => BookId.HasValue;
 

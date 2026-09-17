@@ -44,15 +44,18 @@ public sealed class ResolveExternalBookHandler
 
     private readonly IExternalBookEditionClient
         _editionClient;
+    private readonly IApprovedNovelCatalog _approvedNovels;
 
     public ResolveExternalBookHandler(
         CatalogDbContext dbContext,
         IExternalBookDetailsClient detailsClient,
-        IExternalBookEditionClient editionClient)
+        IExternalBookEditionClient editionClient,
+        IApprovedNovelCatalog? approvedNovels = null)
     {
         _dbContext = dbContext;
         _detailsClient = detailsClient;
         _editionClient = editionClient;
+        _approvedNovels = approvedNovels ?? ApprovedNovelCatalog.Default;
     }
 
     public async Task<ResolveExternalBookResult>
@@ -76,9 +79,11 @@ public sealed class ResolveExternalBookHandler
 
         if (existingBookId.HasValue)
         {
-            return ResolveExternalBookResult.Existing(
-                existingBookId.Value);
+            return await ExistingIfEligibleAsync(existingBookId.Value, cancellationToken);
         }
+
+        if (_approvedNovels.Find(requestedExternalId) is null)
+            return ResolveExternalBookResult.Rejected("novel_review_required");
 
         ExternalBookDetails? details =
             await _detailsClient.GetByIdAsync(
@@ -106,10 +111,15 @@ public sealed class ResolveExternalBookHandler
 
             if (existingBookId.HasValue)
             {
-                return ResolveExternalBookResult.Existing(
-                    existingBookId.Value);
+                return await ExistingIfEligibleAsync(existingBookId.Value, cancellationToken);
             }
         }
+
+        var approval = _approvedNovels.Find(resolvedExternalId);
+        if (approval is null) return ResolveExternalBookResult.Rejected("novel_review_required");
+        if (details.Provider != SupportedProvider || details.Title.Trim() != approval.WorkTitle
+            || details.Authors.Count == 0 || details.Authors.Any(a => !approval.AuthorNames.Contains(a.Name.Trim(), StringComparer.Ordinal)))
+            return ResolveExternalBookResult.Rejected("reviewed_identity_mismatch");
 
         IReadOnlyList<ExternalBookEditionDetails>
           editionDetails =
@@ -122,8 +132,10 @@ public sealed class ResolveExternalBookHandler
             selectedTurkishEdition =
                 editionDetails.FirstOrDefault(
                     edition =>
-                        IsTurkishLanguageCode(
-                            edition.LanguageCode));
+                        IsTurkishLanguageCode(edition.LanguageCode)
+                        && !string.IsNullOrWhiteSpace(edition.CoverUrl)
+                        && edition.Provider == SupportedProvider
+                        && edition.Title?.Trim() == approval.TurkishTitle);
 
         string? turkishTitle =
             NormalizeOptionalValue(
@@ -132,7 +144,7 @@ public sealed class ResolveExternalBookHandler
         if (selectedTurkishEdition is null ||
             turkishTitle is null)
         {
-            return ResolveExternalBookResult.NotFound();
+            return ResolveExternalBookResult.Rejected("covered_turkish_edition_required");
         }
 
         editionDetails = [selectedTurkishEdition];
@@ -314,6 +326,9 @@ public sealed class ResolveExternalBookHandler
             bookReference);
 
         _dbContext.Books.Add(book);
+        book.NovelReviews.Add(new NovelReview(book.Id, NovelDecision.Novel,
+            "reviewed-import-v1", approval.SourceUrl, approval.EvidenceNote,
+            "curated-import", "editorial-novel-v1"));
 
         await _dbContext.SaveChangesAsync(
             cancellationToken);
@@ -321,6 +336,11 @@ public sealed class ResolveExternalBookHandler
         return ResolveExternalBookResult.Created(
             book.Id);
     }
+
+    private async Task<ResolveExternalBookResult> ExistingIfEligibleAsync(Guid id, CancellationToken ct)
+        => await _dbContext.Books.EligibleNovels().AnyAsync(b => b.Id == id, ct)
+            ? ResolveExternalBookResult.Existing(id)
+            : ResolveExternalBookResult.Rejected("existing_book_not_eligible");
 
     private async Task AddEditionAsync(
         Book book,

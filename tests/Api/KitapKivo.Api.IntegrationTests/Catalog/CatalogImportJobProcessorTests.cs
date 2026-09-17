@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+using KitapKivo.Modules.Catalog.Application.Books;
+using System.Text.Json;
 
 using KitapKivo.Modules.Catalog.Application
     .Abstractions.ExternalBooks;
@@ -532,6 +533,9 @@ public sealed class CatalogImportJobProcessorTests
         {
             builder.ConfigureTestServices(services =>
             {
+                services.RemoveAll<IApprovedNovelCatalog>();
+                services.AddSingleton<IApprovedNovelCatalog>(new FixtureNovelCatalog((IFixtureNovelDetails)detailsClient));
+
                 services.RemoveAll<
                     IExternalBookSearchClient>();
 
@@ -556,7 +560,7 @@ public sealed class CatalogImportJobProcessorTests
             "OpenLibrary",
             externalId,
             title,
-            Authors: [],
+            Authors: [new ExternalBookAuthor(null, "Test Author")],
             FirstPublishedYear: 2000,
             CoverUrl: null,
             Isbns: [],
@@ -573,7 +577,7 @@ public sealed class CatalogImportJobProcessorTests
             externalId,
             title,
             Description: null,
-            Authors: [],
+            Authors: [new ExternalBookAuthor(null, "Test Author")],
             FirstPublishedYear: 2000,
             CoverUrl: null,
             Isbns: [],
@@ -620,8 +624,9 @@ public sealed class CatalogImportJobProcessorTests
 
     private sealed class
         StubExternalBookDetailsClient :
-        IExternalBookDetailsClient
+        IExternalBookDetailsClient, IFixtureNovelDetails
     {
+        public ExternalBookDetails? Fixture(string id) => _details.GetValueOrDefault(id);
         private readonly Dictionary<
             string,
             ExternalBookDetails> _details;

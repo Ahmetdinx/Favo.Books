@@ -1,4 +1,4 @@
-﻿using KitapKivo.Modules.Catalog.Application
+using KitapKivo.Modules.Catalog.Application
     .Abstractions.ExternalBooks;
 using KitapKivo.Modules.Catalog.Persistence;
 using KitapKivo.Modules.Identity.Persistence;
@@ -146,7 +146,7 @@ public sealed class KitapKivoWebApplicationFactory
                     null,
                     320,
                     2024,
-                    null,
+                    "https://example.com/turkish-fixture.jpg",
                     null);
 
             return Task.FromResult<

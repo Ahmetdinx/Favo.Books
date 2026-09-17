@@ -1,29 +1,25 @@
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
+using KitapKivo.Modules.Catalog.Domain.Authors;
+using KitapKivo.Modules.Catalog.Domain.Books;
+using KitapKivo.Modules.Catalog.Persistence;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace KitapKivo.Api.IntegrationTests;
 
 internal static class CatalogTestData
 {
-    public static async Task<Guid> CreateBookAsync(HttpClient client)
+    // Reading/Profile/Community tests need existing catalog fixtures, not an unreviewed public write bypass.
+    public static async Task<Guid> CreateBookAsync(KitapKivoWebApplicationFactory factory)
     {
-        using HttpResponseMessage authorResponse = await client.PostAsJsonAsync(
-            "/api/catalog/authors", new { Name = "Test Author" });
-        Assert.Equal(HttpStatusCode.Created, authorResponse.StatusCode);
-        using JsonDocument author = (await authorResponse.Content
-            .ReadFromJsonAsync<JsonDocument>())!;
-
-        using HttpResponseMessage bookResponse = await client.PostAsJsonAsync(
-            "/api/catalog/books", new
-            {
-                Title = "Test Book",
-                OriginalLanguageCode = "tr",
-                AuthorIds = new[] { author.RootElement.GetProperty("authorId").GetGuid() }
-            });
-        Assert.Equal(HttpStatusCode.Created, bookResponse.StatusCode);
-        using JsonDocument book = (await bookResponse.Content
-            .ReadFromJsonAsync<JsonDocument>())!;
-        return book.RootElement.GetProperty("bookId").GetGuid();
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        var author = new Author("Test Author");
+        var book = new Book("Test Book", "tr");
+        book.Authors.Add(new BookAuthor(book.Id, author.Id, 0));
+        db.Authors.Add(author);
+        db.Books.Add(book);
+        db.NovelReviews.Add(new NovelReview(book.Id, NovelDecision.Novel, Guid.NewGuid().ToString("N"),
+            "https://example.com/novel", "Reviewed test fixture", "test", "test-v1"));
+        await db.SaveChangesAsync();
+        return book.Id;
     }
 }

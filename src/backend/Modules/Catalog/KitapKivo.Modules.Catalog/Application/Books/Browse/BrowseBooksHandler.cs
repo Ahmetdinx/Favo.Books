@@ -34,7 +34,7 @@ public sealed class BrowseBooksHandler
                     .ToLowerInvariant();
 
         IQueryable<Book> books = _dbContext.Books
-            .AsNoTracking();
+            .AsNoTracking().EligibleNovels();
 
         if (normalizedCategorySlug is not null)
         {

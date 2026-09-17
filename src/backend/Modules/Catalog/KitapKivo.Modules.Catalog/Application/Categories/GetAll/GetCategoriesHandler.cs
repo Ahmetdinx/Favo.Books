@@ -1,6 +1,7 @@
 ﻿using KitapKivo.Modules.Catalog.Persistence;
 
 using Microsoft.EntityFrameworkCore;
+using KitapKivo.Modules.Catalog.Application.Books;
 
 namespace KitapKivo.Modules.Catalog.Application.Categories.GetAll;
 
@@ -20,16 +21,19 @@ public sealed class GetCategoriesHandler
     {
         ArgumentNullException.ThrowIfNull(query);
 
+        var visibleBookIds = _dbContext.Books.EligibleNovels().Select(book => book.Id);
+
         GetCategoryItemResult[] items =
             await _dbContext.Categories
                 .AsNoTracking()
+                .Where(category => NovelGenreCatalog.Slugs.Contains(category.Slug))
                 .OrderBy(category => category.Name)
                 .Select(category =>
                     new GetCategoryItemResult(
                         category.Id,
                         category.Name,
                         category.Slug,
-                        category.Books.Count))
+                        category.Books.Count(book => visibleBookIds.Contains(book.BookId))))
                 .ToArrayAsync(cancellationToken);
 
         return new GetCategoriesResult(

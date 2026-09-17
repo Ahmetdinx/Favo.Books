@@ -1,6 +1,8 @@
 # ADR 0003: Define the Initial Social Scope
 
-- Status: Accepted
+- Status: Superseded on 2026-09-17 by [the novel product plan](../novel-product-plan.md).
+  The historical decision below is retained for context; reviews, comments and
+  social feeds are no longer planned. Ratings and personal libraries remain.
 - Date: 2026-07-30
 
 ## Context

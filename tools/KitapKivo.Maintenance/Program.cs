@@ -3,9 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 // Explicit maintenance operation; never runs during application startup or migration.
-if (args.Length != 1 || args[0] is not ("report" or "apply"))
-    throw new ArgumentException("Usage: KitapKivo.Maintenance report|apply");
+if (args.Length is < 1 or > 2 || args[0] is not ("report" or "apply")
+    || (args.Length == 2 && args[1] != "--confirmed-non-novels"))
+    throw new ArgumentException("Usage: KitapKivo.Maintenance report|apply [--confirmed-non-novels]");
 var apply = args[0] == "apply";
+var confirmedNonNovels = args.Length == 2;
 var config = new ConfigurationBuilder()
     .AddUserSecrets(Assembly.Load("KitapKivo.Api"), optional: true)
     .AddEnvironmentVariables().Build();
@@ -26,6 +28,7 @@ async Task<long> Count(string sql)
 var tables = new (string Schema, string Table, string Predicate)[]
 {
     ("catalog", "Books", "\"Id\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
+    ("catalog", "NovelReviews", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
     ("catalog", "Editions", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
     ("catalog", "BookAuthors", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
     ("catalog", "BookCategories", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
@@ -33,12 +36,18 @@ var tables = new (string Schema, string Table, string Predicate)[]
     ("reading", "LibraryEntries", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
     ("profiles", "BedsideBooks", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
     ("profiles", "InfluentialBooks", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
-    ("community", "BookRatings", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)")
+    ("community", "BookRatings", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)"),
+    ("community", "RecommendationFeedback", "\"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)")
 };
 if (apply)
     await Execute("SET LOCAL lock_timeout = '10s'; LOCK TABLE " +
         string.Join(", ", tables.Select(t => $"{t.Schema}.\"{t.Table}\"")) + " IN SHARE ROW EXCLUSIVE MODE;");
-await Execute("""
+await Execute(confirmedNonNovels ? """
+    CREATE TEMP TABLE cleanup_candidates ON COMMIT DROP AS
+    SELECT b."Id", b."Title" FROM catalog."Books" b
+    WHERE (SELECT r."Decision" FROM catalog."NovelReviews" r
+        WHERE r."BookId" = b."Id" ORDER BY r."Id" DESC LIMIT 1) = 'NotNovel';
+    """ : """
     CREATE TEMP TABLE cleanup_candidates ON COMMIT DROP AS
     SELECT b."Id", b."Title" FROM catalog."Books" b
     WHERE NOT EXISTS (
@@ -47,6 +56,7 @@ await Execute("""
         AND nullif(btrim(e."CoverImageUrl"), '') IS NOT NULL);
     """);
 Console.WriteLine($"Mode: {(apply ? "apply" : "report")}; database: {connection.Database}");
+Console.WriteLine($"Policy: {(confirmedNonNovels ? "latest review explicitly NotNovel; unknowns preserved" : "no covered Turkish edition")}");
 Console.WriteLine($"Total books: {await Count("SELECT count(*) FROM catalog.\"Books\"")}");
 Console.WriteLine($"Candidates: {await Count("SELECT count(*) FROM cleanup_candidates")}");
 foreach (var t in tables)
@@ -64,6 +74,7 @@ foreach (var t in tables)
 // Delete cross-module references explicitly; catalog-owned children cascade.
 foreach (var t in tables.Where(t => t.Schema != "catalog"))
     await Execute($"DELETE FROM {t.Schema}.\"{t.Table}\" WHERE {t.Predicate}");
+await Execute("DELETE FROM catalog.\"NovelReviews\" WHERE \"BookId\" IN (SELECT \"Id\" FROM cleanup_candidates)");
 await Execute("DELETE FROM catalog.\"Books\" WHERE \"Id\" IN (SELECT \"Id\" FROM cleanup_candidates)");
 if (await Count("SELECT count(*) FROM catalog.\"Books\" WHERE \"Id\" IN (SELECT \"Id\" FROM cleanup_candidates)") != 0)
     throw new InvalidOperationException("Cleanup verification failed; transaction will roll back.");

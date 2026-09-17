@@ -23,7 +23,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     public async Task DetailedJourney_UpdatesAveragesAndOnlyRemovesOwnRating()
     {
         await AuthenticateAsync();
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
         using JsonDocument empty = await GetAsync(bookId);
         Assert.Equal(0, empty.RootElement.GetProperty("ratingCount").GetInt32());
         Assert.Equal(JsonValueKind.Null, empty.RootElement.GetProperty("averageScore").ValueKind);
@@ -73,7 +73,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     public async Task MissingOrInvalidCriterion_Returns400AndPreservesExistingVote(string key)
     {
         await AuthenticateAsync();
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
         using JsonDocument original = await SetAsync(bookId, Scores(8));
         foreach (object? invalid in new object?[] { null, 0, 11, 2.5, "invalid" })
         {
@@ -98,7 +98,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     public async Task LegacyPayload_IsRejectedAndSuppliedOverallCannotOverrideCalculation()
     {
         await AuthenticateAsync();
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
         using HttpResponseMessage old = await _client.PutAsJsonAsync(
             $"/api/community/books/{bookId}/rating", new { Score = 5 });
         Assert.Equal(HttpStatusCode.BadRequest, old.StatusCode);
@@ -114,7 +114,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     public async Task LegacyVote_IsExcludedUntilUserSuppliesAllCriteria()
     {
         Guid userId = await AuthenticateAsync();
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
         Guid ratingId = Guid.NewGuid();
         DateTimeOffset createdAt = new(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
         using (IServiceScope scope = _factory.Services.CreateScope())
@@ -148,7 +148,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     public async Task ConcurrentFirstVotes_KeepOneCompleteRow()
     {
         await AuthenticateAsync();
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
         HttpResponseMessage[] responses = await Task.WhenAll(Enumerable.Range(1, 6).Select(score =>
             _client.PutAsJsonAsync($"/api/community/books/{bookId}/rating", Scores(score))));
         foreach (HttpResponseMessage response in responses)
@@ -165,7 +165,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     public async Task DeleteLastVote_RestoresNullAverages()
     {
         await AuthenticateAsync();
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
         using JsonDocument vote = await SetAsync(bookId, Scores(10));
         using HttpResponseMessage deleted = await _client.DeleteAsync($"/api/community/books/{bookId}/rating");
         Assert.Equal(HttpStatusCode.NoContent, deleted.StatusCode);
@@ -193,12 +193,12 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
         using HttpResponseMessage guest = await _client.GetAsync("/api/community/me/rating-prompts");
         Assert.Equal(HttpStatusCode.Unauthorized, guest.StatusCode);
         await AuthenticateAsync();
-        Guid anotherUsersBook = await CatalogTestData.CreateBookAsync(_client);
+        Guid anotherUsersBook = await CatalogTestData.CreateBookAsync(_factory);
         await AddToLibraryAsync(anotherUsersBook, "Read");
         await AuthenticateAsync();
-        Guid read = await CatalogTestData.CreateBookAsync(_client);
-        Guid reading = await CatalogTestData.CreateBookAsync(_client);
-        Guid wanted = await CatalogTestData.CreateBookAsync(_client);
+        Guid read = await CatalogTestData.CreateBookAsync(_factory);
+        Guid reading = await CatalogTestData.CreateBookAsync(_factory);
+        Guid wanted = await CatalogTestData.CreateBookAsync(_factory);
         await AddToLibraryAsync(read, "Read");
         await AddToLibraryAsync(reading, "Reading");
         await AddToLibraryAsync(wanted, "WantToRead");
@@ -217,7 +217,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
         List<Guid> books = [];
         for (int i = 0; i < 5; i++)
         {
-            Guid book = await CatalogTestData.CreateBookAsync(_client);
+            Guid book = await CatalogTestData.CreateBookAsync(_factory);
             books.Add(book);
             await AddToLibraryAsync(book, "Read");
         }
@@ -230,7 +230,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     public async Task RatingPrompts_IncludeLegacyVotesUntilUpgraded()
     {
         Guid userId = await AuthenticateAsync();
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
         await AddToLibraryAsync(bookId, "Read");
         using (IServiceScope scope = _factory.Services.CreateScope())
         {
@@ -275,9 +275,9 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     public async Task Recommendations_UseCoveredTurkishEditionsAndExcludeStartedBooks()
     {
         await AuthenticateAsync();
-        Guid eligible = await CatalogTestData.CreateBookAsync(_client);
-        Guid english = await CatalogTestData.CreateBookAsync(_client);
-        Guid uncovered = await CatalogTestData.CreateBookAsync(_client);
+        Guid eligible = await CatalogTestData.CreateBookAsync(_factory);
+        Guid english = await CatalogTestData.CreateBookAsync(_factory);
+        Guid uncovered = await CatalogTestData.CreateBookAsync(_factory);
         using (var scope = _factory.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<KitapKivo.Modules.Catalog.Persistence.CatalogDbContext>();
@@ -306,7 +306,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
         Assert.Equal(HttpStatusCode.Unauthorized, guest.StatusCode);
         await AuthenticateAsync();
         var firstUserAuthorization = _client.DefaultRequestHeaders.Authorization;
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
         using (var scope = _factory.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<KitapKivo.Modules.Catalog.Persistence.CatalogDbContext>();

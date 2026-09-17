@@ -12,11 +12,13 @@ public sealed class
             KitapKivoWebApplicationFactory>
 {
     private readonly HttpClient _client;
+    private readonly KitapKivoWebApplicationFactory _factory;
 
     public ProfileInfluentialBookEndpointsTests(
         KitapKivoWebApplicationFactory
             factory)
     {
+        _factory = factory;
         _client = factory.CreateClient();
     }
 
@@ -29,7 +31,7 @@ public sealed class
         await AuthenticateAsync(_client);
         if (hasSelection)
         {
-            Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+            Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
             await SetInfluentialBookAsync(_client, bookId, 1, "Keep this note");
         }
 
@@ -58,9 +60,9 @@ public sealed class
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid thirdBookId = await CatalogTestData.CreateBookAsync(_client);
-        Guid firstBookId = await CatalogTestData.CreateBookAsync(_client);
-        Guid fifthBookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid thirdBookId = await CatalogTestData.CreateBookAsync(_factory);
+        Guid firstBookId = await CatalogTestData.CreateBookAsync(_factory);
+        Guid fifthBookId = await CatalogTestData.CreateBookAsync(_factory);
 
         await SetInfluentialBookAsync(
             _client,
@@ -165,12 +167,12 @@ public sealed class
             firstResult =
                 await SetInfluentialBookAsync(
                     _client,
-                    await CatalogTestData.CreateBookAsync(_client),
+                    await CatalogTestData.CreateBookAsync(_factory),
                     2,
                     "İlk kitap.");
 
         Guid secondBookId =
-            await CatalogTestData.CreateBookAsync(_client);
+            await CatalogTestData.CreateBookAsync(_factory);
 
         // Act
         InfluentialBookTestResponse
@@ -208,7 +210,7 @@ public sealed class
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
 
         await SetInfluentialBookAsync(
             _client,
@@ -324,7 +326,7 @@ public sealed class
 
         await SetInfluentialBookAsync(
             _client,
-            await CatalogTestData.CreateBookAsync(_client),
+            await CatalogTestData.CreateBookAsync(_factory),
             4,
             "Silinecek kitap.");
 
@@ -375,7 +377,7 @@ public sealed class
 
         await SetInfluentialBookAsync(
             _client,
-            await CatalogTestData.CreateBookAsync(_client),
+            await CatalogTestData.CreateBookAsync(_factory),
             1,
             "Birinci kullanıcının kitabı.");
 

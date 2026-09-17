@@ -16,6 +16,7 @@ internal static class CreateBookEndpoint
             .RequireAuthorization()
             .Produces<CreateBookResponse>(
                 StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status422UnprocessableEntity)
             .ProducesValidationProblem(
                 StatusCodes.Status400BadRequest)
             .Produces(
@@ -52,6 +53,11 @@ internal static class CreateBookEndpoint
 
         if (!result.IsSuccess)
         {
+            if (result.RejectionReason is not null)
+                return Results.Problem(statusCode: StatusCodes.Status422UnprocessableEntity,
+                    title: "Doğrulanmış roman kaydı gerekiyor.",
+                    detail: "Serbest kitap ekleme kapalıdır. Kaynakla doğrulanmış roman ekleme akışını kullanın.",
+                    extensions: new Dictionary<string, object?> { ["code"] = result.RejectionReason });
             string missingAuthorIds = string.Join(
                 ", ",
                 result.MissingAuthorIds);

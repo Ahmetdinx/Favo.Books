@@ -1,9 +1,72 @@
 # KitapKivo Project Context
 
-Updated 2026-09-16 from the codebase. This file describes implementation status,
+Updated 2026-09-17. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
 
+Latest checkpoint: novel eligibility now gates catalog browsing, recommendations
+and genre counts. The category API exposes 11 novel genres; seven new categories
+were added by migration 20260917171539_AddNovelGenres, applied locally. Unknown
+records and user history are retained. Maintenance supports
+`report|apply --confirmed-non-novels`, backing up reviews and recommendation
+feedback as well as existing related tables. Local report: 9,858 books, zero
+confirmed NotNovel deletion candidates, five reviewed novels. No deletion and
+no new imports performed. The requested 1,000 verified new novels are unfinished;
+publisher HTML research in artifacts/novel-publisher-import is not approval data.
+Validation: 130 API integration tests, 98 Catalog unit tests and frontend build
+passed. Existing broad subject categories were retained internally; history and
+psychology subjects are not automatically converted into novel subgenres.
+
+## Authoritative product revision (2026-09-17)
+
+See docs/novel-product-plan.md and ROADMAP.md. The product is now novel-only
+discovery with virtual libraries, seven-criterion evaluations, achievements and
+opt-in public profiles searchable by nickname. No posts, messages, review/comment
+threads or shared social feed. Covered Turkish editions remain required; popular
+classics take import priority. No additional bulk import is pending.
+Novel classification, nickname/privacy and achievements are PLANNED, not implemented.
+Next implementation: non-destructive classification audit and central eligibility,
+then the catalog-to-library experience. Do not infer novels from `fiction` alone
+or delete historical user records. Keep percentage-free recommendations until a
+versioned match index and evidence policy are validated. Earlier social-scope
+statements are superseded by this revision.
+
 ## Current implementation
+
+Novel import enforcement checkpoint (2026-09-17): new records now require a
+source-reviewed entry in embedded data/curation/novel-import-priorities-v1.json,
+matching provider/work title/author and a covered matching Turkish edition.
+ResolveExternalBookHandler also gates existing reuse by latest review and cover.
+CreateBookHandler's legacy free-form write path is closed (422 for valid requests).
+API, batch and background resolver paths share enforcement; rejections have codes.
+CatalogSeed now previews by default and applies only the ordered curated list with
+--apply; no random fallback or old broad-import resume. No new books imported.
+129 API integration tests and 90 Catalog unit tests passed. Five-item preview
+verified without database/network/files. See docs/novel-import-policy.md.
+Public browse/recommendation visibility remains unchanged; expand curated coverage
+and implement archived-history transition before enabling the read-side filter.
+The list is editorial classic priority, not measured readership ranking.
+
+Editorial eligibility checkpoint (2026-09-17): migration
+20260917123207_AddNovelReviews applied locally; append-only review workflow and
+central SQL eligibility query implemented. tools/KitapKivo.CatalogCuration checks
+work/title/author identity and applies atomic idempotent batches. Five reviews from
+data/curation/classic-novels-v1.json applied after preview. 90 Catalog unit tests
+and three new PostgreSQL integration tests passed. See ADR 0007 for sources.
+Public routes/imports are NOT gated yet: the five-book seed is too small and the
+private-history transition remains outstanding. No books or user data deleted.
+Next: expand curated coverage (including Turkish classics), then wire eligibility
+consistently across discovery/read/write paths and preserve private archived history.
+
+Novel audit checkpoint (2026-09-17): Catalog's NovelEvidenceClassifier v1 and
+tools/KitapKivo.CatalogAudit provide read-only source-label triage. Local report:
+9,858 books; 84 NovelCandidate, 961 NonNovelCandidate, 10 Conflict, 8,803 Unknown.
+9,857 have cached source observations; all have a stored covered Turkish edition.
+These are NOT verified forms; no database writes, eligibility filter or imports
+were performed. 83 Catalog unit tests passed, including 19 new cases; audit
+Release build and actual read-only database run passed. See
+docs/catalog-novel-audit.md for evidence limitations and artifacts paths.
+Next: verify a curated classics seed with source evidence, then persist editorial
+eligibility and activate consistent catalog/import filtering with history preservation.
 
 The .NET 10 modular monolith contains Identity, Catalog, Reading, Profiles and
 Community. All five modules now have implemented behavior; Community currently
@@ -94,8 +157,8 @@ desktop/390px profile and rating layouts. The disposable test account was remove
 - Open Library is implemented; Wikidata and Google Books are future additions.
 - The web catalog currently reads local data, not the external search endpoint.
 - No in-app reading or copyrighted book-file hosting.
-- MVP social scope: ratings, reviews and review comments.
-- Following, likes, feeds, notifications and a dedicated admin UI remain deferred.
+- MVP scope: novel recommendations, ratings, achievements and opt-in public libraries.
+- Reviews, comments, posts, messages and follow feeds are excluded.
 
 ## Next work, in order
 
@@ -163,7 +226,7 @@ interest, dismissal, replacement recommendations and undo on a disposable accoun
    a module contract/read model; order the full result set before pagination.
 4. Connect external search/resolution to a user-facing discovery flow.
 5. Distinguish missing Turkish editions from absent books and upstream failures;
-   continue Community with reviews, then comments.
+   follow the revised novel product plan rather than adding reviews or comments.
 6. Add E2E tests, CI, production configuration, migrations/backup procedures and
    operational visibility before public launch.
 
@@ -185,5 +248,6 @@ one. The latest non-manifest book is 6b0510c3-c2e2-4d95-ba34-c863355734b9
 (Taş Can ve Kutsal, created 2026-09-17T06:25:01.340Z). Its provenance has not been
 reconciled; do not assume the manifest identifies every addition or use it as a
 complete rollback inventory. Existing records were preserved.
-Catalog performance changes and seed-tool limit changes remain uncommitted.
+Catalog performance and seed-tool limit changes were committed and pushed in a5aab73.
+The product revision is a subsequent documentation change.
 Continue development/testing with this dataset; no further import is pending.

@@ -1,77 +1,84 @@
 # KitapKivo Roadmap
 
-Updated 2026-09-16. Checked items denote implementation in code, not production
-certification. Deliver each feature with its API behavior, relevant tests and UI.
+Revised 2026-09-17. Authoritative scope and acceptance criteria:
+[Novel discovery product plan](docs/novel-product-plan.md).
+Checked items indicate implementation, not production certification.
 
-## Implemented foundation
+## Foundation retained
 
-- [x] .NET 10 solution, module registration and project dependency tests.
-- [x] PostgreSQL persistence and migrations for Identity, Catalog, Reading, Profiles.
-- [x] Central exception handling and ProblemDetails; Swagger and health endpoint.
-- [x] Registration, JWT authentication, refresh sessions and logout.
-- [x] Local catalog models, creation, browse/search, categories, details and summaries.
-- [x] Open Library client abstractions, search, details and local record resolution.
-- [x] Background import jobs, retry behavior and outgoing Open Library request gate.
-- [x] Turkish-edition requirement for newly resolved external books.
-- [x] Personal library and five reading states, ownership checks and summary.
-- [x] Profile bedside book and influential book selections.
-- [x] Keep external imports Turkish-edition-only and clear non-Turkish cover URLs.
-- [x] Add seven-criterion 1-10 ratings, weighted overall and book-detail UI.
-- [x] Clean local books without a covered Turkish edition, with recovery snapshots.
-- [x] Web authentication, local catalog, book details and private profile.
-- [x] Validate Catalog book existence before Reading/Profiles book writes.
-- [x] Update project context and onboarding documentation.
+- [x] Modular API, PostgreSQL migrations and React frontend.
+- [x] Authentication, personal library and featured profile books.
+- [x] Seven-criterion ratings, preferences and explainable recommendations.
+- [x] Recommendation feedback, catalog performance improvements and 100k paging test.
+- [x] Novel-only product plan; current local dataset 9,858 books, no pending bulk import.
 
-## Milestone 1: Trust the existing user journey
+## 1. Novel catalog and eligibility
 
-- [x] Run the PostgreSQL integration suite; fix old foreign-cover expectations and rerun affected tests.
-- [ ] Align development and integration PostgreSQL versions.
-- [ ] Verify clean setup and all five persistent module migrations from the README.
-- [ ] Browser-check login, refresh, logout, catalog, library and profile selections.
-- [ ] Add E2E coverage for the core user journey.
-- [ ] Verify concurrent duplicate writes produce controlled responses.
-- [ ] Define catalog write/import authorization policies.
+- [x] Model editorial literary-form decisions, evidence and review history (migration applied locally).
+- [x] Initial read-only evidence audit of existing records; see docs/catalog-novel-audit.md.
+- [ ] Review/verify actual literary form; audit candidates are not publication decisions.
+- [x] First five source-backed world classics curated and applied; see ADR 0007.
+- [ ] Expand verified Turkish/world classics coverage; no measured popularity claim yet.
+- [ ] Apply eligibility to catalog, details, categories, recommendations and additions.
+- [x] Enforce reviewed novel + covered Turkish edition on new-book write/import paths; close unverified free-form creation.
+- [x] Replace broad seed search with ordered curated list, preview default and no random fallback.
+- [ ] Preserve ineligible historical library entries privately as archived records.
+- [ ] Separate literary form from subject; historical novels qualify, history research does not.
+- [ ] Work-level deduplication and curated import priorities; no 100k launch quota.
 
-Acceptance: a new developer can start the app; users can manage real catalog books
-without dangling references; missing books do not overwrite profile selections.
+## 2. Effortless catalog-to-library journey
 
-## Milestone 2: Complete book discovery
+- [ ] Card actions, optional bulk past-reading addition and undo.
+- [ ] Preserve selected actions through authentication.
+- [ ] Optional seven-criterion form with drafts and no fabricated defaults.
+- [ ] Mobile, keyboard, loading, empty and failure experiences.
+- [ ] Measure first useful recommendation and recommendation-to-library conversion.
+- [ ] Observe five readers completing the journey and fix obstacles.
 
-- [ ] Separate missing book, missing Turkish edition and upstream failure outcomes.
-- [ ] Measure metadata gaps and older records affected by the Turkish-edition policy.
-- [ ] Connect external search/details/resolution to the web discovery flow.
-- [ ] Cover empty results, missing metadata, retry and cancellation experiences.
+## 3. Nicknames and profile sharing
 
-Acceptance: a supported book absent from the local catalog can be discovered and
-added by the user without developer intervention, with understandable failure states.
+- [ ] Unique normalized nicknames, reserved names and existing-account migration.
+- [ ] Retain private authentication/recovery credentials; no required real name.
+- [ ] Private-by-default visibility with explicit public preview/choice.
+- [ ] Public profile URL and paginated public-only nickname search.
+- [ ] Public library/evaluation contracts without cross-module database access.
+- [ ] Test privacy across direct APIs, caches, search and rankings.
+- [ ] Existing personal notes remain private; public-to-private transition tests.
 
-## Milestone 3: Community MVP
+## 4. Achievements
 
-- [x] Seven independent criterion scores, specified weights, criterion averages and legacy-vote migration.
-- [x] Private profile reminders for up to three read books without detailed ratings, with direct links to the rating form and optional dismissal.
-- [x] Capture reading preferences and deliver explainable personalized book recommendations; distinguish criterion importance from a book's criterion scores.
-- [x] Persist recommendation interest/dismissal feedback with undo and account isolation.
-- [ ] Add recommendation diversity; measure quality and replace full in-memory catalog/rating scans with a bounded read model before scaling.
-- [ ] Catalog sorting/filtering by overall or selected criterion, before pagination.
-- [ ] Publish/edit/delete reviews, ownership, pagination and spoiler behavior.
-- [ ] Add/edit/delete review comments with ownership checks.
-- [ ] Connect all three flows to book details and add domain/API tests.
+- [ ] Separate milestones for unique read novels and completed evaluations.
+- [ ] Recomputable counts; edits/re-adds do not inflate progress; removal is handled.
+- [ ] Quiet celebration, next milestone and reduced-motion support.
+- [ ] No vote-weight privilege, speed rewards or forced streaks.
+- [ ] Optional public opt-in ranking after metric/abuse rules; may ship later.
 
-Acceptance: two users can rate, review and discuss a book without modifying each
-other's content. Following, likes and activity feeds are not required.
+## 5. Personal discovery home
 
-## Milestone 4: Public release readiness
+- [ ] Preference-based start without history; no fabricated match claims.
+- [ ] Bounded candidate/read models replacing full catalog/rating scans.
+- [ ] Negative signals, diversity, reading-state policy and unique shelf items.
+- [ ] Separate global rating, personal match index and evidence sufficiency.
+- [ ] Validate versioned 60/80/95 bands; suppress numbers with insufficient evidence.
+- [ ] Do not force-fill empty recommendation bands.
+- [ ] Overall/criterion sorting before pagination, vote counts and sparse-data handling.
+- [ ] Beta feedback and later reading outcomes for quality measurement.
 
-- [ ] CI for backend tests and frontend build/lint.
-- [ ] Production secrets, deployment and database migration strategy.
-- [ ] Backup and restore verification, operational logs and import job visibility.
-- [ ] Incoming request limits, account recovery decision and security checks.
-- [ ] Responsive layout, accessibility and critical browser E2E checks.
-- [ ] Deploy and verify the first public MVP.
+## 6. Release readiness throughout development
 
-## Deferred candidates
+- [ ] Early staging; CI tests/build/lint; align PostgreSQL test/development versions.
+- [ ] Fresh migrations/setup, catalog management authorization and request limits.
+- [ ] Session security, recovery, verification policy, privacy and account deletion.
+- [ ] E2E account/library/rating/recommendation/public-private profile journeys.
+- [ ] Concurrent load, accessibility and mobile checks.
+- [ ] Production secrets, data transfer, migration/rollback and restore rehearsal.
+- [ ] Database readiness, error/availability/cost monitoring and support channel.
+- [ ] Closed beta and controlled public beta around 2026-11-17.
 
-Wikidata enrichment, Google Books fallback, agreements for Turkish edition data,
-following, likes, feeds, notifications and dedicated admin UI. Film/series support
-remains outside the current book-only scope.
-Measure data gaps before adding commercial providers. Do not scrape Milli Kutuphane.
+## Explicit exclusions
+
+Posts, messages, chat, review/comment threads, follow feeds, universal recommendation
+homepage, film/series and in-app reading. Additional providers, native apps and
+advanced rankings await evidence of useful discovery and repeat use.
+
+See the product plan for the eight-week sequence and scope-reduction rules.

@@ -19,6 +19,7 @@ public sealed class CatalogDbContext : DbContext
     }
 
     internal DbSet<Book> Books => Set<Book>();
+    internal DbSet<NovelReview> NovelReviews => Set<NovelReview>();
 
     internal DbSet<Author> Authors => Set<Author>();
 

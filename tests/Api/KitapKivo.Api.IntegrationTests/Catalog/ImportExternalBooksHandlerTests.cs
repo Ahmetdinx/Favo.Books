@@ -1,4 +1,5 @@
-﻿using KitapKivo.Modules.Catalog.Application
+using KitapKivo.Modules.Catalog.Application.Books;
+using KitapKivo.Modules.Catalog.Application
     .Abstractions.ExternalBooks;
 using KitapKivo.Modules.Catalog.Application
     .Books.ImportExternal;
@@ -89,6 +90,11 @@ public sealed class ImportExternalBooksHandlerTests
                 "/works/OL10001W"));
 
         dbContext.Books.Add(existingBook);
+        existingBook.Editions.Add(new KitapKivo.Modules.Catalog.Domain.Editions.Edition(
+            existingBook.Id, existingBook.Title, "tur", KitapKivo.Modules.Catalog.Domain.Editions.EditionFormat.Paperback,
+            coverImageUrl: "https://example.com/turkish-fixture.jpg"));
+        existingBook.NovelReviews.Add(new NovelReview(existingBook.Id, NovelDecision.Novel,
+            "fixture", "https://example.com/review", "Reviewed fixture", "test", "v1"));
 
         await dbContext.SaveChangesAsync();
 
@@ -144,6 +150,9 @@ public sealed class ImportExternalBooksHandlerTests
         {
             builder.ConfigureTestServices(services =>
             {
+                services.RemoveAll<IApprovedNovelCatalog>();
+                services.AddSingleton<IApprovedNovelCatalog>(new FixtureNovelCatalog((IFixtureNovelDetails)detailsClient));
+
                 services.RemoveAll<
                     IExternalBookSearchClient>();
 
@@ -181,7 +190,7 @@ public sealed class ImportExternalBooksHandlerTests
             externalId,
             title,
             null,
-            [],
+            [new ExternalBookAuthor(null, "Test Author")],
             null,
             null,
             [],
@@ -220,8 +229,9 @@ public sealed class ImportExternalBooksHandlerTests
         IReadOnlyDictionary<
             string,
             ExternalBookDetails> results)
-        : IExternalBookDetailsClient
+        : IExternalBookDetailsClient, IFixtureNovelDetails
     {
+        public ExternalBookDetails? Fixture(string id) => results.GetValueOrDefault(id);
         public int CallCount { get; private set; }
 
         public Task<ExternalBookDetails?> GetByIdAsync(

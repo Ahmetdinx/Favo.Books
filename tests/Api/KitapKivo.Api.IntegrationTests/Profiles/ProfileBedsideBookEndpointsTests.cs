@@ -12,11 +12,13 @@ public sealed class
             KitapKivoWebApplicationFactory>
 {
     private readonly HttpClient _client;
+    private readonly KitapKivoWebApplicationFactory _factory;
 
     public ProfileBedsideBookEndpointsTests(
         KitapKivoWebApplicationFactory
             factory)
     {
+        _factory = factory;
         _client = factory.CreateClient();
     }
 
@@ -29,7 +31,7 @@ public sealed class
         await AuthenticateAsync(_client);
         if (hasSelection)
         {
-            Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+            Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
             await SetBedsideBookAsync(_client, bookId, "Keep this note");
         }
 
@@ -61,7 +63,7 @@ public sealed class
         // Arrange
         await AuthenticateAsync(_client);
 
-        Guid bookId = await CatalogTestData.CreateBookAsync(_client);
+        Guid bookId = await CatalogTestData.CreateBookAsync(_factory);
 
         // Act
         BedsideBookTestResponse setResult =
@@ -137,11 +139,11 @@ public sealed class
         BedsideBookTestResponse firstResult =
             await SetBedsideBookAsync(
                 _client,
-                await CatalogTestData.CreateBookAsync(_client),
+                await CatalogTestData.CreateBookAsync(_factory),
                 "İlk başucu kitabım.");
 
         Guid secondBookId =
-            await CatalogTestData.CreateBookAsync(_client);
+            await CatalogTestData.CreateBookAsync(_factory);
 
         // Act
         BedsideBookTestResponse secondResult =
@@ -227,7 +229,7 @@ public sealed class
 
         await SetBedsideBookAsync(
             _client,
-            await CatalogTestData.CreateBookAsync(_client),
+            await CatalogTestData.CreateBookAsync(_factory),
             "Silinecek başucu kitabı.");
 
         // Act
@@ -260,7 +262,7 @@ public sealed class
 
         await SetBedsideBookAsync(
             _client,
-            await CatalogTestData.CreateBookAsync(_client),
+            await CatalogTestData.CreateBookAsync(_factory),
             "Birinci kullanıcının kitabı.");
 
         await AuthenticateAsync(_client);

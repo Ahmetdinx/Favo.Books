@@ -1,44 +1,46 @@
-# Covered Turkish-edition catalog seed
+# Reviewed novel import
 
-Explicit local maintenance command; no automatic imports on application startup.
-Uses the API's user secrets or `ConnectionStrings__Database`. Run from the repo root:
+The former broad Turkish-language search importer has been replaced. Only works
+in `data/curation/novel-import-priorities-v1.json` can be newly imported. The list
+is embedded in Catalog at build time, ordered by editorial priority, and shared
+with the external resolve API and background import safety checks. It is not a
+live most-read ranking. Currently it contains five source-reviewed classics.
+
+Preview (no database/network access or files written):
 
 ```powershell
-dotnet run --project tools/KitapKivo.CatalogSeed -- 1000 artifacts/catalog-import-20260916
+dotnet run --project tools/KitapKivo.CatalogSeed -c Release -- 100 artifacts/reviewed-import-new
 ```
 
-The number is the desired count of newly created books for this run directory.
-The accepted target range is 1–10,000; scanning stops at empty source results or
-1,000 pages. A target is not a guarantee that enough eligible source books exist.
-Open Library Search is queried with `language:tur`, `lang=tr` and explicit nested
-edition fields. Only returned editions with a Turkish language tag, positive
-edition cover ID, title and work authors are accepted. Work-level covers are never
-used as edition covers. See https://openlibrary.org/dev/docs/api/search.
+Explicit execution:
 
-Source search pages are cached and successful book IDs appended to `created.jsonl`.
-Keep the directory for provenance and targeted recovery. Reusing it resumes the
-run; never delete its manifest while trying to resume. After an interrupted process,
-reconcile committed book IDs with the manifest before rerunning (a commit immediately
-before a manifest write can otherwise be missing from the manifest).
+```powershell
+dotnet run --project tools/KitapKivo.CatalogSeed -c Release -- 100 artifacts/reviewed-import-new --apply
+```
 
-Existing Open Library work/edition references, ISBNs and matching title/author pairs
-are skipped. The existing ResolveExternalBookHandler creates authors, publishers,
-subject-category mappings, editions and references in its normal EF transaction.
-Read-only adapters provide real cached search records to the handler, avoiding
-thousands of redundant work/author/edition requests. Original language is `und`
-when the source search record does not establish it; Turkish edition language is
-stored separately. Unavailable page count/format/description stays unset.
+The count (1–10,000) is a maximum NEW-book count, not a promise or a random-search
+quota. The tool stops when the reviewed list ends. Use a new output directory;
+old broad-import directories cannot be resumed. Existing reviewed books are reused.
+Unreviewed or revoked existing books are rejected, not silently approved.
 
-Requests are sequential, with a minimum one-second delay and bounded retries.
-Each book is committed separately. Constraint/validation failures are logged and
-skipped; an unexpected failure stops the process. An advisory lock prevents two
-instances of this tool running concurrently. This is not a general concurrent
-import scheduler. Run while the normal import worker is disabled.
+New imports require approved work identity, matching source title/author and a
+matching Turkish-edition title with a cover URL. A NovelReview is saved together
+with the book. Unexpected metadata is rejected for review, not fuzzy-matched.
+Free-form POST /api/catalog/books cannot bypass this policy (422).
 
-A positive cover ID means the provider lists a cover; this command does not
-download or visually validate every image. It writes book metadata only.
+API user secrets or ConnectionStrings__Database supply database configuration.
+Requests use Catalog's provider request gate and retry policy; a session advisory
+lock prevents concurrent seed commands. Run with the application import worker
+disabled. This command builds a service provider, not a background worker host.
 
-2026-09-16 completed run: 1,000 created, 319 skipped, zero persistence failures,
-14 source pages. Local catalog increased from 103 to 1,103. Verification found all
-1,000 IDs present, no new books missing a covered Turkish edition or author,
-no new foreign-language editions and no duplicate ISBN-13 involving new books.
+`policy.json` preserves the exact reviewed list; `results.jsonl` records created,
+existing and rejected results. A crash can occur after DB commit but before log
+append: reconcile database external references before using logs as an inventory.
+A subsequent run in a new directory rechecks existing records. Rejections produce
+exit code 2; upstream failures abort rather than silently changing the source.
+
+Cover presence is source metadata, not a downloaded/visually inspected image.
+The verified list must be deliberately expanded with source evidence. No fallback
+to generic fiction labels, unreviewed search results or user-provided approvals.
+Historical imports under artifacts remain untouched. No new import was executed
+as part of this implementation; the preview is safe to run for verification.

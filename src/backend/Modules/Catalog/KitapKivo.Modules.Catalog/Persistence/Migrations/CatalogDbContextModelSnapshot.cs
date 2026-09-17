@@ -115,6 +115,64 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
                     b.ToTable("BookAuthors", "catalog");
                 });
 
+            modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Books.NovelReview", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("BatchId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Decision")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("EvidenceNote")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("PolicyVersion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTimeOffset>("RecordedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Reviewer")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("SourceUrl")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId", "BatchId")
+                        .IsUnique();
+
+                    b.HasIndex("BookId", "Id")
+                        .IsDescending(false, true);
+
+                    b.ToTable("NovelReviews", "catalog", t =>
+                        {
+                            t.HasCheckConstraint("CK_NovelReviews_Decision", "\"Decision\" IN ('Unknown', 'Novel', 'NotNovel')");
+                        });
+                });
+
             modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Categories.BookCategory", b =>
                 {
                     b.Property<Guid>("BookId")
@@ -243,6 +301,55 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
                             CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "Kişisel Gelişim",
                             Slug = "kisisel-gelisim"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000013"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Tarihî Roman",
+                            Slug = "tarihi-roman"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000014"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Psikolojik Roman",
+                            Slug = "psikolojik-roman"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000015"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Aşk ve Romantik",
+                            Slug = "ask-ve-romantik"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000016"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Macera",
+                            Slug = "macera"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000017"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Gerilim",
+                            Slug = "gerilim"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000018"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Korku",
+                            Slug = "korku"
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000019"),
+                            CreatedAtUtc = new DateTimeOffset(new DateTime(2026, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Name = "Distopya",
+                            Slug = "distopya"
                         });
                 });
 
@@ -499,6 +606,15 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Books.NovelReview", b =>
+                {
+                    b.HasOne("KitapKivo.Modules.Catalog.Domain.Books.Book", null)
+                        .WithMany("NovelReviews")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Categories.BookCategory", b =>
                 {
                     b.HasOne("KitapKivo.Modules.Catalog.Domain.Books.Book", "Book")
@@ -583,6 +699,8 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
                     b.Navigation("Editions");
 
                     b.Navigation("ExternalReferences");
+
+                    b.Navigation("NovelReviews");
                 });
 
             modelBuilder.Entity("KitapKivo.Modules.Catalog.Domain.Categories.Category", b =>

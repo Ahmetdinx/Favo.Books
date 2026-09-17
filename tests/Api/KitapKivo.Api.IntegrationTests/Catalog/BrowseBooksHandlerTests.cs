@@ -101,6 +101,10 @@ public sealed class BrowseBooksHandlerTests
 
         await dbContext.SaveChangesAsync();
 
+        dbContext.NovelReviews.Add(new NovelReview(turkishPreferredBook.Id, NovelDecision.Novel,
+            uniqueValue, "https://example.com/novel", "Verified fixture", "test", "test-v1"));
+        await dbContext.SaveChangesAsync();
+
         BrowseBooksHandler handler =
             scope.ServiceProvider.GetRequiredService<
                 BrowseBooksHandler>();
@@ -143,18 +147,6 @@ public sealed class BrowseBooksHandlerTests
             "https://example.com/turkish-cover.jpg",
             turkishItem.CoverImageUrl);
 
-        BrowseBookItemResult englishItem =
-            Assert.Single(
-                englishResult.Items);
-
-        Assert.Equal(
-            englishFallbackBook.Id,
-            englishItem.BookId);
-
-        Assert.Equal(
-            "English Fallback Title",
-            englishItem.Title);
-
-        Assert.Null(englishItem.CoverImageUrl);
+        Assert.Empty(englishResult.Items);
     }
 }

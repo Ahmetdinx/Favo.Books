@@ -34,6 +34,10 @@ public sealed class CatalogScaleTests(KitapKivoWebApplicationFactory factory, IT
             INSERT INTO catalog."BookCategories" ("BookId", "CategoryId")
             SELECT b."Id", c."Id" FROM catalog."Books" b CROSS JOIN catalog."Categories" c
             WHERE b."Title" LIKE 'Scale %' AND c."Slug" LIKE 'scale-category-%';
+            INSERT INTO catalog."NovelReviews" ("BookId", "Decision", "BatchId", "SourceUrl", "EvidenceNote", "Reviewer", "PolicyVersion", "RecordedAtUtc")
+            SELECT "Id", 'Novel', 'scale-test', 'https://example.com/novel', 'Synthetic test fixture', 'test', 'test-v1', now()
+            FROM catalog."Books" WHERE "Title" LIKE 'Scale %';
+            ANALYZE catalog."NovelReviews";
             ANALYZE catalog."Books";
             ANALYZE catalog."Editions";
             ANALYZE catalog."BookAuthors";

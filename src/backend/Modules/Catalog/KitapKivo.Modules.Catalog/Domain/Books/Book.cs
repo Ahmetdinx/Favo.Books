@@ -53,6 +53,7 @@ internal sealed class Book
     public ICollection<BookAuthor> Authors { get; } = [];
 
     public ICollection<Edition> Editions { get; } = [];
+    public ICollection<NovelReview> NovelReviews { get; } = [];
     public ICollection<BookCategory> Categories { get; } = [];
 
     public ICollection<ExternalReference> ExternalReferences { get; } = [];
