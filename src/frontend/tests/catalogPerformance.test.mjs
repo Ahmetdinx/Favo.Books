@@ -27,6 +27,17 @@ test('page cache expires, evicts least recently used entries and separates filte
     assert.equal(cache.get('page=2&category=roman'), 'updated')
 })
 
+test('publisher catalog thumbnails use the published resize route without changing the cover', () => {
+    const result = new URL(catalogCoverUrl('https://www.dogankitap.com.tr/files/kitaplar/img/roman%20kapak.jpg'))
+    assert.equal(result.origin, 'https://www.dogankitap.com.tr')
+    assert.equal(result.pathname, '/t')
+    assert.equal(result.searchParams.get('src'), '/files/kitaplar/img/roman kapak.jpg')
+    assert.equal(result.searchParams.get('w'), '250')
+    for (const source of ['https://www.dogankitap.com.tr.evil.test/files/kitaplar/img/a.jpg',
+        'https://www.dogankitap.com.tr/other/a.jpg', 'https://img.iskultur.com.tr/webp/cover.jpg'])
+        assert.equal(catalogCoverUrl(source), source)
+})
+
 test('catalog API reuses cached pages, separates filters, honors cancellation and retries errors', async () => {
     const originalFetch = globalThis.fetch
     let calls = 0

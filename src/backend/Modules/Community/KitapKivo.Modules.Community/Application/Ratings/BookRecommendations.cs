@@ -20,9 +20,16 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
         ["impact"] = "Duygusal / Düşünsel Etki", ["experience"] = "Genel Okuma Deneyimi"
     };
 
-    public async Task<ReadingPreference> GetPreferencesAsync(Guid userId, CancellationToken ct)
-        => await db.ReadingPreferences.AsNoTracking().SingleOrDefaultAsync(p => p.UserId == userId, ct)
-            ?? new ReadingPreference { UserId = userId };
+    public async Task<ReadingPreference?> GetPreferencesAsync(Guid userId, CancellationToken ct)
+    {
+        var preference = await db.ReadingPreferences.AsNoTracking().SingleOrDefaultAsync(p => p.UserId == userId, ct);
+        if (preference is not null)
+        {
+            var genres = (await catalog.GetGenresAsync(ct)).Select(c => c.Slug).ToHashSet();
+            preference.Categories = preference.Categories.Where(genres.Contains).ToArray();
+        }
+        return preference;
+    }
 
     public async Task<bool> SavePreferencesAsync(Guid userId, PreferenceRequest request, CancellationToken ct)
     {
@@ -30,8 +37,7 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
             || request.Criteria.Length > 3 || request.Categories.Distinct().Count() != request.Categories.Length
             || request.Criteria.Distinct().Count() != request.Criteria.Length
             || request.Criteria.Any(c => c is null || !CriteriaNames.ContainsKey(c))) return false;
-        var books = await catalog.GetBooksAsync(ct);
-        var knownCategories = books.SelectMany(b => b.Categories).Select(c => c.Slug).ToHashSet();
+        var knownCategories = (await catalog.GetGenresAsync(ct)).Select(c => c.Slug).ToHashSet();
         if (request.Categories.Any(c => c is null || !knownCategories.Contains(c))) return false;
         await db.Database.ExecuteSqlInterpolatedAsync($"""
             INSERT INTO community."ReadingPreferences" ("UserId", "Categories", "Criteria")
@@ -43,7 +49,7 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
 
     public async Task<RecommendationResult> GetAsync(Guid userId, CancellationToken ct)
     {
-        var preference = await GetPreferencesAsync(userId, ct);
+        var preference = await GetPreferencesAsync(userId, ct) ?? new ReadingPreference { UserId = userId };
         var books = await catalog.GetBooksAsync(ct);
         var started = (await reading.GetStartedBookIdsAsync(userId, ct)).ToHashSet();
         var ratings = await db.BookRatings.AsNoTracking().Where(r => r.OverallScore != null).ToArrayAsync(ct);

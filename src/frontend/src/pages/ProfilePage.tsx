@@ -15,8 +15,6 @@ import {
 import { useAuth } from '../auth/useAuth'
 
 import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
-import RatingPrompts from '../community/RatingPrompts'
-import BookRecommendations from '../community/BookRecommendations'
 
 import {
     getBookSummaries,
@@ -627,18 +625,8 @@ function ProfilePage() {
         <section className="profile-page">
             <header className="profile-page-header">
                 <div>
-                    <p className="eyebrow">
-                        Okur profili
-                    </p>
 
                     <h1>Kitaplığım</h1>
-
-                    <p className="profile-page-description">
-                        Okumak istediğiniz,
-                        okumaya devam ettiğiniz ve
-                        tamamladığınız kitapları tek
-                        bir yerde keşfedin.
-                    </p>
                 </div>
 
                 <aside className="profile-identity-card">
@@ -651,9 +639,6 @@ function ProfilePage() {
                     </div>
 
                     <div>
-                        <span>
-                            KitapKivo okuru
-                        </span>
 
                         <strong>
                             {profile.email}
@@ -662,8 +647,6 @@ function ProfilePage() {
                 </aside>
             </header>
 
-            <RatingPrompts />
-            <BookRecommendations />
             <ProfileFeaturedBooksSection />
             <section
                 className="profile-summary-section"
@@ -671,32 +654,7 @@ function ProfilePage() {
                     'reading-summary-heading'
                 }
             >
-                <div className="profile-summary-header">
-                    <div>
-                        <p className="eyebrow">
-                            Okuma yolculuğun
-                        </p>
-
-                        <h2
-                            id={
-                                'reading-summary-heading'
-                            }
-                        >
-                            Kitaplık özeti
-                        </h2>
-                    </div>
-
-                    {librarySummary && (
-                        <span>
-                            {
-                                librarySummary
-                                    .totalCount
-                            }
-                            {' '}
-                            kitaplık bir yolculuk
-                        </span>
-                    )}
-                </div>
+                <h2 id="reading-summary-heading" className="profile-visually-hidden">Kitaplık özeti</h2>
 
                 {isSummaryLoading && (
                     <div
@@ -783,12 +741,6 @@ function ProfilePage() {
                                                 card.count
                                             }
                                         </strong>
-
-                                        <small>
-                                            {
-                                                card.description
-                                            }
-                                        </small>
                                     </button>
                                 ),
                             )}
@@ -799,9 +751,6 @@ function ProfilePage() {
             <section className="profile-library-section">
                 <div className="profile-library-header">
                     <div>
-                        <p className="eyebrow">
-                            Kişisel kitaplığın
-                        </p>
 
                         <h2>Kitapların</h2>
                     </div>

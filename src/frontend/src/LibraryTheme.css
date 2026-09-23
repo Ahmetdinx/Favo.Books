@@ -1,26 +1,26 @@
 /* Shared reading-room palette. Keep contrast in the text, not in large decorative panels. */
 :root {
-    --library-paper: #e9e3d8;
-    --library-surface: #e2dccf;
-    --library-ink: #303d35;
-    --library-muted: #586157;
-    --library-line: #c5bdae;
-    --library-accent: #4c6250;
-    background: #b9b2a4;
+    --library-paper: #f1e8dc;
+    --library-surface: #e6d8c8;
+    --library-ink: #3e2d24;
+    --library-muted: #756151;
+    --library-line: #d0bba5;
+    --library-accent: #79563d;
+    background: #c7b39d;
 }
-body { background: linear-gradient(120deg, #c1baad, #b3ad9f); color: var(--library-ink); }
+body { background: linear-gradient(120deg, #d4c3b0, #c4ad94); color: var(--library-ink); }
 .app .header, .app .main-content, .app .footer { width: min(1080px, calc(100% - 48px)); }
 .app .header { padding: 18px 0; gap: 16px; }
 .app .main-content { padding-top: 30px; padding-bottom: 44px; }
-.app .logo { font-size: 1.3rem; }
+.app .logo { font-size: 1.3rem; color: var(--library-ink); }
 .app .logo::before { width: 34px; height: 38px; box-shadow: none; background: var(--library-accent); }
-.app .navigation a { font-size: 0.85rem; padding: 9px 11px; color: #3f4c41; }
+.app .navigation a { font-size: 0.85rem; padding: 9px 11px; color: #594131; }
 .app .navigation-user { max-width: 160px; font-size: 0.78rem; }
 .app .eyebrow { color: #665b48; font-size: 0.67rem; letter-spacing: 0.13em; }
 .app .button { min-height: 40px; padding: 10px 16px; border-radius: 7px; font-size: 0.83rem; box-shadow: none; }
 .app .primary-button { background: var(--library-accent); color: #faf7f0; }
 .app .secondary-button { background: var(--library-paper); border: 1px solid var(--library-line); }
-.app :is(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid #405e48; outline-offset: 4px; }
+.app :is(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid #79563d; outline-offset: 4px; }
 .app :is(.catalog-page-header, .profile-page-header) { margin-bottom: 24px; gap: 24px; }
 .app :is(.catalog-page-header, .profile-page-header, .book-detail-summary) h1 {
     font-family: Georgia, 'Times New Roman', serif;
@@ -46,11 +46,11 @@ body { background: linear-gradient(120deg, #c1baad, #b3ad9f); color: var(--libra
 .app .catalog-book-authors { font-size: 0.79rem; color: var(--library-muted); }
 .app .catalog-book-year { font-size: 0.62rem; color: #665e51; }
 .app .catalog-categories { gap: 5px; }
-.app .catalog-categories button { font-size: 0.65rem; padding: 5px 7px; background: #dbdfd3; color: #435343; border-radius: 4px; }
+.app .catalog-categories button { font-size: 0.65rem; padding: 5px 7px; background: #e5d6c4; color: #604733; border-radius: 4px; }
 .app .catalog-detail-link { padding: 10px 0 0; margin-top: 10px; border-top: 1px solid var(--library-line); font-size: 0.75rem; }
-.app .catalog-active-filter { font-size: 0.83rem; background: #d2d6c8; border-radius: 6px; }
+.app .catalog-active-filter { font-size: 0.83rem; background: #e1ceb8; border-radius: 6px; }
 .app .catalog-category-error { font-size: 0.85rem; }
-.app .catalog-category-error button { background: none; color: #405e48; text-decoration: underline; cursor: pointer; }
+.app .catalog-category-error button { background: none; color: #79563d; text-decoration: underline; cursor: pointer; }
 
 /* Book details: information first, a compact reading control, then the evaluation. */
 .app .book-detail-hero { grid-template-columns: 185px minmax(0, 1fr); gap: 34px; align-items: start; }
@@ -58,7 +58,7 @@ body { background: linear-gradient(120deg, #c1baad, #b3ad9f); color: var(--libra
 .app .book-detail-cover-image { object-fit: contain; }
 .app .book-detail-original-title { font-size: 1rem; }
 .app .book-detail-authors { font-size: 0.95rem; }
-.app .book-detail-categories a { background: #d5d9cc; font-size: 0.73rem; padding: 6px 10px; }
+.app .book-detail-categories a { background: #e5d6c4; font-size: 0.73rem; padding: 6px 10px; }
 .app :is(.reading-status-panel, .profile-book-actions, .detailed-rating, .book-edition-card) { background: var(--library-paper); border: 1px solid var(--library-line); border-radius: 10px; box-shadow: none; }
 .app .reading-status-panel { padding: 16px; margin-top: 20px; }
 .app .reading-status-heading h2 { font-family: Georgia, serif; font-size: 1.15rem; }
@@ -76,7 +76,7 @@ body { background: linear-gradient(120deg, #c1baad, #b3ad9f); color: var(--libra
 .app .book-editions-section { margin-top: 28px; }
 .app .book-editions-header h2 { font-size: 1.5rem; }
 .app .book-edition-card { padding: 18px; }
-.app .book-edition-card.primary { background: #e1e3d6; border-color: #adb8a3; }
+.app .book-edition-card.primary { background: #e9ddcd; border-color: #baa085; }
 .app .detailed-rating { padding: 24px; margin-top: 30px; }
 .app .detailed-rating h2 { font-family: Georgia, serif; font-size: 1.55rem; }
 .app .detailed-rating-overall { padding-left: 20px; border-left: 1px solid var(--library-line); }
@@ -90,41 +90,22 @@ body { background: linear-gradient(120deg, #c1baad, #b3ad9f); color: var(--libra
 .app .detailed-rating-field select { background: #f3eee5; border-color: #b7b5a7; min-height: 42px; }
 .app .detailed-rating-field p { color: var(--library-muted); font-size: 0.79rem; }
 .app .detailed-rating :is(.detailed-rating-preview, .detailed-rating-actions, .detailed-rating-note) { grid-column: 1 / -1; }
-.app .detailed-rating-preview { margin-top: 18px; background: #d8dfcf; }
+.app .detailed-rating-preview { margin-top: 18px; background: #e4d1bb; }
 
 /* Profile: a personal shelf, with restrained summary cards and book-sized covers. */
 .app .profile-identity-card { min-width: 0; padding: 12px 16px; border: 1px solid var(--library-line); background: var(--library-paper); box-shadow: none; border-radius: 8px; }
-.app .profile-avatar { width: 38px; height: 38px; border-radius: 50%; background: #d0d7c7; color: #3d533f; font-size: 1.1rem; }
-.app :is(.profile-featured-header, .profile-summary-header, .profile-library-header) h2 { font-size: 1.5rem; }
-.app .profile-featured-section { gap: 16px; margin-top: 20px; }
-.app .profile-featured-header > div:first-child > p:last-child { font-size: 0.85rem; color: var(--library-muted); }
-.app .profile-featured-count { min-width: auto; padding: 8px 12px; border-radius: 6px; box-shadow: none; background: var(--library-paper); }
-.app .profile-featured-count strong { font-size: 1.25rem; }
-.app .profile-featured-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
-.app .profile-bedside-showcase { grid-template-columns: 112px minmax(0, 1fr); gap: 20px; min-height: 0; padding: 24px; border: 1px solid var(--library-line); border-radius: 10px; background: var(--library-paper); color: var(--library-ink); box-shadow: none; }
-.app .profile-bedside-showcase::after { display: none; }
-.app .profile-bedside-cover-shell { width: 112px; border-radius: 3px 6px 6px 3px; box-shadow: 3px 5px 10px #302f2420; }
-.app .profile-bedside-content h3 { font-size: 1.4rem; line-height: 1.25; }
-.app .profile-featured-kicker { color: #6b614e; font-size: 0.63rem; }
-.app .profile-bedside-content blockquote { color: #53604f; border-left-color: #afb89f; margin-top: 16px; font-size: 0.86rem; }
-.app :is(.profile-featured-note-empty, .profile-bedside-empty p) { color: var(--library-muted); font-size: 0.84rem; margin-top: 12px; }
-.app .profile-influential-showcase { padding: 20px; border-radius: 10px; border-color: var(--library-line); background: var(--library-paper); box-shadow: none; }
-.app .profile-influential-showcase > header h3 { font-size: 1.25rem; }
-.app .profile-influential-showcase > header > span { width: auto; height: auto; padding: 6px 9px; border-radius: 5px; background: #d8dccf; color: #475540; }
-.app .profile-influential-list > li { grid-template-columns: 22px 42px minmax(0, 1fr); min-height: 0; gap: 12px; padding: 12px 0; }
-.app .profile-influential-empty { min-height: 50px; background: transparent; border-radius: 5px; }
-.app .profile-influential-cover { box-shadow: 2px 3px 6px #302f2415; border-radius: 3px; }
-.app .profile-influential-content h4 { font-size: 0.95rem; }
-.app .profile-summary-section { padding: 20px 0; margin-top: 22px; border: 0; border-top: 1px solid var(--library-line); border-radius: 0; background: transparent; box-shadow: none; }
-.app .profile-summary-grid { gap: 8px; }
-.app .profile-summary-card { min-height: 85px; padding: 12px; border: 1px solid var(--library-line); border-radius: 7px; background: var(--library-paper); color: var(--library-ink); box-shadow: none; }
-.app .profile-summary-card strong { font-size: 1.55rem; color: #405640; }
+.app .profile-avatar { width: 38px; height: 38px; border-radius: 50%; background: #dcc5ad; color: #62452f; font-size: 1.1rem; }
+.app :is(.profile-summary-header, .profile-library-header) h2 { font-size: 1.5rem; }
+.app .profile-summary-section { padding: 0; margin-top: 24px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.app .profile-summary-grid { gap: 10px; }
+.app .profile-summary-card { min-height: 68px; padding: 12px 18px; border: 1px solid var(--library-line); border-radius: 7px; background: var(--library-paper); color: var(--library-ink); box-shadow: none; }
+.app .profile-summary-card strong { font-size: 1.55rem; color: #64452f; }
 .app .profile-summary-card :is(span, small) { color: var(--library-muted); }
-.app .profile-summary-card.active { background: #d6ddcc; color: #354a37; border-color: #8e9e85; box-shadow: inset 0 -3px #8e9e85; }
-.app .profile-summary-card:hover { transform: none; background: #e1e4d8; }
+.app .profile-summary-card.active { background: #dfc9b0; color: #513924; border-color: #ad8967; box-shadow: inset 0 -3px #ad8967; }
+.app .profile-summary-card:hover { transform: none; background: #eadcca; }
 .app .profile-library-section { padding-top: 24px; }
 .app .profile-filter-tabs { gap: 7px; padding: 10px 0; }
-.app .profile-filter-button { padding: 9px 12px; border-radius: 6px; font-size: 0.8rem; background: #e0dbd0; color: #465242; }
+.app .profile-filter-button { padding: 9px 12px; border-radius: 6px; font-size: 0.8rem; background: #e0dbd0; color: #654c39; }
 .app .profile-filter-button.active { background: var(--library-accent); color: #f6f3ea; }
 .app .profile-library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .app .profile-book-card { border-radius: 8px; padding: 16px; background: var(--library-paper); box-shadow: none; border: 1px solid var(--library-line); }
@@ -132,8 +113,7 @@ body { background: linear-gradient(120deg, #c1baad, #b3ad9f); color: var(--libra
 .app .profile-book-cover-image { object-fit: contain; }
 .app .profile-book-content { padding: 14px 0 0; }
 .app .profile-book-content h3 { font-size: 1.05rem; }
-.app .profile-book-status { position: static; display: inline-flex; width: fit-content; align-self: start; margin-top: 10px; font-size: 0.64rem; padding: 5px 7px; background: #d6ddcc; color: #364c39; box-shadow: none; }
-.app .profile-featured-empty-intro { background: #deded0; border-color: #a9b29f; border-radius: 8px; padding: 16px; }
+.app .profile-book-status { position: static; display: inline-flex; width: fit-content; align-self: start; margin-top: 10px; font-size: 0.64rem; padding: 5px 7px; background: #dfc9b0; color: #60432c; box-shadow: none; }
 
 /* Brief rotation around the book spine; URL filter changes do not remount the page. */
 .library-page-turn { transform-origin: left center; animation: library-cover-open 320ms ease-out both; }
@@ -145,8 +125,6 @@ body { background: linear-gradient(120deg, #c1baad, #b3ad9f); color: var(--libra
     .app .catalog-toolbar { grid-template-columns: 2fr 1fr 1fr; }
     .app .catalog-search-field { grid-column: span 2; }
     .app .catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .app .profile-featured-grid { grid-template-columns: 1fr; }
-    .app .profile-bedside-showcase { grid-template-columns: 112px minmax(0, 1fr); }
 }
 @media (max-width: 680px) {
     .app .header, .app .main-content, .app .footer { width: calc(100% - 32px); }
@@ -168,14 +146,33 @@ body { background: linear-gradient(120deg, #c1baad, #b3ad9f); color: var(--libra
     .app .detailed-rating-averages { grid-template-columns: 1fr; gap: 14px; }
     .app .detailed-rating-overall { border-left: 0; padding-left: 0; }
     .app .profile-page-header { align-items: flex-start; }
-    .app .profile-bedside-showcase { padding: 18px; grid-template-columns: 85px minmax(0, 1fr); gap: 16px; }
-    .app .profile-bedside-cover-shell { width: 85px; }
     .app .profile-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .app .profile-influential-showcase { padding: 16px; }
     .app .profile-book-card { padding: 12px; }
     .app .profile-book-cover { width: 82px; height: 124px; }
 }
 @media (prefers-reduced-motion: reduce) {
     .library-page-turn { animation: none; transform: none; }
     .app *, .app *::before, .app *::after { scroll-behavior: auto; transition: none; }
+}
+
+/* Warm shared accents and a compact, cover-led profile. */
+.app .navigation a:is(:hover, [aria-current="page"]) { color: var(--library-ink); background: #79563d14; }
+.app .secondary-button { color: var(--library-ink); }
+.app :is(h1, h2, h3, .catalog-detail-link, .profile-book-detail-link) { color: var(--library-ink); }
+.app .profile-page-header { margin-bottom: 16px; align-items: center; }
+.app .profile-page-header h1 { margin: 0; font-size: 2rem; }
+.app .profile-identity-card { padding: 0; border: 0; background: transparent; gap: 10px; }
+.app .profile-identity-card strong { color: var(--library-muted); font-size: 0.8rem; }
+.app .profile-summary-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 12px; }
+.app .profile-summary-card > span { font-size: 0.78rem; letter-spacing: 0; text-transform: none; }
+.app .profile-summary-card > strong { margin: 0; font-size: 1.4rem; }
+.app .profile-library-header { margin-bottom: 8px; }
+.app .profile-library-header h2 { font-size: 1.25rem; }
+.app .profile-filter-button { border-radius: 20px; }
+.profile-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (max-width: 620px) {
+    .app .profile-page-header { gap: 12px; }
+    .app .profile-identity-card { max-width: 100%; }
+    .app .profile-identity-card strong { overflow-wrap: anywhere; }
+    .app .profile-summary-card { padding: 12px; }
 }

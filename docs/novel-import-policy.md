@@ -1,5 +1,17 @@
 # Roman ekleme politikası — 2026-09-17
 
+23 Eylül ek notu: `tools/KitapKivo.PublisherImport` yayınevi kaynakları için
+ayrı, çevrimdışı bir operatör akışı ekler. HTTP üzerinden onaysız kayıt yolu açmaz.
+Kaynak karmasıyla eşleştirilen incelemeler
+`data/curation/publisher-form-reviews-v1.json` içindedir. Roman dışı/belirsiz
+kayıtlar ayrılır; yazar biyografisinden kaynaklanan yanlış elemeler kaynak
+açıklaması incelenerek giderilir. Türkçe baskı, ISBN, kapak ve tekrar kontrolü
+korunur. 23 Eylül'de 1.000 yeni roman aktarıldı: toplam 10.858 kayıt,
+katalog koşullarını sağlayan 1.005 roman. Aynı batch yeniden kontrol edildiğinde
+yeni kayıt oluşmadı. Ayrıntılar: `docs/publisher-novel-import-2026-09-23.md`.
+Aşağıdaki gömülü liste kuralları Open Library akışı için geçerliliğini korur.
+Yayınevi aracı için `tools/KitapKivo.PublisherImport/README.md` esas alınır.
+
 Yeni kitap ekleme kuralları uygulandı. Katalog ve öneriler artık yalnızca son
 inceleme kararı `Novel` olan, Türkçe kapaklı baskısı bulunan kayıtları gösterir.
 Belirsiz kayıtlar ve kullanıcı geçmişi saklanır. Doğrulanmış `NotNovel` kayıtları
@@ -7,7 +19,7 @@ ayrı bakım komutuyla bağlantılı verileri yedeklenerek kaldırılabilir.
 
 17 Eylül geçiş durumu: 9.858 kayıt korunuyor; yalnızca 5 kayıt doğrulanmış roman.
 Silme raporunda kesinleşmiş `NotNovel` bulunmadı; hiçbir kitap silinmedi.
-İstenen 1.000 yeni roman henüz eklenmedi. Kaynak araştırması
+O tarihte istenen 1.000 yeni roman henüz eklenmemişti; aktarım 23 Eylül'de tamamlandı. Kaynak araştırması
 `artifacts/novel-publisher-import` altında; bu HTML dosyaları onaylı içe aktarma
 manifesti değildir. Toplu aktarım başlatılmadan önce eser, yazar, Türkçe baskı,
 kapak ve mükerrerlik kontrolleri tamamlanmalıdır.

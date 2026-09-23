@@ -1,5 +1,6 @@
 import {
     useEffect,
+    useRef,
     useState,
 } from 'react'
 
@@ -92,6 +93,15 @@ function getAuthors(
 }
 
 function ProfileFeaturedBooksSection() {
+    const shelfRef = useRef<HTMLOListElement>(null)
+
+    function scrollShelf(direction: number) {
+        const shelf = shelfRef.current
+        if (!shelf) return
+        const card = shelf.querySelector('li')
+        shelf.scrollBy({ left: direction * ((card?.getBoundingClientRect().width ?? 260) + 16) })
+    }
+
     const {
         session,
         signOut,
@@ -258,10 +268,6 @@ function ProfileFeaturedBooksSection() {
             ) ?? null
             : null
 
-    const selectionCount =
-        (bedsideSelection ? 1 : 0) +
-        influentialSelections.length
-
     if (isLoading) {
         return (
             <section className="profile-featured-section">
@@ -304,306 +310,97 @@ function ProfileFeaturedBooksSection() {
     }
 
     return (
-        <section
-            className="profile-featured-section"
-            aria-labelledby={
-                'featured-books-heading'
-            }
-        >
-            <div className="profile-featured-header">
-                <div>
-                    <p className="eyebrow">
-                        Okur kimliğin
-                    </p>
-
-                    <h2 id="featured-books-heading">
-                        Kitaplarda bıraktığın iz
-                    </h2>
-
-                    <p>
-                        Sana eşlik eden ve okurluk
-                        yolculuğunu değiştiren
-                        kitaplar.
-                    </p>
+        <section className="profile-featured-section" aria-label="Kişisel kitap rafım">
+            <article className="profile-bedside-showcase" aria-labelledby="bedside-heading">
+                <div className="profile-bedside-cover-shell">
+                    {bedsideBook ? (
+                        <Link to={'/catalog/books/' + bedsideBook.bookId}>
+                            <FeaturedBookCover key={bedsideBook.coverImageUrl} coverImageUrl={bedsideBook.coverImageUrl} title={bedsideBook.title} />
+                        </Link>
+                    ) : (
+                        <div className="profile-bedside-empty-cover" aria-hidden="true">
+                            <span>K</span><small>Başucu<br />kitabım</small>
+                        </div>
+                    )}
                 </div>
-
-                <div className="profile-featured-count">
-                    <strong>{selectionCount}</strong>
-                    <span>6 özel seçimden</span>
-                </div>
-            </div>
-
-            {selectionCount === 0 && (
-                <div className="profile-featured-empty-intro">
-                    <div>
-                        <strong>
-                            Okur vitrinin henüz boş
-                        </strong>
-
-                        <span>
-                            Kitap detaylarından bir
-                            başucu kitabı ve seni en
-                            çok etkileyen beş kitabı
-                            seçebilirsin.
-                        </span>
-                    </div>
-
-                    <Link
-                        className={
-                            'button primary-button'
-                        }
-                        to="/catalog"
-                    >
-                        Kitap Seç
+                <div className="profile-bedside-content">
+                    <h2 id="bedside-heading">Başucu kitabım</h2>
+                    {bedsideSelection ? (
+                        <>
+                            <h3>{bedsideBook ? (
+                                <Link to={'/catalog/books/' + bedsideBook.bookId}>{bedsideBook.title}</Link>
+                            ) : 'Katalog kaydı bulunamadı'}</h3>
+                            <p className="profile-featured-authors">{getAuthors(bedsideBook)}</p>
+                            {bedsideSelection.personalNote && <details className="profile-book-note"><summary>Notum</summary><blockquote>{bedsideSelection.personalNote}</blockquote></details>}
+                        </>
+                    ) : (
+                        <p className="profile-bedside-description">Hep geri döndüğün roman.</p>
+                    )}
+                    <Link className="profile-shelf-link" to={bedsideBook ? '/catalog/books/' + bedsideBook.bookId : '/catalog'}>
+                        {bedsideBook ? 'Kitaba git' : 'Kitap seç'} <span aria-hidden="true">↗</span>
                     </Link>
                 </div>
-            )}
+            </article>
 
-            <div className="profile-featured-grid">
-                <article className="profile-bedside-showcase">
-                    <div className="profile-bedside-cover-shell">
-                        {bedsideBook ? (
-                            <Link
-                                to={
-                                    '/catalog/books/' +
-                                    bedsideBook.bookId
-                                }
-                                aria-label={
-                                    `${bedsideBook.title} ` +
-                                    'detaylarını görüntüle'
-                                }
-                            >
-                                <FeaturedBookCover
-                                    coverImageUrl={
-                                        bedsideBook
-                                            .coverImageUrl
-                                    }
-                                    title={
-                                        bedsideBook.title
-                                    }
-                                />
-                            </Link>
-                        ) : (
-                            <FeaturedBookCover
-                                coverImageUrl={null}
-                                title="Başucu kitabım"
-                            />
-                        )}
+            <section className="profile-influential-showcase" aria-labelledby="influential-heading">
+                <header>
+                    <div>
+                        <h2 id="influential-heading">İz bırakanlar</h2>
                     </div>
-
-                    <div className="profile-bedside-content">
-                        <p className="profile-featured-kicker">
-                            Başucu kitabım
-                        </p>
-
-                        {bedsideSelection ? (
+                    <div className="profile-shelf-controls">
+                        <span aria-label={influentialSelections.length + ' kitap seçildi, en fazla 5'}>{influentialSelections.length} / 5</span>
+                        {influentialSelections.length > 0 && (
                             <>
-                                <h3>
-                                    {bedsideBook ? (
-                                        <Link
-                                            to={
-                                                '/catalog/books/' +
-                                                bedsideBook.bookId
-                                            }
-                                        >
-                                            {
-                                                bedsideBook
-                                                    .title
-                                            }
-                                        </Link>
-                                    ) : (
-                                        'Katalog kaydı ' +
-                                        'bulunamadı'
-                                    )}
-                                </h3>
-
-                                <p className="profile-featured-authors">
-                                    {getAuthors(
-                                        bedsideBook,
-                                    )}
-                                </p>
-
-                                {bedsideSelection
-                                    .personalNote ? (
-                                    <blockquote>
-                                        {
-                                            bedsideSelection
-                                                .personalNote
-                                        }
-                                    </blockquote>
-                                ) : (
-                                    <p className="profile-featured-note-empty">
-                                        Bu kitap için
-                                        henüz kişisel
-                                        bir not
-                                        eklemedin.
-                                    </p>
-                                )}
+                                <button type="button" aria-label="Önceki kitaplara kaydır" aria-controls="influential-shelf" onClick={() => scrollShelf(-1)}>←</button>
+                                <button type="button" aria-label="Sonraki kitaplara kaydır" aria-controls="influential-shelf" onClick={() => scrollShelf(1)}>→</button>
                             </>
-                        ) : (
-                            <div className="profile-bedside-empty">
-                                <h3>
-                                    Sana hep eşlik eden
-                                    kitap hangisi?
-                                </h3>
-
-                                <p>
-                                    Kitap detayından tek
-                                    bir kitabı başucu
-                                    kitabın olarak
-                                    seçebilirsin.
-                                </p>
-                            </div>
                         )}
                     </div>
-                </article>
+                </header>
 
-                <section className="profile-influential-showcase">
-                    <header>
+                {influentialSelections.length === 0 ? (
+                    <div className="profile-shelf-empty">
                         <div>
-                            <p className="profile-featured-kicker">
-                                Kişisel kanon
-                            </p>
-
-                            <h3>
-                                Beni en çok etkileyenler
-                            </h3>
+                            <h3>En sevdiğin beş roman.</h3>
                         </div>
-
-                        <span>
-                            {
-                                influentialSelections
-                                    .length
-                            }
-                            /5
-                        </span>
-                    </header>
-
-                    <ol className="profile-influential-list">
-                        {influentialPositions.map(
-                            (position) => {
-                                const selection =
-                                    influentialSelections
-                                        .find(
-                                            (item) =>
-                                                item.position ===
-                                                position,
-                                        ) ?? null
-
-                                const book = selection
-                                    ? booksById.get(
-                                        selection.bookId,
-                                    ) ?? null
-                                    : null
-
-                                return (
-                                    <li key={position}>
-                                        <span className="profile-influential-rank">
-                                            {position
-                                                .toString()
-                                                .padStart(
-                                                    2,
-                                                    '0',
-                                                )}
-                                        </span>
-
-                                        {selection ? (
-                                            <>
-                                                <div className="profile-influential-cover">
-                                                    {book ? (
-                                                        <Link
-                                                            to={
-                                                                '/catalog/books/' +
-                                                                book.bookId
-                                                            }
-                                                        >
-                                                            <FeaturedBookCover
-                                                                coverImageUrl={
-                                                                    book.coverImageUrl
-                                                                }
-                                                                title={
-                                                                    book.title
-                                                                }
-                                                            />
-                                                        </Link>
-                                                    ) : (
-                                                        <FeaturedBookCover
-                                                            coverImageUrl={
-                                                                null
-                                                            }
-                                                            title="Kitap"
-                                                        />
-                                                    )}
-                                                </div>
-
-                                                <div className="profile-influential-content">
-                                                    <h4>
-                                                        {book ? (
-                                                            <Link
-                                                                to={
-                                                                    '/catalog/books/' +
-                                                                    book.bookId
-                                                                }
-                                                            >
-                                                                {
-                                                                    book.title
-                                                                }
-                                                            </Link>
-                                                        ) : (
-                                                            'Katalog kaydı bulunamadı'
-                                                        )}
-                                                    </h4>
-
-                                                    <p className="profile-featured-authors">
-                                                        {getAuthors(
-                                                            book,
-                                                        )}
-                                                    </p>
-
-                                                    {selection
-                                                        .personalReflection && (
-                                                            <p className="profile-influential-reflection">
-                                                                {
-                                                                    selection
-                                                                        .personalReflection
-                                                                }
-                                                            </p>
-                                                        )}
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <div className="profile-influential-empty">
-                                                <strong>
-                                                    Bu sıra
-                                                    henüz boş
-                                                </strong>
-
-                                                <span>
-                                                    Seni
-                                                    değiştiren
-                                                    bir kitaba
-                                                    ayır.
-                                                </span>
+                        <Link className="button secondary-button" to="/catalog">Roman seç</Link>
+                    </div>
+                ) : (
+                    <ol id="influential-shelf" className="profile-influential-list" ref={shelfRef} tabIndex={0} aria-label="Beni en çok etkileyen beş kitap; yatay kaydırılabilir raf">
+                        {influentialPositions.map(position => {
+                            const selection = influentialSelections.find(item => item.position === position)
+                            const book = selection ? booksById.get(selection.bookId) ?? null : null
+                            return (
+                                <li key={position} className={selection ? 'profile-shelf-card' : 'profile-shelf-card profile-shelf-card-empty'}>
+                                    <span className="profile-influential-rank" aria-label={position + '. sıra'}>{String(position).padStart(2, '0')}</span>
+                                    {selection ? (
+                                        <>
+                                            <div className="profile-influential-cover">
+                                                {book ? (
+                                                    <Link to={'/catalog/books/' + book.bookId}>
+                                                        <FeaturedBookCover key={book.coverImageUrl} coverImageUrl={book.coverImageUrl} title={book.title} />
+                                                    </Link>
+                                                ) : <FeaturedBookCover coverImageUrl={null} title="Kitap" />}
                                             </div>
-                                        )}
-                                    </li>
-                                )
-                            },
-                        )}
+                                            <div className="profile-influential-content">
+                                                <h3>{book ? <Link to={'/catalog/books/' + book.bookId}>{book.title}</Link> : 'Katalog kaydı bulunamadı'}</h3>
+                                                <p className="profile-featured-authors">{getAuthors(book)}</p>
+                                                {selection.personalReflection && <details className="profile-book-note"><summary>Notum</summary><blockquote className="profile-influential-reflection">{selection.personalReflection}</blockquote></details>}
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <Link className="profile-influential-empty" to="/catalog">
+                                            <span className="profile-shelf-add" aria-hidden="true">+</span>
+                                            <strong>Kitap ekle</strong>
+
+                                        </Link>
+                                    )}
+                                </li>
+                            )
+                        })}
                     </ol>
-                </section>
-            </div>
-
-            <div className="profile-featured-footer">
-                <span>
-                    Seçimlerini kitap detaylarından
-                    yönetebilirsin.
-                </span>
-
-                <Link to="/catalog">
-                    Kataloğa git
-                </Link>
-            </div>
+                )}
+            </section>
         </section>
     )
 }

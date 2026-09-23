@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
@@ -9,7 +9,7 @@ const criteria = [
     ['structure', 'Kurgu ve Yapı'], ['pace', 'Tempo / Sürükleyicilik'],
     ['impact', 'Duygusal / Düşünsel Etki'], ['experience', 'Genel Okuma Deneyimi'],
 ] as const
-type Preferences = { categories: string[]; criteria: string[]; availableCategories: { slug: string; name: string }[] }
+type Preferences = { categories: string[]; criteria: string[]; hasSavedPreferences: boolean; availableCategories: { slug: string; name: string }[] }
 type FeedbackItem = { bookId: string; title: string; choice: 'interested' | 'dismissed' }
 type Recommendations = { hasPersonalSignals: boolean; feedback: FeedbackItem[]; items: {
     bookId: string; title: string; coverImageUrl: string; reasons: string[]; ratingCount: number
@@ -24,6 +24,10 @@ function PersonalRecommendations({ home }: { home: boolean }) {
     const Heading = home ? 'h1' : 'h2'
     const request = useAuthenticatedFetch()
     const [preferences, setPreferences] = useState<Preferences | null>(null)
+    const [savedPreferences, setSavedPreferences] = useState<Preferences | null>(null)
+    const [editingPreferences, setEditingPreferences] = useState(false)
+    const preferencesId = useId()
+    const editButton = useRef<HTMLButtonElement>(null)
     const [result, setResult] = useState<Recommendations | null>(null)
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
@@ -45,7 +49,10 @@ function PersonalRecommendations({ home }: { home: boolean }) {
                 ])
                 if (responses.some(response => !response.ok)) throw new Error()
                 const [prefs, recommendations] = await Promise.all(responses.map(response => response.json()))
-                if (!controller.signal.aborted) { setPreferences(prefs); setResult(recommendations) }
+                if (!controller.signal.aborted) {
+                    setPreferences(prefs); setSavedPreferences(prefs); setResult(recommendations)
+                    setEditingPreferences(!prefs.hasSavedPreferences)
+                }
             } catch { if (!controller.signal.aborted) setError('Önerilerin yüklenemedi. Lütfen tekrar dene.') }
             finally { if (!controller.signal.aborted) setLoading(false) }
         }
@@ -87,6 +94,9 @@ function PersonalRecommendations({ home }: { home: boolean }) {
             })
             if (!response.ok) throw new Error()
             saved = true
+            if (controller.signal.aborted) return
+            const savedPrefs = { ...preferences, hasSavedPreferences: true }
+            setPreferences(savedPrefs); setSavedPreferences(savedPrefs); setEditingPreferences(false)
             const updated = await request('/api/community/me/recommendations', { signal: controller.signal, cache: 'no-store' })
             if (!updated.ok) throw new Error()
             const data = await updated.json() as Recommendations
@@ -94,7 +104,12 @@ function PersonalRecommendations({ home }: { home: boolean }) {
         } catch { if (!controller.signal.aborted) setError(saved
             ? 'Tercihlerin kaydedildi fakat öneriler yenilenemedi. Tekrar deneyebilirsin.'
             : 'Tercihlerin kaydedilemedi. Seçimlerin burada duruyor; tekrar deneyebilirsin.') }
-        finally { if (!controller.signal.aborted) setSaving(false) }
+        finally {
+            if (!controller.signal.aborted) {
+                setSaving(false)
+                if (saved) requestAnimationFrame(() => editButton.current?.focus())
+            }
+        }
     }
 
     async function giveFeedback(bookId: string, title: string, choice: FeedbackItem['choice'] | null) {
@@ -139,13 +154,26 @@ function PersonalRecommendations({ home }: { home: boolean }) {
         {loading && <p role="status">Kitapların arasından yeni okumalar seçiliyor…</p>}
         {error && <p role="alert">{error} {!preferences && <button type="button" onClick={() => setRetry(n => n + 1)}>Tekrar dene</button>}</p>}
         {message && <p role="status">{message}</p>}
-        {!loading && preferences && <details className="reading-preferences">
-            <summary>Okuma tercihlerim <span>{preferences.categories.length} tür · {preferences.criteria.length} öncelik</span></summary>
-            <form onSubmit={save}>
-                <p>Bir kitaba verdiğin puan, o özelliğin senin için ne kadar önemli olduğunu söylemez.
-                    Burada kendi önceliklerini seçebilirsin. Seçimleri kaldırarak tercihlerini sıfırlayabilirsin.</p>
+        {!loading && preferences && <div className="reading-preferences">
+            <div className="reading-preferences-header">
+                <div className="reading-preferences-overview">
+                    <h3>Okuma tercihlerim</h3>
+                    <p>{savedPreferences?.categories.length
+                        ? savedPreferences.availableCategories.filter(c => savedPreferences.categories.includes(c.slug)).map(c => c.name).join(' · ')
+                        : savedPreferences?.hasSavedPreferences ? 'Tüm roman türlerine açığım' : 'Sevdiğin roman türlerini seç'}
+                        {!!savedPreferences?.criteria.length && ` · ${savedPreferences.criteria.length} okuma önceliği`}</p>
+                </div>
+                <button ref={editButton} type="button" className="preferences-edit" disabled={saving}
+                    aria-expanded={editingPreferences} aria-controls={preferencesId}
+                    onClick={() => { setPreferences(savedPreferences); setEditingPreferences(open => !open); setMessage('') }}>
+                    {editingPreferences ? 'Vazgeç' : savedPreferences?.hasSavedPreferences ? 'Düzenle' : 'Tercih seç'}
+                </button>
+            </div>
+            <form id={preferencesId} onSubmit={save} hidden={!editingPreferences}>
+                <p>Önerilerini şekillendirmek için sevdiğin türleri ve okuma önceliklerini seç.
+                    İstersen seçimlerini kaldırarak sıfırlayabilirsin.</p>
                 <fieldset disabled={saving}>
-                    <legend>Hangi türleri keşfetmek istersin? <small>En fazla 5</small></legend>
+                    <legend>Roman türleri <small>En fazla 5</small></legend>
                     <div className="preference-options">{preferences.availableCategories.map(category => <label key={category.slug}>
                         <input type="checkbox" checked={preferences.categories.includes(category.slug)}
                             disabled={!preferences.categories.includes(category.slug) && preferences.categories.length >= 5}
@@ -153,7 +181,7 @@ function PersonalRecommendations({ home }: { home: boolean }) {
                     </label>)}</div>
                 </fieldset>
                 <fieldset disabled={saving}>
-                    <legend>Bir kitapta en çok neye önem verirsin? <small>En fazla 3</small></legend>
+                    <legend>Bir romanda en çok neye önem verirsin? <small>En fazla 3</small></legend>
                     <div className="preference-options">{criteria.map(([key, label]) => <label key={key}>
                         <input type="checkbox" checked={preferences.criteria.includes(key)}
                             disabled={!preferences.criteria.includes(key) && preferences.criteria.length >= 3}
@@ -162,7 +190,7 @@ function PersonalRecommendations({ home }: { home: boolean }) {
                 </fieldset>
                 <button className="button primary-button" disabled={saving} type="submit">{saving ? 'Kaydediliyor…' : 'Tercihlerimi kaydet'}</button>
             </form>
-        </details>}
+        </div>}
         {!loading && result && <>
             <button type="button" className="recommendation-refresh" disabled={saving} onClick={() => void refreshRecommendations()}>Önerileri yenile</button>
             {result.feedback.length > 0 && <details className="recommendation-feedback-history">

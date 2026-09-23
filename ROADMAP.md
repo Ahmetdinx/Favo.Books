@@ -10,7 +10,8 @@ Checked items indicate implementation, not production certification.
 - [x] Authentication, personal library and featured profile books.
 - [x] Seven-criterion ratings, preferences and explainable recommendations.
 - [x] Recommendation feedback, catalog performance improvements and 100k paging test.
-- [x] Novel-only product plan; current local dataset 9,858 books, no pending bulk import.
+- [x] Novel-only product plan; local dataset 10,858 books, 1,005 eligible novels.
+- [x] Import 1,000 new covered Turkish-edition novels with source reviews, duplicate checks and repeat-batch verification (2026-09-23).
 
 ## 1. Novel catalog and eligibility
 

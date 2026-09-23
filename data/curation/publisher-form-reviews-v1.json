@@ -1,0 +1,919 @@
+[
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/emma.aspx",
+    "SourceSha256": "b7d421abdd17bd28f9e5ce59a72314fcd52094ef22b186aa7fa833aaad43443f",
+    "Title": "Emma",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kendine-ait-bir-oda.aspx",
+    "SourceSha256": "2279ce47aeb9dbd77ae09ee0b56d76524c31a58e9495381512dd3fe16c8423d0",
+    "Title": "Kendine Ait Bir Oda",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kendine-ait-bir-oda-sert-kapak.aspx",
+    "SourceSha256": "523d65618a8fccb06fe3d1902282cfbc50607b919ae672016052c2e306dda6fe",
+    "Title": "Kendine Ait Bir Oda – Sert Kapak",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/garip-meslekler-kulubu.aspx",
+    "SourceSha256": "5d2cc0318251faaa22474e36a7fe7bba5ba9d333e78ce503a480d90f1a65d6d4",
+    "Title": "Garip Meslekler Kulübü",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/garip-meslekler-kulubu-sert-kapak.aspx",
+    "SourceSha256": "f9d6bbef412c249635428fe78307e4dccfe51873a36dac9b3d157c34f30a7b9a",
+    "Title": "Garip Meslekler Kulübü – Sert Kapak",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/genclik-yolun-sonu-sert-kapak.aspx",
+    "SourceSha256": "e52b0d06075664af5a97b89e1e673961062559891e402005acc138d225033aa6",
+    "Title": "Gençlik – Yolun Sonu – Sert Kapak",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/mektup-asklari-3.aspx",
+    "SourceSha256": "76ab6e1ebfbc22211d796b35ec459fc01605fab48c71e5426f596567c26a7bf3",
+    "Title": "Mektup Aşkları",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/mektup-asklari-sert-kapak.aspx",
+    "SourceSha256": "da3ffed6c2e39b6dab986ebc19bc6a42297d752738cfebea75752d5d9ff2e56c",
+    "Title": "Mektup Aşkları – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/teehhul-aleminde-evlilik-hayati.aspx",
+    "SourceSha256": "21c77953f93e04cecf6ca3c877be75ee2f192708d3898729b089de3a6bfe11a4",
+    "Title": "Teehhül Âleminde – Evlilik Hayatı",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/pervin-abla.aspx",
+    "SourceSha256": "dae15f2b9adc7ca87bdf62275d6897f9021e4b7ca8d079d17d32333eb0a0cda5",
+    "Title": "Pervin Abla",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/araba-sevdasi.aspx",
+    "SourceSha256": "a1f60a28772eb2941341e9b7c72a0dad42adfc62a2aa861a59540e3e51ba453c",
+    "Title": "Araba Sevdası",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kabus.aspx",
+    "SourceSha256": "e2a7f6e1a5b4e567703f5bc95e6d4f02c7fc9fa60aa0cf220a904fc275385cd4",
+    "Title": "Kâbus",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/culluk.aspx",
+    "SourceSha256": "746cf384b0f040d7e7bebc5d958c3c4d3770ae95815bdd662da2c96889ce0ff6",
+    "Title": "Çulluk",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/onikiler.aspx",
+    "SourceSha256": "f239b20671f0e0ee937265454f58a37b05a1b139dd58bb550c7c3c28e5331751",
+    "Title": "Onikiler",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/cadi.aspx",
+    "SourceSha256": "3028c14914adc93f6147a21b709582847610e52bd559aa80d381e79249231005",
+    "Title": "Cadı",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/ferda-yi-garam-askin-yarini-sert-kapak.aspx",
+    "SourceSha256": "fff80f3748619c0cc78168999f449626fdce491d595375fc442461531dce0638",
+    "Title": "Ferdâ-yı Garâm-Aşkın Yarını – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/sik-sert-kapak.aspx",
+    "SourceSha256": "8864102b68eaca1cefffa9ef5bc4472f7e0ec61a189b5ebb6df3f74bc336103d",
+    "Title": "Şık – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/icimizdeki-seytan-sert-kapak.aspx",
+    "SourceSha256": "a4561c0d45e1b3de1414110c6b66d9a8acef72947fdbbb2b16f9c14a8b5f05ae",
+    "Title": "İçimizdeki Şeytan – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kuyrukluyildiz-altinda-bir-izdivac-sert-kapak.aspx",
+    "SourceSha256": "9ab724584c091d4a58fa2116ddeab996e140fe33cb6cc46108270301ce9c6866",
+    "Title": "Kuyrukluyıldız Altında Bir İzdivaç – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kurk-mantolu-madonna-sert-kapak.aspx",
+    "SourceSha256": "dd1e2ccbe91c094ffa97e6ecf0cbe29d98345ba181b98d17518b39ea3ac3dc12",
+    "Title": "Kürk Mantolu Madonna – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kan-damlasi.aspx",
+    "SourceSha256": "ebe48e61214f20330109f8dbd99c57028d647ce1272100ad9c0d5a7a97f0a572",
+    "Title": "Kan Damlası",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kan-damlasi-sert-kapak.aspx",
+    "SourceSha256": "e655e5d00b82a220d26e3fc3c716df8d45aeccb3bce70ebdd31aee2fc6d61aeb",
+    "Title": "Kan Damlası – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kucuk-pasa-sert-kapak.aspx",
+    "SourceSha256": "a86d1cd6e0618d297298b060f4e1b6df55a29a1f875597d78da9ef199f91b05d",
+    "Title": "Küçük Paşa – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/define.aspx",
+    "SourceSha256": "9612b1311eade553c404005dbb5079af6bea4c42564f75b8effcd4f8ed937559",
+    "Title": "Define",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/define-sert-kapak.aspx",
+    "SourceSha256": "5e68e73128294ef31105054bb45ebf186c1d0aa80da5906effac7cebfa903913",
+    "Title": "Define – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/oscar-ve-pembeli-melegi",
+    "SourceSha256": "2c254c83e1d70ff5f83031ffd843fbccb5d019a9a44d46009fcdbcc7e1fb1a0f",
+    "Title": "Oscar ve Pembeli Meleği",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/fare-dortlemesi-yesil-kapak",
+    "SourceSha256": "0bc6d8c1a7a00f0ec408ee95bee595fcdbc6f100820f92885c6e3554ca5b5291",
+    "Title": "Fare Dörtlemesi (Yeşil Kapak)",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/fare-dortlemesi-gri-kapak",
+    "SourceSha256": "6b0471121f3721b26587c0b1f6d883486cac5f41e93f552e98eab019e244abbc",
+    "Title": "Fare Dörtlemesi (Gri Kapak)",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/mavi-karga",
+    "SourceSha256": "4d2bd15abd7dbfd3468cc28c413ce972a90591fe66732b2d3cd8cd45402fb78d",
+    "Title": "Mavi Karga",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yukselen-gunesin-ulkesinde",
+    "SourceSha256": "c34ffd92048d8e3f00dfdf41d225d72a07cabf72b7b1578529da8cae616f2eac",
+    "Title": "Yükselen Güneşin Ülkesinde",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kekeme-cocuklar-korosu",
+    "SourceSha256": "d29bcf3fe22744feaf4776061ad470fa830d765f633747bec571cfe3a464c736",
+    "Title": "Kekeme Çocuklar Korosu",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/oyle-bir-eylul-yok-artik",
+    "SourceSha256": "66b917fd9c1d2e413157ae6d1fb5521da936f2180f42b81da9b9b4f60a27e9a8",
+    "Title": "Öyle Bir Eylül Yok Artık",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kiz-kadin-oteki",
+    "SourceSha256": "244a888003e68335307e040a21989e3728f8c4b8ad16875bd9bc9adab008a399",
+    "Title": "Kız, Kadın, Öteki",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/mahrem-resimli-ozel-baski",
+    "SourceSha256": "ef2d5b960f41b63593b30ce18d31143537113ddc33ecb583e17194095eb2794a",
+    "Title": "Mahrem - Resimli Özel Baskı",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yarim-ay",
+    "SourceSha256": "8ea23aacad837c80b3efd89726a24cb4a2ff229b49886760963baa5069c7a1e9",
+    "Title": "Yarım Ay",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/hickimsenin-anisi",
+    "SourceSha256": "e420be4ea30a07f7950fa73b60d85bc29d176b9b096ae349c27b228d1b3c13ba",
+    "Title": "Hiçkimse'nin Anısı",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/bir-an-bir-parca",
+    "SourceSha256": "464ee98fe067f41bf32a1b5fb0e5cee65c5e2bd1cdfba6a46373300ec1e1994d",
+    "Title": "Bir An Bir Parça",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/bu-roman-o-kiz-okusun-diye-yazildi",
+    "SourceSha256": "23cc2c125dde5cc9d6c844774d35d506d012a8c7fd962e8698e5220af2a548aa",
+    "Title": "Bu Roman O Kız Okusun Diye Yazıldı",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/golem-ve-cin",
+    "SourceSha256": "6ce3817bc95fec70ca6a0f6a7e9e1bf9e6fd594de6a238a956f9cca7a620d3e2",
+    "Title": "Golem ve Cin",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/erden-bihuste-yen-winda",
+    "SourceSha256": "992effdee63acad784386b64b69868cdcab17048c1fda4c0c81c1e08db0049b0",
+    "Title": "Erdên Bihuştê yên Winda",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/size-pandispanya-yaptim",
+    "SourceSha256": "8e627b99f91b96f4002656a733c1dc8c5ade2576b7f37a9b2f59337c04135e7e",
+    "Title": "Size Pandispanya Yaptım",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sismanlayamayan-sumocu",
+    "SourceSha256": "b36c8913092aec0acc148f674a4bb23f6369cf9a787dcea635a4ab7a6d379b39",
+    "Title": "Şişmanlayamayan Sumocu",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/ayeten-li-can-nivisandi",
+    "SourceSha256": "c32a28c1698d7684020681e31fe0bd25de70bb86ed2139ed04622bcd62d2d6b2",
+    "Title": "Ayetên Li Can Nivîsandî",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kazara-milyarder",
+    "SourceSha256": "01958285af6a4daf70d311fd6eac962a67dd3d7e089f93ae476f0d8e12530940",
+    "Title": "Kazara Milyarder",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/mahrem",
+    "SourceSha256": "378eb21274a695f1bc1f8045e06acd2c5b03b95bb1eaf3dfc6c19395726273fd",
+    "Title": "Mahrem",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/cirkinligin-tarihi",
+    "SourceSha256": "f9f0e1cafca6389da51236c3c91bb7ec8bc321956259e20384e467a0565f7bf8",
+    "Title": "Çirkinliğin Tarihi",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/leylak-zamani",
+    "SourceSha256": "e43067c07635c3c58e047986d1ff10997f2a2f0cc8630d14e934b8b14478def0",
+    "Title": "Leylak Zamanı",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/baskaldiran-edebiyat",
+    "SourceSha256": "5c4be8122b5acd171a309f2d8ad179ba092d5326610b23db343c9606c922b91d",
+    "Title": "Başkaldıran Edebiyat",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/selim-ileri-kitabi",
+    "SourceSha256": "f286250a549dd8dafe35709d6878d1933b1209b700776825f62628e46df5b1d5",
+    "Title": "Selim İleri Kitabı",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/insan-ruhunun-haritasi",
+    "SourceSha256": "d7dfc31730c7f750c7129ed7241e56fbe855be3fbb3cafd38cb5faddaf20db59",
+    "Title": "İnsan Ruhunun Haritası",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/olu-zaman-gezginleri",
+    "SourceSha256": "e0be3916e8627dc1f048ae0b4b8f75984fed73ecd7b7c639243efd0f1dd89ac1",
+    "Title": "Ölü Zaman Gezginleri",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yedi-dervisler",
+    "SourceSha256": "a0e07a47d7119515fcfe3b8227105a8a0b52b75e56eba950a681716b6bc3b36e",
+    "Title": "Yedi Dervişler",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sonmus-kibritin-izinde",
+    "SourceSha256": "cba32ff2771ad8d33a8deecf389688507e430cb6785c499fe26d77e2595d3919",
+    "Title": "Sönmüş Kibritin İzinde",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/ortu",
+    "SourceSha256": "ea0c030fe7d3e03b3186cc47e618c2b3d3e79e88463c20c4bd4800053a925481",
+    "Title": "Örtü",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/bozkirdaki-yabanci",
+    "SourceSha256": "11a06c18bf31175408bf220a891e8fdd72608bb944c5154a2409471f461ba183",
+    "Title": "Bozkırdaki Yabancı",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/ciplak-berlin",
+    "SourceSha256": "3d4f86c07558f27a44eb39679183209325c3cfbe9c3f13d2d52431c65a05c34b",
+    "Title": "Çıplak Berlin",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/ask-ve-karanlik",
+    "SourceSha256": "1dbf6e49124d9ba53a78e177e49d1676a6a6d8cda2bf9d55e4756ffcd43d9ed9",
+    "Title": "Aşk ve Karanlık",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/edebiyat-daima",
+    "SourceSha256": "d94633aec26953a02065604143943013cd643c622b3eeefa88d40e69d093bd46",
+    "Title": "Edebiyat Daima",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kalpten-parcalar",
+    "SourceSha256": "6ad306aad6271279040fa55d1cc2561617fb80994816b2c9dc78d2b44326786e",
+    "Title": "Kalpten Parçalar",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yasamdan-sahneye",
+    "SourceSha256": "d7d16501db9f70f1895edd8ddf23468c428f874eaf02d458a6088c95b612b21a",
+    "Title": "Yaşamdan Sahneye",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/uykularin-dogusu",
+    "SourceSha256": "1394f5253ca987d58a0f2601c7ce036cb3a63bf48c2ed83c9509bc97b242f108",
+    "Title": "Uykuların Doğusu",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/musait-bir-yerde-inebilir-miyim",
+    "SourceSha256": "8c4c487cdb47c588854c607d060b44432baef452ab9399dd8c474e6708b0b07f",
+    "Title": "Müsait Bir Yerde İnebilir miyim?",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yasamak-icin-bir-neden-soyle",
+    "SourceSha256": "c56081ad3ffc878486188fe7ced716d9be43cea0a6c468f3b5d04f1774d6558f",
+    "Title": "Yaşamak İçin Bir Neden Söyle",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/surec",
+    "SourceSha256": "2bdf5b45fa7e76e8d6f067d86b61a8d046800aa448a99f75e7ef705dbf2b1dca",
+    "Title": "Süreç",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/izler-ve-golgeler",
+    "SourceSha256": "c4cca2fba18f5d3c338cdf9cd50ad300dadcbe91f85d46af8c7fe46a1242ccaf",
+    "Title": "İzler ve Gölgeler",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/mutlulugun-33-ani",
+    "SourceSha256": "d7b964b216ec50b98dd99ad8641de69e49cc321526fb9ccee8666fd379c424d2",
+    "Title": "Mutluluğun 33 Anı",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/seni-seviyorum",
+    "SourceSha256": "be348a006298e79c2e0c21b44dce314428138886cf4fdd9a77f8be000d24d8c4",
+    "Title": "Seni Seviyorum",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/nefes",
+    "SourceSha256": "c54a7b2dcd7302df3e8c4e9528412eef327d487bacee425bcbc23650f5fea10e",
+    "Title": "Nefes",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/ask-kopekliktir",
+    "SourceSha256": "208c0826709c8cb273b2ae9398d8b62c0f60441b7e440b44caa2e4f8196dbf00",
+    "Title": "Aşk Köpekliktir",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/senin-icin-degil",
+    "SourceSha256": "a55f23689e89aadd87dad413bd778aee08b1240e912554acc584a9185b09aee4",
+    "Title": "Senin İçin Değil",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/nietzschenin-son-ruyasi",
+    "SourceSha256": "9581471c8bed5a2bc4ca3b198b73421ada76056f6cec479b4c063cd2704cc360",
+    "Title": "Nietzsche’nin Son Rüyası",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/ruyamdaki-sofralar",
+    "SourceSha256": "a5eeeec715a3a8930a89d82f1102b895c756c569b0829fa2ac7809097e13bba5",
+    "Title": "Rüyamdaki Sofralar",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/roger-ackroydu-kim-oldurdu",
+    "SourceSha256": "495c41a7c2397ab14a0f2d42e2f7f58a10304feee67f7ad6aa5795da5dc4da4e",
+    "Title": "Roger Ackroyd’u Kim Öldürdü?",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kelebeklerin-dili",
+    "SourceSha256": "31ffe636754c004ee1a2e95003aaf5bb3fa03e7b142e35ff573245c29687d990",
+    "Title": "Kelebeklerin Dili",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/gordugunu-kitaba-yaz",
+    "SourceSha256": "3b8d129d05c3fb999ced3bdbe6d5fc915ee4193cee6706214060b87d6aa10aa9",
+    "Title": "Gördüğünü Kitaba Yaz",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/mevsimsiz-yazilar",
+    "SourceSha256": "3ea30de09c9e324485ed826495ea7cef991815fec876066f66ec56f5ab9979fc",
+    "Title": "Mevsimsiz Yazılar",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/peki-ogleden-sonra-ne-yapacagiz",
+    "SourceSha256": "78cd2010656612ec1c77cccef0fb3cef61facd8e8a4b149092fbbe61eea09664",
+    "Title": "Peki Öğleden Sonra Ne Yapacağız?",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kuslar-sanati",
+    "SourceSha256": "ab7c43efd090b432a5713200e0e4939b7c9607a93e6c9a34a353a4c770435f18",
+    "Title": "Kuşlar Sanatı",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yasadigimi-itiraf-ediyorum",
+    "SourceSha256": "a747aa7ff9b41b80aa91932e66b94996a70b6ac27358961caf8d6ed5019014e3",
+    "Title": "Yaşadığımı İtiraf Ediyorum",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yoksul-akrabalar",
+    "SourceSha256": "49c66e8a1850615a18f5967124df8684d573b06318bbb2cfe3cceac3671ac875",
+    "Title": "Yoksul Akrabalar",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/on-birinci-kat-yazilari",
+    "SourceSha256": "1777fc5be2ffb829363d6e8f476c0cd960ed517622e798d5e7a52353a0d9ad87",
+    "Title": "On Birinci Kat Yazıları",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kar-tatili",
+    "SourceSha256": "1cddf39b6002ddf0fcd032ee4137519e0619ba5e8b05454f0951d4dca8a8a2d0",
+    "Title": "Kar Tatili",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/fotograf-hikayeleri",
+    "SourceSha256": "7fe83d8aa2e4ccceed0a4e8120f94abf0772cd86c6afa81b0d3a1eab1724ea86",
+    "Title": "Fotoğraf Hikâyeleri",
+    "Decision": "Novel",
+    "Reason": "Publisher description explicitly identifies this work as a novel; broad keyword rejection referred to biography, narrative structure or other works."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/gulecek-bir-sey-goremiyorum",
+    "SourceSha256": "63c5cdea136b9accc5ca66b208f80ab23e0c4d3754800821c69c9afe73f61980",
+    "Title": "Gülecek Bir Şey Göremiyorum",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/rubailer",
+    "SourceSha256": "17d32393de2104b9a7823a11b529469c10890a52c25b5cebb17a844c46aaba83",
+    "Title": "Rubâîler",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yalnizliktan-devren-kiralik",
+    "SourceSha256": "036ebfcc30c586d5a0b8d2d6ad88b0adb450c371051579f4b650cd9f6fe605c1",
+    "Title": "Yalnızlıktan Devren Kiralık",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/oburcugun-edebiyat-kitabi",
+    "SourceSha256": "0d722bd200730e75914a5c7f24098f9950d0e61a080eaccbe084672617e5d096",
+    "Title": "Oburcuğun Edebiyat Kitabı",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/askin-omru-evde-uzar",
+    "SourceSha256": "eb87751f4627a365896ae04fe91621a2315775a31b86417f1164b651a07f7ab6",
+    "Title": "Aşkın Ömrü Evde Uzar",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.ithakiyayingrubu.com/aska-inanmayanlar-icin-ask-oykuleri",
+    "SourceSha256": "ef5f806bf14d4eb62d46aa7e65053280f5026a5497d751ee61287408c8c97e15",
+    "Title": "Aşka İnanmayanlar İçin Aşk Öyküleri",
+    "Decision": "Hold",
+    "Reason": "Literary form, combined works, duplicate edition or Turkish-language evidence needs individual review; excluded from this import."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/metres.aspx",
+    "SourceSha256": "9ef60231f6989789375373caeed8b71d10fc9ad1a7bd02881da25130f1a6ab51",
+    "Title": "Metres",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kokotlar-mektebi.aspx",
+    "SourceSha256": "09c5a6f43ea2011734e2c9e408b7df12357d2fe1141045a4e16554596095a972",
+    "Title": "Kokotlar Mektebi",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/kokotlar-mektebi-sert-kapak.aspx",
+    "SourceSha256": "690fc9f255982ef4d8d5f0c1c10486e667fe45b58eacbf15e952860924f99aff",
+    "Title": "Kokotlar Mektebi – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/meyhanede-hanimlar-sert-kapak.aspx",
+    "SourceSha256": "110f1759bb9f71c66b2d823d0a4d8ebf5c97ac7e22e516115015a7d9df1a8494",
+    "Title": "Meyhanede Hanımlar – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/halas-kurtulus-sert-kapak.aspx",
+    "SourceSha256": "cff11bfb121d4db8e0a23fa30e5545af722bd140b059145848de6d9eca85f3cf",
+    "Title": "Halas – Kurtuluş – Sert Kapak",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/av-kapani",
+    "SourceSha256": "54dbb4a07d116b46127f3b5d947dab93500141e9055f6b7ac2faa4733f37baa2",
+    "Title": "Av Kapanı",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/patron",
+    "SourceSha256": "43bf930ec160a23a274ab7c5fe48bf4bde2551b7788c6ff03c8f471960ee8c9a",
+    "Title": "Patron",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/velenor-iki-dunya-arasinda-1",
+    "SourceSha256": "a1c5029ad91415516e98625d6a990d3411ffb99f15a320040297d63883d6565a",
+    "Title": "Velenor İki Dünya Arasında",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/velenor-iki-dunya-arasinda",
+    "SourceSha256": "a5c32d654e956f3f825780fe5906aad435d73a818b6e4f51d3552326a4c93a01",
+    "Title": "Velenor İki Dünya Arasında",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sessiz",
+    "SourceSha256": "822731cbb1bda894383dd038cac1eeec3e55a66fcdc07ae7def39cf2f4f060a9",
+    "Title": "Sessiz",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/cevdetgiller",
+    "SourceSha256": "8a39b4eb42d5b98366fa7359ab9856670dabde6a16c8b1563a5b6b7c785751f9",
+    "Title": "Cevdetgiller",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yen",
+    "SourceSha256": "17247f77038402d9ca4ae8e66a70c9d08118df8e1224e61edc800d585e84ceb4",
+    "Title": "Yen",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sevgili-yalnizlik",
+    "SourceSha256": "730eb44fd51925267782e3ede1b636dee5c25e33043ce9bd2fb7edfb55dd9a85",
+    "Title": "Sevgili Yalnızlık",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/intihardan-bir-gun-sonra",
+    "SourceSha256": "4f1ad14b93b7afed9ccdcb5c41d4d90dc1e92e38f42f686fb3b9840c99e060f4",
+    "Title": "İntihardan Bir Gün Sonra",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/bana-borcun-var",
+    "SourceSha256": "4beb4c716166dfb9dbbd79758e17568a118d3037cdc9ebe16bbbdfd44aee846f",
+    "Title": "Bana Borcun Var",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/gecede-sakli-yalniz-asklar",
+    "SourceSha256": "4442e8b7fa97d05f4d51930db3384cecae34a8b8bda81b92e0840bfb2dee5d62",
+    "Title": "Gecede Saklı Yalnız Aşklar",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sen-ve-ben",
+    "SourceSha256": "613b875f04b7d491acc7a916d4fbb0eff4ac36cc4c2067db48e5b82c4a02bfe5",
+    "Title": "Sen ve Ben",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/damascena",
+    "SourceSha256": "266a8df8330e0991492e65cccde30114e6c449e0a968a81524c2f5affc21abe0",
+    "Title": "Damascena",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kotulukcu",
+    "SourceSha256": "082c958c54fd79409345c5eb4dc46d456fb1b8bcee3824c904d87fc07389b3e4",
+    "Title": "Kötülükçü",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.ithakiyayingrubu.com/gecede-sakli-yalniz-asklar",
+    "SourceSha256": "0d7cccbc09d68c89805924a0f21b6ef88bf9db73c714b9e3347a3c4b2775d848",
+    "Title": "Gecede Saklı Yalnız Aşklar",
+    "Decision": "Novel",
+    "Reason": "Publisher novel category and work synopsis reviewed; flagged keywords concern author biography or narrative devices."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/dus-ekmegi-batik-bir-gemi",
+    "SourceSha256": "31ef2e3e44ab8d27d749a68e3b6bf79f9713a40ec691a029896d17df0bbcefdd",
+    "Title": "Düş Ekmeği – Batık Bir Gemi",
+    "Decision": "Hold",
+    "Reason": "Source presents verse, a short-story collection or multiple novels in one edition; not a single novel for this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sizi",
+    "SourceSha256": "7a886764c9e7ddfcc6717aceef0c2c80cb25dbcfb451b37b40da53b5d30fee5f",
+    "Title": "Sızı",
+    "Decision": "Hold",
+    "Reason": "Source presents verse, a short-story collection or multiple novels in one edition; not a single novel for this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/bu-yil-farkli-olacak",
+    "SourceSha256": "70167a9a97b16fd9bb4b996f4f617efc80ccf15e0e5a597ce6bbaf12df72f8f3",
+    "Title": "Bu Yıl Farklı Olacak",
+    "Decision": "Hold",
+    "Reason": "Source presents verse, a short-story collection or multiple novels in one edition; not a single novel for this import."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/nuhun-cocuklari",
+    "SourceSha256": "ad87a50f5c8a42e60d73ab29d19b56d228639534a3eb59b30e792e0718e1e12a",
+    "Title": "Nuh'un Çocukları",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/oncesi",
+    "SourceSha256": "0bb4b6062a58c16711118be359be0585a596698257f19e165ca6fefc4a7fac8d",
+    "Title": "Öncesi",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sen-bir-baska-gittin-1",
+    "SourceSha256": "5a001a03f99191d72ef1d8a73d45158222f82c3192697ad3e90332e796e66821",
+    "Title": "Sen Bir Başka Gittin",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/ucsuz-bucaksiz-dunyada-kisa-bir-gezinti",
+    "SourceSha256": "b018015653e441e109d3e96b57a32efbdf3cf798cf77b4698b13b00a24d9c69a",
+    "Title": "Uçsuz Bucaksız Dünyada Kısa Bir Gezinti",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kayip-hatiralar-muzesi",
+    "SourceSha256": "a1ee119761a4853d919dedbc341cc6f3cb32e0668dd52c8682da11db9c59f894",
+    "Title": "Kayıp Hatıralar Müzesi",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/katil",
+    "SourceSha256": "074dde7fc00e76e967bdf31a5a574305ec90224ff053a69d1b6b49cc8494f5b4",
+    "Title": "Katil",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/siyah-hatiralar-denizi",
+    "SourceSha256": "83b190b6dfeb914824c1db70564e19813bf20bc2fc1ec74028e58a469f6df708",
+    "Title": "Siyah Hatıralar Denizi",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/adim-nisan",
+    "SourceSha256": "5797d3d07d8fedf082c8772680be2294f28dea6e73945f4936e381f5b56a840a",
+    "Title": "Adım Nisan",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/bir-harp-gelini",
+    "SourceSha256": "cd8a2344359bd3feefd1b91443580268a5657b50f1b5fa231ba364588c00c7fe",
+    "Title": "Bir Harp Gelini",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/bayan-poe",
+    "SourceSha256": "600a3b2ab66f87dc93ea9686cf8265e261602071e6f311bdc0d2b78ad506c39c",
+    "Title": "Bayan Poe",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sen-bir-baska-gittin",
+    "SourceSha256": "925d0925bb34d42d39e2bc27cb50836c6b4c2be69ca439891ef065008960212c",
+    "Title": "Sen Bir Başka Gittin",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sevda-surgunleri",
+    "SourceSha256": "563a660bfff0f7244917eb09be5f32c39fed3796716e0c47ceb01425ec7545d2",
+    "Title": "Sevda Sürgünleri",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/sakli-bahceler-haritasi",
+    "SourceSha256": "1a396a9e84061c543102027568fa8d678198bfb00e8e1dcc2595a4b251fd46c9",
+    "Title": "Saklı Bahçeler Haritası",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/nisantasi-suare",
+    "SourceSha256": "8760c61537c6dbb55c364375781e0d6dca565b6b3dd71793e42d03ad73fe6fea",
+    "Title": "Nişantaşı Suare",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/ask-ciltli",
+    "SourceSha256": "54c60860f9259215da732d4b4b5f2d7dc795001b30689acae2b9d51a316dd483",
+    "Title": "Aşk (Ciltli)",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/degil-efendinin-renk-ve-korku-meselleri",
+    "SourceSha256": "bff2129ebeadde7b3cf8655622c41c73fe9a323453b4a5f97216df048c18f955",
+    "Title": "Değil Efendi'nin Renk ve Korku Meselleri",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/karanlik-cokerken-neredeydiniz",
+    "SourceSha256": "a696354999aeaa9004b1bc5f838683ce95e9619c4e6df345df04e1414d52eee5",
+    "Title": "Karanlık Çökerken Neredeydiniz?",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/kuf-kedisi",
+    "SourceSha256": "13419c08c478c5347076d0ffabecc0fdc5602b4ebe9c494587e3871d23d9d200",
+    "Title": "Küf Kedisi",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.dogankitap.com.tr/kitap/yorgun-mayis-kisraklari",
+    "SourceSha256": "cacd9970789d07c5cec6811f9e48041c2d01de835419f6fa80b8d5232d20b345",
+    "Title": "Yorgun Mayıs Kısrakları",
+    "Decision": "Novel",
+    "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  }
+]

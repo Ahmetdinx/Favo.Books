@@ -2,6 +2,7 @@ namespace KitapKivo.SharedKernel.Catalog;
 
 public interface IDiscoveryCatalog
 {
+    Task<IReadOnlyList<DiscoveryCategory>> GetGenresAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<DiscoveryBook>> GetBooksAsync(CancellationToken cancellationToken = default);
 }
 

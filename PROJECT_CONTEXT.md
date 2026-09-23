@@ -1,9 +1,25 @@
 # KitapKivo Project Context
 
-Updated 2026-09-17. This file describes implementation status,
+Updated 2026-09-23. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
 
-Latest checkpoint: novel eligibility now gates catalog browsing, recommendations
+Latest checkpoint (2026-09-23): exactly 1,000 NEW covered Turkish-edition novels
+imported in batch publisher-novels-20260918. Total books: 10,858; eligible catalog:
+1,005. Existing records and user history were preserved. Final preview found
+1,001 new works and 227 existing/duplicate candidates in a 1,228-record verified
+manifest. Apply selected 1,000 distinct book IDs; repeat preview recognized the
+same batch, returned zero new works and unchanged totals. Source facts, verification
+hash and applied selection are under data/curation/publisher-novels-20260923.
+Editorial exceptions/holds are source-hash-bound in
+data/curation/publisher-form-reviews-v1.json. Doğan original-language defaults are
+not trusted; unknown is stored. Catalog unit tests: 112 passed; Release importer
+build and Python syntax checks passed. Earlier 134 API integration tests and four
+frontend catalog tests passed before the latest identity changes; no fresh Docker
+test result is claimed. See docs/publisher-novel-import-2026-09-23.md and
+tools/KitapKivo.PublisherImport/README.md. The API was not listening on port 5117;
+post-import eligible counts were verified directly through the Catalog query.
+
+Previous checkpoint (2026-09-17): novel eligibility now gates catalog browsing, recommendations
 and genre counts. The category API exposes 11 novel genres; seven new categories
 were added by migration 20260917171539_AddNovelGenres, applied locally. Unknown
 records and user history are retained. Maintenance supports
@@ -22,10 +38,10 @@ See docs/novel-product-plan.md and ROADMAP.md. The product is now novel-only
 discovery with virtual libraries, seven-criterion evaluations, achievements and
 opt-in public profiles searchable by nickname. No posts, messages, review/comment
 threads or shared social feed. Covered Turkish editions remain required; popular
-classics take import priority. No additional bulk import is pending.
-Novel classification, nickname/privacy and achievements are PLANNED, not implemented.
-Next implementation: non-destructive classification audit and central eligibility,
-then the catalog-to-library experience. Do not infer novels from `fiction` alone
+classics take import priority. The requested 1,000-new-novel import is complete.
+Novel classification and central eligibility are implemented; nickname/privacy
+and achievements remain planned. Next: the catalog-to-library user experience.
+Do not infer novels from `fiction` alone
 or delete historical user records. Keep percentage-free recommendations until a
 versioned match index and evidence policy are validated. Earlier social-scope
 statements are superseded by this revision.

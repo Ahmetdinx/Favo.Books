@@ -248,6 +248,42 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
     }
 
     [Fact]
+    public async Task Preferences_MatchCatalogNovelGenres_AndRememberAnEmptySavedChoice()
+    {
+        var userId = await AuthenticateAsync();
+        using var initial = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/reading-preferences"))!;
+        Assert.False(initial.RootElement.GetProperty("hasSavedPreferences").GetBoolean());
+        using var catalog = (await _client.GetFromJsonAsync<JsonDocument>("/api/catalog/categories"))!;
+        var genres = catalog.RootElement.GetProperty("items").EnumerateArray()
+            .Select(c => c.GetProperty("slug").GetString()).ToArray();
+        Assert.NotEmpty(genres);
+        Assert.Equal(genres, initial.RootElement.GetProperty("availableCategories").EnumerateArray()
+            .Select(c => c.GetProperty("slug").GetString()).ToArray());
+        using var accepted = await _client.PutAsJsonAsync("/api/community/me/reading-preferences",
+            new { Categories = new[] { "distopya" }, Criteria = Array.Empty<string>() });
+        Assert.Equal(HttpStatusCode.NoContent, accepted.StatusCode);
+        using var rejected = await _client.PutAsJsonAsync("/api/community/me/reading-preferences",
+            new { Categories = new[] { "tarih" }, Criteria = Array.Empty<string>() });
+        Assert.Equal(HttpStatusCode.BadRequest, rejected.StatusCode);
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<CommunityDbContext>();
+            var old = await db.ReadingPreferences.SingleAsync(p => p.UserId == userId);
+            old.Categories = ["tarih", "distopya"];
+            await db.SaveChangesAsync();
+        }
+        using var cleaned = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/reading-preferences"))!;
+        Assert.Equal(new[] { "distopya" }, cleaned.RootElement.GetProperty("categories").EnumerateArray()
+            .Select(c => c.GetString()).ToArray());
+        using var cleared = await _client.PutAsJsonAsync("/api/community/me/reading-preferences",
+            new { Categories = Array.Empty<string>(), Criteria = Array.Empty<string>() });
+        Assert.Equal(HttpStatusCode.NoContent, cleared.StatusCode);
+        using var saved = (await _client.GetFromJsonAsync<JsonDocument>("/api/community/me/reading-preferences"))!;
+        Assert.True(saved.RootElement.GetProperty("hasSavedPreferences").GetBoolean());
+        Assert.Empty(saved.RootElement.GetProperty("categories").EnumerateArray());
+    }
+
+    [Fact]
     public async Task Preferences_AreValidatedPersistedAndIsolatedByUser()
     {
         using HttpResponseMessage anonymous = await _client.GetAsync("/api/community/me/recommendations");

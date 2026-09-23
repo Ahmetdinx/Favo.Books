@@ -31,9 +31,9 @@ internal static class RecommendationEndpoints
             context.Response.Headers.CacheControl = "no-store";
             if (!Guid.TryParse(user.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
             var preference = await service.GetPreferencesAsync(id, ct);
-            var availableCategories = (await catalog.GetBooksAsync(ct)).SelectMany(b => b.Categories)
-                .DistinctBy(c => c.Slug).OrderBy(c => c.Name).ToArray();
-            return Results.Ok(new { preference.Categories, preference.Criteria, availableCategories });
+            var availableCategories = await catalog.GetGenresAsync(ct);
+            return Results.Ok(new { Categories = preference?.Categories ?? [], Criteria = preference?.Criteria ?? [],
+                HasSavedPreferences = preference is not null, availableCategories });
         });
         personal.MapPut("/reading-preferences", async (PreferenceRequest request, ClaimsPrincipal user, BookRecommendations service, CancellationToken ct) =>
         {

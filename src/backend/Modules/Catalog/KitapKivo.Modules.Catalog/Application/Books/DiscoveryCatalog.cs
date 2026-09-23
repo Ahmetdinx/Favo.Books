@@ -1,11 +1,18 @@
 using KitapKivo.Modules.Catalog.Persistence;
 using KitapKivo.SharedKernel.Catalog;
 using Microsoft.EntityFrameworkCore;
+using KitapKivo.Modules.Catalog.Application.Categories;
 
 namespace KitapKivo.Modules.Catalog.Application.Books;
 
 internal sealed class DiscoveryCatalog(CatalogDbContext db) : IDiscoveryCatalog
 {
+    public async Task<IReadOnlyList<DiscoveryCategory>> GetGenresAsync(CancellationToken cancellationToken = default)
+        => await db.Categories.AsNoTracking()
+            .Where(c => NovelGenreCatalog.Slugs.Contains(c.Slug))
+            .OrderBy(c => c.Name)
+            .Select(c => new DiscoveryCategory(c.Slug, c.Name)).ToArrayAsync(cancellationToken);
+
     public async Task<IReadOnlyList<DiscoveryBook>> GetBooksAsync(CancellationToken cancellationToken = default)
     {
         return await db.Books.AsNoTracking()

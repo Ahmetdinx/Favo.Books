@@ -1,9 +1,14 @@
 .personal-discovery { margin: 28px 0; color: var(--library-ink); }
 .personal-discovery :is(h1, h2) { font: 1.7rem Georgia, serif; margin: 8px 0 12px; }
 .discovery-intro, .discovery-hint, .discovery-footnote { color: var(--library-muted); line-height: 1.65; font-size: .9rem; max-width: 80ch; }
-.reading-preferences { margin: 20px 0; background: var(--library-paper); border: 1px solid var(--library-line); border-radius: 10px; padding: 18px; }
-.reading-preferences summary { cursor: pointer; font-weight: 600; }
-.reading-preferences summary span { display: inline-block; margin-left: 12px; font-weight: 400; font-size: .8rem; }
+.reading-preferences { margin: 16px 0; background: var(--library-paper); border: 1px solid var(--library-line); border-radius: 10px; padding: 12px 16px; }
+.reading-preferences-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.reading-preferences-overview { min-width: 0; }
+.reading-preferences-overview h3 { margin: 0; font-size: .9rem; font-weight: 600; }
+.reading-preferences-overview p { margin: 4px 0 0; font-size: .78rem; line-height: 1.5; color: var(--library-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.preferences-edit { flex-shrink: 0; border: 1px solid var(--library-line); border-radius: 7px; padding: 10px 12px; background: transparent; color: var(--library-ink); font: inherit; font-size: .8rem; cursor: pointer; }
+.preferences-edit:focus-visible, .preference-options input:focus-visible { outline: 2px solid var(--library-accent); outline-offset: 3px; }
+.reading-preferences form { margin-top: 14px; padding-top: 8px; border-top: 1px solid var(--library-line); }
 .reading-preferences form > p { font-size: .85rem; line-height: 1.7; color: var(--library-muted); }
 .reading-preferences fieldset { border: 0; padding: 12px 0; margin: 12px 0; min-width: 0; }
 .reading-preferences legend small { font-weight: 400; color: var(--library-muted); margin-left: 8px; }
@@ -31,4 +36,4 @@
 .recommendation-feedback-history button { flex-shrink: 0; }
 .personal-discovery button:disabled { cursor: wait; opacity: .6; }
 @media(max-width: 900px) { .recommendation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media(max-width: 580px) { .recommendation-grid { grid-template-columns: 1fr; } .reading-preferences summary span { display: block; margin: 8px 0 0; } }
+@media(max-width: 580px) { .recommendation-grid { grid-template-columns: 1fr; } .reading-preferences { padding: 12px; } .reading-preferences-header { gap: 8px; } }
