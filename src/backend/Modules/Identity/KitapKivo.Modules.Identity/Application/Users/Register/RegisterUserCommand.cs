@@ -2,4 +2,5 @@
 
 public sealed record RegisterUserCommand(
     string Email,
-    string Password);
+    string Password,
+    string? Nickname = null);

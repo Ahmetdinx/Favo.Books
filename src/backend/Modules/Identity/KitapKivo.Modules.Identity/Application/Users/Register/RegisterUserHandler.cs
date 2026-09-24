@@ -39,6 +39,10 @@ public sealed class RegisterUserHandler
             return RegisterUserResult.EmailAlreadyExists();
         }
 
+        var nickname = UserNickname.Normalize(command.Nickname);
+        if (await _dbContext.Users.AnyAsync(u => u.Nickname == nickname, cancellationToken))
+            return new(null, RegisterUserError.NicknameAlreadyExists);
+
         string passwordHash =
             _passwordHasher.Hash(command.Password);
 
@@ -47,9 +51,18 @@ public sealed class RegisterUserHandler
             passwordHash,
             DateTimeOffset.UtcNow);
 
+        user.SetProfile(nickname, false);
         _dbContext.Users.Add(user);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException { SqlState: "23505" } pg)
+        {
+            return new(null, pg.ConstraintName == "IX_users_Nickname"
+                ? RegisterUserError.NicknameAlreadyExists : RegisterUserError.EmailAlreadyExists);
+        }
 
         return RegisterUserResult.Success(user.Id);
     }

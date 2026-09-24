@@ -8,6 +8,11 @@ using KitapKivo.Modules.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped<KitapKivo.Modules.Identity.Application.Users.ReaderDirectory>();
+builder.Services.AddScoped<KitapKivo.Modules.Reading.Application.PublicLibrary>();
+builder.Services.AddScoped<KitapKivo.Modules.Profiles.Application.PublicShowcase>();
+builder.Services.AddScoped<KitapKivo.Modules.Community.Application.PublicReaderRatings>();
+
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
@@ -66,6 +71,7 @@ app.MapCatalogEndpoints();
 app.MapReadingEndpoints();
 app.MapProfilesEndpoints();
 app.MapCommunityEndpoints();
+KitapKivo.Api.ReaderEndpoints.MapReaderEndpoints(app);
 
 app.Run();
 public partial class Program;

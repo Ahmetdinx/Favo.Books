@@ -38,13 +38,14 @@ Checked items indicate implementation, not production certification.
 
 ## 3. Nicknames and profile sharing
 
-- [ ] Unique normalized nicknames, reserved names and existing-account migration.
-- [ ] Retain private authentication/recovery credentials; no required real name.
-- [ ] Private-by-default visibility with explicit public preview/choice.
-- [ ] Public profile URL and paginated public-only nickname search.
-- [ ] Public library/evaluation contracts without cross-module database access.
-- [ ] Test privacy across direct APIs, caches, search and rankings.
-- [ ] Existing personal notes remain private; public-to-private transition tests.
+- [x] Unique normalized nicknames, reserved names and existing-account migration.
+- [x] Retain private authentication credentials; no required real name.
+- [x] Private-by-default visibility with explicit sharing choice and field disclosure.
+- [x] Public profile URL and paginated public-only nickname search.
+- [x] Public library/evaluation contracts without cross-module database access.
+- [x] API privacy tests: direct access, no-store, search, visibility transitions.
+- [x] Existing personal notes remain private; public-to-private transition tests.
+- [ ] Browser E2E and privacy tests for future rankings.
 
 ## 4. Achievements
 

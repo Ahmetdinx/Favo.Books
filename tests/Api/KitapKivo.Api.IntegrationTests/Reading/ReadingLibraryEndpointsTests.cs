@@ -1010,7 +1010,7 @@ public sealed class ReadingLibraryEndpointsTests
 
         var credentials = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = password
         };
 

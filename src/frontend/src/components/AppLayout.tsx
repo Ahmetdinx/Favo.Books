@@ -8,6 +8,9 @@ import {
 } from 'react-router'
 
 import { useAuth } from '../auth/useAuth'
+import ReaderSearch from './ReaderSearch'
+import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
+import '../profile/Readers.css'
 
 function AppLayout() {
     const {
@@ -18,6 +21,26 @@ function AppLayout() {
 
     const navigate = useNavigate()
     const location = useLocation()
+    const authFetch = useAuthenticatedFetch()
+    const [reader, setReader] = useState<{ nickname: string | null } | null>(null)
+    const [readerVersion, setReaderVersion] = useState(0)
+    useEffect(() => {
+        const update = () => setReaderVersion(v => v + 1)
+        window.addEventListener('reader-settings-changed', update)
+        return () => window.removeEventListener('reader-settings-changed', update)
+    }, [])
+    useEffect(() => {
+        setReader(null)
+        if (!session?.userId) return
+        const controller = new AbortController()
+        authFetch('/api/readers/me', { signal: controller.signal }).then(async response => {
+            if (response.ok) {
+                const value = await response.json()
+                if (!controller.signal.aborted) setReader(value)
+            }
+        }).catch(() => {})
+        return () => controller.abort()
+    }, [session?.userId, authFetch, readerVersion])
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'instant' })
     }, [location.pathname])
@@ -50,6 +73,7 @@ function AppLayout() {
                 >
                     KitapKivo
                 </NavLink>
+                <ReaderSearch key={location.pathname} />
 
                 <nav
                     className="navigation"
@@ -71,9 +95,9 @@ function AppLayout() {
                         <>
                             <span
                                 className="navigation-user"
-                                title={session.email}
+                                title={reader?.nickname ?? 'Okur'}
                             >
-                                {session.email}
+                                {reader?.nickname ? '@' + reader.nickname : ''}
                             </span>
 
                             <NavLink to="/profile">
@@ -110,6 +134,8 @@ function AppLayout() {
             </header>
 
             <main className="main-content library-page-turn" key={location.pathname}>
+                {session && reader && !reader.nickname && location.pathname !== '/profile' &&
+                    <div className="reader-onboarding">Kitaplığın hazır. <NavLink to="/profile">Kullanıcı adını seç →</NavLink></div>}
                 <Outlet />
             </main>
 

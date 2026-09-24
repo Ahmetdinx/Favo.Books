@@ -39,7 +39,8 @@ internal static class RegisterUserEndpoint
 
         RegisterUserCommand command = new(
             request.Email!.Trim(),
-            request.Password!);
+            request.Password!,
+            request.Nickname);
 
         RegisterUserResult result =
             await handler.HandleAsync(
@@ -55,6 +56,9 @@ internal static class RegisterUserEndpoint
             });
         }
 
+        if (result.Error == RegisterUserError.NicknameAlreadyExists)
+            return Results.Conflict(new { code = "nickname_taken", message = "Bu kullanıcı adı kullanılıyor." });
+
         Guid userId = result.UserId!.Value;
 
         return Results.Created(
@@ -66,6 +70,9 @@ internal static class RegisterUserEndpoint
         RegisterUserRequest request)
     {
         Dictionary<string, string[]> errors = [];
+
+        try { Domain.Users.UserNickname.Normalize(request.Nickname); }
+        catch (ArgumentException) { errors["nickname"] = [Domain.Users.UserNickname.Message]; }
 
         string? email = request.Email?.Trim();
 

@@ -1,5 +1,6 @@
 import {
     BrowserRouter,
+    Navigate,
     Route,
     Routes,
 } from 'react-router'
@@ -15,6 +16,7 @@ import LoginPage from './pages/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ProfilePage from './pages/ProfilePage'
 import RegisterPage from './pages/RegisterPage'
+import PublicReaderPage from './pages/PublicReaderPage'
 import BookDetailPage from './pages/BookDetailPage'
 import './LibraryTheme.css'
 
@@ -24,6 +26,8 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route element={<AppLayout />}>
+                        <Route path="okurlar" element={<Navigate to="/" replace />} />
+                        <Route path="okur/:nickname" element={<PublicReaderPage />} />
                         <Route
                             index
                             element={<HomePage />}

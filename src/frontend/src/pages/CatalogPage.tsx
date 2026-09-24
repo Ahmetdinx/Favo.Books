@@ -176,6 +176,24 @@ function CatalogPage() {
     }, [query, searchField])
 
     useEffect(() => {
+        const nextQuery = draftQuery.trim()
+        if (nextQuery === query && draftSearchField === searchField) return
+
+        const timer = window.setTimeout(() => {
+            setSearchParameters(current => {
+                const next = new URLSearchParams(current)
+                if (nextQuery) next.set('query', nextQuery)
+                else next.delete('query')
+                next.set('searchField', draftSearchField)
+                next.set('page', '1')
+                return next
+            }, { replace: true })
+        }, 300)
+
+        return () => window.clearTimeout(timer)
+    }, [draftQuery, draftSearchField, query, searchField, setSearchParameters])
+
+    useEffect(() => {
         const controller =
             new AbortController()
 

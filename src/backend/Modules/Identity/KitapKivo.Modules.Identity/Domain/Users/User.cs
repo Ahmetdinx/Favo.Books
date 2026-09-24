@@ -22,6 +22,15 @@ public sealed class User
 
     public string Email { get; private set; } = string.Empty;
 
+    public string? Nickname { get; private set; }
+    public bool IsPublic { get; private set; }
+
+    public void SetProfile(string nickname, bool isPublic)
+    {
+        Nickname = UserNickname.Normalize(nickname);
+        IsPublic = isPublic;
+    }
+
     public string PasswordHash { get; private set; } = string.Empty;
 
     public DateTimeOffset CreatedAtUtc { get; private set; }

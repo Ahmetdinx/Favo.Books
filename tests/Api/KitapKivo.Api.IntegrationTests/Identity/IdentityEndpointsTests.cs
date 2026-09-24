@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Net.Http.Headers;
@@ -29,7 +29,7 @@ public sealed class IdentityEndpointsTests
     {
         var request = new
         {
-            Email = $"integration-{Guid.NewGuid():N}@kitapkivo.local",
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = $"integration-{Guid.NewGuid():N}@kitapkivo.local",
             Password = "Test1234!"
         };
 
@@ -64,7 +64,7 @@ public sealed class IdentityEndpointsTests
 
         var registerRequest = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = password
         };
 
@@ -79,7 +79,7 @@ public sealed class IdentityEndpointsTests
 
         var loginRequest = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = password
         };
 
@@ -206,7 +206,7 @@ public sealed class IdentityEndpointsTests
                 "/api/identity/register",
                 new
                 {
-                    Email = email,
+                    Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
                     Password = password
                 });
 
@@ -219,7 +219,7 @@ public sealed class IdentityEndpointsTests
                 "/api/identity/login",
                 new
                 {
-                    Email = email,
+                    Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
                     Password = password
                 });
 
@@ -314,7 +314,7 @@ public sealed class IdentityEndpointsTests
                 "/api/identity/register",
                 new
                 {
-                    Email = email,
+                    Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
                     Password = password
                 });
 
@@ -327,7 +327,7 @@ public sealed class IdentityEndpointsTests
                 "/api/identity/login",
                 new
                 {
-                    Email = email,
+                    Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
                     Password = password
                 });
 
@@ -428,7 +428,7 @@ public sealed class IdentityEndpointsTests
     {
         var request = new
         {
-            Email = $"integration-{Guid.NewGuid():N}@kitapkivo.local",
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = $"integration-{Guid.NewGuid():N}@kitapkivo.local",
             Password = "Test1234!"
         };
 
@@ -461,7 +461,7 @@ public sealed class IdentityEndpointsTests
 
         var registerRequest = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = password
         };
 
@@ -476,7 +476,7 @@ public sealed class IdentityEndpointsTests
 
         var loginRequest = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = password
         };
 
@@ -511,7 +511,7 @@ public sealed class IdentityEndpointsTests
 
         var registerRequest = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = "Test1234!"
         };
 
@@ -526,7 +526,7 @@ public sealed class IdentityEndpointsTests
 
         var loginRequest = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = "YanlisParola123!"
         };
 
@@ -589,7 +589,7 @@ public sealed class IdentityEndpointsTests
                 "/api/identity/register",
                 new
                 {
-                    Email = email,
+                    Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
                     Password = password
                 });
 
@@ -602,7 +602,7 @@ public sealed class IdentityEndpointsTests
                 "/api/identity/login",
                 new
                 {
-                    Email = email,
+                    Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
                     Password = password
                 });
 
@@ -670,7 +670,7 @@ public sealed class IdentityEndpointsTests
 
         var registerRequest = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = password
         };
 
@@ -685,7 +685,7 @@ public sealed class IdentityEndpointsTests
 
         var loginRequest = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = password
         };
 

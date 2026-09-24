@@ -419,7 +419,7 @@ public sealed class BookRatingEndpointsTests : IClassFixture<KitapKivoWebApplica
 
     private async Task<Guid> AuthenticateAsync()
     {
-        var credentials = new { Email = $"rating-{Guid.NewGuid():N}@kitapkivo.local", Password = "Test1234!" };
+        var credentials = new { Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = $"rating-{Guid.NewGuid():N}@kitapkivo.local", Password = "Test1234!" };
         using HttpResponseMessage register = await _client.PostAsJsonAsync("/api/identity/register", credentials);
         Assert.Equal(HttpStatusCode.Created, register.StatusCode);
         using HttpResponseMessage login = await _client.PostAsJsonAsync("/api/identity/login", credentials);

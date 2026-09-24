@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -276,7 +276,7 @@ public sealed class CatalogImportJobEndpointsTests
 
         var credentials = new
         {
-            Email = email,
+            Nickname = "reader_" + Guid.NewGuid().ToString("N")[..16], Email = email,
             Password = password
         };
 

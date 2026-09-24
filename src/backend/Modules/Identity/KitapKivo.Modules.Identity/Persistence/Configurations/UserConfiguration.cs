@@ -14,6 +14,10 @@ internal sealed class UserConfiguration
 
         builder.HasKey(user => user.Id);
 
+        builder.Property(user => user.Nickname).HasMaxLength(24);
+        builder.HasIndex(user => user.Nickname).IsUnique();
+        builder.Property(user => user.IsPublic).HasDefaultValue(false);
+
         builder.Property(user => user.Email)
             .HasMaxLength(320)
             .IsRequired();

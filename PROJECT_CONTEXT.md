@@ -1,9 +1,24 @@
 # KitapKivo Project Context
 
-Updated 2026-09-23. This file describes implementation status,
+Updated 2026-09-24. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
 
-Latest checkpoint (2026-09-23): exactly 1,000 NEW covered Turkish-edition novels
+Latest checkpoint (2026-09-24): nickname and opt-in public profiles implemented.
+New registration requires a unique lowercase nickname; existing accounts choose
+one from profile settings. All accounts default private. Migration
+20260924065516_AddReaderIdentity applied locally, preserving existing libraries.
+Public nickname search is paginated; the header search displays up to five
+public matches while typing and /okur/:nickname opens shared libraries.
+The former /okurlar page redirects home. Catalog search updates after a 300 ms
+debounce, preserving filters and resetting pagination. The shared theme uses
+warm layered gradients, subtle CSS paper grain and quiet ivory surfaces.
+The host composes module-owned read
+models; emails and personal notes/reflections are never projected publicly.
+Reader APIs use no-store and return 404 for missing/private profiles.
+141 API tests, seven architecture tests, frontend build and lint passed.
+Browser E2E remains pending. See docs/reader-profiles.md for contracts and limits.
+
+Previous checkpoint (2026-09-23): exactly 1,000 NEW covered Turkish-edition novels
 imported in batch publisher-novels-20260918. Total books: 10,858; eligible catalog:
 1,005. Existing records and user history were preserved. Final preview found
 1,001 new works and 227 existing/duplicate candidates in a 1,228-record verified
@@ -39,8 +54,8 @@ discovery with virtual libraries, seven-criterion evaluations, achievements and
 opt-in public profiles searchable by nickname. No posts, messages, review/comment
 threads or shared social feed. Covered Turkish editions remain required; popular
 classics take import priority. The requested 1,000-new-novel import is complete.
-Novel classification and central eligibility are implemented; nickname/privacy
-and achievements remain planned. Next: the catalog-to-library user experience.
+Novel classification, central eligibility and nickname/privacy are implemented;
+achievements remain planned. Next: the catalog-to-library user experience.
 Do not infer novels from `fiction` alone
 or delete historical user records. Keep percentage-free recommendations until a
 versioned match index and evidence policy are validated. Earlier social-scope

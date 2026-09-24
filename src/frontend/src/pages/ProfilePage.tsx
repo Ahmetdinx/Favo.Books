@@ -15,6 +15,7 @@ import {
 import { useAuth } from '../auth/useAuth'
 
 import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
+import ReaderSettings from '../profile/ReaderSettings'
 
 import {
     getBookSummaries,
@@ -628,25 +629,9 @@ function ProfilePage() {
 
                     <h1>Kitaplığım</h1>
                 </div>
-
-                <aside className="profile-identity-card">
-                    <div className="profile-avatar">
-                        {profile.email
-                            .charAt(0)
-                            .toLocaleUpperCase(
-                                'tr-TR',
-                            )}
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            {profile.email}
-                        </strong>
-                    </div>
-                </aside>
             </header>
 
+            <ReaderSettings />
             <ProfileFeaturedBooksSection />
             <section
                 className="profile-summary-section"

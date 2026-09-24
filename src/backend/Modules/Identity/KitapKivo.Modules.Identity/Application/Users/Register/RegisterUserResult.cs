@@ -3,7 +3,8 @@
 public enum RegisterUserError
 {
     None = 0,
-    EmailAlreadyExists = 1
+    EmailAlreadyExists = 1,
+    NicknameAlreadyExists = 2
 }
 
 public sealed record RegisterUserResult(

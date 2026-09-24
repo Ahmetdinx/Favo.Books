@@ -10,6 +10,7 @@ type ApiError = {
 
 function RegisterPage() {
     const [email, setEmail] = useState('')
+    const [nickname, setNickname] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [successMessage, setSuccessMessage] = useState('')
@@ -30,6 +31,7 @@ function RegisterPage() {
                 },
                 body: JSON.stringify({
                     email,
+                    nickname,
                     password,
                 }),
             })
@@ -70,6 +72,7 @@ function RegisterPage() {
                 'Hesabınız başarıyla oluşturuldu. Artık giriş yapabilirsiniz.',
             )
             setEmail('')
+            setNickname('')
             setPassword('')
         } catch {
             setErrorMessage(
@@ -87,6 +90,11 @@ function RegisterPage() {
             <p>KitapKivo hesabınızı oluşturarak okumaya başlayın.</p>
 
             <form onSubmit={handleSubmit}>
+                <label htmlFor="register-nickname">Kullanıcı adı</label>
+                <input id="register-nickname" autoComplete="username" value={nickname}
+                    onChange={e => setNickname(e.target.value)} minLength={3} maxLength={24}
+                    pattern="[a-zA-Z][a-zA-Z0-9_]{2,23}" disabled={isSubmitting} required aria-describedby="register-nickname-help" />
+                <small id="register-nickname-help">3–24 karakter; a-z, rakam ve alt çizgi. Bir harfle başla. Profilin başlangıçta gizlidir.</small>
                 <label htmlFor="register-email">E-posta</label>
 
                 <input
