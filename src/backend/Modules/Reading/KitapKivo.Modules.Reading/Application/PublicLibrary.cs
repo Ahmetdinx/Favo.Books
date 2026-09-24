@@ -4,8 +4,16 @@ namespace KitapKivo.Modules.Reading.Application;
 
 public sealed record PublicLibraryItem(Guid BookId, string Status);
 public sealed record PublicLibraryPage(PublicLibraryItem[] Items, int TotalCount);
-public sealed class PublicLibrary(ReadingDbContext db)
+public sealed class PublicLibrary(ReadingDbContext db, KitapKivo.SharedKernel.Catalog.INovelAchievementCatalog catalog)
 {
+    public async Task<int> CountCompletedNovels(Guid id, CancellationToken ct)
+    {
+        var ids = await db.LibraryEntries.AsNoTracking()
+            .Where(e => e.UserId == id && e.Status == Domain.LibraryEntries.LibraryEntryStatus.Read)
+            .Select(e => e.BookId).Distinct().ToArrayAsync(ct);
+        return await catalog.CountEligibleAsync(ids, ct);
+    }
+
     public async Task<PublicLibraryPage> Get(Guid id, int page, CancellationToken ct)
     {
         var query = db.LibraryEntries.AsNoTracking().Where(e => e.UserId == id);

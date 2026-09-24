@@ -14,6 +14,7 @@ using KitapKivo.Modules.Reading
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using KitapKivo.Modules.Reading.Presentation.LibraryEntries;
 
 namespace KitapKivo.Modules.Reading;
 
@@ -31,6 +32,8 @@ public static class ReadingEndpoints
         group.MapGetLibraryEndpoint();
         group.MapGetLibrarySummaryEndpoint();
         group.MapGetLibraryEntryByBookEndpoint();
+        group.MapLookupLibraryEntries();
+        group.MapUndoLibraryChange();
         group.MapUpdateLibraryStatusEndpoint();
         group.MapRemoveBookFromLibraryEndpoint();
 

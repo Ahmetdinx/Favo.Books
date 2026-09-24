@@ -53,10 +53,16 @@ internal sealed class AddBookToLibraryHandler
 
         _dbContext.LibraryEntries.Add(libraryEntry);
 
-        await _dbContext.SaveChangesAsync(
-            cancellationToken);
+        try
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException { SqlState: "23505" })
+        {
+            return AddBookToLibraryResult.AlreadyExists();
+        }
 
         return AddBookToLibraryResult.Success(
-            libraryEntry.Id);
+            libraryEntry.Id) with { UpdatedAtUtc = libraryEntry.UpdatedAtUtc };
     }
 }

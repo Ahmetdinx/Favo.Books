@@ -12,6 +12,7 @@ internal sealed record AddBookToLibraryResult(
     Guid? LibraryEntryId,
     AddBookToLibraryError Error)
 {
+    public DateTimeOffset? UpdatedAtUtc { get; init; }
     public bool IsSuccess =>
         Error == AddBookToLibraryError.None;
 

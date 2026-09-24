@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Link, useLocation } from 'react-router'
 
 type ValidationProblem = {
     errors?: Record<string, string[]>
@@ -9,6 +10,7 @@ type ApiError = {
 }
 
 function RegisterPage() {
+    const location = useLocation()
     const [email, setEmail] = useState('')
     const [nickname, setNickname] = useState('')
     const [password, setPassword] = useState('')
@@ -144,6 +146,7 @@ function RegisterPage() {
                     {isSubmitting ? 'Hesap oluşturuluyor...' : 'Hesap Oluştur'}
                 </button>
             </form>
+            <p><Link to="/login" state={location.state}>{successMessage ? 'Giriş yap ve devam et' : 'Zaten hesabım var'}</Link></p>
         </section>
     )
 }

@@ -9,6 +9,9 @@ import {
 
 import { useAuth } from '../auth/useAuth'
 import ReaderSearch from './ReaderSearch'
+import ReaderAvatar from '../profile/ReaderAvatar'
+import { ReaderBadgesContext } from '../profile/avatarOptions'
+import type { AchievementTrack } from '../profile/AchievementTracks'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
 import '../profile/Readers.css'
 
@@ -22,15 +25,25 @@ function AppLayout() {
     const navigate = useNavigate()
     const location = useLocation()
     const authFetch = useAuthenticatedFetch()
-    const [reader, setReader] = useState<{ nickname: string | null } | null>(null)
+    const [reader, setReader] = useState<{ nickname: string | null; avatarId: string } | null>(null)
+    const [achievements, setAchievements] = useState<AchievementTrack[]>([])
     const [readerVersion, setReaderVersion] = useState(0)
     useEffect(() => {
         const update = () => setReaderVersion(v => v + 1)
         window.addEventListener('reader-settings-changed', update)
-        return () => window.removeEventListener('reader-settings-changed', update)
+        window.addEventListener('library-changed', update)
+        window.addEventListener('achievements-changed', update)
+        window.addEventListener('focus', update)
+        return () => {
+            window.removeEventListener('reader-settings-changed', update)
+            window.removeEventListener('library-changed', update)
+            window.removeEventListener('achievements-changed', update)
+            window.removeEventListener('focus', update)
+        }
     }, [])
     useEffect(() => {
         setReader(null)
+        setAchievements([])
         if (!session?.userId) return
         const controller = new AbortController()
         authFetch('/api/readers/me', { signal: controller.signal }).then(async response => {
@@ -38,6 +51,11 @@ function AppLayout() {
                 const value = await response.json()
                 if (!controller.signal.aborted) setReader(value)
             }
+        }).catch(() => {})
+        authFetch('/api/readers/me/achievements', { signal: controller.signal, cache: 'no-store' }).then(async response => {
+            if (!response.ok) return
+            const data = await response.json()
+            if (!controller.signal.aborted) setAchievements(data.items)
         }).catch(() => {})
         return () => controller.abort()
     }, [session?.userId, authFetch, readerVersion])
@@ -65,7 +83,7 @@ function AppLayout() {
     }
 
     return (
-        <div className="app">
+        <ReaderBadgesContext.Provider value={achievements}><div className="app">
             <header className="header">
                 <NavLink
                     className="logo"
@@ -100,8 +118,8 @@ function AppLayout() {
                                 {reader?.nickname ? '@' + reader.nickname : ''}
                             </span>
 
-                            <NavLink to="/profile">
-                                Profil
+                            <NavLink to="/profile" className="profile-avatar-link" aria-label="Profilim" title="Profilim">
+                                <ReaderAvatar avatarId={reader?.avatarId} achievements={achievements} size="small" />
                             </NavLink>
 
                             <button
@@ -142,7 +160,7 @@ function AppLayout() {
             <footer className="footer">
                 © 2026 KitapKivo
             </footer>
-        </div>
+        </div></ReaderBadgesContext.Provider>
     )
 }
 

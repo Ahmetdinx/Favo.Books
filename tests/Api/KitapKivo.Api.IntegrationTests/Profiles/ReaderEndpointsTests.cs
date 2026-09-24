@@ -136,6 +136,44 @@ public sealed class ReaderEndpointsTests(KitapKivoWebApplicationFactory factory)
     }
 
     [Fact]
+    public async Task AvatarSelection_Persists_IsPublicOnlyWithProfile_AndOmittedValueIsPreserved()
+    {
+        var (owner, nickname, _) = await Account();
+        using var visitor = factory.CreateClient();
+        var initial = await owner.GetFromJsonAsync<JsonElement>("/api/readers/me");
+        Assert.Equal("owl", initial.GetProperty("avatarId").GetString());
+        foreach (var avatar in new[] { "owl", "fox", "cat", "bear", "deer", "panda", "penguin", "rabbit" })
+        {
+            var response = await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = false, AvatarId = avatar });
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(avatar, (await response.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("avatarId").GetString());
+        }
+        (await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = true })).EnsureSuccessStatusCode();
+        var publicProfile = await visitor.GetFromJsonAsync<JsonElement>("/api/readers/" + nickname);
+        Assert.Equal("rabbit", publicProfile.GetProperty("avatarId").GetString());
+        (await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = false })).EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.NotFound, (await visitor.GetAsync("/api/readers/" + nickname)).StatusCode);
+    }
+
+    [Fact]
+    public async Task InvalidAvatar_DoesNotChangeNicknameOrVisibility_AndCannotGrantBadges()
+    {
+        var (owner, nickname, _) = await Account();
+        foreach (var invalid in new[] { "", "not-an-avatar", "https://example.com/a.png", new string('x', 100) })
+        {
+            var response = await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = Name(), IsPublic = true, AvatarId = invalid });
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+        var current = await owner.GetFromJsonAsync<JsonElement>("/api/readers/me");
+        Assert.Equal(nickname, current.GetProperty("nickname").GetString());
+        Assert.False(current.GetProperty("isPublic").GetBoolean());
+        Assert.Equal("owl", current.GetProperty("avatarId").GetString());
+        (await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = true, AvatarId = "fox", ReadingLevel = 1000, EvaluationLevel = 1000 })).EnsureSuccessStatusCode();
+        var progress = await owner.GetFromJsonAsync<JsonElement>("/api/readers/me/achievements");
+        Assert.All(progress.GetProperty("items").EnumerateArray(), item => Assert.Equal(JsonValueKind.Null, item.GetProperty("current").ValueKind));
+    }
+
+    [Fact]
     public async Task Search_IsBounded_Paginated_AndDoesNotTreatUnderscoreAsWildcard()
     {
         var prefix = Name()[..12];

@@ -89,6 +89,7 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
                 setSummary(result)
                 setDraft(result.currentUserRating?.scores ?? emptyRatingDraft())
                 setMessage('Yedi kriterden oluşan değerlendirmeniz kaydedildi.')
+                window.dispatchEvent(new Event('achievements-changed'))
             }
         } catch (failure) {
             if (!controller.signal.aborted) setError(errorMessage(failure))
@@ -111,6 +112,7 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
                 setSummary(result)
                 setDraft(emptyRatingDraft())
                 setMessage('Değerlendirmeniz kaldırıldı.')
+                window.dispatchEvent(new Event('achievements-changed'))
             }
         } catch (failure) {
             if (!controller.signal.aborted) setError(errorMessage(failure))

@@ -17,6 +17,7 @@ internal sealed class UserConfiguration
         builder.Property(user => user.Nickname).HasMaxLength(24);
         builder.HasIndex(user => user.Nickname).IsUnique();
         builder.Property(user => user.IsPublic).HasDefaultValue(false);
+        builder.Property(user => user.AvatarId).HasMaxLength(16).HasDefaultValue("owl").IsRequired();
 
         builder.Property(user => user.Email)
             .HasMaxLength(320)

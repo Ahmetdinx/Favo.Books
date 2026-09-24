@@ -20,6 +20,7 @@ export type AddBookToLibraryRequest = {
 
 export type AddBookToLibraryResponse = {
     libraryEntryId: string
+    updatedAtUtc: string
 }
 
 export type UpdateLibraryStatusRequest = {

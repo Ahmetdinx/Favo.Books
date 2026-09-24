@@ -29,8 +29,9 @@ Checked items indicate implementation, not production certification.
 
 ## 2. Effortless catalog-to-library journey
 
-- [ ] Card actions, optional bulk past-reading addition and undo.
-- [ ] Preserve selected actions through authentication.
+- [x] Catalog card reading actions and guarded undo for the last visible-card change.
+- [ ] Optional bulk past-reading addition — deferred by user; not the next step.
+- [x] Preserve selected book/action and catalog filters through login/registration; explicit continuation.
 - [ ] Optional seven-criterion form with drafts and no fabricated defaults.
 - [ ] Mobile, keyboard, loading, empty and failure experiences.
 - [ ] Measure first useful recommendation and recommendation-to-library conversion.
@@ -49,8 +50,9 @@ Checked items indicate implementation, not production certification.
 
 ## 4. Achievements
 
-- [ ] Separate milestones for unique read novels and completed evaluations.
-- [ ] Recomputable counts; edits/re-adds do not inflate progress; removal is handled.
+- [x] Separate reading/evaluation badges at 1, 10, 100 and 1,000 eligible novels.
+- [x] Recomputable counts; edits/re-adds do not inflate progress; removal is handled.
+- [x] Compact profile tracks, next milestone and privacy-gated public badges.
 - [ ] Quiet celebration, next milestone and reduced-motion support.
 - [ ] No vote-weight privilege, speed rewards or forced streaks.
 - [ ] Optional public opt-in ranking after metric/abuse rules; may ship later.

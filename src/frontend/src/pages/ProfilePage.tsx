@@ -16,6 +16,7 @@ import { useAuth } from '../auth/useAuth'
 
 import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
 import ReaderSettings from '../profile/ReaderSettings'
+import ProfileAchievements from '../profile/ProfileAchievements'
 
 import {
     getBookSummaries,
@@ -633,6 +634,7 @@ function ProfilePage() {
 
             <ReaderSettings />
             <ProfileFeaturedBooksSection />
+            <ProfileAchievements />
             <section
                 className="profile-summary-section"
                 aria-labelledby={

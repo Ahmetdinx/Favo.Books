@@ -1,0 +1,29 @@
+.achievement-section { margin: 24px 0; }
+.achievement-tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.achievement-card { display: flex; gap: 16px; align-items: flex-start; min-width: 0; padding: 20px; border: 1px solid var(--library-line); border-radius: 14px; background: linear-gradient(130deg, #f6ecdd, #e9dac6); box-shadow: var(--library-soft-shadow); }
+.achievement-card.evaluation { background: linear-gradient(130deg, #f4e9dd, #e2cfbb); }
+.achievement-emblem { display: grid; place-items: center; flex-shrink: 0; width: 52px; height: 60px; color: #816b57; border: 1px solid #b9a186; border-radius: 14px 14px 22px 22px; background: #e6d9c8; }
+.achievement-emblem.unlocked { color: #f9eddb; background: linear-gradient(145deg, #a17a4f, #705030); border-color: #8a6540; box-shadow: inset 0 0 0 3px #e7bf8026, 0 4px 8px #63442314; }
+.achievement-emblem svg { width: 29px; height: 29px; }
+.achievement-content { min-width: 0; flex: 1; }
+.achievement-label { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; color: var(--library-muted); font-size: .75rem; }
+.achievement-label strong { color: var(--library-ink); font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+.achievement-card h3 { margin: 5px 0 12px; font-family: Georgia, serif; font-size: 1.1rem; }
+.achievement-card progress { display: block; width: 100%; height: 6px; border: 0; border-radius: 8px; overflow: hidden; background: #cdbcaa; color: #8d663e; accent-color: #8d663e; }
+.achievement-card progress::-webkit-progress-bar { background: #cdbcaa; }
+.achievement-card progress::-webkit-progress-value { background: linear-gradient(90deg, #a17a4f, #705030); border-radius: 8px; }
+.achievement-card progress::-moz-progress-bar { background: #8d663e; }
+.achievement-card p { margin: 9px 0 0; font-size: .75rem; color: var(--library-muted); line-height: 1.5; }
+.achievement-milestones { margin-top: 12px; font-size: .74rem; color: var(--library-muted); }
+.achievement-milestones summary { cursor: pointer; width: fit-content; }
+.achievement-milestones ol { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+.achievement-milestones li { display: flex; gap: 8px; align-items: center; }
+.achievement-milestones li strong { margin-left: auto; }
+.achievement-milestones .earned { color: #604326; font-weight: 600; }
+.achievement-caption { margin: 10px 0 0; font-size: .73rem; line-height: 1.5; color: var(--library-muted); }
+.achievement-caption button { background: transparent; color: var(--library-accent); text-decoration: underline; cursor: pointer; }
+@media (max-width: 680px) {
+    .achievement-tracks { grid-template-columns: 1fr; gap: 10px; }
+    .achievement-card { padding: 16px; gap: 12px; }
+    .achievement-emblem { width: 44px; height: 52px; }
+}

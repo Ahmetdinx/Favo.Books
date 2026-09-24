@@ -12,6 +12,7 @@ builder.Services.AddScoped<KitapKivo.Modules.Identity.Application.Users.ReaderDi
 builder.Services.AddScoped<KitapKivo.Modules.Reading.Application.PublicLibrary>();
 builder.Services.AddScoped<KitapKivo.Modules.Profiles.Application.PublicShowcase>();
 builder.Services.AddScoped<KitapKivo.Modules.Community.Application.PublicReaderRatings>();
+builder.Services.AddScoped<KitapKivo.Api.ReaderAchievements>();
 
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();

@@ -3,7 +3,40 @@
 Updated 2026-09-24. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
 
-Latest checkpoint (2026-09-24): nickname and opt-in public profiles implemented.
+Latest checkpoint (2026-09-24, avatars): eight preset reader avatars persist in
+Identity (default owl); migration 20260924132516_AddReaderAvatar applied locally.
+Profile settings offer radio selection and a preview. The header Profile link is
+now the selected avatar, with reading-tier frame/left badge and independent
+evaluation-tier right badge, derived only from server achievement data. Public
+profiles reuse the same presentation behind the visibility gate. No uploads or
+client-selected achievement tiers. Old settings clients may omit AvatarId without
+resetting it. Eleven reader/achievement API tests passed; browser visual QA remains
+pending. Header badges refresh after library/rating changes and on window focus.
+
+Previous checkpoint (2026-09-24, achievements): separate reading and completed-
+evaluation badges at 1/10/100/1000 eligible novels. Counts use distinct work IDs,
+current Read state and complete seven-criterion ratings; legacy scores and
+ineligible catalog records are excluded. Catalog owns eligibility via a shared
+contract with 500-ID batches; no cross-module table access. Counts and badges
+recompute after changes (no permanent award history or fabricated award dates).
+Profile displays two compact progress cards and next goals; public profiles
+expose badges under the existing visibility gate. No schema migration required.
+Nine targeted API tests, 22 Profiles unit tests, seven architecture tests,
+frontend build/lint and API Release build passed. Browser E2E remains pending.
+User explicitly deferred bulk library addition; achievements are the active step.
+
+Previous checkpoint (2026-09-24, catalog-to-library): catalog cards now expose
+WantToRead/Reading/Read with existing status, per-book pending/error handling and
+undo. Authenticated status lookup is bounded to 50 IDs (one request for the
+visible page), user-scoped and no-store. Undo uses an atomic owner+timestamp
+comparison so newer changes are not overwritten; adding returns UpdatedAtUtc.
+Concurrent duplicate adds return conflict instead of 500. Login/registration
+preserve catalog filters and the intended book/status for explicit continuation.
+Marking Read does not require rating; a quiet optional detail link is shown.
+29 Reading API tests, frontend build and lint passed. Browser E2E remains
+pending. Bulk selection and partial rating/drafts are separate next steps.
+
+Previous checkpoint (2026-09-24): nickname and opt-in public profiles implemented.
 New registration requires a unique lowercase nickname; existing accounts choose
 one from profile settings. All accounts default private. Migration
 20260924065516_AddReaderIdentity applied locally, preserving existing libraries.

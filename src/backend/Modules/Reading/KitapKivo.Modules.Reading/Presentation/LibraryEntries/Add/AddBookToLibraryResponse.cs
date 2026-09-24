@@ -2,4 +2,5 @@
     .Presentation.LibraryEntries.Add;
 
 public sealed record AddBookToLibraryResponse(
-    Guid LibraryEntryId);
+    Guid LibraryEntryId,
+    DateTimeOffset UpdatedAtUtc);

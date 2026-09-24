@@ -45,6 +45,7 @@ public static class CatalogModule
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddScoped<INovelAchievementCatalog, NovelAchievementCatalog>();
         string connectionString =
             configuration.GetConnectionString(
                 "Database")

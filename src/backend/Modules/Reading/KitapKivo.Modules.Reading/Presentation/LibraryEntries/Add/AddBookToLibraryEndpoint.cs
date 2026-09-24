@@ -104,7 +104,7 @@ internal static class AddBookToLibraryEndpoint
                 "Library entry identifier was not returned.");
 
         AddBookToLibraryResponse response =
-            new(libraryEntryId);
+            new(libraryEntryId, result.UpdatedAtUtc!.Value);
 
         return Results.Created(
             $"/api/reading/library/{libraryEntryId}",

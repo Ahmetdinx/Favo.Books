@@ -24,14 +24,20 @@ public static class ReaderEndpoints
             var settings = await directory.Settings(id, ct);
             return settings is null ? Results.Unauthorized() : Results.Ok(settings);
         }).RequireAuthorization();
+        group.MapGet("/me/achievements", async (ClaimsPrincipal principal, ReaderAchievements achievements, CancellationToken ct) =>
+        {
+            if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
+            return Results.Ok(new { items = await achievements.Get(id, ct) });
+        }).RequireAuthorization();
         group.MapPut("/me", async (UpdateReaderRequest request, ClaimsPrincipal principal, ReaderDirectory directory, CancellationToken ct) =>
         {
             if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
-            var result = await directory.Update(id, request.Nickname, request.IsPublic, ct);
+            var result = await directory.Update(id, request.Nickname, request.IsPublic, ct, request.AvatarId);
             return result switch
             {
                 "saved" => Results.Ok(await directory.Settings(id, ct)),
                 "taken" => Results.Conflict(new { message = "Bu kullanıcı adı kullanılıyor." }),
+                "invalid_avatar" => Results.BadRequest(new { message = "Listeden geçerli bir avatar seçin." }),
                 "missing" => Results.Unauthorized(),
                 _ => Results.BadRequest(new { message = UserNickname.Message })
             };
@@ -46,7 +52,7 @@ public static class ReaderEndpoints
             return Results.Ok(new { items = names.Take(20), hasMore = names.Length > 20 });
         });
         group.MapGet("/{nickname}", async (string nickname, int? page, ReaderDirectory directory,
-            PublicLibrary library, PublicShowcase showcase, PublicReaderRatings ratings, CancellationToken ct) =>
+            PublicLibrary library, PublicShowcase showcase, PublicReaderRatings ratings, ReaderAchievements achievements, CancellationToken ct) =>
         {
             if ((page ?? 1) < 1 || (page ?? 1) > 50000) return Results.BadRequest();
             var normalized = nickname.Trim().ToLowerInvariant();
@@ -57,11 +63,12 @@ public static class ReaderEndpoints
             var ids = books.Items.Select(b => b.BookId).Concat(featured.InfluentialBooks.Select(b => b.BookId))
                 .Concat(featured.BedsideBookId is Guid bedside ? new[] { bedside } : Array.Empty<Guid>()).Distinct().ToArray();
             var scores = await ratings.Get(reader.Id, ids, ct);
+            var progress = await achievements.Get(reader.Id, ct);
             // Recheck after loading: closing/renaming a profile invalidates subsequent responses.
             if ((await directory.FindPublic(normalized, ct))?.Id != reader.Id) return Results.NotFound();
-            return Results.Ok(new { reader.Nickname, library = books, showcase = featured, ratings = scores });
+            return Results.Ok(new { reader.Nickname, reader.AvatarId, library = books, showcase = featured, ratings = scores, achievements = progress });
         });
     }
 
-    public sealed record UpdateReaderRequest(string? Nickname, bool IsPublic);
+    public sealed record UpdateReaderRequest(string? Nickname, bool IsPublic, string? AvatarId = null);
 }

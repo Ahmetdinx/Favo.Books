@@ -4,11 +4,13 @@ import { getBookSummaries } from '../catalog/catalogApi'
 import { catalogCoverUrl } from '../catalog/coverImage'
 import type { BookSummary } from '../catalog/catalogTypes'
 import '../profile/Readers.css'
+import AchievementTracks, { type AchievementTrack } from '../profile/AchievementTracks'
+import ReaderAvatar from '../profile/ReaderAvatar'
 
 const criteria = { theme: 'Konu / Fikir', language: 'Anlatım ve Dil', characters: 'Karakterler', structure: 'Kurgu ve Yapı',
     pace: 'Tempo', impact: 'Duygusal / Düşünsel Etki', experience: 'Okuma Deneyimi' }
 type Rating = { bookId: string; overallScore: number | null } & Record<keyof typeof criteria, number | null>
-type Reader = { nickname: string; library: { items: { bookId: string; status: string }[]; totalCount: number };
+type Reader = { nickname: string; avatarId: string; achievements: AchievementTrack[]; library: { items: { bookId: string; status: string }[]; totalCount: number };
     showcase: { bedsideBookId: string | null; influentialBooks: { bookId: string; position: number }[] }; ratings: Rating[] }
 const statuses: Record<string, string> = { WantToRead: 'Okumak istiyor', Reading: 'Okuyor', Read: 'Okudu', OnHold: 'Ara verdi', Dropped: 'Bıraktı' }
 
@@ -67,12 +69,13 @@ export default function PublicReaderPage() {
     return <section className="readers-page">
         <Link to="/">← Ana Sayfa</Link>
         {busy ? <p role="status">Kitaplık yükleniyor…</p> : error ? <div role="alert"><p>{error}</p><button onClick={() => setVersion(v => v + 1)}>Tekrar dene</button></div> : data && <>
-            <header className="public-reader-header"><span className="reader-avatar" aria-hidden="true">{data.nickname[0].toUpperCase()}</span>
+            <header className="public-reader-header"><ReaderAvatar avatarId={data.avatarId} achievements={data.achievements} size="large" />
                 <div><h1>@{data.nickname}</h1><p>{data.library.totalCount} roman · Açık kitaplık</p></div></header>
             {(data.showcase.bedsideBookId || data.showcase.influentialBooks.length > 0) && <div className="reader-showcase">
                 {data.showcase.bedsideBookId && <section><h2>Başucu kitabı</h2>{card(data.showcase.bedsideBookId)}</section>}
                 {data.showcase.influentialBooks.length > 0 && <section><h2>İz bırakanlar</h2><div className="reader-rail">{data.showcase.influentialBooks.map(b => card(b.bookId))}</div></section>}
             </div>}
+            <AchievementTracks items={data.achievements} publicView />
             <h2>Kitaplık</h2>
             {data.library.totalCount === 0 ? <p>Henüz kitap eklenmemiş.</p> : <div className="reader-books">{data.library.items.map(b => card(b.bookId, b.status))}</div>}
             {data.library.totalCount > 20 && <div className="reader-pagination">

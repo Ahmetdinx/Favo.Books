@@ -95,8 +95,9 @@ export async function addBookToLibrary(
         )
     }
 
-    return (await response.json()) as
-        AddBookToLibraryResponse
+    const result = (await response.json()) as AddBookToLibraryResponse
+    window.dispatchEvent(new Event('library-changed'))
+    return result
 }
 
 export async function updateLibraryStatus(
@@ -129,8 +130,9 @@ export async function updateLibraryStatus(
         )
     }
 
-    return (await response.json()) as
-        UpdateLibraryStatusResponse
+    const result = (await response.json()) as UpdateLibraryStatusResponse
+    window.dispatchEvent(new Event('library-changed'))
+    return result
 }
 
 export async function removeBookFromLibrary(
@@ -156,6 +158,7 @@ export async function removeBookFromLibrary(
             response,
         )
     }
+    window.dispatchEvent(new Event('library-changed'))
 
 
 }

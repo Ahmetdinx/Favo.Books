@@ -12,6 +12,8 @@ import {
 
 import { browseBooks, getCatalogCategories, type CatalogCategory } from '../catalog/catalogApi'
 import { catalogCoverUrl } from '../catalog/coverImage'
+import { useCatalogLibrary } from '../reading/useCatalogLibrary'
+import CatalogLibraryActions from '../reading/CatalogLibraryActions'
 
 import type {
     BrowseBooksResponse,
@@ -141,6 +143,7 @@ function CatalogPage() {
         )
 
     const [categories, setCategories] = useState<CatalogCategory[]>([])
+    const library = useCatalogLibrary(result?.items.map(book => book.bookId) ?? [])
     const [categoryError, setCategoryError] = useState(false)
     const [categoriesLoading, setCategoriesLoading] = useState(true)
     const [categoryRetry, setCategoryRetry] = useState(0)
@@ -603,6 +606,7 @@ function CatalogPage() {
                                                     </div>
                                                 )}
                                         </div>
+                                        <CatalogLibraryActions bookId={book.bookId} title={book.title} library={library} />
                                         <Link
                                             className="catalog-detail-link"
                                             to={`/catalog/books/${book.bookId}`}

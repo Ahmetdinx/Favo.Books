@@ -24,6 +24,16 @@ public sealed class User
 
     public string? Nickname { get; private set; }
     public bool IsPublic { get; private set; }
+    public string AvatarId { get; private set; } = "owl";
+
+    public static bool IsValidAvatar(string avatarId) =>
+        avatarId is "owl" or "fox" or "cat" or "bear" or "deer" or "panda" or "penguin" or "rabbit";
+
+    public void SetAvatar(string avatarId)
+    {
+        if (!IsValidAvatar(avatarId)) throw new ArgumentException("Geçerli bir avatar seçin.", nameof(avatarId));
+        AvatarId = avatarId;
+    }
 
     public void SetProfile(string nickname, bool isPublic)
     {

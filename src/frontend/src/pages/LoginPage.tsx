@@ -4,6 +4,7 @@ import {
 } from 'react'
 
 import {
+    Link,
     useLocation,
     useNavigate,
 } from 'react-router'
@@ -119,6 +120,7 @@ function LoginPage() {
 
             const destination =
                 requestedPath?.startsWith('/') &&
+                    !requestedPath.startsWith('//') &&
                     requestedPath !== '/login'
                     ? requestedPath
                     : '/profile'
@@ -221,6 +223,7 @@ function LoginPage() {
                         : 'Giriş Yap'}
                 </button>
             </form>
+            <p>Hesabın yok mu? <Link to="/register" state={location.state}>Kayıt ol</Link></p>
         </section>
     )
 }
