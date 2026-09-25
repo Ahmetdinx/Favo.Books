@@ -3,7 +3,16 @@
 Updated 2026-09-25. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
 
-Latest checkpoint (2026-09-25, celebration and catalog priority): dismissible,
+Latest checkpoint (2026-09-25, classic coverage): imported seven source-verified
+Turkish-edition classics, batch classics-20260925. Eligible novels 1,005 -> 1,012;
+total records 10,858 -> 10,865. Repeat preview reports zero new and unchanged counts.
+Manifest/verification/apply/replay reports: data/curation/classics-20260925.
+Existing unreviewed classics were identified but not promoted; work-ID audit access
+was declined. See docs/classic-coverage-20260925.md for remaining gaps. Collector
+handles the publisher's malformed JSON-LD via complete Product-object recovery;
+four extractor tests pass. No user data changed.
+
+Previous checkpoint (2026-09-25, celebration and catalog priority): dismissible,
 reduced-motion-aware achievement toast shows avatar and next milestone. Per-account
 browser-local high-water marks avoid repeat celebrations; first visit establishes
 a baseline. Catalog authenticates browse calls, bypasses shared client cache for

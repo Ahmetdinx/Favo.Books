@@ -1,6 +1,6 @@
 # KitapKivo Roadmap
 
-Revised 2026-09-17. Authoritative scope and acceptance criteria:
+Revised 2026-09-25. Authoritative scope and acceptance criteria:
 [Novel discovery product plan](docs/novel-product-plan.md).
 Checked items indicate implementation, not production certification.
 
@@ -33,6 +33,7 @@ Checked items indicate implementation, not production certification.
 - [ ] Optional bulk past-reading addition — deferred by user; not the next step.
 - [x] Preserve selected book/action and catalog filters through login/registration; explicit continuation.
 - [x] Optional seven-criterion form with browser-local account/book drafts and no fabricated defaults.
+- [x] Personal catalog priority before pagination; saved/read/current books move behind new candidates.
 - [ ] Mobile, keyboard, loading, empty and failure experiences.
 - [ ] Measure first useful recommendation and recommendation-to-library conversion.
 - [ ] Observe five readers completing the journey and fix obstacles.
@@ -53,18 +54,20 @@ Checked items indicate implementation, not production certification.
 - [x] Separate reading/evaluation badges at 1, 10, 100 and 1,000 eligible novels.
 - [x] Recomputable counts; edits/re-adds do not inflate progress; removal is handled.
 - [x] Compact profile tracks, next milestone and privacy-gated public badges.
-- [ ] Quiet celebration, next milestone and reduced-motion support.
+- [x] Quiet celebration, next milestone and reduced-motion support (browser-local celebration history).
 - [ ] No vote-weight privilege, speed rewards or forced streaks.
 - [ ] Optional public opt-in ranking after metric/abuse rules; may ship later.
 
 ## 5. Personal discovery home
 
-- [ ] Preference-based start without history; no fabricated match claims.
+- [x] Preference-based start without history; no fabricated match percentages.
 - [ ] Bounded candidate/read models replacing full catalog/rating scans.
 - [ ] Negative signals, diversity, reading-state policy and unique shelf items.
 - [ ] Separate global rating, personal match index and evidence sufficiency.
 - [ ] Validate versioned 60/80/95 bands; suppress numbers with insufficient evidence.
-- [ ] Do not force-fill empty recommendation bands.
+- [x] Separate evidence-backed perfect/cross-genre shelves; do not force-fill empty shelves.
+- [x] In-memory development preview using the real ranking algorithm.
+- [x] Own WantToRead shelf recommendations and start-reading action.
 - [ ] Overall/criterion sorting before pagination, vote counts and sparse-data handling.
 - [ ] Beta feedback and later reading outcomes for quality measurement.
 

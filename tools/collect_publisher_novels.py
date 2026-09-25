@@ -51,7 +51,20 @@ def clean(value):
 def jsonld(soup):
     for script in soup.select('script[type="application/ld+json"]'):
         try:
-            value = json.loads(script.string or script.get_text())
+            text = script.string or script.get_text()
+            # Some publisher pages embed a commented publisher property in JSON-LD.
+            text = re.sub(r'^\s*/\*"publisher":.*?\*/\s*$', '', text, flags=re.M)
+            try:
+                value = json.loads(text)
+            except ValueError:
+                # Recover only a complete independently valid Product object, not arbitrary text.
+                for match in re.finditer(r'\{\s*"@type"\s*:\s*"Product"', text):
+                    try:
+                        product, _ = json.JSONDecoder().raw_decode(text[match.start():])
+                        yield product
+                    except ValueError:
+                        pass
+                continue
             yield from value.get('@graph', [value]) if isinstance(value,dict) else value
         except (ValueError, TypeError):
             continue

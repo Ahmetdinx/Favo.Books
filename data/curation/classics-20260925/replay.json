@@ -1,0 +1,55 @@
+{
+  "ManifestSha256": "52197F05C4DD11BD262B5A69BAC3E284BEF1556739F4EEDB3DD35910C4F0053B",
+  "RecordedAtUtc": "2026-09-25T12:22:56.1914329+00:00",
+  "TotalBooks": 10865,
+  "EligibleBooks": 1012,
+  "Result": {
+    "Applied": false,
+    "AvailableNew": 0,
+    "ExistingOrDuplicate": 7,
+    "Items": [
+      {
+        "SourceUrl": "https://www.iskultur.com.tr/madame-bovary.aspx",
+        "Title": "Madame Bovary",
+        "Isbn13": "9789754588323",
+        "BookId": "26f51235-4f7e-4648-a24a-a1accd9681de"
+      },
+      {
+        "SourceUrl": "https://www.iskultur.com.tr/sefiller-2-cilt.aspx",
+        "Title": "Sefiller \u2013 2 Cilt",
+        "Isbn13": "9786053324744",
+        "BookId": "4cc70d37-6aca-41f8-97e8-102e06406c4a"
+      },
+      {
+        "SourceUrl": "https://www.iskultur.com.tr/mai-ve-siyah.aspx",
+        "Title": "Mai ve Siyah",
+        "Isbn13": "9786052956274",
+        "BookId": "5a30498e-2e7e-4c58-b6e6-065dbdd71830"
+      },
+      {
+        "SourceUrl": "https://www.iskultur.com.tr/ask-i-memnu-halit-ziya-usakligil.aspx",
+        "Title": "A\u015Fk-\u0131 Memnu",
+        "Isbn13": "9786257999359",
+        "BookId": "73f92ac6-1f10-44e6-ad64-613c9804c7f4"
+      },
+      {
+        "SourceUrl": "https://www.iskultur.com.tr/gurur-ve-onyargi.aspx",
+        "Title": "Gurur ve \u00D6nyarg\u0131",
+        "Isbn13": "9789754587029",
+        "BookId": "7e6a9fd1-a1bc-49a1-8161-bd9f14848b6c"
+      },
+      {
+        "SourceUrl": "https://www.iskultur.com.tr/kirmizi-ve-siyah.aspx",
+        "Title": "K\u0131rm\u0131z\u0131 ve Siyah",
+        "Isbn13": "9786053320043",
+        "BookId": "ab6d8896-47d0-4888-a48e-237a6917d7b5"
+      },
+      {
+        "SourceUrl": "https://www.iskultur.com.tr/frankenstein-ya-da-modern-prometheus.aspx",
+        "Title": "Frankenstein ya da Modern Prometheus",
+        "Isbn13": "9786053327325",
+        "BookId": "ed0a69ec-0f91-40a8-a744-6a4dd4cc88ca"
+      }
+    ]
+  }
+}

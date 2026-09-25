@@ -915,5 +915,19 @@
     "Title": "Yorgun Mayıs Kısrakları",
     "Decision": "Novel",
     "Reason": "Publisher novel classification and continuous fictional plot reviewed; letters, memories or other literary forms are narrative elements rather than the publication form."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/madame-bovary.aspx",
+    "SourceSha256": "01ffebc425f58165ee7214c8d332c4c99a739441791c7183869c259d31426ad2",
+    "Title": "Madame Bovary",
+    "Decision": "Novel",
+    "Reason": "Publisher identifies this work as Flaubert’s novel; letters refers to another work in the translator biography. Reviewed 2026-09-25."
+  },
+  {
+    "SourceUrl": "https://www.iskultur.com.tr/sefiller-2-cilt.aspx",
+    "SourceSha256": "b5f44b94c14199236c5d53ba4b88a317d607e23100566177ff3f147e1a62048f",
+    "Title": "Sefiller – 2 Cilt",
+    "Decision": "Novel",
+    "Reason": "Publisher identifies Sefiller as a single novel published in two volumes, not a story collection; biographical references to other literary forms do not describe this edition. Reviewed 2026-09-25."
   }
 ]

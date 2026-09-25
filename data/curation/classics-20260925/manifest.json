@@ -1,0 +1,151 @@
+[
+  {
+    "Title": "Gurur ve Önyargı",
+    "AuthorNames": [
+      "Jane Austen"
+    ],
+    "Isbn13": "9789754587029",
+    "CoverImageUrl": "https://img.iskultur.com.tr/webp/2006/04/gurur-ve-onyargi-3.jpg",
+    "SourceUrl": "https://www.iskultur.com.tr/gurur-ve-onyargi.aspx",
+    "SourceCategory": "Edebiyat/ Hasan Âli Yücel Klasikleri/ Roman",
+    "Publisher": "İş Bankası Kültür Yayınları",
+    "LanguageCode": "tur",
+    "OriginalLanguageCode": "und",
+    "PageCount": 404,
+    "PublicationYear": 2006,
+    "Priority": 10,
+    "CategorySlugs": [
+      "klasikler"
+    ],
+    "SourceSha256": "621a0a8f11a08fc8432827e0b8c404b9080d7e05373b138efbd5457b04b14b4f",
+    "ListUrl": "https://www.iskultur.com.tr/gurur-ve-onyargi.aspx"
+  },
+  {
+    "Title": "Madame Bovary",
+    "AuthorNames": [
+      "Gustave Flaubert"
+    ],
+    "Isbn13": "9789754588323",
+    "CoverImageUrl": "https://img.iskultur.com.tr/webp/2006/07/madame-bovary.jpg",
+    "SourceUrl": "https://www.iskultur.com.tr/madame-bovary.aspx",
+    "SourceCategory": "100 Temel Eser/ Edebiyat/ Hasan Âli Yücel Klasikleri/ Roman",
+    "Publisher": "İş Bankası Kültür Yayınları",
+    "LanguageCode": "tur",
+    "OriginalLanguageCode": "und",
+    "PageCount": 400,
+    "PublicationYear": 2006,
+    "Priority": 10,
+    "CategorySlugs": [
+      "klasikler"
+    ],
+    "SourceSha256": "01ffebc425f58165ee7214c8d332c4c99a739441791c7183869c259d31426ad2",
+    "ListUrl": "https://www.iskultur.com.tr/madame-bovary.aspx",
+    "ReviewNote": "Publisher identifies this work as Flaubert’s novel; letters refers to another work in the translator biography. Reviewed 2026-09-25."
+  },
+  {
+    "Title": "Frankenstein ya da Modern Prometheus",
+    "AuthorNames": [
+      "Mary Shelley"
+    ],
+    "Isbn13": "9786053327325",
+    "CoverImageUrl": "https://img.iskultur.com.tr/webp/2016/04/frankenstein-4.jpg",
+    "SourceUrl": "https://www.iskultur.com.tr/frankenstein-ya-da-modern-prometheus.aspx",
+    "SourceCategory": "Hasan Âli Yücel Klasikleri/ Roman",
+    "Publisher": "İş Bankası Kültür Yayınları",
+    "LanguageCode": "tur",
+    "OriginalLanguageCode": "und",
+    "PageCount": 272,
+    "PublicationYear": 2016,
+    "Priority": 10,
+    "CategorySlugs": [
+      "klasikler"
+    ],
+    "SourceSha256": "0c6ce011e8f9fff13de920cecd7e9dcc8758e23351a06f4d28ec1c43efea3257",
+    "ListUrl": "https://www.iskultur.com.tr/frankenstein-ya-da-modern-prometheus.aspx"
+  },
+  {
+    "Title": "Mai ve Siyah",
+    "AuthorNames": [
+      "Halit Ziya Uşaklıgil"
+    ],
+    "Isbn13": "9786052956274",
+    "CoverImageUrl": "https://img.iskultur.com.tr/webp/2018/11/mai-ve-siyah-5.jpg",
+    "SourceUrl": "https://www.iskultur.com.tr/mai-ve-siyah.aspx",
+    "SourceCategory": "Roman/ Türk Edebiyatı Klasikleri",
+    "Publisher": "İş Bankası Kültür Yayınları",
+    "LanguageCode": "tur",
+    "OriginalLanguageCode": "und",
+    "PageCount": 264,
+    "PublicationYear": 2018,
+    "Priority": 10,
+    "CategorySlugs": [
+      "klasikler"
+    ],
+    "SourceSha256": "bbef094dd5e2665f254f7addbacced87dd0770a641e8a6877a8a61d75325725e",
+    "ListUrl": "https://www.iskultur.com.tr/mai-ve-siyah.aspx"
+  },
+  {
+    "Title": "Aşk-ı Memnu",
+    "AuthorNames": [
+      "Halit Ziya Uşaklıgil"
+    ],
+    "Isbn13": "9786257999359",
+    "CoverImageUrl": "https://img.iskultur.com.tr/webp/2020/01/aski-memnu-5.jpg",
+    "SourceUrl": "https://www.iskultur.com.tr/ask-i-memnu-halit-ziya-usakligil.aspx",
+    "SourceCategory": "Roman/ Türk Edebiyatı Klasikleri",
+    "Publisher": "İş Bankası Kültür Yayınları",
+    "LanguageCode": "tur",
+    "OriginalLanguageCode": "und",
+    "PageCount": 392,
+    "PublicationYear": 2020,
+    "Priority": 10,
+    "CategorySlugs": [
+      "klasikler"
+    ],
+    "SourceSha256": "ce754ed4be7dc7363d4ee55f243a226e722c22f34ff931b15865c621d3060839",
+    "ListUrl": "https://www.iskultur.com.tr/ask-i-memnu-halit-ziya-usakligil.aspx"
+  },
+  {
+    "Title": "Kırmızı ve Siyah",
+    "AuthorNames": [
+      "Stendhal"
+    ],
+    "Isbn13": "9786053320043",
+    "CoverImageUrl": "https://img.iskultur.com.tr/webp/2014/01/kirmizi-ve-siyah-3.jpg",
+    "SourceUrl": "https://www.iskultur.com.tr/kirmizi-ve-siyah.aspx",
+    "SourceCategory": "Edebiyat/ Hasan Âli Yücel Klasikleri/ Roman",
+    "Publisher": "İş Bankası Kültür Yayınları",
+    "LanguageCode": "tur",
+    "OriginalLanguageCode": "und",
+    "PageCount": 636,
+    "PublicationYear": 2014,
+    "Priority": 10,
+    "CategorySlugs": [
+      "klasikler"
+    ],
+    "SourceSha256": "dd83836711bef657732b46c10ba27ee0c9ef95116005ce2fc90022ac24713827",
+    "ListUrl": "https://www.iskultur.com.tr/kirmizi-ve-siyah.aspx"
+  },
+  {
+    "Title": "Sefiller – 2 Cilt",
+    "AuthorNames": [
+      "Victor Hugo"
+    ],
+    "Isbn13": "9786053324744",
+    "CoverImageUrl": "https://img.iskultur.com.tr/webp/2015/06/sefiller-2.jpg",
+    "SourceUrl": "https://www.iskultur.com.tr/sefiller-2-cilt.aspx",
+    "SourceCategory": "100 Temel Eser/ Hasan Âli Yücel Klasikleri/ Roman",
+    "Publisher": "İş Bankası Kültür Yayınları",
+    "LanguageCode": "tur",
+    "OriginalLanguageCode": "und",
+    "PageCount": 1720,
+    "PublicationYear": 2015,
+    "Priority": 10,
+    "CategorySlugs": [
+      "klasikler"
+    ],
+    "SourceSha256": "b5f44b94c14199236c5d53ba4b88a317d607e23100566177ff3f147e1a62048f",
+    "ListUrl": "https://www.iskultur.com.tr/sefiller-2-cilt.aspx",
+    "ReviewNote": "Publisher identifies Sefiller as a single novel published in two volumes, not a story collection; biographical references to other literary forms do not describe this edition. Reviewed 2026-09-25."
+  }
+]
