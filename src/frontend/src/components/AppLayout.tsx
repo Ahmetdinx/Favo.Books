@@ -9,6 +9,7 @@ import {
 
 import { useAuth } from '../auth/useAuth'
 import ReaderSearch from './ReaderSearch'
+import AchievementCelebration from '../profile/AchievementCelebration'
 import ReaderAvatar from '../profile/ReaderAvatar'
 import { ReaderBadgesContext } from '../profile/avatarOptions'
 import type { AchievementTrack } from '../profile/AchievementTracks'
@@ -27,6 +28,7 @@ function AppLayout() {
     const authFetch = useAuthenticatedFetch()
     const [reader, setReader] = useState<{ nickname: string | null; avatarId: string } | null>(null)
     const [achievements, setAchievements] = useState<AchievementTrack[]>([])
+    const [achievementOwner, setAchievementOwner] = useState<string | null>(null)
     const [readerVersion, setReaderVersion] = useState(0)
     useEffect(() => {
         const update = () => setReaderVersion(v => v + 1)
@@ -55,7 +57,7 @@ function AppLayout() {
         authFetch('/api/readers/me/achievements', { signal: controller.signal, cache: 'no-store' }).then(async response => {
             if (!response.ok) return
             const data = await response.json()
-            if (!controller.signal.aborted) setAchievements(data.items)
+            if (!controller.signal.aborted) { setAchievements(data.items); setAchievementOwner(session.userId) }
         }).catch(() => {})
         return () => controller.abort()
     }, [session?.userId, authFetch, readerVersion])
@@ -140,11 +142,11 @@ function AppLayout() {
                     ) : (
                         <>
                             <NavLink to="/login">
-                                Giriş Yap
+                                Giriş yap
                             </NavLink>
 
                             <NavLink to="/register">
-                                Kayıt Ol
+                                Kayıt ol
                             </NavLink>
                         </>
                     )}
@@ -157,6 +159,7 @@ function AppLayout() {
                 <Outlet />
             </main>
 
+            {session && <AchievementCelebration key={session.userId} userId={session.userId} items={achievementOwner === session.userId ? achievements : []} avatarId={reader?.avatarId} />}
             <footer className="footer">
                 © 2026 KitapKivo
             </footer>

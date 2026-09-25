@@ -26,6 +26,7 @@ export async function browseBooks(
     request: BrowseBooksRequest,
     signal?: AbortSignal,
     refresh = false,
+    authenticatedFetch?: (input: string | URL, init?: RequestInit) => Promise<Response>,
 ): Promise<BrowseBooksResponse> {
     const parameters = new URLSearchParams()
 
@@ -58,10 +59,10 @@ export async function browseBooks(
     parameters.set('sort', request.sort)
     signal?.throwIfAborted()
     const cacheKey = parameters.toString()
-    const cached = refresh ? undefined : pageCache.get(cacheKey)
+    const cached = refresh || authenticatedFetch ? undefined : pageCache.get(cacheKey)
     if (cached) return cached
 
-    const response = await fetch(
+    const response = await (authenticatedFetch ?? fetch)(
         `/api/catalog/books?${parameters.toString()}`,
         {
             signal,
@@ -78,7 +79,7 @@ export async function browseBooks(
     }
 
     const result = await response.json() as BrowseBooksResponse
-    if (!signal?.aborted) pageCache.set(cacheKey, result)
+    if (!signal?.aborted && !authenticatedFetch) pageCache.set(cacheKey, result)
     return result
 }
 

@@ -148,11 +148,43 @@ body {
 .app .profile-book-content h3 { font-size: 1.05rem; }
 .app .profile-book-status { position: static; display: inline-flex; width: fit-content; align-self: start; margin-top: 10px; font-size: 0.64rem; padding: 5px 7px; background: #dfc9b0; color: #60432c; box-shadow: none; }
 
-/* Brief rotation around the book spine; URL filter changes do not remount the page. */
-.library-page-turn { transform-origin: left center; animation: library-cover-open 320ms ease-out both; }
+/* Keep the shelf mounted while live-search results arrive. */
+.catalog-results { min-height: 360px; }
+.catalog-update-status { min-height: 24px; margin-top: 12px; font-size: .8rem; color: var(--library-muted); }
+.catalog-results .catalog-grid { transition: opacity 220ms ease; }
+.catalog-results .catalog-grid[data-updating="true"] { opacity: .72; }
+.catalog-results .catalog-book-card { animation: catalog-result-arrive 260ms ease-out; }
+@keyframes catalog-result-arrive { from { opacity: .65; } to { opacity: 1; } }
+
+/* Open around the spine; pathname changes only, never live-search parameters. */
+.library-page-turn {
+    position: relative;
+    transform-origin: left 180px;
+    animation: library-cover-open 780ms cubic-bezier(.22, .65, .25, 1);
+}
+.library-page-turn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(90deg, #51331f26, #ad815616 12%, transparent 55%);
+    opacity: 0;
+    animation: library-cover-shadow 780ms ease-out;
+}
 @keyframes library-cover-open {
-    from { opacity: .4; transform: perspective(1600px) rotateY(-4deg) translateX(6px); }
-    to { opacity: 1; transform: perspective(1600px) rotateY(0) translateX(0); }
+    0% { opacity: .55; transform: perspective(1800px) rotateY(-16deg); }
+    45% { opacity: 1; }
+    100% { transform: perspective(1800px) rotateY(0); }
+}
+@keyframes library-cover-shadow {
+    0% { opacity: .85; }
+    40% { opacity: .45; }
+    100% { opacity: 0; }
+}
+@media (max-width: 680px) {
+    .library-page-turn { animation-duration: 680ms; }
+    .library-page-turn::before { animation-duration: 680ms; }
 }
 @media (max-width: 960px) {
     .app .catalog-toolbar { grid-template-columns: 2fr 1fr 1fr; }
@@ -185,6 +217,7 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
     .library-page-turn { animation: none; transform: none; }
+    .library-page-turn::before, .catalog-results .catalog-book-card { animation: none; }
     .app *, .app *::before, .app *::after { scroll-behavior: auto; transition: none; }
 }
 

@@ -17,7 +17,7 @@ public sealed class BrowseBooksHandler
 
     public async Task<BrowseBooksResult> HandleAsync(
         BrowseBooksQuery query,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default, Guid[]? demotedBookIds = null)
     {
         ArgumentNullException.ThrowIfNull(query);
 
@@ -99,17 +99,19 @@ public sealed class BrowseBooksHandler
         int totalCount =
             await books.CountAsync(cancellationToken);
 
+        var demoted = demotedBookIds ?? [];
+        var prioritized = books.OrderBy(book => demoted.Contains(book.Id));
         IQueryable<Book> orderedBooks =
             query.Sort switch
             {
                 CatalogBookSort.Title =>
-                    books
-                        .OrderBy(book => book.Title)
+                    prioritized
+                        .ThenBy(book => book.Title)
                         .ThenBy(book => book.Id),
 
                 CatalogBookSort.FirstPublishedNewest =>
-                    books
-                        .OrderByDescending(book =>
+                    prioritized
+                        .ThenByDescending(book =>
                             book.FirstPublishedYear.HasValue)
                         .ThenByDescending(book =>
                             book.FirstPublishedYear)
@@ -117,8 +119,8 @@ public sealed class BrowseBooksHandler
                         .ThenBy(book => book.Id),
 
                 _ =>
-                    books
-                        .OrderByDescending(book =>
+                    prioritized
+                        .ThenByDescending(book =>
                             book.CreatedAtUtc)
                         .ThenBy(book => book.Title)
                         .ThenBy(book => book.Id)

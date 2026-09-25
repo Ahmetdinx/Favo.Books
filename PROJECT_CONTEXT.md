@@ -1,9 +1,66 @@
 # KitapKivo Project Context
 
-Updated 2026-09-24. This file describes implementation status,
+Updated 2026-09-25. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
 
-Latest checkpoint (2026-09-24, avatars): eight preset reader avatars persist in
+Latest checkpoint (2026-09-25, celebration and catalog priority): dismissible,
+reduced-motion-aware achievement toast shows avatar and next milestone. Per-account
+browser-local high-water marks avoid repeat celebrations; first visit establishes
+a baseline. Catalog authenticates browse calls, bypasses shared client cache for
+personal results, and demotes Read/Reading/WantToRead IDs before pagination via
+Reading contract. Existing sort is retained within each group; entries remain
+searchable. Library changes refresh ordering. API response is private/no-store.
+Four PostgreSQL browse integration tests and four frontend catalog tests passed;
+Release API build and frontend build/lint passed. Visual browser QA pending.
+
+Previous checkpoint (2026-09-25, own-library discovery): authenticated no-store
+GET /api/community/me/recommendations/library ranks up to three eligible WantToRead
+novels via Reading's user-scoped contract. Ranking retains full liked-book context,
+allows other genres in one's own library, ignores interest exclusion for this shelf,
+and excludes already rated books. Home cards explain reasons and offer Start reading;
+library, preference and rating changes refresh the shelf. No schema changes.
+38 Community unit tests, frontend build/lint passed; browser and API integration
+verification pending. Development preview toggle remains available as requested.
+
+Previous checkpoint (2026-09-25, recommendation preview): interested feedback now
+excludes the selected novel while remaining a taste signal for related novels.
+Frontend removes it after successful feedback and reloads replacement candidates.
+Development-only UI toggle opens an in-memory fixture preview, ranked by the real
+backend algorithm. Authenticated preview endpoint returns 404 outside Development;
+no fixture data is persisted, and preview actions never write library/feedback.
+Includes perfect/cross-genre shelves, exact-9 and two-vote boundary examples,
+replacement candidates and reset. Use the home-page "Test verileriyle önerileri dene"
+button with Vite dev and API Development. 36 Community tests, eight frontend library
+tests, build/lint passed. Browser interaction verification remains pending.
+
+Previous checkpoint (2026-09-25, recommendation shelves): perfect matches require
+an explicit genre match, exactly three chosen criteria each averaging strictly
+above 9, and at least three complete ratings. Separate cross-genre discovery
+requires all chosen criteria above 9 with the same evidence minimum and no chosen
+genre overlap. Personal shelf stays within selected genres when supplied. Limits
+are 6 perfect / 6 personal / 3 discovery; no duplicates or fabricated percentages.
+Cards expose genre, criterion averages and vote counts. Existing read/rated/dismissed
+exclusions remain. Full catalog/rating reads remain a scaling task. Community unit
+tests (35), frontend build/lint passed; browser/API integration QA remains pending.
+
+Previous checkpoint (2026-09-25, rating UX): criterion prompts and score labels are
+shorter, community averages are expandable, and progress shows answered criteria.
+Partial drafts persist locally per account/book with validation and storage-failure
+feedback. Restored drafts can be discarded; successful submission/removal clears
+them. Drafts never enter server ratings, recommendations or achievements. This is
+browser-local persistence, not cross-device sync. Submission shows a brief thank-you.
+Frontend build/lint and six rating/draft tests passed; browser QA remains pending.
+
+Previous checkpoint (2026-09-25, discovery UX): recommendation interest first ensures
+a WantToRead library entry, preserving any existing status and handling concurrent
+adds. Feedback removal does not delete library entries. Library and feedback writes
+are separate requests; partial failures are surfaced and retry is safe. Home copy
+is shorter with expandable recommendation explanations; guest hero focuses on novels.
+Featured profile panels stretch to equal height on desktop, including empty states.
+Interface action capitalization is consistent. Frontend build/lint and eight
+recommendation-library tests passed. Browser visual verification remains pending.
+
+Previous checkpoint (2026-09-24, avatars): eight preset reader avatars persist in
 Identity (default owl); migration 20260924132516_AddReaderAvatar applied locally.
 Profile settings offer radio selection and a preview. The header Profile link is
 now the selected avatar, with reading-tier frame/left badge and independent

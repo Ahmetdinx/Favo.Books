@@ -149,4 +149,34 @@ public sealed class BrowseBooksHandlerTests
 
         Assert.Empty(englishResult.Items);
     }
+
+    [Theory]
+    [InlineData(CatalogBookSort.Title)]
+    [InlineData(CatalogBookSort.RecentlyAdded)]
+    [InlineData(CatalogBookSort.FirstPublishedNewest)]
+    public async Task PersonalOrderingDemotesBeforePagination(CatalogBookSort sort)
+    {
+        using var scope = _factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        var marker = Guid.NewGuid().ToString("N");
+        var books = Enumerable.Range(0, 3).Select(i => new Book($"{marker} {i}", "tur")).ToArray();
+        db.Books.AddRange(books);
+        foreach (var book in books)
+        {
+            db.Editions.Add(new Edition(book.Id, book.Title, "tur", EditionFormat.Paperback,
+                coverImageUrl: "https://example.com/test.jpg"));
+            db.NovelReviews.Add(new NovelReview(book.Id, NovelDecision.Novel, marker,
+                "https://example.com/novel", "Verified fixture", "test", "test-v1"));
+        }
+        await db.SaveChangesAsync();
+        var handler = scope.ServiceProvider.GetRequiredService<BrowseBooksHandler>();
+        var query = new BrowseBooksQuery(marker, CatalogBookSearchField.Title, null, 1, 1, sort);
+        var original = await handler.HandleAsync(query);
+        var demoted = original.Items.Single().BookId;
+        var first = await handler.HandleAsync(query, demotedBookIds: [demoted]);
+        var last = await handler.HandleAsync(query with { Page = 3 }, demotedBookIds: [demoted]);
+        Assert.Equal(3, first.TotalCount);
+        Assert.NotEqual(demoted, first.Items.Single().BookId);
+        Assert.Equal(demoted, last.Items.Single().BookId);
+    }
 }

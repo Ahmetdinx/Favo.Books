@@ -1,7 +1,8 @@
-import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
+import { saveInterestedBook } from '../reading/readingApi'
 import './BookRecommendations.css'
 
 const criteria = [
@@ -13,16 +14,40 @@ type Preferences = { categories: string[]; criteria: string[]; hasSavedPreferenc
 type FeedbackItem = { bookId: string; title: string; choice: 'interested' | 'dismissed' }
 type Recommendations = { hasPersonalSignals: boolean; feedback: FeedbackItem[]; items: {
     bookId: string; title: string; coverImageUrl: string; reasons: string[]; ratingCount: number
+    shelf: string; genres: string[]; priorityScores: Record<string, number>
 }[] }
 
 export default function BookRecommendations({ home = false }: { home?: boolean }) {
     const { session } = useAuth()
-    return session ? <PersonalRecommendations key={session.userId} home={home} /> : null
+    const [preview, setPreview] = useState(false)
+    return session ? <>
+        {import.meta.env.DEV && <div className="recommendation-preview-toggle"><button type="button" onClick={() => setPreview(value => !value)}>{preview ? 'Gerçek önerilere dön' : 'Test verileriyle önerileri dene'}</button></div>}
+        <PersonalRecommendations key={session.userId + ':' + preview} home={home} preview={import.meta.env.DEV && preview} />
+    </> : null
 }
 
-function PersonalRecommendations({ home }: { home: boolean }) {
+function PersonalRecommendations({ home, preview }: { home: boolean; preview: boolean }) {
     const Heading = home ? 'h1' : 'h2'
-    const request = useAuthenticatedFetch()
+    const authenticatedFetch = useAuthenticatedFetch()
+    const previewChoices = useRef<Record<string, FeedbackItem['choice']>>({})
+    const request = useCallback(async (input: string | URL, init?: RequestInit): Promise<Response> => {
+        const url = String(input)
+        if (!preview) return authenticatedFetch(url, init)
+        if (url.endsWith('/reading-preferences')) return Response.json({
+            categories: ['klasikler'], criteria: ['language', 'characters', 'pace'], hasSavedPreferences: true,
+            availableCategories: [{ slug: 'klasikler', name: 'Klasikler' }],
+        })
+        if (url.endsWith('/feedback')) {
+            const id = url.split('/').at(-2)!
+            if (init?.method === 'DELETE') delete previewChoices.current[id]
+            else previewChoices.current[id] = JSON.parse(String(init?.body)).choice
+            return new Response(null, { status: 204 })
+        }
+        return authenticatedFetch('/api/community/me/recommendations/preview', {
+            method: 'POST', signal: init?.signal, headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ excluded: Object.keys(previewChoices.current) }),
+        })
+    }, [authenticatedFetch, preview])
     const [preferences, setPreferences] = useState<Preferences | null>(null)
     const [savedPreferences, setSavedPreferences] = useState<Preferences | null>(null)
     const [editingPreferences, setEditingPreferences] = useState(false)
@@ -34,6 +59,7 @@ function PersonalRecommendations({ home }: { home: boolean }) {
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
     const [retry, setRetry] = useState(0)
+    const feedbackPending = useRef(false)
     const saveRequest = useRef<AbortController | null>(null)
     useEffect(() => () => saveRequest.current?.abort(), [])
 
@@ -94,6 +120,7 @@ function PersonalRecommendations({ home }: { home: boolean }) {
             })
             if (!response.ok) throw new Error()
             saved = true
+            if (!preview) window.dispatchEvent(new Event('reading-preferences-changed'))
             if (controller.signal.aborted) return
             const savedPrefs = { ...preferences, hasSavedPreferences: true }
             setPreferences(savedPrefs); setSavedPreferences(savedPrefs); setEditingPreferences(false)
@@ -113,12 +140,18 @@ function PersonalRecommendations({ home }: { home: boolean }) {
     }
 
     async function giveFeedback(bookId: string, title: string, choice: FeedbackItem['choice'] | null) {
-        if (saving) return
+        if (saving || feedbackPending.current) return
+        feedbackPending.current = true
         const controller = new AbortController()
         saveRequest.current = controller
         setSaving(true); setError(''); setMessage('')
         let saved = false
+        let librarySaved = false
         try {
+            if (choice === 'interested' && !preview) {
+                await saveInterestedBook(request, bookId, controller.signal)
+                librarySaved = true
+            }
             const response = await request(`/api/community/me/recommendations/${bookId}/feedback`, {
                 method: choice ? 'PUT' : 'DELETE', signal: controller.signal,
                 headers: { 'Content-Type': 'application/json' },
@@ -129,7 +162,7 @@ function PersonalRecommendations({ home }: { home: boolean }) {
             if (controller.signal.aborted) return
             // Preserve an undo control even when the subsequent refresh fails.
             setResult(current => current ? { ...current,
-                items: choice === 'dismissed' ? current.items.filter(b => b.bookId !== bookId) : current.items,
+                items: choice ? current.items.filter(b => b.bookId !== bookId) : current.items,
                 feedback: [...current.feedback.filter(f => f.bookId !== bookId), ...(choice ? [{ bookId, title, choice }] : [])],
             } : current)
             const refreshed = await request('/api/community/me/recommendations', { signal: controller.signal, cache: 'no-store' })
@@ -137,20 +170,21 @@ function PersonalRecommendations({ home }: { home: boolean }) {
             const data = await refreshed.json() as Recommendations
             if (!controller.signal.aborted) {
                 setResult(data)
-                setMessage(choice === 'dismissed' ? `«${title}» önerilerinden çıkarıldı. Geri bildirimlerim alanından geri alabilirsin.`
-                    : choice === 'interested' ? `«${title}» ilgini çeken kitaplara eklendi. Önerilerin güncellendi.` : 'Geri bildirimin kaldırıldı, önerilerin güncellendi.')
+                setMessage(choice === 'dismissed' ? `«${title}» önerilerinden çıkarıldı.`
+                    : choice === 'interested' ? preview ? `«${title}» test listesinden çıkarıldı. Gerçek kitaplığın değişmedi.` : `«${title}» okuma listene eklendi. Yeni öneriler hazır.` : 'Geri bildirimin kaldırıldı. Kitaplığın değişmedi.')
             }
         } catch { if (!controller.signal.aborted) setError(saved
             ? 'Geri bildirimin kaydedildi ancak öneriler yenilenemedi. Önerileri yenileyebilirsin.'
-            : 'Geri bildirim tamamlanamadı. Lütfen tekrar dene.') }
-        finally { if (!controller.signal.aborted) setSaving(false) }
+            : librarySaved ? 'Kitap kitaplığında, ancak geri bildirimin kaydedilemedi. Tekrar dene.'
+                : 'İşlem tamamlanamadı. Lütfen tekrar dene.') }
+        finally { if (!controller.signal.aborted) setSaving(false); saveRequest.current = null; feedbackPending.current = false }
     }
 
     return <section className="personal-discovery" aria-labelledby="discovery-heading" aria-busy={loading || saving}>
+        {preview && <aside className="recommendation-preview-note"><strong>Test ön izlemesi · Gerçek puanlar değildir</strong><p>Klasikler + anlatım, karakterler ve tempo. “Sınır testi” 9 puanla, “Az veri” iki değerlendirmeyle güçlü eşleşmeye girmez. Butonlar yalnızca bu ön izlemeyi değiştirir.</p><button type="button" disabled={saving} onClick={() => { previewChoices.current = {}; setRetry(value => value + 1) }}>Testi sıfırla</button></aside>}
         <p className="eyebrow">Sıradaki sayfan</p>
         <Heading id="discovery-heading">Şimdi ne okumalı?</Heading>
-        <p className="discovery-intro">Sevdiğin kitaplardan ve seçtiğin özelliklerden yola çıkan öneriler.
-            Okuduğun ve okumakta olduğun kitapları burada tekrar göstermiyoruz.</p>
+        <p className="discovery-intro">Sevdiğin romanlardan, sıradaki favorine.</p>
         {loading && <p role="status">Kitapların arasından yeni okumalar seçiliyor…</p>}
         {error && <p role="alert">{error} {!preferences && <button type="button" onClick={() => setRetry(n => n + 1)}>Tekrar dene</button>}</p>}
         {message && <p role="status">{message}</p>}
@@ -163,15 +197,14 @@ function PersonalRecommendations({ home }: { home: boolean }) {
                         : savedPreferences?.hasSavedPreferences ? 'Tüm roman türlerine açığım' : 'Sevdiğin roman türlerini seç'}
                         {!!savedPreferences?.criteria.length && ` · ${savedPreferences.criteria.length} okuma önceliği`}</p>
                 </div>
-                <button ref={editButton} type="button" className="preferences-edit" disabled={saving}
+                <button ref={editButton} type="button" className="preferences-edit" disabled={saving || preview}
                     aria-expanded={editingPreferences} aria-controls={preferencesId}
                     onClick={() => { setPreferences(savedPreferences); setEditingPreferences(open => !open); setMessage('') }}>
                     {editingPreferences ? 'Vazgeç' : savedPreferences?.hasSavedPreferences ? 'Düzenle' : 'Tercih seç'}
                 </button>
             </div>
             <form id={preferencesId} onSubmit={save} hidden={!editingPreferences}>
-                <p>Önerilerini şekillendirmek için sevdiğin türleri ve okuma önceliklerini seç.
-                    İstersen seçimlerini kaldırarak sıfırlayabilirsin.</p>
+                <p>Önerilerin için sevdiğin türleri ve özellikleri seç.</p>
                 <fieldset disabled={saving}>
                     <legend>Roman türleri <small>En fazla 5</small></legend>
                     <div className="preference-options">{preferences.availableCategories.map(category => <label key={category.slug}>
@@ -193,36 +226,48 @@ function PersonalRecommendations({ home }: { home: boolean }) {
         </div>}
         {!loading && result && <>
             <button type="button" className="recommendation-refresh" disabled={saving} onClick={() => void refreshRecommendations()}>Önerileri yenile</button>
+            {!!savedPreferences?.categories.length && savedPreferences.criteria.length === 3 && !result.items.some(book => book.shelf === 'perfect') &&
+                <p className="discovery-hint">Henüz dört dörtlük eşleşme yok. Üç önceliğinin her birinde 9’un üzerinde, en az üç değerlendirmesi olan romanları burada öne çıkaracağız.</p>}
             {result.feedback.length > 0 && <details className="recommendation-feedback-history">
                 <summary>Geri bildirimlerim ({result.feedback.length})</summary>
-                <p>İlgi seçimlerin benzer kitapları öne çıkarır. “Bana uygun değil” yalnızca seçtiğin kitabı gizler.
-                    Bu seçimler kitap puanını veya okuma listeni değiştirmez.</p>
+                <p>“İlgimi çekti” romanı okuma listene ekler. Geri bildirimi geri almak kitabı listenden silmez.</p>
                 <ul>{result.feedback.map(item => <li key={item.bookId}>
                     <span>{item.title} · {item.choice === 'interested' ? 'İlgimi çekti' : 'Bana uygun değil'}</span>
                     <button type="button" disabled={saving} aria-label={`${item.title} için geri bildirimi geri al`}
-                        onClick={() => void giveFeedback(item.bookId, item.title, null)}>Geri al</button>
+                        onClick={() => void giveFeedback(item.bookId, item.title, null)}>Geri bildirimi kaldır</button>
                 </li>)}</ul>
             </details>}
-            {!result.hasPersonalSignals && <p className="discovery-hint">İlk önerilerin keşif amaçlı.
-                Okuma tercihlerini seç veya okuduğun birkaç kitabı değerlendir; seni tanımaya başlayalım.</p>}
+            {!result.hasPersonalSignals && <p className="discovery-hint">Birkaç roman değerlendir, önerilerin sana özel olsun.</p>}
             {result.items.length === 0 ? <p>Şimdilik önerebileceğimiz yeni bir kitap yok. <Link to="/catalog">Kataloğu keşfet</Link></p>
-                : <div className="recommendation-grid">{result.items.map(book => <article key={book.bookId}>
-                    <Link className="recommendation-book" to={`/catalog/books/${book.bookId}`}>
+                : <div className="recommendation-shelves">{[
+                    { key: 'perfect', title: 'Dört dörtlük eşleşmeler', description: 'Seçtiğin tür + üç önceliğinde de 9’un üzerinde okur puanı.' },
+                    { key: 'personal', title: 'Sana göre romanlar', description: 'Türlerin, beğenilerin ve okuma önceliklerinden seçildi.' },
+                    { key: 'discovery', title: 'Başka türlerde, aynı keyif', description: 'Seçtiğin türlerin dışında; önceliklerinin her birinde 9’un üzerinde.' },
+                ].map(shelf => {
+                    const books = result.items.filter(book => (book.shelf ?? 'personal') === shelf.key)
+                    if (!books.length) return null
+                    return <section key={shelf.key} className={`recommendation-shelf recommendation-shelf-${shelf.key}`} aria-labelledby={`shelf-${shelf.key}`}>
+                    <header><h3 id={`shelf-${shelf.key}`}>{shelf.title}</h3><p>{shelf.description}</p></header>
+                    <div className="recommendation-grid">{books.map(book => <article key={book.bookId}>
+                    <Link className="recommendation-book" onClick={event => { if (preview) event.preventDefault() }} aria-disabled={preview || undefined} to={`/catalog/books/${book.bookId}`}>
                         <img src={book.coverImageUrl} alt="" loading="lazy" />
                         <h3>{book.title}</h3>
                     </Link>
-                    <ul>{book.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul>
+                    <p className="recommendation-genres">{book.genres?.join(' · ')}</p>
+                    {Object.keys(book.priorityScores ?? {}).length > 0 && <div className="recommendation-score-chips">{Object.entries(book.priorityScores).map(([key, score]) => <span key={key}>{criteria.find(([id]) => id === key)?.[1]} <strong>{score.toLocaleString('tr-TR', { maximumFractionDigits: 2 })}/10</strong></span>)}<small>{book.ratingCount} değerlendirme</small></div>}
+                    <ul>{book.reasons.slice(0, 1).map(reason => <li key={reason}>{reason}</li>)}</ul>
+                    {book.reasons.length > 1 && <details className="recommendation-explanation"><summary>Neden bu roman?</summary><ul>{book.reasons.slice(1).map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
                     {book.ratingCount < 3 && <small>Okur puanı verisi henüz sınırlı.</small>}
                     <div className="recommendation-feedback-actions" role="group" aria-label={`${book.title} için geri bildirim`}>
                         <button type="button" disabled={saving}
                             aria-pressed={result.feedback.some(f => f.bookId === book.bookId && f.choice === 'interested')}
                             onClick={() => void giveFeedback(book.bookId, book.title,
-                                result.feedback.some(f => f.bookId === book.bookId && f.choice === 'interested') ? null : 'interested')}>İlgimi çekti</button>
+                                'interested')}>İlgimi çekti</button>
                         <button type="button" disabled={saving} onClick={() => void giveFeedback(book.bookId, book.title, 'dismissed')}>Bana uygun değil</button>
                     </div>
-                </article>)}</div>}
-            <p className="discovery-footnote">Tür ve yazar benzerliği bir başlangıçtır. Kriter puanlarını en az üç değerlendirme olduğunda kullanıyoruz;
-                öneriler kesin bir beğeni tahmini değildir.</p>
+                </article>)}</div></section>
+                })}</div>}
+            <details className="discovery-footnote"><summary>Öneriler nasıl seçiliyor?</summary><p>Dört dörtlük eşleşme için en az bir tür ve üç öncelik seçmelisin. Her önceliğin okur ortalaması 9’un üzerinde ve romanda en az üç değerlendirme olmalı. Bu bir beğeni garantisi değildir.</p></details>
         </>}
     </section>
 }

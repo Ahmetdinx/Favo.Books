@@ -65,8 +65,7 @@ function UserRatingPrompts() {
             <div>
                 <p className="eyebrow">Okuduklarından kalanlar</p>
                 <h2 id="rating-prompts-heading">Bu kitaplar sende ne bıraktı?</h2>
-                <p>Okuduğun kitapları yedi yönüyle değerlendir. İzlenimlerin kitaplığında kalsın,
-                    diğer okurların seçimlerine de yardımcı olsun.</p>
+                <p>Değerlendir, zevkine daha yakın romanlar keşfet.</p>
             </div>
             <button type="button" className="rating-prompts-dismiss" onClick={() => setHidden(true)}>Şimdilik gizle</button>
         </header>
@@ -82,6 +81,5 @@ function UserRatingPrompts() {
                 </Link>
             </li>)}
         </ul>
-        <small>İstersen daha sonra dönebilirsin. Değerlendirdiğin kitaplar bu alandan kalkar.</small>
     </section>
 }

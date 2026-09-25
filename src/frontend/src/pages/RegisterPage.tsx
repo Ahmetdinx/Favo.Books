@@ -87,7 +87,7 @@ function RegisterPage() {
 
     return (
         <section className="auth-page">
-            <h1>Kayıt Ol</h1>
+            <h1>Kayıt ol</h1>
 
             <p>KitapKivo hesabınızı oluşturarak okumaya başlayın.</p>
 

@@ -140,7 +140,7 @@ function LoginPage() {
 
     return (
         <section className="auth-page">
-            <h1>Giriş Yap</h1>
+            <h1>Giriş yap</h1>
 
             <p>
                 KitapKivo hesabınıza giriş yapın.
@@ -220,7 +220,7 @@ function LoginPage() {
                 >
                     {isSubmitting
                         ? 'Giriş yapılıyor...'
-                        : 'Giriş Yap'}
+                        : 'Giriş yap'}
                 </button>
             </form>
             <p>Hesabın yok mu? <Link to="/register" state={location.state}>Kayıt ol</Link></p>

@@ -1,4 +1,5 @@
-﻿using KitapKivo.Modules.Catalog.Application.Books.Browse;
+﻿using KitapKivo.SharedKernel.Reading;
+using KitapKivo.Modules.Catalog.Application.Books.Browse;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +30,8 @@ internal static class BrowseBooksEndpoint
         int? pageSize,
         string? sort,
         BrowseBooksHandler handler,
+        IReadingHistory reading,
+        HttpContext context,
         CancellationToken cancellationToken)
     {
         int requestedPage = page ?? 1;
@@ -63,10 +66,18 @@ internal static class BrowseBooksEndpoint
             requestedPageSize,
             parsedSort!.Value);
 
+        Guid[] demoted = [];
+        context.Response.Headers.CacheControl = "private, no-store";
+        if (context.User.Identity?.IsAuthenticated == true && Guid.TryParse(context.User.FindFirst("sub")?.Value, out var userId))
+        {
+            var started = await reading.GetStartedBookIdsAsync(userId, cancellationToken);
+            var wanted = await reading.GetWantToReadBookIdsAsync(userId, cancellationToken);
+            demoted = started.Concat(wanted).Distinct().ToArray();
+        }
         BrowseBooksResult result =
             await handler.HandleAsync(
                 browseQuery,
-                cancellationToken);
+                cancellationToken, demoted);
 
         BrowseBookItemResponse[] items = result.Items
             .Select(item =>

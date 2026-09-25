@@ -563,7 +563,7 @@ function BookProfileActionsPanel({
                         )
                     }
                 >
-                    Tekrar Dene
+                    Tekrar dene
                 </button>
             </section>
         )

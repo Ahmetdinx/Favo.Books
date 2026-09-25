@@ -10,6 +10,8 @@ import {
     useSearchParams,
 } from 'react-router'
 
+import { useAuth } from '../auth/useAuth'
+import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
 import { browseBooks, getCatalogCategories, type CatalogCategory } from '../catalog/catalogApi'
 import { catalogCoverUrl } from '../catalog/coverImage'
 import { useCatalogLibrary } from '../reading/useCatalogLibrary'
@@ -99,6 +101,8 @@ function BookCover({
 }
 
 function CatalogPage() {
+    const { session } = useAuth()
+    const authFetch = useAuthenticatedFetch()
     const [
         searchParameters,
         setSearchParameters,
@@ -172,6 +176,11 @@ function CatalogPage() {
         setRequestVersion,
     ] = useState(0)
     const retriedVersion = useRef(0)
+    useEffect(() => {
+        const refresh = () => setRequestVersion(value => value + 1)
+        window.addEventListener('library-changed', refresh)
+        return () => window.removeEventListener('library-changed', refresh)
+    }, [])
 
     useEffect(() => {
         setDraftQuery(query)
@@ -219,6 +228,7 @@ function CatalogPage() {
                         },
                         controller.signal,
                         refresh,
+                        session ? authFetch : undefined,
                     )
 
                 if (!controller.signal.aborted) setResult(response)
@@ -246,6 +256,7 @@ function CatalogPage() {
             controller.abort()
         }
     }, [
+        authFetch, session,
         category,
         page,
         query,
@@ -469,7 +480,9 @@ function CatalogPage() {
                 </div>
             )}
 
-            {isLoading && (
+            <div className="catalog-results" aria-busy={isLoading}>
+            <div className="catalog-update-status" role="status">{isLoading && result ? 'Sonuçlar güncelleniyor…' : ''}</div>
+            {isLoading && !result && (
                 <div
                     className="catalog-status"
                     role="status"
@@ -495,14 +508,12 @@ function CatalogPage() {
                             )
                         }
                     >
-                        Tekrar Dene
+                        Tekrar dene
                     </button>
                 </div>
             )}
 
             {result &&
-                !isLoading &&
-                !errorMessage &&
                 result.items.length === 0 && (
                     <div className="catalog-status">
                         <strong>
@@ -518,11 +529,9 @@ function CatalogPage() {
                 )}
 
             {result &&
-                !isLoading &&
-                !errorMessage &&
                 result.items.length > 0 && (
                     <>
-                        <div className="catalog-grid">
+                        <div className="catalog-grid" data-updating={isLoading}>
                             {result.items.map(
                                 (book, index) => (
                                     <article
@@ -627,7 +636,7 @@ function CatalogPage() {
                                     className="button secondary-button"
                                     type="button"
                                     disabled={
-                                        result.page <= 1
+                                        isLoading || result.page <= 1
                                     }
                                     onClick={() =>
                                         handlePageChange(
@@ -652,7 +661,7 @@ function CatalogPage() {
                                     className="button secondary-button"
                                     type="button"
                                     disabled={
-                                        result.page >=
+                                        isLoading || result.page >=
                                         result.totalPages
                                     }
                                     onClick={() =>
@@ -668,6 +677,7 @@ function CatalogPage() {
                         )}
                     </>
                 )}
+            </div>
         </section>
     )
 }

@@ -612,7 +612,7 @@ function ProfilePage() {
                             )
                         }
                     >
-                        Tekrar Dene
+                        Tekrar dene
                     </button>
                 </div>
             </section>
@@ -680,7 +680,7 @@ function ProfilePage() {
                                     )
                                 }
                             >
-                                Tekrar Dene
+                                Tekrar dene
                             </button>
                         </div>
                     )}
@@ -832,7 +832,7 @@ function ProfilePage() {
                                     )
                                 }
                             >
-                                Tekrar Dene
+                                Tekrar dene
                             </button>
                         </div>
                     )}

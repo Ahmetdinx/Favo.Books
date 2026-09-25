@@ -32,7 +32,7 @@ Checked items indicate implementation, not production certification.
 - [x] Catalog card reading actions and guarded undo for the last visible-card change.
 - [ ] Optional bulk past-reading addition — deferred by user; not the next step.
 - [x] Preserve selected book/action and catalog filters through login/registration; explicit continuation.
-- [ ] Optional seven-criterion form with drafts and no fabricated defaults.
+- [x] Optional seven-criterion form with browser-local account/book drafts and no fabricated defaults.
 - [ ] Mobile, keyboard, loading, empty and failure experiences.
 - [ ] Measure first useful recommendation and recommendation-to-library conversion.
 - [ ] Observe five readers completing the journey and fix obstacles.

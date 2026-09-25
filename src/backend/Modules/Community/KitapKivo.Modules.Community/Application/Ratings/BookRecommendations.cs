@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KitapKivo.Modules.Community.Application.Ratings;
 
-internal sealed record RecommendedBook(Guid BookId, string Title, string CoverImageUrl, string[] Reasons, int RatingCount);
+internal sealed record RecommendedBook(Guid BookId, string Title, string CoverImageUrl, string[] Reasons, int RatingCount, string Shelf, string[] Genres, IReadOnlyDictionary<string, decimal> PriorityScores);
 internal sealed record FeedbackItem(Guid BookId, string Title, string Choice);
 internal sealed record RecommendationResult(RecommendedBook[] Items, bool HasPersonalSignals, FeedbackItem[] Feedback);
 internal sealed record PreferenceRequest(string[]? Categories, string[]? Criteria);
@@ -57,6 +57,16 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
         return Rank(books, ratings, started, userId, preference, feedback);
     }
 
+    public async Task<RecommendationResult> GetFromLibraryAsync(Guid userId, CancellationToken ct)
+    {
+        var ids = (await reading.GetWantToReadBookIdsAsync(userId, ct)).ToHashSet();
+        if (ids.Count == 0) return new([], false, []);
+        var preference = await GetPreferencesAsync(userId, ct) ?? new ReadingPreference { UserId = userId };
+        var books = await catalog.GetBooksAsync(ct);
+        var ratings = await db.BookRatings.AsNoTracking().Where(r => r.OverallScore != null).ToArrayAsync(ct);
+        return Rank(books, ratings, [], userId, preference, libraryCandidates: ids);
+    }
+
     public async Task<bool> SetFeedbackAsync(Guid userId, Guid bookId, string choice, CancellationToken ct)
     {
         if (choice is not ("interested" or "dismissed")) throw new ArgumentOutOfRangeException(nameof(choice));
@@ -73,19 +83,21 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
         => db.RecommendationFeedback.Where(f => f.UserId == userId && f.BookId == bookId).ExecuteDeleteAsync(ct);
 
     internal static RecommendationResult Rank(IReadOnlyList<DiscoveryBook> books, IReadOnlyList<BookRating> ratings,
-        HashSet<Guid> started, Guid userId, ReadingPreference preference, IReadOnlyList<RecommendationFeedback>? feedback = null)
+        HashSet<Guid> started, Guid userId, ReadingPreference preference, IReadOnlyList<RecommendationFeedback>? feedback = null, HashSet<Guid>? libraryCandidates = null)
     {
+        ratings = ratings.Where(r => r.OverallScore != null && r.Theme != null && r.Language != null && r.Characters != null
+            && r.Structure != null && r.Pace != null && r.Impact != null && r.Experience != null).ToArray();
         var own = ratings.Where(r => r.UserId == userId).ToArray();
         var excluded = started.Concat(own.Select(r => r.BookId)).ToHashSet();
         var ownFeedback = (feedback ?? []).Where(f => f.UserId == userId).ToArray();
-        excluded.UnionWith(ownFeedback.Where(f => f.Choice == "dismissed").Select(f => f.BookId));
+        if (libraryCandidates is null) excluded.UnionWith(ownFeedback.Select(f => f.BookId));
         var interestedIds = ownFeedback.Where(f => f.Choice == "interested").Select(f => f.BookId).ToHashSet();
         var interested = books.Where(b => interestedIds.Contains(b.BookId)).OrderBy(b => b.BookId).ToArray();
         var likedIds = own.Where(r => r.OverallScore >= 7).Select(r => r.BookId).ToHashSet();
         var liked = books.Where(b => likedIds.Contains(b.BookId)).OrderBy(b => b.BookId).ToArray();
         var byBook = ratings.GroupBy(r => r.BookId).ToDictionary(g => g.Key, g => g.ToArray());
         var candidates = new List<(RecommendedBook Book, decimal Score)>();
-        foreach (var book in books.Where(b => !excluded.Contains(b.BookId)))
+        foreach (var book in books.Where(b => !excluded.Contains(b.BookId) && (libraryCandidates is null || libraryCandidates.Contains(b.BookId))))
         {
             List<string> reasons = [];
             decimal score = 0;
@@ -118,20 +130,37 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
             // Five neutral prior votes reduce the influence of tiny samples. No match percentage is claimed.
             decimal quality = (votes.Sum(v => v.OverallScore!.Value) + 25) / (votes.Length + 5);
             score += quality / 10;
+            var priorityScores = new Dictionary<string, decimal>();
             foreach (var criterion in preference.Criteria)
             {
                 if (votes.Length < 3) continue;
                 decimal average = votes.Average(v => CriterionScore(v, criterion));
+                priorityScores[criterion] = average;
                 decimal adjusted = (average * votes.Length + 25) / (votes.Length + 5);
                 score += (adjusted - 5) / preference.Criteria.Length;
                 if (average >= 7)
                     reasons.Add($"Önem verdiğin {CriteriaNames[criterion]}: {average.ToString("0.0", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))}/10 ({votes.Length} değerlendirme).");
             }
             if (reasons.Count == 0) reasons.Add("Keşif önerisi: kişisel eşleşme için henüz yeterli veri yok.");
-            candidates.Add((new(book.BookId, book.Title, book.CoverImageUrl, reasons.Take(3).ToArray(), votes.Length), score));
+            var strongCriteria = preference.Criteria.Length > 0 && votes.Length >= 3
+                && priorityScores.Count == preference.Criteria.Length && priorityScores.Values.All(value => value > 9);
+            var shelf = selectedCategory is not null && preference.Criteria.Length == 3 && strongCriteria ? "perfect"
+                : preference.Categories.Length > 0 && selectedCategory is null && book.Categories.Length > 0 && strongCriteria ? "discovery"
+                : "personal";
+            // An unrelated novel without criterion evidence must not leak into the personal shelf.
+            if (libraryCandidates is null && preference.Categories.Length > 0 && selectedCategory is null && shelf != "discovery") continue;
+            if (shelf == "perfect") reasons.Insert(0, "Seçtiğin tür ve üç önceliğin bir arada: 4/4 uyum.");
+            if (shelf == "discovery") reasons.Insert(0, "Seçtiğin türlerin dışında; okuma önceliklerinin her birinde 9'un üzerinde.");
+            candidates.Add((new(book.BookId, book.Title, book.CoverImageUrl, reasons.ToArray(), votes.Length,
+                shelf, book.Categories.Select(c => c.Name).ToArray(), priorityScores), score));
         }
-        return new(candidates.OrderByDescending(c => c.Score).ThenBy(c => c.Book.BookId)
-            .Take(6).Select(c => c.Book).ToArray(),
+        var ordered = candidates.OrderByDescending(c => c.Score).ThenBy(c => c.Book.BookId).ToArray();
+        if (libraryCandidates is not null)
+            return new(ordered.OrderByDescending(c => c.Book.Shelf == "perfect").Take(3).Select(c => c.Book).ToArray(),
+                preference.Categories.Length > 0 || preference.Criteria.Length > 0 || liked.Length > 0, []);
+        return new(ordered.Where(c => c.Book.Shelf == "perfect").Take(6)
+            .Concat(ordered.Where(c => c.Book.Shelf == "personal").Take(6))
+            .Concat(ordered.Where(c => c.Book.Shelf == "discovery").Take(3)).Select(c => c.Book).ToArray(),
             preference.Categories.Length > 0 || preference.Criteria.Length > 0 || liked.Length > 0 || interested.Length > 0,
             ownFeedback.OrderBy(f => f.BookId).Select(f => new FeedbackItem(f.BookId,
                 books.FirstOrDefault(b => b.BookId == f.BookId)?.Title ?? "Katalogda bulunmayan kitap", f.Choice)).ToArray());

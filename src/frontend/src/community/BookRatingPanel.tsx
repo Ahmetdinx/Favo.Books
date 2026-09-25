@@ -6,6 +6,11 @@ import { getBookRatings, RatingApiError, removeBookRating, setBookRating } from 
 import { emptyRatingDraft, toRatingScores, previewOverallScore } from './ratingCalculations'
 import type { BookRatingSummary, RatingDraft } from './communityTypes'
 import './BookRatingPanel.css'
+import { readRatingDraft, writeRatingDraft, clearRatingDraft, criterionHints, scoreLabel } from './ratingDraftStorage'
+
+function draftStorage() {
+    try { return window.localStorage } catch { return null }
+}
 
 type Props = { bookId: string }
 
@@ -15,7 +20,7 @@ export default function BookRatingPanel({ bookId }: Props) {
 
     // Remount on book/account changes so another user's draft never appears.
     return <RatingEditor key={`${bookId}:${session?.userId ?? 'guest'}`}
-        bookId={bookId} signedIn={!!session} />
+        bookId={bookId} userId={session?.userId} />
 }
 
 function errorMessage(error: unknown) {
@@ -31,7 +36,8 @@ function formatScore(value: number) {
     return value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
-function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
+function RatingEditor({ bookId, userId }: Props & { userId?: string }) {
+    const signedIn = !!userId
     const { hash } = useLocation()
     const panel = useRef<HTMLElement | null>(null)
     const followedAnchor = useRef(false)
@@ -44,6 +50,24 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
     const [message, setMessage] = useState('')
     const [reload, setReload] = useState(0)
     const pendingWrite = useRef<AbortController | null>(null)
+    const [draftNotice, setDraftNotice] = useState('')
+    const [hasDraft, setHasDraft] = useState(false)
+
+    function clearLocalDraft() {
+        const storage = draftStorage()
+        const cleared = !!storage && !!userId && clearRatingDraft(storage, userId, bookId)
+        setHasDraft(!cleared)
+        setDraftNotice(cleared ? '' : 'Bu tarayıcıdaki taslak silinemedi.')
+    }
+
+    function changeDraft(next: RatingDraft) {
+        setDraft(next)
+        setMessage('')
+        const storage = draftStorage()
+        const saved = !!storage && !!userId && writeRatingDraft(storage, userId, bookId, next)
+        setHasDraft(true)
+        setDraftNotice(saved ? 'Taslak bu tarayıcıda saklandı. Daha sonra devam edebilirsin.' : 'Taslak saklanamadı. Sayfadan ayrılırsan değişikliklerin kaybolabilir.')
+    }
 
     useEffect(() => {
         if (hash !== '#book-rating') { followedAnchor.current = false; return }
@@ -61,7 +85,11 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
             .then((result) => {
                 if (controller.signal.aborted) return
                 setSummary(result)
-                setDraft(result.currentUserRating?.scores ?? emptyRatingDraft())
+                const storage = draftStorage()
+                const localDraft = storage && userId ? readRatingDraft(storage, userId, bookId) : null
+                setDraft(localDraft ?? result.currentUserRating?.scores ?? emptyRatingDraft())
+                setHasDraft(!!localDraft)
+                setDraftNotice(localDraft ? 'Yarım kalan değerlendirmen hazır. Kaldığın yerden devam et.' : '')
             })
             .catch((failure: unknown) => {
                 if (!controller.signal.aborted) setError(errorMessage(failure))
@@ -70,14 +98,14 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
                 if (!controller.signal.aborted) setIsLoading(false)
             })
         return () => controller.abort()
-    }, [authenticatedFetch, bookId, signedIn, reload])
+    }, [authenticatedFetch, bookId, signedIn, userId, reload])
 
     useEffect(() => () => pendingWrite.current?.abort(), [])
 
     async function save(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
         const scores = toRatingScores(draft)
-        if (!signedIn || !scores || isSaving || isLoading) return
+        if (!signedIn || !scores || isSaving || isLoading || pendingWrite.current) return
         const controller = new AbortController()
         pendingWrite.current = controller
         setIsSaving(true)
@@ -88,18 +116,20 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
             if (!controller.signal.aborted) {
                 setSummary(result)
                 setDraft(result.currentUserRating?.scores ?? emptyRatingDraft())
-                setMessage('Yedi kriterden oluşan değerlendirmeniz kaydedildi.')
+                clearLocalDraft()
+                setMessage('Değerlendirmen kaydedildi. Okuma zevkini tanımamıza yardımcı olduğun için teşekkürler!')
                 window.dispatchEvent(new Event('achievements-changed'))
             }
         } catch (failure) {
             if (!controller.signal.aborted) setError(errorMessage(failure))
         } finally {
+            pendingWrite.current = null
             if (!controller.signal.aborted) setIsSaving(false)
         }
     }
 
     async function remove() {
-        if (!signedIn || isSaving || isLoading) return
+        if (!signedIn || isSaving || isLoading || pendingWrite.current) return
         const controller = new AbortController()
         pendingWrite.current = controller
         setIsSaving(true)
@@ -107,6 +137,11 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
         setMessage('')
         try {
             await removeBookRating(bookId, authenticatedFetch, controller.signal)
+            if (controller.signal.aborted) return
+            clearLocalDraft()
+            setDraft(emptyRatingDraft())
+            setSummary(current => current ? { ...current, currentUserRating: null, currentUserLegacyScore: null } : current)
+            window.dispatchEvent(new Event('achievements-changed'))
             const result = await getBookRatings(bookId, authenticatedFetch, controller.signal)
             if (!controller.signal.aborted) {
                 setSummary(result)
@@ -117,6 +152,7 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
         } catch (failure) {
             if (!controller.signal.aborted) setError(errorMessage(failure))
         } finally {
+            pendingWrite.current = null
             if (!controller.signal.aborted) setIsSaving(false)
         }
     }
@@ -130,7 +166,7 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
                 <div>
                     <p className="eyebrow">Okurların değerlendirmesi</p>
                     <h2 id="book-rating-title">Bir kitabın yedi yönü</h2>
-                    <p>Her kriter 10 üzerinden değerlendirilir. Genel puan, aşağıdaki ağırlıklarla hesaplanır.</p>
+                    <p>Her puan, okuma zevkinden bir ipucu.</p>
                 </div>
                 {summary && (
                     <div className="detailed-rating-overall">
@@ -151,6 +187,7 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
 
             {summary && !isLoading && (
                 <>
+                    <details className="rating-community-details"><summary>Okur puanlarını incele</summary>
                     <dl className="detailed-rating-averages" aria-label="Kriterlere göre okur ortalamaları">
                         {summary.criteria.map((criterion) => {
                             const average = summary.criteriaAverages?.[criterion.key]
@@ -165,7 +202,7 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
                                 </div>
                             )
                         })}
-                    </dl>
+                    </dl></details>
                     {summary.ratingCount === 0 && <p>Bu kitabı yedi kriterle ilk değerlendiren siz olun.</p>}
                     {summary.legacyRatingCount > 0 && (
                         <p className="detailed-rating-note">
@@ -176,7 +213,13 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
                     {signedIn ? (
                         <form onSubmit={(event) => void save(event)}>
                             <fieldset disabled={isSaving || isLoading}>
-                                <legend>{hasRating ? 'Değerlendirmenizi güncelleyin' : 'Sizin değerlendirmeniz'}</legend>
+                                <legend>{hasRating ? 'Değerlendirmeni güncelle' : 'Sende nasıl bir iz bıraktı?'}</legend>
+                                <div className="rating-draft-progress">
+                                    <span>{Object.values(draft).filter(value => value !== '').length} / 7 kriter</span>
+                                    <progress max={7} value={Object.values(draft).filter(value => value !== '').length} aria-label="Tamamlanan kriterler" />
+                                    <small>Taslaklar puanlara ve başarılara dahil edilmez.</small>
+                                </div>
+                                {draftNotice && <p className="rating-draft-notice" role="status">{draftNotice}</p>}
                                 {summary.currentUserLegacyScore != null && (
                                     <p className="detailed-rating-note">
                                         Önceki puanınız {summary.currentUserLegacyScore} / 5. Yedi kriteri doldurduğunuzda yeni değerlendirmenizle değiştirilecek.
@@ -187,30 +230,34 @@ function RatingEditor({ bookId, signedIn }: Props & { signedIn: boolean }) {
                                         <label htmlFor={`rating-${criterion.key}`}>
                                             {criterion.label} <small>%{criterion.weight}</small>
                                         </label>
-                                        <p id={`rating-help-${criterion.key}`}>{criterion.description}</p>
+                                        <p id={`rating-help-${criterion.key}`}>{criterionHints[criterion.key]}</p>
                                         <select id={`rating-${criterion.key}`} required
                                             aria-describedby={`rating-help-${criterion.key}`}
                                             value={draft[criterion.key]}
                                             onChange={(event) => {
                                                 const value = event.target.value === '' ? '' : Number(event.target.value)
-                                                setDraft((current) => ({ ...current, [criterion.key]: value }))
-                                                setMessage('')
+                                                changeDraft({ ...draft, [criterion.key]: value })
                                             }}>
-                                            <option value="">Puan seçin</option>
+                                            <option value="">Puan seç</option>
                                             {Array.from({ length: summary.maximumScore - summary.minimumScore + 1 },
                                                 (_, index) => summary.minimumScore + index).map((score) => (
-                                                <option key={score} value={score}>{score} / {summary.maximumScore}</option>
+                                                <option key={score} value={score}>{score} · {scoreLabel(score)}</option>
                                             ))}
                                         </select>
                                     </div>
                                 ))}
                                 <div className="detailed-rating-preview" role="status">
-                                    {preview == null ? 'Genel puan için yedi kriteri de doldurun.' : `Hesaplanan genel puanınız: ${formatScore(preview)} / 10`}
+                                    {preview == null ? 'Yedi kriter tamamlandığında genel puanın burada görünecek.' : `Genel puanın: ${formatScore(preview)} / 10`}
                                 </div>
                                 <div className="detailed-rating-actions">
                                     <button className="button primary-button" type="submit" disabled={preview == null || isSaving}>
                                         {isSaving ? 'Kaydediliyor…' : hasRating ? 'Değerlendirmeyi güncelle' : 'Değerlendirmeyi kaydet'}
                                     </button>
+                                    {hasDraft && <button className="detailed-rating-remove" type="button" onClick={() => {
+                                        clearLocalDraft()
+                                        setDraft(summary.currentUserRating?.scores ?? emptyRatingDraft())
+                                        setMessage('')
+                                    }}>Taslağı sil</button>}
                                     {hasRating && <button className="detailed-rating-remove" type="button"
                                         onClick={() => void remove()}>Değerlendirmemi kaldır</button>}
                                 </div>

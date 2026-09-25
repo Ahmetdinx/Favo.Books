@@ -1,0 +1,9 @@
+.achievement-celebration { position: fixed; bottom: 24px; right: 24px; z-index: 50; display: flex; gap: 16px; align-items: center; width: min(350px, calc(100vw - 32px)); box-sizing: border-box; padding: 22px 32px 20px 18px; background: var(--library-paper, #f1e8dc); border: 1px solid var(--library-line); border-radius: 16px; box-shadow: 0 8px 32px #51331f26; animation: badge-arrival 380ms ease-out; color: var(--library-ink); }
+.achievement-celebration strong { display: block; margin-top: 5px; font-family: Georgia, serif; font-size: 1.1rem; }
+.achievement-celebration small, .achievement-celebration p { font-size: .78rem; color: var(--library-muted); }
+.achievement-celebration p { margin-bottom: 0; line-height: 1.5; }
+.celebration-close { position: absolute; right: 4px; top: 4px; width: 32px; height: 32px; background: transparent; border: 0; font-size: 1.3rem; color: inherit; cursor: pointer; }
+.celebration-close:focus-visible { outline: 2px solid var(--library-accent); }
+@keyframes badge-arrival { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .achievement-celebration { animation: none; } }
+@media (max-width: 520px) { .achievement-celebration { bottom: 16px; right: 16px; } }

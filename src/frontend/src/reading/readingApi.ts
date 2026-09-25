@@ -100,6 +100,23 @@ export async function addBookToLibrary(
     return result
 }
 
+// Interest never overwrites an existing reading status, including a concurrent add.
+export async function saveInterestedBook(
+    authenticatedFetch: AuthenticatedFetch,
+    bookId: string,
+    signal?: AbortSignal,
+): Promise<'added' | 'existing'> {
+    if (await getLibraryEntryByBook(authenticatedFetch, bookId, signal)) return 'existing'
+    try {
+        await addBookToLibrary(authenticatedFetch, { bookId, status: 'WantToRead' }, signal)
+        return 'added'
+    } catch (error) {
+        if (error instanceof ReadingApiError && error.status === 409
+            && await getLibraryEntryByBook(authenticatedFetch, bookId, signal)) return 'existing'
+        throw error
+    }
+}
+
 export async function updateLibraryStatus(
     authenticatedFetch: AuthenticatedFetch,
     libraryEntryId: string,

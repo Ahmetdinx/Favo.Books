@@ -350,7 +350,7 @@ function ReadingStatusPanel({
                     className="button primary-button"
                     to="/login"
                 >
-                    Giriş Yap
+                    Giriş yap
                 </Link>
             </section>
         )
@@ -378,7 +378,7 @@ function ReadingStatusPanel({
                         )
                     }
                 >
-                    Tekrar Dene
+                    Tekrar dene
                 </button>
             </section>
         )

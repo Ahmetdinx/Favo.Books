@@ -27,7 +27,7 @@ public sealed class RecommendationTests
         Assert.Equal(related.BookId, result.Items[0].BookId);
         Assert.Contains(result.Items[0].Reasons, r => r.Contains("İlgini çeken"));
         Assert.All(result.Items, b => Assert.Equal(0, b.RatingCount));
-        Assert.Contains(result.Items, b => b.BookId == interested.BookId);
+        Assert.DoesNotContain(result.Items, b => b.BookId == interested.BookId);
         Assert.True(result.HasPersonalSignals);
     }
 
@@ -88,7 +88,64 @@ public sealed class RecommendationTests
         var preference = new ReadingPreference { Categories = ["siir"] };
         var result = BookRecommendations.Rank(books, [], [], _user, preference);
         Assert.Equal(chosen.BookId, result.Items[0].BookId);
-        Assert.Equal(6, result.Items.Length);
+        Assert.Single(result.Items);
         Assert.Equal(result.Items.Select(b => b.BookId), BookRecommendations.Rank(books.Reverse().ToArray(), [], [], _user, preference).Items.Select(b => b.BookId));
+    }
+
+    [Fact]
+    public void PerfectAndCrossGenreShelvesRequireEveryPriorityAboveNineAndThreeVotes()
+    {
+        var perfect = Book(); var discovery = Book("fantastik"); var boundary = Book(); var sparse = Book();
+        BookRating Strong(DiscoveryBook book, int pace = 10) => BookRating.Create(Guid.NewGuid(), book.BookId,
+            new RatingScores(10, 10, 10, 10, pace, 10, 10), DateTimeOffset.UtcNow);
+        var votes = Enumerable.Range(0, 3).SelectMany(_ => new[] { Strong(perfect), Strong(discovery), Strong(boundary, 9) })
+            .Append(Strong(sparse)).ToArray();
+        var result = BookRecommendations.Rank([boundary, discovery, sparse, perfect], votes, [], _user,
+            new() { Categories = ["roman"], Criteria = ["pace", "language", "characters"] });
+        Assert.Equal(perfect.BookId, result.Items[0].BookId);
+        Assert.Equal("perfect", result.Items[0].Shelf);
+        Assert.Equal("discovery", result.Items.Single(b => b.BookId == discovery.BookId).Shelf);
+        Assert.Equal("personal", result.Items.Single(b => b.BookId == boundary.BookId).Shelf);
+        Assert.Empty(result.Items.Single(b => b.BookId == sparse.BookId).PriorityScores);
+        Assert.Equal(result.Items.Length, result.Items.Select(b => b.BookId).Distinct().Count());
+        var fewer = BookRecommendations.Rank([perfect], votes, [], _user,
+            new() { Categories = ["roman"], Criteria = ["pace", "language"] });
+        Assert.Equal("personal", Assert.Single(fewer.Items).Shelf);
+    }
+
+    [Fact]
+    public void PreviewUsesRealRankingAndReplacesChosenBooks()
+    {
+        var initial = RecommendationPreview.Create([]);
+        Assert.Contains(initial.Items, b => b.Shelf == "perfect");
+        Assert.Contains(initial.Items, b => b.Shelf == "discovery");
+        Assert.Equal("personal", initial.Items.Single(b => b.Title.StartsWith("Sınır testi")).Shelf);
+        Assert.Equal("personal", initial.Items.Single(b => b.Title.StartsWith("Az veri")).Shelf);
+        var next = RecommendationPreview.Create([initial.Items[0].BookId]);
+        Assert.DoesNotContain(next.Items, b => b.BookId == initial.Items[0].BookId);
+        Assert.Equal(6, next.Items.Count(b => b.Shelf == "perfect"));
+        Assert.Contains(next.Items, b => !initial.Items.Any(old => old.BookId == b.BookId));
+    }
+
+    [Fact]
+    public void LibraryShelfUsesOnlySavedCandidatesAndRetainsOtherGenres()
+    {
+        var chosen = Book(); var different = Book("fantastik"); var outside = Book(); var rated = Book();
+        var preference = new ReadingPreference { Categories = ["roman"] };
+        var result = BookRecommendations.Rank([different, outside, chosen, rated], [Vote(rated.BookId, _user, 8, 8)], [], _user,
+            preference, [new RecommendationFeedback { UserId = _user, BookId = chosen.BookId, Choice = "interested" }],
+            [chosen.BookId, different.BookId, rated.BookId]);
+        Assert.Equal(chosen.BookId, result.Items[0].BookId);
+        Assert.Contains(result.Items, b => b.BookId == different.BookId);
+        Assert.DoesNotContain(result.Items, b => b.BookId == outside.BookId || b.BookId == rated.BookId);
+        Assert.Empty(BookRecommendations.Rank([chosen], [], [], _user, preference, libraryCandidates: []).Items);
+    }
+
+    [Fact]
+    public void LibraryShelfIsBoundedToThree()
+    {
+        var books = Enumerable.Range(0, 10).Select(_ => Book()).ToArray();
+        var result = BookRecommendations.Rank(books, [], [], _user, new(), libraryCandidates: books.Select(b => b.BookId).ToHashSet());
+        Assert.Equal(3, result.Items.Length);
     }
 }

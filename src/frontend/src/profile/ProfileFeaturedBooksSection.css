@@ -183,10 +183,16 @@
 .profile-influential-showcase { padding: 20px; }
 .profile-shelf-empty { min-height: 150px; justify-content: center; flex-direction: column; gap: 18px; text-align: center; }
 @media (min-width: 900px) {
-    .profile-featured-section { grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.6fr); align-items: start; gap: 20px; }
-    .profile-bedside-showcase { grid-template-columns: 1fr; justify-items: center; gap: 20px; text-align: center; }
+    .profile-featured-section { grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.6fr); align-items: stretch; gap: 20px; }
+    .profile-bedside-showcase { grid-template-columns: 1fr; align-content: center; justify-items: center; gap: 20px; text-align: center; }
     .profile-bedside-content h2 { font-size: 0.8rem; margin-bottom: 10px; }
     .profile-bedside-content h3 { font-size: 1.3rem; }
     .profile-bedside-content blockquote { text-align: left; }
     .profile-bedside-content .profile-book-note > summary { margin-inline: auto; }
+}
+
+@media (min-width: 900px) {
+    .profile-influential-showcase { display: flex; flex-direction: column; }
+    .profile-influential-showcase > .profile-shelf-empty { flex: 1; }
+    .profile-influential-list { flex: 1; }
 }

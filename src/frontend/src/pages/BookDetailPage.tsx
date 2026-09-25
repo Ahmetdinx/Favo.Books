@@ -214,7 +214,7 @@ function BookDetailPage() {
                             )
                         }
                     >
-                        Tekrar Dene
+                        Tekrar dene
                     </button>
                 </div>
             </section>
