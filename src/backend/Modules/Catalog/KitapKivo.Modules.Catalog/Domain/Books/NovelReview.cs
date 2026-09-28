@@ -1,6 +1,6 @@
 namespace KitapKivo.Modules.Catalog.Domain.Books;
 
-public enum NovelDecision { Unknown, Novel, NotNovel }
+public enum NovelDecision { Unknown, Novel, NotNovel, SelectedClassic }
 
 internal sealed class NovelReview
 {

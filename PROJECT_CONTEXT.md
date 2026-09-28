@@ -1,9 +1,36 @@
 # KitapKivo Project Context
 
-Updated 2026-09-25. This file describes implementation status,
+Updated 2026-09-28. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
 
-Latest checkpoint (2026-09-25, classic coverage): imported seven source-verified
+Latest checkpoint (2026-09-28, requested 100-book list): all 100 requested works
+are visible and found by the actual catalog search handler. Imported 50 new books;
+preserved 50 existing BookIds, including their library/rating references. Total
+records 10,865 -> 10,915; visible catalog 1,012 -> 1,100. Exact-manifest source
+hashes and all 100 edition cover image headers/dimensions verified. Replay created
+zero duplicates and again passed 100 search checks. Seven import/curation API
+tests pass, including adding an edition to an existing tracked book. Offline
+ReadingListImport supports explicit identity mappings, atomic writes, ISBN/source
+collision checks and content-bound replay. Migration
+20260928113705_AddSelectedClassicDecision applied locally: six explicitly requested
+non-novel classics use SelectedClassic, not a false Novel classification. Unknown
+books remain hidden. Kartal Kondu's 1978 Turkish edition has no assigned ISBN;
+Kizil Koskun Ruyasi's verified Turkish edition is volume 1. See
+docs/reading-list-100-20260928.md and data/curation/reading-list-100-20260928 for
+the complete per-book manifest/results. No production deployment or push.
+
+Previous checkpoint (2026-09-28, Google sign-in): optional GIS popup button on login
+and registration; Google:ClientId enables it. JWT signature/issuer/audience/lifetime,
+verified email and one-use browser nonce are validated server-side. New private
+users use Google sub identity and choose nickname on profile; matching local email
+is never auto-linked. Existing token/refresh-cookie sessions reused. Identity
+migration 20260928063347_AddGoogleIdentity applied locally. 30 Identity unit tests,
+two isolated PostgreSQL Google flow tests and frontend build/lint passed. Real
+Google/browser verification awaits user-created Web Client ID. Setup in
+ docs/google-sign-in.md. In-memory challenge store requires shared atomic storage
+or sticky routing before multi-instance deployment.
+
+Previous checkpoint (2026-09-25, classic coverage): imported seven source-verified
 Turkish-edition classics, batch classics-20260925. Eligible novels 1,005 -> 1,012;
 total records 10,858 -> 10,865. Repeat preview reports zero new and unchanged counts.
 Manifest/verification/apply/replay reports: data/curation/classics-20260925.

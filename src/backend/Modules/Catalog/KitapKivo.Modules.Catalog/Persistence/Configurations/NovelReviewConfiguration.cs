@@ -9,7 +9,7 @@ internal sealed class NovelReviewConfiguration : IEntityTypeConfiguration<NovelR
     public void Configure(EntityTypeBuilder<NovelReview> builder)
     {
         builder.ToTable("NovelReviews", t => t.HasCheckConstraint("CK_NovelReviews_Decision",
-            "\"Decision\" IN ('Unknown', 'Novel', 'NotNovel')"));
+            "\"Decision\" IN ('Unknown', 'Novel', 'NotNovel', 'SelectedClassic')"));
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id).ValueGeneratedOnAdd();
         builder.Property(r => r.Decision).HasConversion<string>().HasMaxLength(20);

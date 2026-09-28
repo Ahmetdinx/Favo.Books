@@ -36,7 +36,7 @@ public sealed class ReviewNovelBatch(CatalogDbContext db)
             if (!matched.Add(book.Id)) throw new InvalidOperationException("Multiple entries identify the same book.");
             if (book.Title != entry.ExpectedTitle || !book.Authors.Any(a => a.Author.Name == entry.ExpectedAuthor))
                 throw new InvalidOperationException($"Title/author mismatch: {entry.WorkId}; stored title: {book.Title}; stored authors: {string.Join(", ", book.Authors.Select(a => a.Author.Name))}");
-            if (entry.Decision == NovelDecision.Novel && !book.Editions.Any(e =>
+            if (entry.Decision is NovelDecision.Novel or NovelDecision.SelectedClassic && !book.Editions.Any(e =>
                 e.LanguageCode is "tr" or "tur" && !string.IsNullOrWhiteSpace(e.CoverImageUrl)))
                 throw new InvalidOperationException($"Covered Turkish edition missing: {entry.WorkId}");
             var review = new NovelReview(book.Id, entry.Decision, batch.BatchId, entry.SourceUrl,

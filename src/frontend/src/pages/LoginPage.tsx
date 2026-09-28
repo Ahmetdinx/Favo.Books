@@ -1,3 +1,4 @@
+import GoogleSignIn from '../auth/GoogleSignIn'
 import {
     useState,
     type FormEvent,
@@ -141,6 +142,7 @@ function LoginPage() {
     return (
         <section className="auth-page">
             <h1>Giriş yap</h1>
+            <GoogleSignIn />
 
             <p>
                 KitapKivo hesabınıza giriş yapın.

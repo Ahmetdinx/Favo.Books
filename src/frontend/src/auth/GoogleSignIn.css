@@ -1,0 +1,6 @@
+.google-sign-in { margin: 20px 0; }
+.google-sign-in > div:first-child { min-height: 44px; }
+.google-sign-in p { font-size: .85rem; line-height: 1.6; }
+.auth-divider { display: flex; align-items: center; gap: 12px; color: var(--library-muted); font-size: .75rem; margin-top: 20px; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--library-line); }
+.google-sign-in button { background: transparent; border: 0; text-decoration: underline; color: inherit; cursor: pointer; }

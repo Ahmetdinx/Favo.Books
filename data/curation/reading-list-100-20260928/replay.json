@@ -1,0 +1,702 @@
+[
+  {
+    "Number": 1,
+    "BookId": "6765fadc-7e90-467f-a521-e2edbefc730d",
+    "Title": "Don Ki\u015Fot",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 2,
+    "BookId": "553585b7-88f4-4496-b892-8ac54495e710",
+    "Title": "\u0130ki \u015Eehrin Hik\u00E2yesi",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 3,
+    "BookId": "07f24508-dcd5-468a-9710-edd2086bd82c",
+    "Title": "K\u00FC\u00E7\u00FCk Prens",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 4,
+    "BookId": "42233979-8c33-4c8d-bc97-24b1ddb3a9a4",
+    "Title": "Y\u00FCz\u00FCklerin Efendisi",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 5,
+    "BookId": "2336bbfa-2105-4528-b709-97e5e29cb307",
+    "Title": "Simyac\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 6,
+    "BookId": "aa0db4cc-0bb1-4e8c-b107-6b5b472a3283",
+    "Title": "Harry Potter ve Felsefe Ta\u015F\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 7,
+    "BookId": "c27130eb-b606-49a6-bd4d-84c6f76efcd7",
+    "Title": "On Ki\u015Fiydiler",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 8,
+    "BookId": "3f307a91-12d6-4dc8-b844-5335ed9086c7",
+    "Title": "K\u0131z\u0131l K\u00F6\u015Fk\u00FCn R\u00FCyas\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 9,
+    "BookId": "24def2e3-bcde-4c47-86f9-2af8bb15ac6a",
+    "Title": "Hobbit",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 10,
+    "BookId": "5d9b959c-71e5-43b2-a2ee-febe3b9876d8",
+    "Title": "Alice Harikalar Diyar\u0131nda",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 11,
+    "BookId": "070aae91-4a4e-4e9c-85e7-5990d818a24e",
+    "Title": "Kad\u0131n",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 12,
+    "BookId": "b1d83ee4-89c4-4902-b11e-96cacf7c267e",
+    "Title": "Aslan, Cad\u0131 ve Dolap",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 13,
+    "BookId": "9e51111c-fce7-46a8-b01b-dab41514ca1f",
+    "Title": "Da Vinci \u015Eifresi",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 14,
+    "BookId": "fa57cf96-0956-4b34-bdc9-b13b2c0c9754",
+    "Title": "\u00C7avdar Tarlas\u0131nda \u00C7ocuklar",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 15,
+    "BookId": "cb1c9dd2-0a9c-4ad6-b390-5be475bc982e",
+    "Title": "Lolita",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 16,
+    "BookId": "0bb0ae58-1024-4ad1-bb3f-f70439d8405b",
+    "Title": "Y\u00FCzy\u0131ll\u0131k Yaln\u0131zl\u0131k",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 17,
+    "BookId": "b07020a2-563c-4167-ac71-a273142fc585",
+    "Title": "Ben-Hur",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 18,
+    "BookId": "f46e0f18-6709-4e93-ab09-040655e7ada1",
+    "Title": "Heidi",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 19,
+    "BookId": "9c31d618-fed6-4390-bfb5-072c691eb102",
+    "Title": "Kara \u0130nci",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 20,
+    "BookId": "f6500c97-04e6-4810-95f3-bfeb637d2ece",
+    "Title": "Ye\u015Filin K\u0131z\u0131 Anne",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 21,
+    "BookId": "04482a03-89ec-43d8-8bde-eb33ff20daef",
+    "Title": "Pinokyo",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 22,
+    "BookId": "3756d6cf-0a1c-4c42-b6d4-4ecc1cc073ed",
+    "Title": "G\u00FCl\u00FCn Ad\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 23,
+    "BookId": "3eda65f8-a1ed-47c8-bb72-48f65a505fb5",
+    "Title": "Kartal Kondu",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 24,
+    "BookId": "4814f47d-0247-4f04-923a-cf624cd393b2",
+    "Title": "Watership Tepesi",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 25,
+    "BookId": "9daef570-9e5c-4671-86af-18bdb018442e",
+    "Title": "\u00D6r\u00FCmcek A\u011F\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 26,
+    "BookId": "18be6000-9e78-40de-a4ca-626566199613",
+    "Title": "Zencefil Adam",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 27,
+    "BookId": "f41063cf-3c59-45db-8865-4a7683378475",
+    "Title": "Mart\u0131 Jonathan Livingston",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 28,
+    "BookId": "7af17a01-8506-4a85-800c-d1c8859d1878",
+    "Title": "1984",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 29,
+    "BookId": "32921f32-5e51-4005-857e-482f7f97a427",
+    "Title": "Hayvan \u00C7iftli\u011Fi",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 30,
+    "BookId": "4bfc5c1c-1d0f-4ba2-b77b-4f1d4b2f6599",
+    "Title": "Cesur Yeni D\u00FCnya",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 31,
+    "BookId": "ee7de92a-83f2-4966-9712-33f9d1ee605a",
+    "Title": "Fahrenheit 451",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 32,
+    "BookId": "cf2b57a4-5fa7-4742-a805-1fc6bbae5fac",
+    "Title": "Muhte\u015Fem Gatsby",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 33,
+    "BookId": "fba84106-a770-4549-bd43-8e59ff9ad0b3",
+    "Title": "B\u00FClb\u00FCl\u00FC \u00D6ld\u00FCrmek",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 34,
+    "BookId": "4b50058d-e5d1-4a30-8058-e8c83e05b963",
+    "Title": "R\u00FCzg\u00E2r Gibi Ge\u00E7ti",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 35,
+    "BookId": "0ef6cf27-161a-4de9-ba43-949e9349ac18",
+    "Title": "Gazap \u00DCz\u00FCmleri",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 36,
+    "BookId": "5642e614-1da6-4186-a54b-31668c48f9f5",
+    "Title": "Fareler ve \u0130nsanlar",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 37,
+    "BookId": "35217385-de83-418c-96cd-086ea7ece4ac",
+    "Title": "Cennetin Do\u011Fusu",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 38,
+    "BookId": "43db2b9e-b6a6-40ac-a66d-f94faffea3bb",
+    "Title": "Ya\u015Fl\u0131 Adam ve Deniz",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 39,
+    "BookId": "389886fd-3444-4ad5-b29f-04327c627b36",
+    "Title": "\u00C7anlar Kimin \u0130\u00E7in \u00C7al\u0131yor",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 40,
+    "BookId": "94dd58d9-5a75-416a-85f5-9f7ec298fe89",
+    "Title": "Silahlara Veda",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 41,
+    "BookId": "c3160459-ee4c-4124-bbda-ca6dadab9e75",
+    "Title": "G\u00FCne\u015F de Do\u011Far",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 42,
+    "BookId": "1cce5775-3bf4-437d-90f8-b633c43a1864",
+    "Title": "Su\u00E7 ve Ceza",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 43,
+    "BookId": "8c73f849-8742-4e3b-be6a-745c62503253",
+    "Title": "Karamazov Karde\u015Fler",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 44,
+    "BookId": "504c608e-08e2-4355-9b97-569595c3f2bc",
+    "Title": "Budala",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 45,
+    "BookId": "339e9b79-9704-47c6-9b6d-b0a78974b2b3",
+    "Title": "Ecinniler",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 46,
+    "BookId": "e901fc11-89a9-4b72-a77c-8542b53e922f",
+    "Title": "Yeralt\u0131ndan Notlar",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 47,
+    "BookId": "0687835c-7d6a-44f6-84cf-1e35e1100996",
+    "Title": "Kumarbaz",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 48,
+    "BookId": "66ab394d-0382-428a-81c1-e54c23c52133",
+    "Title": "Sava\u015F ve Bar\u0131\u015F",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 49,
+    "BookId": "5cb8cbcc-2001-4187-a082-b1b23914f373",
+    "Title": "Anna Karenina",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 50,
+    "BookId": "44645a8c-c31a-4c0c-8090-614f6b6adbe4",
+    "Title": "Dirili\u015F",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 51,
+    "BookId": "bbf9ec21-6fae-47b9-b5f6-39478b8c0429",
+    "Title": "\u0130van \u0130lyi\u00E7\u0027in \u00D6l\u00FCm\u00FC",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 52,
+    "BookId": "bb80f161-a6b2-4282-a114-5904e1b278a9",
+    "Title": "Babalar ve O\u011Fullar",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 53,
+    "BookId": "98837549-975d-4bda-a707-388d1ab31e70",
+    "Title": "Oblomov",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 54,
+    "BookId": "9d406c50-f6e2-4e97-8b36-f12a63e72b62",
+    "Title": "\u00D6l\u00FC Canlar",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 55,
+    "BookId": "e91c69bb-27f3-482c-81ad-030e89b88005",
+    "Title": "Palto",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 56,
+    "BookId": "f92d37c5-4f92-4216-8b03-c05f5d7981a8",
+    "Title": "Usta ile Margarita",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 57,
+    "BookId": "96a2cae6-e887-4019-97ea-62e223f97fde",
+    "Title": "Doktor Jivago",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 58,
+    "BookId": "b2c8a0ff-f560-4b4a-8678-ed6b79f41618",
+    "Title": "Ana",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 59,
+    "BookId": "8a12ff1d-fd49-406f-b18f-949755bef929",
+    "Title": "Yevgeni Onegin",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 60,
+    "BookId": "7c175dda-f5ae-4702-942b-30976627e738",
+    "Title": "Y\u00FCzba\u015F\u0131n\u0131n K\u0131z\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 61,
+    "BookId": "71de3798-cc6c-4534-bb6e-bca34a54bfa8",
+    "Title": "Monte Kristo Kontu",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 62,
+    "BookId": "b77b9f19-4e3b-430a-920f-2390303e6fc9",
+    "Title": "\u00DC\u00E7 Silah\u015F\u00F6rler",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 63,
+    "BookId": "45e10821-98eb-4961-9212-40b2f8a4bc88",
+    "Title": "Demir Maskeli Adam",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 64,
+    "BookId": "4cc70d37-6aca-41f8-97e8-102e06406c4a",
+    "Title": "Sefiller",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 65,
+    "BookId": "d82b9564-ab1b-4265-9b68-c7d7dd983932",
+    "Title": "Notre Dame\u0027\u0131n Kamburu",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 66,
+    "BookId": "26f51235-4f7e-4648-a24a-a1accd9681de",
+    "Title": "Madam Bovary",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 67,
+    "BookId": "db012aad-2b3f-4f87-861e-d7a793f45a52",
+    "Title": "Germinal",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 68,
+    "BookId": "8e58ba04-ad08-454f-bff6-a2f07ca03b85",
+    "Title": "Nana",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 69,
+    "BookId": "a87c9047-f76e-404b-adec-ba29d7e8d4dd",
+    "Title": "Th\u00E9r\u00E8se Raquin",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 70,
+    "BookId": "ab6d8896-47d0-4888-a48e-237a6917d7b5",
+    "Title": "K\u0131rm\u0131z\u0131 ve Siyah",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 71,
+    "BookId": "b639d2de-1a26-4acd-804e-0131ca0752d4",
+    "Title": "Parma Manast\u0131r\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 72,
+    "BookId": "add4ec9a-eb24-4765-849a-ae598a46e850",
+    "Title": "Goriot Baba",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 73,
+    "BookId": "84a03549-a02e-4f02-a029-088d8292c9c7",
+    "Title": "Vadideki Zambak",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 74,
+    "BookId": "da0288f0-6fec-48fa-a449-3aa852ad1ed8",
+    "Title": "Eug\u00E9nie Grandet",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 75,
+    "BookId": "369885d5-f525-4a3c-8249-dbf3dea8c66b",
+    "Title": "Candide",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 76,
+    "BookId": "74992a8f-faa1-4e7e-8d91-77cd32113585",
+    "Title": "Tehlikeli \u0130li\u015Fkiler",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 77,
+    "BookId": "d1c31eae-6bf4-4682-869f-2d959174027f",
+    "Title": "Yabanc\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 78,
+    "BookId": "ce3cd6c8-d787-424e-8798-c06043d8c74f",
+    "Title": "Veba",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 79,
+    "BookId": "0498ea93-97b0-4a11-abae-db8862ba2b83",
+    "Title": "D\u00FC\u015F\u00FC\u015F",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 80,
+    "BookId": "2e6b6eed-b067-474c-a0b6-23bde0929708",
+    "Title": "Bulant\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 81,
+    "BookId": "f3674ff0-fcd0-462f-ba7f-c46dabf7d50f",
+    "Title": "Dava",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 82,
+    "BookId": "16dd74de-a721-4ec6-9f2a-d315d25ecccc",
+    "Title": "\u015Eato",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 83,
+    "BookId": "b5b0e7cc-e2c8-4aee-bcea-eb1d97fc2c78",
+    "Title": "D\u00F6n\u00FC\u015F\u00FCm",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 84,
+    "BookId": "2da84607-3e29-428c-bd4f-784e7c012da1",
+    "Title": "Amerika",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 85,
+    "BookId": "ee5438cc-8139-4d02-b5e5-9feee75c269a",
+    "Title": "Siddhartha",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 86,
+    "BookId": "ff2220d0-3562-4018-86df-355ea2c13c44",
+    "Title": "Bozk\u0131rkurdu",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 87,
+    "BookId": "e3e92e20-45ee-4dbe-af0f-ab7c180cf321",
+    "Title": "Demian",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 88,
+    "BookId": "62c16afd-e033-4bed-94a1-cfeb4e9029e1",
+    "Title": "Narziss ve Goldmund",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 89,
+    "BookId": "f34d7b23-c391-406a-a5e3-05308cf7e0da",
+    "Title": "Boncuk Oyunu",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 90,
+    "BookId": "4c5b856e-2524-484d-9dd5-a8bc49ea3fb9",
+    "Title": "Gen\u00E7 Werther\u0027in Ac\u0131lar\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 91,
+    "BookId": "3a6c14ea-e082-47a5-97ce-0e9b4be010a4",
+    "Title": "Faust",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 92,
+    "BookId": "572fe3ec-f81d-43fc-b637-262027a38ece",
+    "Title": "Ulysses",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 93,
+    "BookId": "5b390876-984b-4aa3-ba74-24bdf829ce41",
+    "Title": "Sanat\u00E7\u0131n\u0131n Bir Gen\u00E7 Adam Olarak Portresi",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 94,
+    "BookId": "e28e7d50-df16-4cc4-98f6-dc2642e27345",
+    "Title": "Dublinliler",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 95,
+    "BookId": "65d7890c-d120-4203-865e-59f676c7f3f2",
+    "Title": "Mrs Dalloway",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 96,
+    "BookId": "08767835-f0df-455c-8a78-11d9150c8235",
+    "Title": "Deniz Feneri",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 97,
+    "BookId": "4edf2f97-7ab9-4435-adcc-bbad2679aff5",
+    "Title": "Orlando",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 98,
+    "BookId": "7e6a9fd1-a1bc-49a1-8161-bd9f14848b6c",
+    "Title": "Gurur ve \u00D6nyarg\u0131",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 99,
+    "BookId": "c0e0ce29-d0ce-42b3-a5ff-bfc53a171f08",
+    "Title": "Emma",
+    "Created": false,
+    "Visible": true
+  },
+  {
+    "Number": 100,
+    "BookId": "debc8d5d-34b6-4eb3-ba1c-75a4092a3e9a",
+    "Title": "Mansfield Park",
+    "Created": false,
+    "Visible": true
+  }
+]

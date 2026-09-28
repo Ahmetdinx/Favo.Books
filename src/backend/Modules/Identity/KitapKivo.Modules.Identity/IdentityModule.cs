@@ -71,6 +71,8 @@ public static class IdentityModule
 
 
         services.AddAuthorization();
+        services.AddSingleton<IGoogleIdentityValidator, GoogleIdentityValidator>();
+        services.AddSingleton<GoogleLoginChallenges>();
 
         services.AddSingleton<IAccessTokenProvider,JwtAccessTokenProvider>();
 

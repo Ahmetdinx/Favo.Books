@@ -17,6 +17,7 @@ public static class IdentityEndpoints
             .MapGroup("/api/identity")
             .WithTags("Identity");
 
+        group.MapGoogleLoginEndpoints();
         group.MapRegisterUserEndpoint();
         group.MapLoginUserEndpoint();
         group.MapRefreshSessionEndpoint();

@@ -169,7 +169,7 @@ namespace KitapKivo.Modules.Catalog.Persistence.Migrations
 
                     b.ToTable("NovelReviews", "catalog", t =>
                         {
-                            t.HasCheckConstraint("CK_NovelReviews_Decision", "\"Decision\" IN ('Unknown', 'Novel', 'NotNovel')");
+                            t.HasCheckConstraint("CK_NovelReviews_Decision", "\"Decision\" IN ('Unknown', 'Novel', 'NotNovel', 'SelectedClassic')");
                         });
                 });
 

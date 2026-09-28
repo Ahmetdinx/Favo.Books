@@ -58,6 +58,14 @@ internal sealed class Book
 
     public ICollection<ExternalReference> ExternalReferences { get; } = [];
 
+    public void UseVerifiedTurkishTitle(string title)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(title);
+        if (title.Length > 500) throw new ArgumentException("Title exceeds its limit.");
+        if (Title != title && OriginalTitle is null) OriginalTitle = Title;
+        Title = title.Trim();
+    }
+
     private static string? NormalizeOptionalValue(string? value)
     {
         return string.IsNullOrWhiteSpace(value)

@@ -1,3 +1,4 @@
+import GoogleSignIn from '../auth/GoogleSignIn'
 import { useState, type FormEvent } from 'react'
 import { Link, useLocation } from 'react-router'
 
@@ -88,6 +89,7 @@ function RegisterPage() {
     return (
         <section className="auth-page">
             <h1>Kayıt ol</h1>
+            <GoogleSignIn />
 
             <p>KitapKivo hesabınızı oluşturarak okumaya başlayın.</p>
 

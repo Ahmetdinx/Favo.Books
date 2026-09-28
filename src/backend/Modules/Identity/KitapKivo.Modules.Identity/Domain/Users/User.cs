@@ -22,6 +22,14 @@ public sealed class User
 
     public string Email { get; private set; } = string.Empty;
 
+    public string? GoogleSubject { get; private set; }
+    public void SetGoogleSubject(string subject)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(subject);
+        if (subject.Length > 255 || GoogleSubject is not null) throw new ArgumentException("Invalid Google subject.");
+        GoogleSubject = subject;
+    }
+
     public string? Nickname { get; private set; }
     public bool IsPublic { get; private set; }
     public string AvatarId { get; private set; } = "owl";

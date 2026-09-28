@@ -13,6 +13,8 @@ internal sealed class UserConfiguration
         builder.ToTable("users", "identity");
 
         builder.HasKey(user => user.Id);
+        builder.Property(user => user.GoogleSubject).HasMaxLength(255);
+        builder.HasIndex(user => user.GoogleSubject).IsUnique();
 
         builder.Property(user => user.Nickname).HasMaxLength(24);
         builder.HasIndex(user => user.Nickname).IsUnique();

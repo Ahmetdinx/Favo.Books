@@ -1,0 +1,902 @@
+[
+  {
+    "Number": 1,
+    "RequestedTitle": "Don Kişot",
+    "RequestedAuthor": "Miguel de Cervantes",
+    "Title": "Don Quijote (2 Cilt Takım Kutulu)",
+    "Author": "Miguel de Cervantes Saavedra",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/don-quijote-2-cilt-takim-kutulu-la-manchali-yaratici-asilzade/12602.html"
+  },
+  {
+    "Number": 2,
+    "RequestedTitle": "İki Şehrin Hikâyesi",
+    "RequestedAuthor": "Charles Dickens",
+    "Title": "İki Şehrin Hikayesi",
+    "Author": "Charles Dickens",
+    "Publisher": "ALFA YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/iki-sehrin-hikayesi/400085.html"
+  },
+  {
+    "Number": 3,
+    "RequestedTitle": "Küçük Prens",
+    "RequestedAuthor": "Antoine de Saint-Exupéry",
+    "Title": "Küçük Prens",
+    "Author": "Antoine De Saint Exupery",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/kucuk-prens/552286.html"
+  },
+  {
+    "Number": 4,
+    "RequestedTitle": "Yüzüklerin Efendisi",
+    "RequestedAuthor": "J. R. R. Tolkien",
+    "Title": "Yüzüklerin Efendisi (Tek Cilt)",
+    "Author": "J. R. R. Tolkien",
+    "Publisher": "METİS YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/yuzuklerin-efendisi-tek-cilt/43196.html"
+  },
+  {
+    "Number": 5,
+    "RequestedTitle": "Simyacı",
+    "RequestedAuthor": "Paulo Coelho",
+    "Title": "Simyacı (Ciltsiz)",
+    "Author": "Paulo Coelho",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/simyaci-ciltsiz/27328.html"
+  },
+  {
+    "Number": 6,
+    "RequestedTitle": "Harry Potter ve Felsefe Taşı",
+    "RequestedAuthor": "J. K. Rowling",
+    "Title": "Harry Potter ve Felsefe Taşı",
+    "Author": "J. K. Rowling",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/harry-potter-ve-felsefe-tasi/32780.html"
+  },
+  {
+    "Number": 7,
+    "RequestedTitle": "On Küçük Zenci / Ve Sonra Hiçbiri",
+    "RequestedAuthor": "Agatha Christie",
+    "Title": "On Kişiydiler (On Küçük Zenci)",
+    "Author": "Agatha Christie",
+    "Publisher": "ALTIN KİTAPLAR",
+    "Url": "https://www.kitapyurdu.com/kitap/on-kisiydiler-on-kucuk-zenci/571268.html"
+  },
+  {
+    "Number": 8,
+    "RequestedTitle": "Kızıl Köşkün Rüyası",
+    "RequestedAuthor": "Cao Xueqin",
+    "Title": "Kızıl Köşkün Rüyası 1 / Taşın Hikayesi (Karton Kapak)",
+    "Author": "Cao Xueqin , Gao E",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/kizil-koskun-ruyasi-1-tasin-hikayesi-karton-kapak/719528.html"
+  },
+  {
+    "Number": 9,
+    "RequestedTitle": "Hobbit",
+    "RequestedAuthor": "J. R. R. Tolkien",
+    "Title": "Hobbit",
+    "Author": "J. R. R. Tolkien",
+    "Publisher": "İTHAKİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/hobbit/98228.html"
+  },
+  {
+    "Number": 10,
+    "RequestedTitle": "Alice Harikalar Diyarında",
+    "RequestedAuthor": "Lewis Carroll",
+    "Title": "Alice Harikalar Diyarında",
+    "Author": "Lewis Carroll",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/alice-harikalar-diyarinda/426369.html"
+  },
+  {
+    "Number": 11,
+    "RequestedTitle": "Dişi / She",
+    "RequestedAuthor": "H. Rider Haggard",
+    "Title": "Kadın",
+    "Author": "Henry Rider Haggard",
+    "Publisher": "OLİMPOS YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/kadin/598582.html"
+  },
+  {
+    "Number": 12,
+    "RequestedTitle": "Aslan, Cadı ve Dolap",
+    "RequestedAuthor": "C. S. Lewis",
+    "Title": "Narnia Günlükleri 2 / Aslan, Dolap ve Cadı",
+    "Author": "C. S. Lewis",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/narnia-gunlukleri-2-aslan-dolap-ve-cadi/30291.html"
+  },
+  {
+    "Number": 13,
+    "RequestedTitle": "Da Vinci Şifresi",
+    "RequestedAuthor": "Dan Brown",
+    "Title": "Da Vinci Şifresi",
+    "Author": "Dan Brown",
+    "Publisher": "ALTIN KİTAPLAR",
+    "Url": "https://www.kitapyurdu.com/kitap/da-vinci-sifresi/55871.html"
+  },
+  {
+    "Number": 14,
+    "RequestedTitle": "Çavdar Tarlasında Çocuklar",
+    "RequestedAuthor": "J. D. Salinger",
+    "Title": "Çavdar Tarlasında Çocuklar",
+    "Author": "J. D. Salinger",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/cavdar-tarlasinda-cocuklar/12236.html"
+  },
+  {
+    "Number": 15,
+    "RequestedTitle": "Lolita",
+    "RequestedAuthor": "Vladimir Nabokov",
+    "Title": "Lolita / Beyaz Irktan Dul Bir Erkeğin İtirafları",
+    "Author": "Vladimir Nabokov",
+    "Publisher": "İLETİŞİM YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/lolita-beyaz-irktan-dul-bir-erkegin-itiraflari/18140.html"
+  },
+  {
+    "Number": 16,
+    "RequestedTitle": "Yüzyıllık Yalnızlık",
+    "RequestedAuthor": "Gabriel García Márquez",
+    "Title": "Yüzyıllık Yalnızlık (Özel Baskı)",
+    "Author": "Gabriel Garcia Marquez",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/yuzyillik-yalnizlik-ozel-baski/702608.html"
+  },
+  {
+    "Number": 17,
+    "RequestedTitle": "Ben-Hur",
+    "RequestedAuthor": "Lew Wallace",
+    "Title": "Ben-Hur",
+    "Author": "Lewis Wallace",
+    "Publisher": "DORLİON YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/benhur/661877.html"
+  },
+  {
+    "Number": 18,
+    "RequestedTitle": "Heidi",
+    "RequestedAuthor": "Johanna Spyri",
+    "Title": "Heidi",
+    "Author": "Johanna Spyri",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/heidi/98681.html"
+  },
+  {
+    "Number": 19,
+    "RequestedTitle": "Kara İnci",
+    "RequestedAuthor": "Anna Sewell",
+    "Title": "Siyah İnci",
+    "Author": "Anna Sewell",
+    "Publisher": "KAPRA YAYINCILIK",
+    "Url": "https://www.kitapyurdu.com/kitap/siyah-inci/564206.html"
+  },
+  {
+    "Number": 20,
+    "RequestedTitle": "Yeşilin Kızı Anne",
+    "RequestedAuthor": "L. M. Montgomery",
+    "Title": "Yeşilin Kızı Anne",
+    "Author": "L. M. Montgomery",
+    "Publisher": "KAPRA YAYINCILIK",
+    "Url": "https://www.kitapyurdu.com/kitap/yesilin-kizi-anne/573135.html"
+  },
+  {
+    "Number": 21,
+    "RequestedTitle": "Pinokyo",
+    "RequestedAuthor": "Carlo Collodi",
+    "Title": "Pinokyo",
+    "Author": "Carlo Collodi",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/pinokyo/429906.html"
+  },
+  {
+    "Number": 22,
+    "RequestedTitle": "Gülün Adı",
+    "RequestedAuthor": "Umberto Eco",
+    "Title": "Gülün Adı (Ciltsiz)",
+    "Author": "Umberto Eco",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/gulun-adi-ciltsiz/10227.html"
+  },
+  {
+    "Number": 23,
+    "RequestedTitle": "Kartal Kondu",
+    "RequestedAuthor": "Jack Higgins",
+    "Title": "KARTAL KONDU",
+    "Author": "JACK HIGGINS",
+    "Publisher": "ALTIN KİTAPLAR",
+    "Url": "https://www.nadirkitap.com/kartal-kondu-jack-higgins-kitap36370740.html"
+  },
+  {
+    "Number": 24,
+    "RequestedTitle": "Watership Tepesi",
+    "RequestedAuthor": "Richard Adams",
+    "Title": "Watership Tepesi",
+    "Author": "Richard Adams",
+    "Publisher": "ARKABAHÇE YAYINCILIK",
+    "Url": "https://www.kitapyurdu.com/kitap/watership-tepesi/107259.html"
+  },
+  {
+    "Number": 25,
+    "RequestedTitle": "Charlotte'un Sevgi Ağı",
+    "RequestedAuthor": "E. B. White",
+    "Title": "Örümcek Ağı",
+    "Author": "E.B. White",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/orumcek-agi/12308.html"
+  },
+  {
+    "Number": 26,
+    "RequestedTitle": "Zencefilli Adam",
+    "RequestedAuthor": "J. P. Donleavy",
+    "Title": "Zencefil Adam",
+    "Author": "J. P. Donleavy",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/zencefil-adam/611675.html"
+  },
+  {
+    "Number": 27,
+    "RequestedTitle": "Martı Jonathan Livingston",
+    "RequestedAuthor": "Richard Bach",
+    "Title": "Martı Jonathan Livingston",
+    "Author": "Richard Bach",
+    "Publisher": "EPSİLON YAYINEVİ",
+    "Url": "https://www.kitapyurdu.com/kitap/marti-jonathan-livingston/17070.html"
+  },
+  {
+    "Number": 28,
+    "RequestedTitle": "1984",
+    "RequestedAuthor": "George Orwell",
+    "Title": "1984",
+    "Author": "George Orwell",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/1984/13506.html"
+  },
+  {
+    "Number": 29,
+    "RequestedTitle": "Hayvan Çiftliği",
+    "RequestedAuthor": "George Orwell",
+    "Title": "Hayvan Çiftliği (Ciltsiz)",
+    "Author": "George Orwell",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/hayvan-ciftligi-ciltsiz/30574.html"
+  },
+  {
+    "Number": 30,
+    "RequestedTitle": "Cesur Yeni Dünya",
+    "RequestedAuthor": "Aldous Huxley",
+    "Title": "Cesur Yeni Dünya",
+    "Author": "Aldous Huxley",
+    "Publisher": "İTHAKİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/cesur-yeni-dunya/21087.html"
+  },
+  {
+    "Number": 31,
+    "RequestedTitle": "Fahrenheit 451",
+    "RequestedAuthor": "Ray Bradbury",
+    "Title": "Fahrenheit 451 (70. Yıl Özel Baskısı)",
+    "Author": "Ray Bradbury",
+    "Publisher": "İTHAKİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/fahrenheit-451-70-yil-ozel-baskisi/669284.html"
+  },
+  {
+    "Number": 32,
+    "RequestedTitle": "Muhteşem Gatsby",
+    "RequestedAuthor": "F. Scott Fitzgerald",
+    "Title": "Muhteşem Gatsby",
+    "Author": "F. Scott Fitzgerald",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/muhtesem-gatsby/379998.html"
+  },
+  {
+    "Number": 33,
+    "RequestedTitle": "Bülbülü Öldürmek",
+    "RequestedAuthor": "Harper Lee",
+    "Title": "Bülbülü Öldürmek",
+    "Author": "Harper Lee",
+    "Publisher": "ALTIN KİTAPLAR",
+    "Url": "https://www.kitapyurdu.com/kitap/bulbulu-oldurmek/3432.html"
+  },
+  {
+    "Number": 34,
+    "RequestedTitle": "Rüzgâr Gibi Geçti",
+    "RequestedAuthor": "Margaret Mitchell",
+    "Title": "Rüzgar Gibi Geçti (4 Cilt)",
+    "Author": "Margaret Mitchell",
+    "Publisher": "KAPRA YAYINCILIK",
+    "Url": "https://www.kitapyurdu.com/kitap/ruzgar-gibi-gecti-4-cilt/578073.html"
+  },
+  {
+    "Number": 35,
+    "RequestedTitle": "Gazap Üzümleri",
+    "RequestedAuthor": "John Steinbeck",
+    "Title": "Gazap Üzümleri",
+    "Author": "John Steinbeck",
+    "Publisher": "İLETİŞİM YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/gazap-uzumleri/584883.html"
+  },
+  {
+    "Number": 36,
+    "RequestedTitle": "Fareler ve İnsanlar",
+    "RequestedAuthor": "John Steinbeck",
+    "Title": "Fareler ve İnsanlar",
+    "Author": "John Steinbeck",
+    "Publisher": "İLETİŞİM YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/fareler-ve-insanlar/645168.html"
+  },
+  {
+    "Number": 37,
+    "RequestedTitle": "Cennetin Doğusu",
+    "RequestedAuthor": "John Steinbeck",
+    "Title": "Cennetin Doğusu",
+    "Author": "John Steinbeck",
+    "Publisher": "İLETİŞİM YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/cennetin-dogusu/584886.html"
+  },
+  {
+    "Number": 38,
+    "RequestedTitle": "Yaşlı Adam ve Deniz",
+    "RequestedAuthor": "Ernest Hemingway",
+    "Title": "Yaşlı Adam ve Deniz",
+    "Author": "Ernest Hemingway",
+    "Publisher": "BİLGİ YAYINEVİ",
+    "Url": "https://www.kitapyurdu.com/kitap/yasli-adam-ve-deniz/84132.html"
+  },
+  {
+    "Number": 39,
+    "RequestedTitle": "Çanlar Kimin İçin Çalıyor",
+    "RequestedAuthor": "Ernest Hemingway",
+    "Title": "Çanlar Kimin İçin Çalıyor",
+    "Author": "Ernest Hemingway",
+    "Publisher": "BİLGİ YAYINEVİ",
+    "Url": "https://www.kitapyurdu.com/kitap/canlar-kimin-icin-caliyor/3824.html"
+  },
+  {
+    "Number": 40,
+    "RequestedTitle": "Silahlara Veda",
+    "RequestedAuthor": "Ernest Hemingway",
+    "Title": "Silahlara Veda",
+    "Author": "Ernest Hemingway",
+    "Publisher": "BİLGİ YAYINEVİ",
+    "Url": "https://www.kitapyurdu.com/kitap/silahlara-veda/4370.html"
+  },
+  {
+    "Number": 41,
+    "RequestedTitle": "Güneş de Doğar",
+    "RequestedAuthor": "Ernest Hemingway",
+    "Title": "Güneş de Doğar",
+    "Author": "Ernest Hemingway",
+    "Publisher": "BİLGİ YAYINEVİ",
+    "Url": "https://www.kitapyurdu.com/kitap/gunes-de-dogar/3974.html"
+  },
+  {
+    "Number": 42,
+    "RequestedTitle": "Suç ve Ceza",
+    "RequestedAuthor": "Fyodor Dostoyevski",
+    "Title": "Suç ve Ceza",
+    "Author": "Fyodor Mihailoviç Dostoyevski",
+    "Publisher": "İLETİŞİM YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/suc-ve-ceza/49674.html"
+  },
+  {
+    "Number": 43,
+    "RequestedTitle": "Karamazov Kardeşler",
+    "RequestedAuthor": "Fyodor Dostoyevski",
+    "Title": "Karamazov Kardeşler (Ciltsiz)",
+    "Author": "Fyodor Mihailoviç Dostoyevski",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/karamazov-kardesler-ciltsiz/96152.html"
+  },
+  {
+    "Number": 44,
+    "RequestedTitle": "Budala",
+    "RequestedAuthor": "Fyodor Dostoyevski",
+    "Title": "Budala (Karton Kapak)",
+    "Author": "Fyodor Mihailoviç Dostoyevski",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/budala-karton-kapak/267138.html"
+  },
+  {
+    "Number": 45,
+    "RequestedTitle": "Ecinniler",
+    "RequestedAuthor": "Fyodor Dostoyevski",
+    "Title": "Ecinniler (Karton Kapak)",
+    "Author": "Fyodor Mihailoviç Dostoyevski",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/ecinniler-karton-kapak/285763.html"
+  },
+  {
+    "Number": 46,
+    "RequestedTitle": "Yeraltından Notlar",
+    "RequestedAuthor": "Fyodor Dostoyevski",
+    "Title": "Yeraltından Notlar",
+    "Author": "Fyodor Mihailoviç Dostoyevski",
+    "Publisher": "İLETİŞİM YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/yeraltindan-notlar/24285.html"
+  },
+  {
+    "Number": 47,
+    "RequestedTitle": "Kumarbaz",
+    "RequestedAuthor": "Fyodor Dostoyevski",
+    "Title": "Kumarbaz (Karton Kapak)",
+    "Author": "Fyodor Mihailoviç Dostoyevski",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/kumarbaz-karton-kapak/298744.html"
+  },
+  {
+    "Number": 48,
+    "RequestedTitle": "Savaş ve Barış",
+    "RequestedAuthor": "Lev Tolstoy",
+    "Title": "Savaş ve Barış 2 Cilt (Karton Kapak)",
+    "Author": "Lev N. Tolstoy",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/savas-ve-baris-2-cilt-karton-kapak/409910.html"
+  },
+  {
+    "Number": 49,
+    "RequestedTitle": "Anna Karenina",
+    "RequestedAuthor": "Lev Tolstoy",
+    "Title": "Anna Karenina (Ciltsiz)",
+    "Author": "Lev N. Tolstoy",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/anna-karenina-ciltsiz/261990.html"
+  },
+  {
+    "Number": 50,
+    "RequestedTitle": "Diriliş",
+    "RequestedAuthor": "Lev Tolstoy",
+    "Title": "Diriliş (Karton Kapak)",
+    "Author": "Lev N. Tolstoy",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/dirilis-karton-kapak/132798.html"
+  },
+  {
+    "Number": 51,
+    "RequestedTitle": "İvan İlyiç'in Ölümü",
+    "RequestedAuthor": "Lev Tolstoy",
+    "Title": "İvan İlyiç'in Ölümü (Karton Kapak)",
+    "Author": "Lev N. Tolstoy",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/ivan-ilyicin-olumu-karton-kapak/337384.html"
+  },
+  {
+    "Number": 52,
+    "RequestedTitle": "Babalar ve Oğullar",
+    "RequestedAuthor": "Ivan Turgenyev",
+    "Title": "Babalar ve Oğullar (Ciltsiz)",
+    "Author": "Ivan Sergeyeviç Turgenyev",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/babalar-ve-ogullar-ciltsiz/57880.html"
+  },
+  {
+    "Number": 53,
+    "RequestedTitle": "Oblomov",
+    "RequestedAuthor": "Ivan Gonçarov",
+    "Title": "Oblomov (Ciltli)",
+    "Author": "İvan Gonçarov",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/oblomov-ciltli/81503.html"
+  },
+  {
+    "Number": 54,
+    "RequestedTitle": "Ölü Canlar",
+    "RequestedAuthor": "Nikolay Gogol",
+    "Title": "Ölü Canlar (Karton Kapak)",
+    "Author": "Nikolay Vasilievich Gogol",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/olu-canlar-karton-kapak/243175.html"
+  },
+  {
+    "Number": 55,
+    "RequestedTitle": "Palto",
+    "RequestedAuthor": "Nikolay Gogol",
+    "Title": "Palto (Kısa Klasik)",
+    "Author": "Nikolay Vasilievich Gogol",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/palto-kisa-klasik/545306.html"
+  },
+  {
+    "Number": 56,
+    "RequestedTitle": "Usta ile Margarita",
+    "RequestedAuthor": "Mihail Bulgakov",
+    "Title": "Usta ve Margarita",
+    "Author": "Mihail Bulgakov",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/usta-ve-margarita/457061.html"
+  },
+  {
+    "Number": 57,
+    "RequestedTitle": "Doktor Jivago",
+    "RequestedAuthor": "Boris Pasternak",
+    "Title": "Doktor Jivago",
+    "Author": "Boris Pasternak",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/doktor-jivago/345877.html"
+  },
+  {
+    "Number": 58,
+    "RequestedTitle": "Ana",
+    "RequestedAuthor": "Maksim Gorki",
+    "Title": "Ana",
+    "Author": "Maksim Gorki",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/ana/485359.html"
+  },
+  {
+    "Number": 59,
+    "RequestedTitle": "Yevgeni Onegin",
+    "RequestedAuthor": "Aleksandr Puşkin",
+    "Title": "Yevgeni Onegin",
+    "Author": "Alexandr Sergeyeviç Puşkin",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/yevgeni-onegin/53590.html"
+  },
+  {
+    "Number": 60,
+    "RequestedTitle": "Yüzbaşının Kızı",
+    "RequestedAuthor": "Aleksandr Puşkin",
+    "Title": "Yüzbaşının Kızı",
+    "Author": "Alexandr Sergeyeviç Puşkin",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/yuzbasinin-kizi/42286.html"
+  },
+  {
+    "Number": 61,
+    "RequestedTitle": "Monte Kristo Kontu",
+    "RequestedAuthor": "Alexandre Dumas",
+    "Title": "Monte Cristo Kontu (2 Cilt) (Karton Kapak)",
+    "Author": "Alexandre Dumas",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/monte-cristo-kontu-2-cilt-karton-kapak/472428.html"
+  },
+  {
+    "Number": 62,
+    "RequestedTitle": "Üç Silahşörler",
+    "RequestedAuthor": "Alexandre Dumas",
+    "Title": "Üç Silahşörler",
+    "Author": "Alexandre Dumas",
+    "Publisher": "OĞLAK YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/uc-silahsorler/695311.html"
+  },
+  {
+    "Number": 63,
+    "RequestedTitle": "Demir Maskeli Adam",
+    "RequestedAuthor": "Alexandre Dumas",
+    "Title": "Üç Silahşörler 5 - Demir Maskeli Adam (Ciltli)",
+    "Author": "Alexandre Dumas",
+    "Publisher": "ALFA YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/uc-silahsorler-5-demir-maskeli-adam-ciltli/595888.html"
+  },
+  {
+    "Number": 64,
+    "RequestedTitle": "Sefiller",
+    "RequestedAuthor": "Victor Hugo",
+    "Title": "Sefiller (2 Cilt Takım)",
+    "Author": "Victor Hugo",
+    "Publisher": "İLETİŞİM YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/sefiller-2-cilt-takim/310759.html"
+  },
+  {
+    "Number": 65,
+    "RequestedTitle": "Notre Dame'ın Kamburu",
+    "RequestedAuthor": "Victor Hugo",
+    "Title": "Notre Dame'ın Kamburu (Karton Kapak)",
+    "Author": "Victor Hugo",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/notre-damein-kamburu-karton-kapak/327868.html"
+  },
+  {
+    "Number": 66,
+    "RequestedTitle": "Madam Bovary",
+    "RequestedAuthor": "Gustave Flaubert",
+    "Title": "Madam Bovary",
+    "Author": "Gustave Flaubert",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/madam-bovary/485371.html"
+  },
+  {
+    "Number": 67,
+    "RequestedTitle": "Germinal",
+    "RequestedAuthor": "Émile Zola",
+    "Title": "Germinal (Karton Kapak)",
+    "Author": "Emile Zola",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/germinal-karton-kapak/240457.html"
+  },
+  {
+    "Number": 68,
+    "RequestedTitle": "Nana",
+    "RequestedAuthor": "Émile Zola",
+    "Title": "Nana (Karton Kapak)",
+    "Author": "Emile Zola",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/nana-karton-kapak/378039.html"
+  },
+  {
+    "Number": 69,
+    "RequestedTitle": "Thérèse Raquin",
+    "RequestedAuthor": "Émile Zola",
+    "Title": "Therese Raquin",
+    "Author": "Emile Zola",
+    "Publisher": "KARBON KİTAPLAR",
+    "Url": "https://www.kitapyurdu.com/kitap/therese-raquin/538931.html"
+  },
+  {
+    "Number": 70,
+    "RequestedTitle": "Kırmızı ve Siyah",
+    "RequestedAuthor": "Stendhal",
+    "Title": "Kırmızı ve Siyah (Karton Kapak)",
+    "Author": "Stendhal",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/kirmizi-ve-siyah-karton-kapak/327864.html"
+  },
+  {
+    "Number": 71,
+    "RequestedTitle": "Parma Manastırı",
+    "RequestedAuthor": "Stendhal",
+    "Title": "Parma Manastırı (Karton Kapak)",
+    "Author": "Stendhal",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/parma-manastiri-karton-kapak/427429.html"
+  },
+  {
+    "Number": 72,
+    "RequestedTitle": "Goriot Baba",
+    "RequestedAuthor": "Honoré de Balzac",
+    "Title": "Goriot Baba (Karton Kapak)",
+    "Author": "Honore de Balzac",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/goriot-baba-karton-kapak/507582.html"
+  },
+  {
+    "Number": 73,
+    "RequestedTitle": "Vadideki Zambak",
+    "RequestedAuthor": "Honoré de Balzac",
+    "Title": "Vadideki Zambak (Karton Kapak)",
+    "Author": "Honore de Balzac",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/vadideki-zambak-karton-kapak/405677.html"
+  },
+  {
+    "Number": 74,
+    "RequestedTitle": "Eugénie Grandet",
+    "RequestedAuthor": "Honoré de Balzac",
+    "Title": "Eugénie Grandet",
+    "Author": "Honore de Balzac",
+    "Publisher": "KAPRA YAYINCILIK",
+    "Url": "https://www.kitapyurdu.com/kitap/eugnie-grandet/656854.html"
+  },
+  {
+    "Number": 75,
+    "RequestedTitle": "Candide",
+    "RequestedAuthor": "Voltaire",
+    "Title": "Candide ya da İyimserlik (Karton Kapak)",
+    "Author": "Voltaire",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/candide-ya-da-iyimserlik-karton-kapak/709944.html"
+  },
+  {
+    "Number": 76,
+    "RequestedTitle": "Tehlikeli İlişkiler",
+    "RequestedAuthor": "Pierre Choderlos de Laclos",
+    "Title": "Tehlikeli  İlişkiler",
+    "Author": "Choderlos De Laclos",
+    "Publisher": "ALFA YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/tehlikeli-iliskiler/478575.html"
+  },
+  {
+    "Number": 77,
+    "RequestedTitle": "Yabancı",
+    "RequestedAuthor": "Albert Camus",
+    "Title": "Yabancı",
+    "Author": "Albert Camus",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/yabanci/578753.html"
+  },
+  {
+    "Number": 78,
+    "RequestedTitle": "Veba",
+    "RequestedAuthor": "Albert Camus",
+    "Title": "Veba",
+    "Author": "Albert Camus",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/veba/588678.html"
+  },
+  {
+    "Number": 79,
+    "RequestedTitle": "Düşüş",
+    "RequestedAuthor": "Albert Camus",
+    "Title": "Düşüş",
+    "Author": "Albert Camus",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/dusus/12864.html"
+  },
+  {
+    "Number": 80,
+    "RequestedTitle": "Bulantı",
+    "RequestedAuthor": "Jean-Paul Sartre",
+    "Title": "Bulantı",
+    "Author": "Jean Paul Sartre",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/bulanti/655840.html"
+  },
+  {
+    "Number": 81,
+    "RequestedTitle": "Dava",
+    "RequestedAuthor": "Franz Kafka",
+    "Title": "Dava",
+    "Author": "Franz Kafka",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/dava/364005.html"
+  },
+  {
+    "Number": 82,
+    "RequestedTitle": "Şato",
+    "RequestedAuthor": "Franz Kafka",
+    "Title": "Şato",
+    "Author": "Franz Kafka",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/sato/350886.html"
+  },
+  {
+    "Number": 83,
+    "RequestedTitle": "Dönüşüm",
+    "RequestedAuthor": "Franz Kafka",
+    "Title": "Dönüşüm",
+    "Author": "Franz Kafka",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/donusum/535653.html"
+  },
+  {
+    "Number": 84,
+    "RequestedTitle": "Amerika",
+    "RequestedAuthor": "Franz Kafka",
+    "Title": "Amerika",
+    "Author": "Franz Kafka",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/amerika/401398.html"
+  },
+  {
+    "Number": 85,
+    "RequestedTitle": "Siddhartha",
+    "RequestedAuthor": "Hermann Hesse",
+    "Title": "Siddhartha (Ciltsiz)",
+    "Author": "Hermann Hesse",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/siddhartha-ciltsiz/67782.html"
+  },
+  {
+    "Number": 86,
+    "RequestedTitle": "Bozkırkurdu",
+    "RequestedAuthor": "Hermann Hesse",
+    "Title": "Bozkırkurdu",
+    "Author": "Hermann Hesse",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/bozkirkurdu/51295.html"
+  },
+  {
+    "Number": 87,
+    "RequestedTitle": "Demian",
+    "RequestedAuthor": "Hermann Hesse",
+    "Title": "Demian",
+    "Author": "Hermann Hesse",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/demian/54098.html"
+  },
+  {
+    "Number": 88,
+    "RequestedTitle": "Narziss ve Goldmund",
+    "RequestedAuthor": "Hermann Hesse",
+    "Title": "Narziss ve Goldmund",
+    "Author": "Hermann Hesse",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/narziss-ve-goldmund/43445.html"
+  },
+  {
+    "Number": 89,
+    "RequestedTitle": "Boncuk Oyunu",
+    "RequestedAuthor": "Hermann Hesse",
+    "Title": "Boncuk Oyunu",
+    "Author": "Hermann Hesse",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/boncuk-oyunu/44441.html"
+  },
+  {
+    "Number": 90,
+    "RequestedTitle": "Genç Werther'in Acıları",
+    "RequestedAuthor": "Johann Wolfgang von Goethe",
+    "Title": "Genç Werther'in Acıları (Ciltsiz)",
+    "Author": "Johann Wolfgang Goethe",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/genc-wertherin-acilari-ciltsiz/260901.html"
+  },
+  {
+    "Number": 91,
+    "RequestedTitle": "Faust",
+    "RequestedAuthor": "Johann Wolfgang von Goethe",
+    "Title": "Faust & Bir Tragedya (Karton Kapak)",
+    "Author": "J. Wolfgang Von Goethe",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/faust-bir-tragedya-karton-kapak/719531.html"
+  },
+  {
+    "Number": 92,
+    "RequestedTitle": "Ulysses",
+    "RequestedAuthor": "James Joyce",
+    "Title": "Ulysses",
+    "Author": "James Joyce",
+    "Publisher": "YAPI KREDİ YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/ulysses/12601.html"
+  },
+  {
+    "Number": 93,
+    "RequestedTitle": "Sanatçının Bir Genç Adam Olarak Portresi",
+    "RequestedAuthor": "James Joyce",
+    "Title": "Sanatçının Bir Genç Adam Olarak Portresi",
+    "Author": "James Joyce",
+    "Publisher": "İLETİŞİM YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/sanatcinin-bir-genc-adam-olarak-portresi/18232.html"
+  },
+  {
+    "Number": 94,
+    "RequestedTitle": "Dublinliler",
+    "RequestedAuthor": "James Joyce",
+    "Title": "Dublinliler (Karton Kapak)",
+    "Author": "James Joyce",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/dublinliler-karton-kapak/674507.html"
+  },
+  {
+    "Number": 95,
+    "RequestedTitle": "Mrs Dalloway",
+    "RequestedAuthor": "Virginia Woolf",
+    "Title": "Mrs. Dalloway",
+    "Author": "Virginia Woolf",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/mrs-dalloway/698488.html"
+  },
+  {
+    "Number": 96,
+    "RequestedTitle": "Deniz Feneri",
+    "RequestedAuthor": "Virginia Woolf",
+    "Title": "Deniz Feneri",
+    "Author": "Virginia Woolf",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/deniz-feneri/367330.html"
+  },
+  {
+    "Number": 97,
+    "RequestedTitle": "Orlando",
+    "RequestedAuthor": "Virginia Woolf",
+    "Title": "Orlando (Karton Kapak)",
+    "Author": "Virginia Woolf",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/orlando-karton-kapak/746792.html"
+  },
+  {
+    "Number": 98,
+    "RequestedTitle": "Gurur ve Önyargı",
+    "RequestedAuthor": "Jane Austen",
+    "Title": "Gurur ve Önyargı (Ciltsiz)",
+    "Author": "Jane Austen",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/gurur-ve-onyargi-ciltsiz/80362.html"
+  },
+  {
+    "Number": 99,
+    "RequestedTitle": "Emma",
+    "RequestedAuthor": "Jane Austen",
+    "Title": "Emma (Karton Kapak)",
+    "Author": "Jane Austen",
+    "Publisher": "TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/emma-karton-kapak/552262.html"
+  },
+  {
+    "Number": 100,
+    "RequestedTitle": "Mansfield Park",
+    "RequestedAuthor": "Jane Austen",
+    "Title": "Mansfield Park (Beyaz Kapak)",
+    "Author": "Jane Austen",
+    "Publisher": "CAN YAYINLARI",
+    "Url": "https://www.kitapyurdu.com/kitap/mansfield-park-beyaz-kapak/493401.html"
+  }
+]
