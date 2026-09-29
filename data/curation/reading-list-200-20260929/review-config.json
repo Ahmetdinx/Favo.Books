@@ -1,0 +1,481 @@
+{
+  "duplicates": {
+    "59": 58,
+    "138": 58,
+    "134": 130,
+    "158": 151,
+    "180": 178,
+    "198": 4
+  },
+  "aliases": {
+    "7": [
+      "Wildfell Konağı Kiracısı",
+      "Şatodaki Kadın",
+      "Wildfell Hall'un Kiracısı"
+    ],
+    "19": [
+      "Dr. Jekyll ve Bay Hyde",
+      "Doktor Jekyll ve Bay Hyde"
+    ],
+    "21": [
+      "Kaçırılan Çocuk",
+      "Kaçırılan"
+    ],
+    "23": [
+      "Moby Dick Beyaz Balina"
+    ],
+    "25": [
+      "Tom Sawyer",
+      "Tom Sawyer’ın Maceraları"
+    ],
+    "26": [
+      "Huckleberry Finn",
+      "Huckleberry Finn’in Maceraları",
+      "Kahraman Cingözler"
+    ],
+    "43": [
+      "Seksen Günde Dünya Gezisi",
+      "Seksen Günde Devrialem",
+      "80 Günde Devri Alem",
+      "80 günde devrialem"
+    ],
+    "44": [
+      "Gizemli Ada"
+    ],
+    "53": [
+      "Madde 22",
+      "Catch 22"
+    ],
+    "54": [
+      "Mezbaha Beş",
+      "Mezbaha 5"
+    ],
+    "58": [
+      "Guguk Kuşu Yuvasından Bir Uçtu",
+      "One Flew Over the Cuckoo’s Nest"
+    ],
+    "68": [
+      "2001 Bir Uzay Efsanesi",
+      "2001 Uzay Efsanesi"
+    ],
+    "75": [
+      "Parazit",
+      "Snow Crash"
+    ],
+    "80": [
+      "Antilop ve Flurya"
+    ],
+    "88": [
+      "Okur"
+    ],
+    "96": [
+      "Gönül"
+    ],
+    "101": [
+      "Zemberekkuşu’nun Güncesi",
+      "Zemberekkuşunun Güncesi"
+    ],
+    "107": [
+      "Bin Turna"
+    ],
+    "109": [
+      "Altın Köşk",
+      "Altın Tapınak"
+    ],
+    "110": [
+      "Kumların Kadını"
+    ],
+    "117": [
+      "Küçük Şeylerin Tanrısı"
+    ],
+    "130": [
+      "Renklerden Moru",
+      "Mor Yıllar",
+      "The Color Purple"
+    ],
+    "137": [
+      "Tiffany’de Kahvaltı"
+    ],
+    "151": [
+      "Göz",
+      "Carrie"
+    ],
+    "153": [
+      "22/11/63",
+      "11/22/63"
+    ],
+    "154": [
+      "Silahşor",
+      "Silahşör",
+      "Kara Kule 1 Silahşor"
+    ],
+    "155": [
+      "Sadist"
+    ],
+    "157": [
+      "Kuduz",
+      "Kujo"
+    ],
+    "161": [
+      "Dinozorlar Parkı"
+    ],
+    "176": [
+      "Geçmişi Olmayan Adam"
+    ],
+    "178": [
+      "Tinker Tailor Soldier Spy",
+      "Köstebek"
+    ],
+    "187": [
+      "Baskerville’lerin Köpeği",
+      "Baskerville Tazısı",
+      "Baskervilleler’in Köpeği"
+    ],
+    "188": [
+      "Kızıl Soruşturma"
+    ],
+    "189": [
+      "Dörtlerin Yemini",
+      "Dörtlerin İşareti"
+    ],
+    "195": [
+      "Postacı Kapıyı İki Defa Çalar"
+    ],
+    "17": [
+      "Frankenstein ya da Modern Prometheus"
+    ],
+    "18": [
+      "Drakula"
+    ],
+    "27": [
+      "Kucuk Prens ve Sokak Cocugu"
+    ],
+    "42": [
+      "Denizler Altında 20 Bin Fersah"
+    ],
+    "45": [
+      "Aya Yolculuk-Bilgi Y."
+    ],
+    "93": [
+      "Batıda Yeni Bir Şey Yok",
+      "Garp Cephesinde Yeni Bir Şey Yok"
+    ],
+    "127": [
+      "Beloved",
+      "Sevilen"
+    ],
+    "181": [
+      "Dogu Espresinde Cinayet"
+    ],
+    "41": [
+      "Dünyanın Merkezine Seyahat"
+    ],
+    "94": [
+      "Üç Arkadaş"
+    ],
+    "106": [
+      "Karlar Ülkesi"
+    ],
+    "108": [
+      "Bir Maskenin İtirafları",
+      "Bir Maskenin İtirafı"
+    ],
+    "132": [
+      "Görülmeyen Adam"
+    ],
+    "184": [
+      "Cinayet Alfabesi"
+    ],
+    "164": [
+      "Uzay Mikrobu"
+    ],
+    "146": [
+      "Şeytan Çıkaran"
+    ],
+    "165": [
+      "Yakan Sırlar",
+      "Yakan Sırlar (Kongo)"
+    ]
+  },
+  "selectedClassics": [
+    13,
+    19,
+    33,
+    61,
+    66,
+    76,
+    136,
+    137,
+    197
+  ],
+  "titles": {
+    "7": "Wildfell Hall'un Kiracısı",
+    "53": "Madde 22",
+    "75": "Parazit",
+    "80": "Antilop ve Flurya",
+    "110": "Kumların Kadını",
+    "117": "Küçük Şeylerin Tanrısı",
+    "151": "Göz",
+    "154": "Kara Kule: Silahşor",
+    "155": "Sadist",
+    "157": "Kujo",
+    "176": "Geçmişi Olmayan Adam",
+    "178": "Köstebek",
+    "94": "Üç Arkadaş",
+    "106": "Karlar Ülkesi",
+    "132": "Görülmeyen Adam",
+    "146": "Şeytan Çıkaran",
+    "164": "Uzay Mikrobu",
+    "184": "Cinayet Alfabesi",
+    "127": "Sevilen",
+    "165": "Yakan Sırlar (Kongo)"
+  },
+  "notes": {
+    "75": "Original title Snow Crash; Turkish edition title Parazit.",
+    "80": "Original title Oryx and Crake; Turkish edition title Antilop ve Flurya.",
+    "110": "Kobo Abe work; not Charlotte Perkins Gilman Herland.",
+    "130": "Also requested as Mor Yıllar; same work The Color Purple.",
+    "151": "Also requested as Carrie; same work Göz.",
+    "178": "Also requested as Tinker Tailor Soldier Spy; Turkish edition Köstebek.",
+    "58": "Three requested rows refer to One Flew Over the Cuckoo’s Nest.",
+    "34": "Nesin Turkish edition; seller lists 206 pages and no ISBN. Publisher current edition has 208 pages, so its ISBN was not assigned to this older copy."
+  },
+  "authorAliases": {
+    "108": [
+      "Mişima"
+    ],
+    "109": [
+      "Mişima"
+    ]
+  },
+  "editionUrls": {
+    "7": "https://www.kitapyurdu.com/kitap/wildfell-hallun-kiracisi/659362.html",
+    "44": "https://www.kitapyurdu.com/kitap/jules-verne-esrarli-ada-olaganustu-yolculuklar-17/470546.html",
+    "35": "https://www.kitapyurdu.com/kitap/vahsetin-cagrisi/641776.html",
+    "41": "https://www.kitapyurdu.com/kitap/dunyanin-merkezine-seyahat/42367.html",
+    "20": "https://www.kitapyurdu.com/kitap/define-adasi/526952.html",
+    "75": "https://www.kitapyurdu.com/kitap/parazit/390121.html",
+    "132": "https://www.kitapyurdu.com/kitap/gorulmeyen-adam/325995.html",
+    "110": "https://www.kitapyurdu.com/kitap/kumlarin-kadini/425565.html",
+    "9": "https://www.kitapyurdu.com/kitap/oliver-twist/740487.html",
+    "29": "https://www.kitapyurdu.com/kitap/gizli-bahce-modern-klasikler/540001.html",
+    "46": "https://www.kitapyurdu.com/kitap/kaptan-grantin-cocuklari-olaganustu-yolculuklar-2/365052.html",
+    "106": "https://www.kitapyurdu.com/kitap/karlar-ulkesi/88922.html",
+    "140": "https://www.nadirkitap.com/sicilyali-mario-puzo-kitap48499354.html",
+    "164": "https://www.nadirkitap.com/uzay-mikrobu-michael-crichton-kitap38063768.html",
+    "165": "https://www.nadirkitap.com/yakan-sirlar-kongo-michael-crichton-kitap29675446.html",
+    "127": "https://www.kitapyurdu.com/kitap/sevilen/384475.html",
+    "34": "https://www.nadirkitap.com/kim-rudyard-kipling-rudyard-kipling-kitap48976718.html",
+    "141": "https://www.kitapyurdu.com/kitap/kuzularin-sessizligi/344893.html",
+    "179": "https://www.kitapyurdu.com/kitap/soguktan-gelen-casus/356847.html",
+    "93": "https://www.kitapyurdu.com/kitap/garp-cephesinde-yeni-bir-sey-yok-ciltli/427683.html"
+  },
+  "existing": {
+    "1": null,
+    "2": null,
+    "3": null,
+    "4": null,
+    "5": null,
+    "6": null,
+    "7": null,
+    "8": "e6d19f82-9aca-46fc-a804-460a84db274c",
+    "9": "daf8387b-9267-4cbe-b4a5-f7038e9a3681",
+    "10": "5ad79f0a-7e7f-41e6-b211-cf0f22e66691",
+    "11": null,
+    "12": null,
+    "13": "c7cdb1b4-589c-4886-b8b8-9e0e5c234fad",
+    "14": "98ab95d7-552c-450e-9fdd-cdd88fa45d91",
+    "15": null,
+    "16": null,
+    "17": "ed0a69ec-0f91-40a8-a744-6a4dd4cc88ca",
+    "18": "5df538db-8077-4fa0-a7d2-15633fa052dc",
+    "19": null,
+    "20": null,
+    "21": null,
+    "22": "c7fad91b-24e3-4e1d-b510-50030f46fe88",
+    "23": "1774036c-455d-4695-8841-2ec1a6468208",
+    "24": "5dba6155-d4e9-4f10-9b0a-db01a9fae83b",
+    "25": "4b20e408-4f5e-44b3-ad85-a4e9d65b3a39",
+    "26": "d46aa284-a296-4f2b-9e5e-311f0e6690e0",
+    "27": "49399124-d49a-472e-9f9f-be6eaf7370b4",
+    "28": null,
+    "29": null,
+    "30": null,
+    "31": null,
+    "32": "b025682f-7445-44dd-b06d-197a8e286ff9",
+    "33": null,
+    "34": null,
+    "35": null,
+    "36": null,
+    "37": null,
+    "38": null,
+    "39": null,
+    "40": null,
+    "41": null,
+    "42": "a73e5171-232b-4362-91ef-1b791317674e",
+    "43": "a302b92c-532f-4ee8-bfde-d7c982087e47",
+    "44": null,
+    "45": "895cd462-f0d9-4c8b-ba43-180b1941786f",
+    "46": null,
+    "47": null,
+    "48": null,
+    "49": "06cb3cb7-9be1-4f2c-b54f-99f91a1507b9",
+    "50": null,
+    "51": "e943b8b9-95e5-4b1e-9ff4-2d1193c5b146",
+    "52": null,
+    "53": null,
+    "54": null,
+    "55": "3a67385a-1aff-413f-b280-334ca98f5526",
+    "56": null,
+    "57": null,
+    "58": null,
+    "60": null,
+    "61": null,
+    "62": "1cd72a9e-3201-4dde-bd58-89ef9ee92f84",
+    "63": "c7a939c7-8d66-4e90-aa4f-b5dd11af2e02",
+    "64": null,
+    "65": null,
+    "66": "24ddc510-e015-4c22-aa08-145d85f04b70",
+    "67": null,
+    "68": null,
+    "69": null,
+    "70": null,
+    "71": "3ddfdef9-7b8e-443b-b373-550a70368e47",
+    "72": null,
+    "73": null,
+    "74": null,
+    "75": null,
+    "76": null,
+    "77": null,
+    "78": "1be0e195-604f-4a3f-8312-daaff2e6322d",
+    "79": "fea86055-dd38-464f-b960-260d8d0878f3",
+    "80": "060b038c-5ec7-46cf-b32d-b5ad35b48626",
+    "81": "d2d864af-7576-4e71-a32a-4e8a587f2c0f",
+    "82": "f1620088-e05b-4837-bdae-451d06b4db89",
+    "83": "ef44f2b9-076a-4523-bf35-ba66c88604a0",
+    "84": "da21a238-85ed-4629-b7bd-1fca5599e3e8",
+    "85": "ffcfcf38-e4f4-41b3-80f8-d43e9bec63db",
+    "86": null,
+    "87": "0daa73f4-8b0f-41dc-baa4-5586b4503e5b",
+    "88": "664938d7-3bfe-4b02-94c1-77042aacff76",
+    "89": "04417253-2f1a-4279-9bfb-69089ec94da1",
+    "90": null,
+    "91": null,
+    "92": null,
+    "93": "e3d6c2e3-7a35-4c76-b921-da4b04ea8a4c",
+    "94": null,
+    "95": "ae719dde-4449-46b1-b65b-d76115def637",
+    "96": null,
+    "97": null,
+    "98": "83e1b039-3165-451a-9469-19c30ec5a34c",
+    "99": "a7d3b0c6-fb25-4c70-bb5b-19d6a3169b1a",
+    "100": "7e91d36f-b844-4e62-b136-dffd1bb8ff54",
+    "101": "5b0f2b45-6759-4bb0-af33-68525c88b02f",
+    "102": "39cc57f6-d32e-4f49-849b-1f477c1101f6",
+    "103": "30be98d6-01db-42cc-8572-66cc310425fd",
+    "104": "1d08f8bb-8ef3-42a9-8430-8ada13428c3f",
+    "105": "65073132-ce5b-496b-bab8-22bd04aee68a",
+    "106": null,
+    "107": null,
+    "108": null,
+    "109": null,
+    "110": null,
+    "111": null,
+    "112": "cedc5d8d-e1f5-4d9c-a377-f05fb24346fb",
+    "113": null,
+    "114": null,
+    "115": null,
+    "116": null,
+    "117": "74ba630e-9698-417f-9e41-a8fa5eca0df0",
+    "118": null,
+    "119": null,
+    "120": null,
+    "121": null,
+    "122": "18474225-509d-463e-8602-19e57de0edc0",
+    "123": "205591f2-4130-4cf8-99e5-07d7fb6f6646",
+    "124": null,
+    "125": "bc0d1050-d45f-45a1-806c-f636578548f9",
+    "126": null,
+    "127": "47634d32-2026-4e8c-9e9a-db6748a35be9",
+    "128": "19e87cee-4a8c-4a3c-9c8e-1b44cb1911be",
+    "129": null,
+    "130": "2558ff0c-7f70-4f33-a51f-39f20cdb4660",
+    "131": "fba84106-a770-4549-bd43-8e59ff9ad0b3",
+    "132": null,
+    "133": null,
+    "135": "0ef6cf27-161a-4de9-ba43-949e9349ac18",
+    "136": null,
+    "137": null,
+    "139": null,
+    "140": null,
+    "141": null,
+    "142": null,
+    "143": null,
+    "144": null,
+    "145": null,
+    "146": null,
+    "147": "060c15eb-f77a-40f4-9bbe-0c41b7868a0d",
+    "148": null,
+    "149": null,
+    "150": null,
+    "151": null,
+    "152": null,
+    "153": null,
+    "154": null,
+    "155": null,
+    "156": "69c5d2af-78be-4b70-9606-572be666fae2",
+    "157": null,
+    "159": null,
+    "160": null,
+    "161": null,
+    "162": null,
+    "163": null,
+    "164": null,
+    "165": null,
+    "166": "9e51111c-fce7-46a8-b01b-dab41514ca1f",
+    "167": "034dc666-a310-4975-8c44-5421199043fa",
+    "168": null,
+    "169": "041e1241-3911-42a4-bf0d-47621fdac7ce",
+    "170": null,
+    "171": null,
+    "172": null,
+    "173": null,
+    "174": null,
+    "175": null,
+    "176": null,
+    "177": null,
+    "178": null,
+    "179": null,
+    "181": "75f30644-8e46-44c7-b7ba-7cefd18252a0",
+    "182": null,
+    "183": null,
+    "184": null,
+    "185": null,
+    "186": null,
+    "187": null,
+    "188": null,
+    "189": null,
+    "190": null,
+    "191": null,
+    "192": null,
+    "193": null,
+    "194": "0c67ff15-3e85-4a81-860e-6cc5dbe2e721",
+    "195": null,
+    "196": null,
+    "197": null,
+    "199": null,
+    "200": null
+  },
+  "isbnUnavailable": [
+    34,
+    164,
+    165
+  ],
+  "isbnSupplements": {
+    "145": {
+      "Isbn13": "9786056978647",
+      "SourceUrl": "https://www.sehadetkitap.com/urun/rosemarynin-bebegi",
+      "SourceSha256": "f730dc2379217f4ba78086ccd7219e5734cdf820b4cde8def04c40c2a45f1d46"
+    }
+  }
+}

@@ -6,8 +6,10 @@ from datetime import datetime,timezone,timedelta
 sys.path.insert(0,str(Path('artifacts/novel-publisher-import/python-deps').resolve()))
 from PIL import Image
 sys.stdout.reconfigure(encoding='utf-8')
-root=Path('data/curation/reading-list-100-20260928')
-art=Path('artifacts/reading-list-100-20260928/editions')
+batch=sys.argv[1] if len(sys.argv)>1 else 'reading-list-100-20260928'
+if not batch or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in batch):raise ValueError('Invalid batch')
+root=Path('data/curation')/batch
+art=Path('artifacts')/batch/'editions'
 payload=(root/'manifest.json').read_bytes();rows=json.loads(payload)
 checks_path=art/'cover-checks.json'
 checks=json.loads(checks_path.read_text(encoding='utf-8')) if checks_path.exists() else {}

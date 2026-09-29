@@ -132,7 +132,9 @@ public sealed class ImportReviewedReadingList(CatalogDbContext db)
         var modern = source.Host == "www.kitapyurdu.com" && source.AbsolutePath.StartsWith("/kitap/")
             && cover.Host == "img.kitapyurdu.com" && e.Isbn13 != null;
         var vintage = source.Host == "www.nadirkitap.com" && source.AbsolutePath.EndsWith(".html")
-            && cover.Host == "static.nadirkitap.com" && e.EvidenceNote.Contains("ISBN not assigned");
+            && cover.Host == "static.nadirkitap.com"
+            && (e.Isbn13 != null || e.EvidenceNote.Contains("ISBN not assigned")
+                || e.EvidenceNote.Contains("ISBN unavailable in source"));
         if (!modern && !vintage) throw new ArgumentException("Unapproved edition evidence.");
         if (e.ExistingBookId != null && (string.IsNullOrWhiteSpace(e.ExpectedTitle) || string.IsNullOrWhiteSpace(e.ExpectedAuthor)))
             throw new ArgumentException("Existing book mapping requires exact title and author preconditions.");

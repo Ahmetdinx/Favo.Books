@@ -68,6 +68,20 @@ public sealed class ReviewedReadingListTests(KitapKivoWebApplicationFactory fact
         Assert.Throws<ArgumentException>(()=>ImportReviewedReadingList.Validate(e with { CoverImageUrl="https://localhost/image" }));
     }
 
+    [Fact]
+    public void VintageEvidenceAcceptsVerifiedIsbnOrDocumentedAbsence()
+    {
+        var e = Entry(1,"9780000000347") with {
+            SourceUrl="https://www.nadirkitap.com/fixture-kitap1.html",
+            CoverImageUrl="https://static.nadirkitap.com/fixture.jpg"
+        };
+        ImportReviewedReadingList.Validate(e);
+        Assert.Throws<ArgumentException>(()=>ImportReviewedReadingList.Validate(e with { Isbn13=null }));
+        ImportReviewedReadingList.Validate(e with { Isbn13=null, EvidenceNote="ISBN unavailable in source; checked edition." });
+        Assert.Throws<ArgumentException>(()=>ImportReviewedReadingList.Validate(e with { Isbn13="9780000000348" }));
+        Assert.Throws<ArgumentException>(()=>ImportReviewedReadingList.Validate(e with { CoverImageUrl="https://example.com/cover.jpg" }));
+    }
+
     private static ReviewedReadingListEntry Entry(int n,string isbn) => new(n,"Reviewed "+Guid.NewGuid(),"Fixture Author",
         "Fixture edition",isbn,"https://img.kitapyurdu.com/v1/getImage/fn:123/wi:200","Fixture Publisher",100,
         "https://www.kitapyurdu.com/kitap/fixture/"+Guid.NewGuid()+".html",new string('a',64),"tur",

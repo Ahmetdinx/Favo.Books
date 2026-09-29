@@ -1,9 +1,21 @@
 # KitapKivo Project Context
 
-Updated 2026-09-28. This file describes implementation status,
+Updated 2026-09-29. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
 
-Latest checkpoint (2026-09-28, requested 100-book list): all 100 requested works
+Latest checkpoint (2026-09-29, second requested list): completed 200 request rows /
+194 distinct works. Imported 132 new books, unhid 38 existing records, preserved
+24 already-visible works. All 62 existing identities retained. Total records
+10,915 -> 11,047; visible catalog 1,100 -> 1,270. Source hashes and 194 cover image
+headers/dimensions verified; actual BrowseBooksHandler found 194/194 works.
+Same-manifest replay created zero books and passed all 194 search checks again.
+Eight focused import/curation tests pass. Three older editions have no ISBN
+listed in their sources; no identifier fabricated. Nine explicitly requested
+short works/collections/nonfiction narratives use SelectedClassic. See
+docs/reading-list-200-20260929.md and its linked 200-row results report.
+No commit, push or production deployment.
+
+Previous checkpoint (2026-09-28, requested 100-book list): all 100 requested works
 are visible and found by the actual catalog search handler. Imported 50 new books;
 preserved 50 existing BookIds, including their library/rating references. Total
 records 10,865 -> 10,915; visible catalog 1,012 -> 1,100. Exact-manifest source
