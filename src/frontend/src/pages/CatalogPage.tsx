@@ -335,17 +335,8 @@ function CatalogPage() {
         <section className="catalog-page">
             <header className="catalog-page-header">
                 <div>
-                    <p className="eyebrow">
-                        Kitapları keşfet
-                    </p>
 
                     <h1>Katalog</h1>
-
-                    <p>
-                        Kitaplar arasında arama yap,
-                        kapakları incele ve sana uygun
-                        kitabı keşfet.
-                    </p>
                 </div>
 
                 {result && (
@@ -519,12 +510,6 @@ function CatalogPage() {
                         <strong>
                             Sonuç bulunamadı
                         </strong>
-
-                        <p>
-                            Arama kelimelerini veya
-                            filtreleri değiştirerek
-                            tekrar deneyin.
-                        </p>
                     </div>
                 )}
 

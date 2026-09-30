@@ -55,6 +55,8 @@ From the repository root:
 1. Create an untracked `.env` with `POSTGRES_DB`, `POSTGRES_USER`, and
    `POSTGRES_PASSWORD`. These values configure Compose, not the API.
 2. Run `docker compose up -d postgres`.
+   On a fresh installation, first run `docker volume create favo-kitap-postgres-data`.
+   The external volume is kept separate from the Compose project lifecycle.
 3. Configure the API with .NET user secrets or environment variables. Required
    keys are `ConnectionStrings:Database`, `Jwt:Issuer`, `Jwt:Audience`,
    `Jwt:Secret`, `Jwt:ExpirationMinutes`, `RefreshToken:ExpirationDays`, and

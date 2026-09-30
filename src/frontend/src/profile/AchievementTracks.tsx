@@ -31,6 +31,5 @@ export default function AchievementTracks({ items, publicView = false }: { items
                 </div>
             </article>)}
         </div>
-        {!publicView && <p className="achievement-caption">Katalog ölçütlerine uygun farklı romanlar sayılır. Kayıtların değişince rozetlerin ve ilerlemen de güncellenir.</p>}
     </section>
 }

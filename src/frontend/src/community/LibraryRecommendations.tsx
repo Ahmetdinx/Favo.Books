@@ -69,18 +69,16 @@ function LibraryShelf() {
     }
 
     return <section className="personal-discovery library-recommendations" aria-labelledby="library-next-title" aria-busy={loading || busy}>
-        <h2 id="library-next-title">Okuma listemden ne okumalıyım?</h2>
-        <p className="discovery-intro">Zaten ilgini çeken romanlar arasından, sıradaki okumaya.</p>
+        <h2 id="library-next-title">Okuma listemden</h2>
         {message && <p role="status">{message}</p>}
         {error && <p role="alert">{error} <button type="button" onClick={() => setVersion(v => v + 1)}>Tekrar dene</button></p>}
         {loading && <p role="status">Listen gözden geçiriliyor…</p>}
-        {!loading && !error && !books.length && <p>Şimdilik önerilecek roman yok. <Link to="/catalog">Okuma listene roman ekle</Link></p>}
+        {!loading && !error && !books.length && <p>Yeni öneri yok. <Link to="/catalog">Okuma listene roman ekle</Link></p>}
         <div className="recommendation-grid">{books.map(book => <article key={book.bookId}>
             <Link className="recommendation-book" to={`/catalog/books/${book.bookId}`}>
                 <img src={book.coverImageUrl} alt="" loading="lazy" /><h3>{book.title}</h3>
             </Link>
-            <ul><li>{book.reasons[0]}</li></ul>
-            {book.reasons.length > 1 && <details className="recommendation-explanation"><summary>Neden bu roman?</summary><ul>{book.reasons.slice(1).map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
+            {book.reasons.length > 0 && <details className="recommendation-explanation"><summary>Neden bu roman?</summary><ul>{book.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
             <div className="recommendation-feedback-actions"><button type="button" disabled={busy || loading} onClick={() => void start(book)}>Okumaya başla</button></div>
         </article>)}</div>
     </section>

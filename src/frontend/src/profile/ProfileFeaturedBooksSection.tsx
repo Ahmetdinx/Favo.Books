@@ -333,9 +333,7 @@ function ProfileFeaturedBooksSection() {
                             <p className="profile-featured-authors">{getAuthors(bedsideBook)}</p>
                             {bedsideSelection.personalNote && <details className="profile-book-note"><summary>Notum</summary><blockquote>{bedsideSelection.personalNote}</blockquote></details>}
                         </>
-                    ) : (
-                        <p className="profile-bedside-description">Hep geri döndüğün roman.</p>
-                    )}
+                    ) : null}
                     <Link className="profile-shelf-link" to={bedsideBook ? '/catalog/books/' + bedsideBook.bookId : '/catalog'}>
                         {bedsideBook ? 'Kitaba git' : 'Kitap seç'} <span aria-hidden="true">↗</span>
                     </Link>
@@ -360,9 +358,6 @@ function ProfileFeaturedBooksSection() {
 
                 {influentialSelections.length === 0 ? (
                     <div className="profile-shelf-empty">
-                        <div>
-                            <h3>En sevdiğin beş roman.</h3>
-                        </div>
                         <Link className="button secondary-button" to="/catalog">Roman seç</Link>
                     </div>
                 ) : (

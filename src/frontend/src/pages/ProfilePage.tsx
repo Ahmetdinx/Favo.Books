@@ -846,14 +846,6 @@ function ProfilePage() {
                                 Bu bölüm henüz boş
                             </h3>
 
-                            <p>
-                                Katalogdan kitap
-                                seçerek kişisel
-                                kitaplığınızı
-                                oluşturmaya
-                                başlayabilirsiniz.
-                            </p>
-
                             <Link
                                 className={
                                     'button ' +

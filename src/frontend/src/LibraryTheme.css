@@ -43,9 +43,7 @@ body {
 .app .main-content { padding-top: 30px; padding-bottom: 44px; }
 .app .logo { font-size: 1.3rem; color: var(--library-ink); }
 .app .logo::before {
-    width: 34px; height: 38px;
-    background: linear-gradient(135deg, #98704c, #62432e);
-    box-shadow: inset 3px 0 0 #f8e2be33, 2px 3px 6px #56382024;
+    content: none;
 }
 .app .navigation a { font-size: 0.85rem; padding: 9px 11px; color: #594131; }
 .app .navigation-user { max-width: 160px; font-size: 0.78rem; }

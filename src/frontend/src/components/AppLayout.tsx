@@ -9,6 +9,7 @@ import {
 
 import { useAuth } from '../auth/useAuth'
 import ReaderSearch from './ReaderSearch'
+import FavoBrand from './FavoBrand'
 import AchievementCelebration from '../profile/AchievementCelebration'
 import ReaderAvatar from '../profile/ReaderAvatar'
 import { ReaderBadgesContext } from '../profile/avatarOptions'
@@ -70,7 +71,10 @@ function AppLayout() {
         setIsSigningOut,
     ] = useState(false)
 
+    const [signOutError, setSignOutError] = useState('')
+
     async function handleSignOut() {
+        setSignOutError('')
         setIsSigningOut(true)
 
         try {
@@ -79,6 +83,8 @@ function AppLayout() {
             navigate('/', {
                 replace: true,
             })
+        } catch {
+            setSignOutError('Çıkış tamamlanamadı. Bağlantını kontrol edip tekrar dene.')
         } finally {
             setIsSigningOut(false)
         }
@@ -91,7 +97,7 @@ function AppLayout() {
                     className="logo"
                     to="/"
                 >
-                    Favo Kitap
+                    <FavoBrand />
                 </NavLink>
                 <ReaderSearch key={location.pathname} />
 
@@ -99,6 +105,7 @@ function AppLayout() {
                     className="navigation"
                     aria-label="Ana navigasyon"
                 >
+                    {import.meta.env.BASE_URL !== '/' && <a href="/" aria-label="Favo’ya dön">← Favo</a>}
                     <NavLink to="/">
                         Ana Sayfa
                     </NavLink>
@@ -156,6 +163,7 @@ function AppLayout() {
             <main className="main-content library-page-turn" key={location.pathname}>
                 {session && reader && !reader.nickname && location.pathname !== '/profile' &&
                     <div className="reader-onboarding">Kitaplığın hazır. <NavLink to="/profile">Kullanıcı adını seç →</NavLink></div>}
+                {signOutError && <p role="alert">{signOutError}</p>}
                 <Outlet />
             </main>
 

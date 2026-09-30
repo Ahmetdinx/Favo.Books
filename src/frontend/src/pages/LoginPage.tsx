@@ -1,4 +1,6 @@
+import { identityRequest } from '../auth/sessionTransport'
 import GoogleSignIn from '../auth/GoogleSignIn'
+import FavoBrand from '../components/FavoBrand'
 import {
     useState,
     type FormEvent,
@@ -54,7 +56,7 @@ function LoginPage() {
         setIsSubmitting(true)
 
         try {
-            const response = await fetch(
+            const response = await identityRequest(
                 '/api/identity/login',
                 {
                     method: 'POST',
@@ -122,6 +124,7 @@ function LoginPage() {
             const destination =
                 requestedPath?.startsWith('/') &&
                     !requestedPath.startsWith('//') &&
+                    !requestedPath.includes('\\') &&
                     requestedPath !== '/login'
                     ? requestedPath
                     : '/profile'
@@ -141,6 +144,7 @@ function LoginPage() {
 
     return (
         <section className="auth-page">
+            <FavoBrand />
             <h1>Giriş yap</h1>
             <GoogleSignIn />
 

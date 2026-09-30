@@ -26,20 +26,6 @@
     letter-spacing: -0.02em;
 }
 
-    .logo::before {
-        content: "K";
-        display: grid;
-        width: 42px;
-        height: 42px;
-        place-items: center;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 6px 12px 12px 6px;
-        color: #f8f1e5;
-        background: #294c3a;
-        box-shadow: inset 4px 0 0 rgba(255, 255, 255, 0.1), 0 8px 18px rgba(30, 55, 42, 0.18);
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 1.15rem;
-    }
 
 .navigation {
     display: flex;

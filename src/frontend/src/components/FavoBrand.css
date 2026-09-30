@@ -1,0 +1,30 @@
+.favo-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--library-ink, #4a3024);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.favo-brand-mark { display: block; width: 36px; height: 36px; object-fit: contain; }
+.favo-brand-name {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: -1.8px;
+}
+.favo-brand-section {
+    border-left: 1px solid var(--library-line, #d0bba5);
+    margin-left: 4px;
+    padding-left: 10px;
+    font: 500 12px/1.4 'Trebuchet MS', Arial, sans-serif;
+    letter-spacing: .02em;
+    color: var(--library-muted, #67513f);
+}
+.auth-page > .favo-brand { margin-bottom: 12px; }
+@media (max-width: 480px) {
+    .header .favo-brand-mark { width: 30px; height: 30px; }
+    .header .favo-brand-name { font-size: 28px; }
+    .header .favo-brand { gap: 6px; }
+}

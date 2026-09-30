@@ -1,4 +1,5 @@
 import GoogleSignIn from '../auth/GoogleSignIn'
+import FavoBrand from '../components/FavoBrand'
 import { useState, type FormEvent } from 'react'
 import { Link, useLocation } from 'react-router'
 
@@ -88,6 +89,7 @@ function RegisterPage() {
 
     return (
         <section className="auth-page">
+            <FavoBrand />
             <h1>Kayıt ol</h1>
             <GoogleSignIn />
 

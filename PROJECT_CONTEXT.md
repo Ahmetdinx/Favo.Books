@@ -1,5 +1,31 @@
 # Favo Kitap Project Context
 
+Latest shared-account checkpoint (2026-09-30): Favo umbrella project at
+C:/Users/ahmet/OneDrive/Belgeler/ChatGPT/Favo now hosts this Books frontend under
+/kitap on the same origin (localhost:5175), proxies /api to this API on 5117,
+and signs in with the existing Identity module/cookie. Frontend BASE_URL supports
+both standalone / and hosted /kitap/. Shared sessionTransport serializes identity
+mutations across same-origin tabs and sends token-free login/logout notifications;
+keep it identical to the umbrella copy (Build-Books.ps1 checks parity). Existing
+logo/Docker edits preserved. No backend, DB schema, JWT key or UserSecrets changes.
+Start umbrella Start-Favo.ps1 to build Books and start both APIs + Favo frontend;
+standalone Books frontend 5173 is optional and not the shared-auth test origin.
+Validated both builds/lints; 27 security checks and 20 HTTP checks; browser login,
+transition, reload, bidirectional cross-tab logout, concurrent refresh, and exact
+query/hash login return using isolated PostgreSQL/Books test host. Test DB removed.
+See umbrella docs/shared-identity.md and docs/shared-auth-testing.md. No commit/push.
+
+
+Latest infrastructure checkpoint (2026-09-30): Docker Compose project favo-kitap,
+container favo-kitap-postgres, external volume favo-kitap-postgres-data. Cold copy
+of the previous PostgreSQL volume; all 28 table row counts match before/after.
+New container healthy. Old container/network removed, old volume preserved for
+rollback. Custom-format database dump and count records in ignored
+artifacts/favo-docker-rename. User requests local root name Favo Kitap (with space),
+not Favo.Books. Rename still blocked by an open directory handle after VS/terminals
+closed, CUA reset, build servers shutdown. Complete-FavoRename.ps1 now targets
+sibling Favo Kitap. Solution/repo remain Favo.Books. No commit/push this turn.
+
 Repository rename checkpoint (2026-09-30): GitHub repo renamed in place via API
 to Ahmetdinx/Favo.Books (repository ID retained); origin updated accordingly.
 Local root rename is BLOCKED by an open directory handle even after user closed

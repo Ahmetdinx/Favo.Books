@@ -48,7 +48,7 @@ export default function ReaderSettings() {
     }
     async function copy() {
         try {
-            await navigator.clipboard.writeText(new URL('/okur/' + saved!.nickname, window.location.origin).href)
+            await navigator.clipboard.writeText(new URL(import.meta.env.BASE_URL + 'okur/' + saved!.nickname, window.location.origin).href)
             setMessage('Profil bağlantısı kopyalandı.')
         } catch { setError('Bağlantı kopyalanamadı. Profili açıp adres çubuğundan kopyalayabilirsin.') }
     }

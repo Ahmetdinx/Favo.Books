@@ -1,12 +1,12 @@
 $ErrorActionPreference = 'Stop'
 $taskSource = [IO.Path]::GetFullPath($PSScriptRoot)
 $taskParent = Split-Path -Parent $taskSource
-$taskTarget = [IO.Path]::GetFullPath((Join-Path $taskParent 'Favo.Books'))
-if ((Split-Path -Leaf $taskSource) -eq 'Favo.Books') {
+$taskTarget = [IO.Path]::GetFullPath((Join-Path $taskParent 'Favo Kitap'))
+if ((Split-Path -Leaf $taskSource) -eq 'Favo Kitap') {
     Write-Host "Already renamed: $taskSource"
     exit 0
 }
-if ((Split-Path -Leaf $taskSource) -ne 'KitapKivo' -or
+if ((Split-Path -Leaf $taskSource) -notin @('KitapKivo', 'Favo.Books') -or
     (Split-Path -Parent $taskTarget) -ne $taskParent -or
     -not (Test-Path -LiteralPath (Join-Path $taskSource 'Favo.Books.slnx'))) {
     throw 'Unexpected source or destination. No changes made.'

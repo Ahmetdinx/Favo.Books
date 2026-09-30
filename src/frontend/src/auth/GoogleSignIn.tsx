@@ -1,3 +1,4 @@
+import { identityRequest } from './sessionTransport'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { useAuth } from './useAuth'
@@ -54,7 +55,7 @@ export default function GoogleSignIn() {
                     callback: ({ credential }) => {
                         if (submitting || controller.signal.aborted) return
                         submitting = true; setBusy(true); setError('')
-                        void fetch('/api/identity/google', { method: 'POST', credentials: 'include', signal: controller.signal,
+                        void identityRequest('/api/identity/google', { method: 'POST', credentials: 'include', signal: controller.signal,
                             headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ credential }) })
                             .then(async result => {
                                 if (!result.ok) {

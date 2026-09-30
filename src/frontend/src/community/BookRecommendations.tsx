@@ -182,10 +182,8 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
 
     return <section className="personal-discovery" aria-labelledby="discovery-heading" aria-busy={loading || saving}>
         {preview && <aside className="recommendation-preview-note"><strong>Test ön izlemesi · Gerçek puanlar değildir</strong><p>Klasikler + anlatım, karakterler ve tempo. “Sınır testi” 9 puanla, “Az veri” iki değerlendirmeyle güçlü eşleşmeye girmez. Butonlar yalnızca bu ön izlemeyi değiştirir.</p><button type="button" disabled={saving} onClick={() => { previewChoices.current = {}; setRetry(value => value + 1) }}>Testi sıfırla</button></aside>}
-        <p className="eyebrow">Sıradaki sayfan</p>
         <Heading id="discovery-heading">Şimdi ne okumalı?</Heading>
-        <p className="discovery-intro">Sevdiğin romanlardan, sıradaki favorine.</p>
-        {loading && <p role="status">Kitapların arasından yeni okumalar seçiliyor…</p>}
+        {loading && <p role="status">Öneriler yükleniyor…</p>}
         {error && <p role="alert">{error} {!preferences && <button type="button" onClick={() => setRetry(n => n + 1)}>Tekrar dene</button>}</p>}
         {message && <p role="status">{message}</p>}
         {!loading && preferences && <div className="reading-preferences">
@@ -204,7 +202,6 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
                 </button>
             </div>
             <form id={preferencesId} onSubmit={save} hidden={!editingPreferences}>
-                <p>Önerilerin için sevdiğin türleri ve özellikleri seç.</p>
                 <fieldset disabled={saving}>
                     <legend>Roman türleri <small>En fazla 5</small></legend>
                     <div className="preference-options">{preferences.availableCategories.map(category => <label key={category.slug}>
@@ -226,8 +223,6 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
         </div>}
         {!loading && result && <>
             <button type="button" className="recommendation-refresh" disabled={saving} onClick={() => void refreshRecommendations()}>Önerileri yenile</button>
-            {!!savedPreferences?.categories.length && savedPreferences.criteria.length === 3 && !result.items.some(book => book.shelf === 'perfect') &&
-                <p className="discovery-hint">Henüz dört dörtlük eşleşme yok. Üç önceliğinin her birinde 9’un üzerinde, en az üç değerlendirmesi olan romanları burada öne çıkaracağız.</p>}
             {result.feedback.length > 0 && <details className="recommendation-feedback-history">
                 <summary>Geri bildirimlerim ({result.feedback.length})</summary>
                 <p>“İlgimi çekti” romanı okuma listene ekler. Geri bildirimi geri almak kitabı listenden silmez.</p>
@@ -237,17 +232,16 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
                         onClick={() => void giveFeedback(item.bookId, item.title, null)}>Geri bildirimi kaldır</button>
                 </li>)}</ul>
             </details>}
-            {!result.hasPersonalSignals && <p className="discovery-hint">Birkaç roman değerlendir, önerilerin sana özel olsun.</p>}
-            {result.items.length === 0 ? <p>Şimdilik önerebileceğimiz yeni bir kitap yok. <Link to="/catalog">Kataloğu keşfet</Link></p>
+            {result.items.length === 0 ? <p>Yeni öneri yok. <Link to="/catalog">Kataloğu keşfet</Link></p>
                 : <div className="recommendation-shelves">{[
-                    { key: 'perfect', title: 'Dört dörtlük eşleşmeler', description: 'Seçtiğin tür + üç önceliğinde de 9’un üzerinde okur puanı.' },
-                    { key: 'personal', title: 'Sana göre romanlar', description: 'Türlerin, beğenilerin ve okuma önceliklerinden seçildi.' },
-                    { key: 'discovery', title: 'Başka türlerde, aynı keyif', description: 'Seçtiğin türlerin dışında; önceliklerinin her birinde 9’un üzerinde.' },
+                    { key: 'perfect', title: 'Dört dörtlük eşleşmeler' },
+                    { key: 'personal', title: 'Sana göre romanlar' },
+                    { key: 'discovery', title: 'Başka türlerde, aynı keyif' },
                 ].map(shelf => {
                     const books = result.items.filter(book => (book.shelf ?? 'personal') === shelf.key)
                     if (!books.length) return null
                     return <section key={shelf.key} className={`recommendation-shelf recommendation-shelf-${shelf.key}`} aria-labelledby={`shelf-${shelf.key}`}>
-                    <header><h3 id={`shelf-${shelf.key}`}>{shelf.title}</h3><p>{shelf.description}</p></header>
+                    <header><h3 id={`shelf-${shelf.key}`}>{shelf.title}</h3></header>
                     <div className="recommendation-grid">{books.map(book => <article key={book.bookId}>
                     <Link className="recommendation-book" onClick={event => { if (preview) event.preventDefault() }} aria-disabled={preview || undefined} to={`/catalog/books/${book.bookId}`}>
                         <img src={book.coverImageUrl} alt="" loading="lazy" />
@@ -255,8 +249,7 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
                     </Link>
                     <p className="recommendation-genres">{book.genres?.join(' · ')}</p>
                     {Object.keys(book.priorityScores ?? {}).length > 0 && <div className="recommendation-score-chips">{Object.entries(book.priorityScores).map(([key, score]) => <span key={key}>{criteria.find(([id]) => id === key)?.[1]} <strong>{score.toLocaleString('tr-TR', { maximumFractionDigits: 2 })}/10</strong></span>)}<small>{book.ratingCount} değerlendirme</small></div>}
-                    <ul>{book.reasons.slice(0, 1).map(reason => <li key={reason}>{reason}</li>)}</ul>
-                    {book.reasons.length > 1 && <details className="recommendation-explanation"><summary>Neden bu roman?</summary><ul>{book.reasons.slice(1).map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
+                    {book.reasons.length > 0 && <details className="recommendation-explanation"><summary>Neden bu roman?</summary><ul>{book.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
                     {book.ratingCount < 3 && <small>Okur puanı verisi henüz sınırlı.</small>}
                     <div className="recommendation-feedback-actions" role="group" aria-label={`${book.title} için geri bildirim`}>
                         <button type="button" disabled={saving}
