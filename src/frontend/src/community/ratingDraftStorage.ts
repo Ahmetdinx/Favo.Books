@@ -1,6 +1,7 @@
 import type { RatingDraft } from './communityTypes'
 
 const keys = ['theme', 'language', 'characters', 'structure', 'pace', 'impact', 'experience'] as const
+// Keep the existing key so the Favo rebrand does not discard saved drafts.
 const storageKey = (userId: string, bookId: string) => `kitapkivo:rating-draft:v1:${encodeURIComponent(userId)}:${encodeURIComponent(bookId)}`
 
 export function readRatingDraft(storage: Pick<Storage, 'getItem'>, userId: string, bookId: string): RatingDraft | null {

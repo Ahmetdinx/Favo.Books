@@ -1,6 +1,6 @@
 # Roman kataloğu ilk denetimi — 2026-09-17
 
-Denetim aracı: `tools/KitapKivo.CatalogAudit`.
+Denetim aracı: `tools/Favo.Books.CatalogAudit`.
 Kural sürümü: `subject-form-v1`. Veritabanı işlemi salt okunurdur.
 
 | Sonuç | Kitap |

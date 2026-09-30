@@ -1,4 +1,4 @@
-# KitapKivo: roman keşfi ve sanal kütüphane
+# Favo.Books: roman keşfi ve sanal kütüphane
 
 Karar tarihi: 2026-09-17. Durum: ürün kapsamı kabul edildi; aşağıdaki yeni
 davranışlar henüz uygulanmadı. Bu belge önceki sosyal ürün planının yerini alır.

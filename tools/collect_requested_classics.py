@@ -21,7 +21,7 @@ def fetch(row):
         elif '--cached-only' in sys.argv:
             return None
         else:
-            req=urllib.request.Request(url,headers={'User-Agent':'KitapKivo-CatalogResearch/1.0'})
+            req=urllib.request.Request(url,headers={'User-Agent':'FavoBooks-CatalogResearch/1.0'})
             with urllib.request.urlopen(req,timeout=25) as response:body=response.read().decode('utf-8-sig')
             path.write_text(body,encoding='utf-8')
             path.with_suffix('.url').write_text(url,encoding='utf-8')

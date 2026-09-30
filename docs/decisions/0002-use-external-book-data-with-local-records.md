@@ -6,13 +6,13 @@
 
 ## Context
 
-KitapKivo needs a broad book catalog without manually entering all book
+Favo.Books needs a broad book catalog without manually entering all book
 metadata. Ratings, reviews, comments, and personal library entries must remain
 stable even if an external provider is slow, unavailable, removes an item, or
 changes its data.
 
 No single free external provider offers complete and consistently reliable
-coverage for every book, edition, author, and language relevant to KitapKivo.
+coverage for every book, edition, author, and language relevant to Favo.Books.
 The Catalog module therefore needs a provider-independent integration boundary.
 
 ## Decision
@@ -33,7 +33,7 @@ with an external book, Catalog creates or reuses a local record containing:
 
 - An internal `BookId`
 - Relevant external provider identifiers
-- A normalized metadata snapshot required by KitapKivo
+- A normalized metadata snapshot required by Favo.Books
 
 Reading and Community records reference the internal `BookId`, never an
 external provider identifier.
@@ -47,7 +47,7 @@ in the free data sources.
 
 ### Positive
 
-- KitapKivo can offer useful discovery without a manually curated catalog.
+- Favo.Books can offer useful discovery without a manually curated catalog.
 - User-generated content remains stable during provider outages or changes.
 - The system is not permanently coupled to a single external provider.
 - Provider-specific response types remain inside infrastructure boundaries.

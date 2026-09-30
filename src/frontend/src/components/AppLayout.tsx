@@ -91,7 +91,7 @@ function AppLayout() {
                     className="logo"
                     to="/"
                 >
-                    KitapKivo
+                    Favo Kitap
                 </NavLink>
                 <ReaderSearch key={location.pathname} />
 
@@ -161,7 +161,7 @@ function AppLayout() {
 
             {session && <AchievementCelebration key={session.userId} userId={session.userId} items={achievementOwner === session.userId ? achievements : []} avatarId={reader?.avatarId} />}
             <footer className="footer">
-                © 2026 KitapKivo
+                © 2026 Favo Kitap
             </footer>
         </div></ReaderBadgesContext.Provider>
     )

@@ -27,7 +27,7 @@ def fetch(url):
     if path.exists():
         return path.read_text(encoding='utf-8')
     time.sleep(1)
-    request = urllib.request.Request(url, headers={'User-Agent': 'KitapKivo-CatalogResearch/1.0', 'Accept': 'text/html'})
+    request = urllib.request.Request(url, headers={'User-Agent': 'FavoBooks-CatalogResearch/1.0', 'Accept': 'text/html'})
     with urllib.request.urlopen(request, timeout=40) as response:
         body = response.read().decode('utf-8-sig')
     if 'Just a moment...' in body or 'cf-chl-' in body:

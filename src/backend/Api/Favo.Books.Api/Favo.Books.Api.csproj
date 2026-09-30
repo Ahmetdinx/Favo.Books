@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Identity\Favo.Books.Modules.Identity\Favo.Books.Modules.Identity.csproj" />
+    <ProjectReference Include="..\..\Modules\Catalog\Favo.Books.Modules.Catalog\Favo.Books.Modules.Catalog.csproj" />
+    <ProjectReference Include="..\..\Modules\Reading\Favo.Books.Modules.Reading\Favo.Books.Modules.Reading.csproj" />
+    <ProjectReference Include="..\..\Modules\Community\Favo.Books.Modules.Community\Favo.Books.Modules.Community.csproj" />
+    <ProjectReference Include="..\..\Modules\Profiles\Favo.Books.Modules.Profiles\Favo.Books.Modules.Profiles.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Favo.Books.Api.IntegrationTests" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c9e18116-3244-4334-8956-34ab862024b3</UserSecretsId>
+  </PropertyGroup>
+
+</Project>

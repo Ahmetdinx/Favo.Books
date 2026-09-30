@@ -10,7 +10,7 @@ def fetch(url):
     key=hashlib.sha256(url.encode()).hexdigest();path=cache/(key+'.html')
     if path.exists():return path.read_text(encoding='utf-8')
     time.sleep(1)
-    with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'KitapKivo-CatalogResearch/1.0'}),timeout=40) as response:
+    with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'FavoBooks-CatalogResearch/1.0'}),timeout=40) as response:
         body=response.read().decode('utf-8-sig')
     if 'cf-chl-' in body:raise ValueError('Access challenge')
     path.write_bytes(body.encode('utf-8'));(cache/(key+'.url')).write_text(url,encoding='utf-8')

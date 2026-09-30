@@ -20,7 +20,7 @@ def fetch(url):
     path=root/'pages'/(hashlib.sha256(url.encode()).hexdigest()+'.html')
     if path.exists():return path.read_text(encoding='utf-8-sig')
     time.sleep(1)
-    req=urllib.request.Request(url,headers={'User-Agent':'KitapKivo-CatalogResearch/1.0'})
+    req=urllib.request.Request(url,headers={'User-Agent':'FavoBooks-CatalogResearch/1.0'})
     with urllib.request.urlopen(req,timeout=30) as r:body=r.read().decode('utf-8-sig')
     if 'cf-chl-' in body or 'Just a moment...' in body:raise ValueError('Access challenge')
     path.write_bytes(body.encode());path.with_suffix('.url').write_text(url,encoding='utf-8')

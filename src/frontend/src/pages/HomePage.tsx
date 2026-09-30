@@ -33,7 +33,7 @@ function HomePage() {
                     </Link>
                 </div>
 
-                <div className="reading-features" aria-label="KitapKivo özellikleri">
+                <div className="reading-features" aria-label="Favo Kitap özellikleri">
                     <span>Okuma listeleri</span>
                     <span>Sana özel öneriler</span>
                     <span>Kişisel kitap rafı</span>
@@ -42,10 +42,10 @@ function HomePage() {
 
             <aside
                 className="library-showcase"
-                aria-label="KitapKivo kitaplığı ön izlemesi"
+                aria-label="Favo Kitap kitaplığı ön izlemesi"
             >
                 <div className="showcase-header">
-                    <p>KitapKivo Kütüphanesi</p>
+                    <p>Favo Kitap Kütüphanesi</p>
                     <span>Raf 01</span>
                 </div>
 

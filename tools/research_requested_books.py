@@ -10,7 +10,7 @@ for url in json.loads(Path(sys.argv[1]).read_text(encoding='utf-8-sig')):
     path=root/(hashlib.sha256(url.encode()).hexdigest()+'.html')
     if path.exists():print('CACHED',url);continue
     try:
-        req=urllib.request.Request(url,headers={'User-Agent':'KitapKivo-CatalogResearch/1.0','Accept':'text/html,application/json'})
+        req=urllib.request.Request(url,headers={'User-Agent':'FavoBooks-CatalogResearch/1.0','Accept':'text/html,application/json'})
         with urllib.request.urlopen(req,timeout=25) as r:data=r.read()
         if b'cf-chl-' in data or b'Just a moment...' in data:raise ValueError('Access challenge')
         path.write_bytes(data);path.with_suffix('.url').write_text(url,encoding='utf-8')

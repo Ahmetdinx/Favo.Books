@@ -5,7 +5,7 @@
 
 ## Context
 
-KitapKivo needs clear boundaries for identity, catalog, personal reading, and
+Favo.Books needs clear boundaries for identity, catalog, personal reading, and
 community features. The product is at an early stage and does not yet have the
 scale, team topology, or independent deployment requirements that justify
 distributed services.
@@ -17,7 +17,7 @@ messaging, and distributed-data costs before those costs provide value.
 
 ## Decision
 
-Build KitapKivo as one deployable ASP.NET Core application composed of
+Build Favo.Books as one deployable ASP.NET Core application composed of
 separate business modules:
 
 - Identity

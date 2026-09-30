@@ -5,7 +5,7 @@ Client ID yapılandırılmadığında Google düğmesi gizlidir; e-posta girişi
 
 ## Google Cloud kurulumu
 
-1. https://console.cloud.google.com/ adresinde KitapKivo projesini oluştur veya seç.
+1. https://console.cloud.google.com/ adresinde Favo.Books projesini oluştur veya seç.
 2. Google Auth Platform bölümünde uygulama bilgilerini (Branding), destek e-postasını
    ve iletişim bilgilerini doldur. Genel kullanıcılar için External hedef kitlesini seç.
 3. Test durumundayken gerekiyorsa kullanacağın Google hesaplarını Test users listesine ekle.
@@ -23,7 +23,7 @@ Client ID yapılandırılmadığında Google düğmesi gizlidir; e-posta girişi
 Depo kökünde, aşağıdaki örnek değeri kendi Client ID'n ile değiştir:
 
 ```powershell
-dotnet user-secrets set "Google:ClientId" "CLIENT_ID.apps.googleusercontent.com" --project src/backend/Api/KitapKivo.Api
+dotnet user-secrets set "Google:ClientId" "CLIENT_ID.apps.googleusercontent.com" --project src/backend/Api/Favo.Books.Api
 ```
 
 API'yi yeniden başlat; frontend'i `npm run dev` ile çalıştır. Kayıt ve giriş

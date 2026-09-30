@@ -1,0 +1,43 @@
+<Solution>
+  <Folder Name="/Backend/" />
+  <Folder Name="/Backend/Api/">
+    <Project Path="src/backend/Api/Favo.Books.Api/Favo.Books.Api.csproj" />
+  </Folder>
+  <Folder Name="/Backend/BuildingBlocks/">
+    <Project Path="src/backend/BuildingBlocks/Favo.Books.SharedKernel/Favo.Books.SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/Backend/Modules/">
+    <Project Path="src/backend/Modules/Catalog/Favo.Books.Modules.Catalog/Favo.Books.Modules.Catalog.csproj" />
+    <Project Path="src/backend/Modules/Community/Favo.Books.Modules.Community/Favo.Books.Modules.Community.csproj" />
+    <Project Path="src/backend/Modules/Identity/Favo.Books.Modules.Identity/Favo.Books.Modules.Identity.csproj" />
+    <Project Path="src/backend/Modules/Profiles/Favo.Books.Modules.Profiles/Favo.Books.Modules.Profiles.csproj" />
+    <Project Path="src/backend/Modules/Reading/Favo.Books.Modules.Reading/Favo.Books.Modules.Reading.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".env" />
+    <File Path="compose.yml" />
+  </Folder>
+  <Folder Name="/Tests/" />
+  <Folder Name="/Tests/Api/">
+    <Project Path="tests/Api/Favo.Books.Api.IntegrationTests/Favo.Books.Api.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Architecture/">
+    <Project Path="tests/Architecture/Favo.Books.ArchitectureTests/Favo.Books.ArchitectureTests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Modules/" />
+  <Folder Name="/Tests/Modules/Catalog/">
+    <Project Path="tests/Modules/Catalog/Favo.Books.Modules.Catalog.UnitTests/Favo.Books.Modules.Catalog.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Modules/Community/">
+    <Project Path="tests/Modules/Community/Favo.Books.Modules.Community.UnitTests/Favo.Books.Modules.Community.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Modules/Identity/">
+    <Project Path="tests/Modules/Identity/Favo.Books.Modules.Identity.UnitTests/Favo.Books.Modules.Identity.UnitTests/Favo.Books.Modules.Identity.UnitTests.csproj" Id="ca182ab6-79ac-4504-8bdc-42b97f08b726" />
+  </Folder>
+  <Folder Name="/Tests/Modules/Profiles/">
+    <Project Path="tests/Modules/Profiles/Favo.Books.Modules.Profiles.UnitTests/Favo.Books.Modules.Profiles.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Modules/Reading/">
+    <Project Path="tests/Modules/Reading/Favo.Books.Modules.Reading.UnitTests/Favo.Books.Modules.Reading.UnitTests.csproj" />
+  </Folder>
+</Solution>

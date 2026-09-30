@@ -1,4 +1,34 @@
-# KitapKivo Project Context
+# Favo Kitap Project Context
+
+Repository rename checkpoint (2026-09-30): GitHub repo renamed in place via API
+to Ahmetdinx/Favo.Books (repository ID retained); origin updated accordingly.
+Local root rename is BLOCKED by an open directory handle even after user closed
+VS/terminals, our servers stopped, build servers shut down and CUA reset.
+Root still KitapKivo. Complete-FavoRename.ps1 safely renames to sibling Favo.Books
+after Codex/other handles close. Start-Favo.ps1 uses root-relative paths and waits
+for the API before opening Vite. Compose project name pinned to kitapkivo to
+preserve database-volume identity after the directory rename. No commit/push.
+
+IDE repair (2026-09-30): open Visual Studio recreated stale KitapKivo.slnx with
+missing old project paths, causing IDE errors and root-build MSB1011. User closed
+VS; old solution and .vs were backed up under artifacts/favo-vs-repair-*.
+Favo.Books.slnx is now the sole root solution. All 21 project-reference sets
+resolve; Debug and Release builds pass with zero warnings/errors. Open the new
+solution explicitly instead of the stale Recent Projects entry.
+
+Latest checkpoint (2026-09-30, Favo rebrand): user selected Favo as the umbrella
+brand for Books, Film, Series, Anime and Comics/Manga. Public book-app name:
+Favo Kitap; solution, namespaces, assemblies and tool projects: Favo.Books.
+Auth issuer/audience/cookies, browser storage keys, user-secrets ID and PostgreSQL
+storage remain compatible with the existing installation. No data migration or
+catalog change. GitHub repository rename to Favo.Books is pending authenticated
+settings access; origin and the local workspace root still use KitapKivo.
+Next: slogan/logo, then shared entry point and account integration, then a
+separate book-app launch plan. See docs/favo-brand-transition.md.
+Validation: solution compiles; module/architecture tests pass. Initial API run
+155/160 passed; five stale cookie-name test expectations fixed and all 20 targeted
+identity/reader tests pass on rerun. Seven tools build cleanly; frontend build,
+lint and 18 tests pass. No browser app QA, commit, push or live data writes.
 
 Updated 2026-09-29. This file describes implementation status,
 not a claim that the application has passed production or browser verification.
@@ -169,7 +199,7 @@ not trusted; unknown is stored. Catalog unit tests: 112 passed; Release importer
 build and Python syntax checks passed. Earlier 134 API integration tests and four
 frontend catalog tests passed before the latest identity changes; no fresh Docker
 test result is claimed. See docs/publisher-novel-import-2026-09-23.md and
-tools/KitapKivo.PublisherImport/README.md. The API was not listening on port 5117;
+tools/Favo.Books.PublisherImport/README.md. The API was not listening on port 5117;
 post-import eligible counts were verified directly through the Catalog query.
 
 Previous checkpoint (2026-09-17): novel eligibility now gates catalog browsing, recommendations
@@ -217,7 +247,7 @@ The list is editorial classic priority, not measured readership ranking.
 
 Editorial eligibility checkpoint (2026-09-17): migration
 20260917123207_AddNovelReviews applied locally; append-only review workflow and
-central SQL eligibility query implemented. tools/KitapKivo.CatalogCuration checks
+central SQL eligibility query implemented. tools/Favo.Books.CatalogCuration checks
 work/title/author identity and applies atomic idempotent batches. Five reviews from
 data/curation/classic-novels-v1.json applied after preview. 90 Catalog unit tests
 and three new PostgreSQL integration tests passed. See ADR 0007 for sources.
@@ -227,7 +257,7 @@ Next: expand curated coverage (including Turkish classics), then wire eligibilit
 consistently across discovery/read/write paths and preserve private archived history.
 
 Novel audit checkpoint (2026-09-17): Catalog's NovelEvidenceClassifier v1 and
-tools/KitapKivo.CatalogAudit provide read-only source-label triage. Local report:
+tools/Favo.Books.CatalogAudit provide read-only source-label triage. Local report:
 9,858 books; 84 NovelCandidate, 961 NonNovelCandidate, 10 Conflict, 8,803 Unknown.
 9,857 have cached source observations; all have a stored covered Turkish edition.
 These are NOT verified forms; no database writes, eligibility filter or imports

@@ -1,6 +1,10 @@
-# KitapKivo
+# Favo Kitap
 
-KitapKivo is evolving into personalized novel discovery and a shareable virtual
+Favo is the umbrella brand; this repository contains its book application,
+named `Favo.Books` in the .NET solution. See [brand transition](docs/favo-brand-transition.md)
+for compatibility notes and the next steps toward the shared Favo entry point.
+
+Favo.Books is evolving into personalized novel discovery and a shareable virtual
 library, limited to novels with covered Turkish editions. Ratings and recommendations
 exist; novel eligibility, nicknames, public/private profiles and achievements are
 planned. Posts, messages and comment threads are out of scope.
@@ -38,6 +42,10 @@ repaired automatically.
 
 ## Development
 
+Windows: run `./Start-Favo.ps1` from the repository to start the API and web app.
+The launcher resolves the current folder automatically and waits for the API.
+Keep PostgreSQL running as described below.
+
 Use .NET SDK 10.0.302 (see global.json), Node.js/npm compatible with the frontend
 lockfile, and Docker with Compose for PostgreSQL and integration tests. Node
 24.19.0 was used during the project review.
@@ -53,9 +61,9 @@ From the repository root:
    `RefreshToken:CookieName`. Use a strong JWT secret of at least 32 bytes.
    Environment variables use double underscores, e.g. `Jwt__Secret`.
    The database connection must match your Compose credentials.
-4. Run `dotnet restore KitapKivo.slnx` and apply the module migrations described
+4. Run `dotnet restore Favo.Books.slnx` and apply the module migrations described
    below. The API does not automatically migrate the development database.
-5. Run `dotnet run --project src/backend/Api/KitapKivo.Api --launch-profile http`.
+5. Run `dotnet run --project src/backend/Api/Favo.Books.Api --launch-profile http`.
 6. In a second terminal, run `npm ci` then `npm run dev` in `src/frontend`.
 
 The API listens at `http://localhost:5117`; Vite proxies `/api` to this address.
@@ -72,18 +80,18 @@ Run the following from the repository root with Development configuration and
 API secrets available. In PowerShell, set `$env:ASPNETCORE_ENVIRONMENT='Development'`.
 
 ```powershell
-dotnet ef database update --project src/backend/Modules/Identity/KitapKivo.Modules.Identity --startup-project src/backend/Api/KitapKivo.Api --context IdentityDbContext
-dotnet ef database update --project src/backend/Modules/Catalog/KitapKivo.Modules.Catalog --startup-project src/backend/Api/KitapKivo.Api --context CatalogDbContext
-dotnet ef database update --project src/backend/Modules/Reading/KitapKivo.Modules.Reading --startup-project src/backend/Api/KitapKivo.Api --context ReadingDbContext
-dotnet ef database update --project src/backend/Modules/Profiles/KitapKivo.Modules.Profiles --startup-project src/backend/Api/KitapKivo.Api --context ProfilesDbContext
-dotnet ef database update --project src/backend/Modules/Community/KitapKivo.Modules.Community --startup-project src/backend/Api/KitapKivo.Api --context CommunityDbContext
+dotnet ef database update --project src/backend/Modules/Identity/Favo.Books.Modules.Identity --startup-project src/backend/Api/Favo.Books.Api --context IdentityDbContext
+dotnet ef database update --project src/backend/Modules/Catalog/Favo.Books.Modules.Catalog --startup-project src/backend/Api/Favo.Books.Api --context CatalogDbContext
+dotnet ef database update --project src/backend/Modules/Reading/Favo.Books.Modules.Reading --startup-project src/backend/Api/Favo.Books.Api --context ReadingDbContext
+dotnet ef database update --project src/backend/Modules/Profiles/Favo.Books.Modules.Profiles --startup-project src/backend/Api/Favo.Books.Api --context ProfilesDbContext
+dotnet ef database update --project src/backend/Modules/Community/Favo.Books.Modules.Community --startup-project src/backend/Api/Favo.Books.Api --context CommunityDbContext
 ```
 
 The current Catalog migration clears stored cover URLs for every non-Turkish
 edition (`LanguageCode` other than `tr`/`tur`). This cleanup is intentionally
 irreversible because the removed external URLs cannot be reconstructed reliably.
 That migration leaves book and edition rows in place. The separate, explicitly run
-[catalog cleanup tool](tools/KitapKivo.Maintenance/README.md) removes books with no
+[catalog cleanup tool](tools/Favo.Books.Maintenance/README.md) removes books with no
 Turkish edition containing a cover, archives affected records and clears linked
 library/profile/rating records in one transaction. It is not run on startup.
 
@@ -94,7 +102,7 @@ See [ADR 0005](docs/decisions/0005-detailed-book-ratings.md) for weights and con
 ### Verification
 
 ```powershell
-dotnet test KitapKivo.slnx
+dotnet test Favo.Books.slnx
 ```
 
 Integration tests use isolated PostgreSQL Testcontainers and require a running
@@ -104,7 +112,7 @@ currently PostgreSQL 17, while Compose uses 18.4; aligning these remains pending
 When Docker is unavailable, run only architecture and unit tests:
 
 ```powershell
-dotnet test KitapKivo.slnx --filter 'FullyQualifiedName!~KitapKivo.Api.IntegrationTests'
+dotnet test Favo.Books.slnx --filter 'FullyQualifiedName!~Favo.Books.Api.IntegrationTests'
 ```
 
 In `src/frontend`, run `npm run build`, `npm run lint` and `npm run test:ratings` (Node 24).

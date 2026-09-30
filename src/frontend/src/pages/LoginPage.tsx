@@ -145,7 +145,7 @@ function LoginPage() {
             <GoogleSignIn />
 
             <p>
-                KitapKivo hesabınıza giriş yapın.
+                Favo Kitap hesabınıza giriş yapın.
             </p>
 
             <form onSubmit={handleSubmit}>

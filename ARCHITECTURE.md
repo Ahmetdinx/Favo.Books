@@ -1,4 +1,4 @@
-# KitapKivo Architecture
+# Favo.Books Architecture
 
 ## Status
 
@@ -8,7 +8,7 @@ Decisions may evolve through Architecture Decision Records
 
 ## Architectural Style
 
-KitapKivo is a modular monolith:
+Favo.Books is a modular monolith:
 
 - One backend application is deployed as a single unit.
 - Business capabilities are separated into explicit modules.
@@ -79,7 +79,7 @@ modules, and maps module endpoints, but it does not contain business rules.
 Features are grouped by use case rather than by technical type:
 
 ```text
-KitapKivo.Modules.Catalog/
+Favo.Books.Modules.Catalog/
 ├── Domain/
 ├── Application/
 │   └── Books/Search/
@@ -124,14 +124,14 @@ other modules, or public API contracts.
 
 The expected flow is:
 
-1. A user searches through a KitapKivo API endpoint.
+1. A user searches through a Favo.Books API endpoint.
 2. `Catalog` queries Open Library and normalizes the response.
 3. Search results may remain transient.
 4. Author information may be enriched through Wikidata where appropriate.
 5. When a user adds, rates, reviews, or otherwise interacts with a book,
    `Catalog` creates or reuses a local book record.
 6. The local record stores an internal `BookId`, relevant external provider
-   identifiers, and the normalized metadata snapshot needed by KitapKivo.
+   identifiers, and the normalized metadata snapshot needed by Favo.Books.
 7. `Reading` and `Community` reference the internal `BookId`, never an external
    provider identifier.
 8. Google Books may be queried when Open Library data is missing or uncertain.
@@ -165,21 +165,21 @@ supplied through configuration and are never committed to the repository.
 ## Target Repository Structure
 
 ```text
-KitapKivo/
+Favo.Books/
 ├── src/
 │   ├── backend/
-│   │   ├── Api/KitapKivo.Api/
-│   │   ├── BuildingBlocks/KitapKivo.SharedKernel/
+│   │   ├── Api/Favo.Books.Api/
+│   │   ├── BuildingBlocks/Favo.Books.SharedKernel/
 │   │   └── Modules/
-│   │       ├── Identity/KitapKivo.Modules.Identity/
-│   │       ├── Catalog/KitapKivo.Modules.Catalog/
-│   │       ├── Reading/KitapKivo.Modules.Reading/
-│   │       ├── Profiles/KitapKivo.Modules.Profiles/
-│   │       └── Community/KitapKivo.Modules.Community/
+│   │       ├── Identity/Favo.Books.Modules.Identity/
+│   │       ├── Catalog/Favo.Books.Modules.Catalog/
+│   │       ├── Reading/Favo.Books.Modules.Reading/
+│   │       ├── Profiles/Favo.Books.Modules.Profiles/
+│   │       └── Community/Favo.Books.Modules.Community/
 │   └── frontend/
 ├── tests/
-│   ├── Architecture/KitapKivo.ArchitectureTests/
-│   ├── Api/KitapKivo.Api.IntegrationTests/
+│   ├── Architecture/Favo.Books.ArchitectureTests/
+│   ├── Api/Favo.Books.Api.IntegrationTests/
 │   └── Modules/
 ├── docs/decisions/
 ├── ARCHITECTURE.md
@@ -187,6 +187,6 @@ KitapKivo/
 ├── ROADMAP.md
 ├── Directory.Build.props
 ├── global.json
-└── KitapKivo.slnx
+└── Favo.Books.slnx
 ```
 

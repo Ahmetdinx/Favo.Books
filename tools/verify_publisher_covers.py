@@ -45,7 +45,7 @@ def verify_cover(url):
         with rate_lock:
             time.sleep(max(0,1-(time.monotonic()-last_request)))
             last_request=time.monotonic()
-        req=urllib.request.Request(quote(url,safe=':/?=&%'),headers={'User-Agent':'KitapKivo-CatalogResearch/1.0','Range':'bytes=0-65535'})
+        req=urllib.request.Request(quote(url,safe=':/?=&%'),headers={'User-Agent':'FavoBooks-CatalogResearch/1.0','Range':'bytes=0-65535'})
         with opener.open(req,timeout=30) as response:
             mime=response.headers.get_content_type()
             if not mime.startswith('image/'): raise ValueError('Response is not an image')

@@ -29,7 +29,7 @@ for e in rows:
         cached=checks.get(url)
         if not cached or datetime.fromisoformat(cached['CheckedAtUtc'])<datetime.now(timezone.utc)-timedelta(hours=24):
             time.sleep(.75)
-            with opener.open(urllib.request.Request(url,headers={'User-Agent':'KitapKivo-CatalogResearch/1.0','Range':'bytes=0-65535'}),timeout=30) as response:
+            with opener.open(urllib.request.Request(url,headers={'User-Agent':'FavoBooks-CatalogResearch/1.0','Range':'bytes=0-65535'}),timeout=30) as response:
                 mime=response.headers.get_content_type();body=response.read(65536)
             if not mime.startswith('image/'):raise ValueError('Not an image')
             with Image.open(io.BytesIO(body)) as im:width,height=im.size

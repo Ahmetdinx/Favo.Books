@@ -8,6 +8,7 @@ export default function AchievementCelebration({ userId, items, avatarId }: { us
     const [earned, setEarned] = useState<AchievementTrack[]>([])
     useEffect(() => {
         if (!items.length) return
+        // Preserve celebration history across the Favo rebrand.
         const key = `kitapkivo:celebrations:${userId}`
         if (previous.current === null) {
             try {

@@ -91,7 +91,7 @@ function RegisterPage() {
             <h1>Kayıt ol</h1>
             <GoogleSignIn />
 
-            <p>KitapKivo hesabınızı oluşturarak okumaya başlayın.</p>
+            <p>Favo Kitap hesabınızı oluşturarak okumaya başlayın.</p>
 
             <form onSubmit={handleSubmit}>
                 <label htmlFor="register-nickname">Kullanıcı adı</label>

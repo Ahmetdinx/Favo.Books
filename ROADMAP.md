@@ -1,4 +1,4 @@
-# KitapKivo Roadmap
+# Favo.Books Roadmap
 
 Revised 2026-09-25. Authoritative scope and acceptance criteria:
 [Novel discovery product plan](docs/novel-product-plan.md).

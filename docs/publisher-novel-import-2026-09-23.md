@@ -51,5 +51,5 @@ Aynı aktarımı kontrol etmek için aynı manifest, hedef ve batch ile önizlem
 Yeni bir yazma çalışmasında kaynak/kapak doğrulaması güncel olmalıdır.
 
 Komut sözleşmesi ve güvenlik sınırları için
-`tools/KitapKivo.PublisherImport/README.md` dosyasına bakın. Git'e kod gönderilmesi
+`tools/Favo.Books.PublisherImport/README.md` dosyasına bakın. Git'e kod gönderilmesi
 veritabanındaki kayıtları başka ortama taşımaz.
