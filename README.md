@@ -1,4 +1,4 @@
-# KitapKivo
+# Favo.Books
 
 KitapKivo is evolving into personalized novel discovery and a shareable virtual
 library, limited to novels with covered Turkish editions. Ratings and recommendations
