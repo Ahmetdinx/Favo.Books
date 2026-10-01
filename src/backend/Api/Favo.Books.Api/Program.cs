@@ -14,6 +14,7 @@ builder.Services.AddScoped<Favo.Books.Modules.Profiles.Application.PublicShowcas
 builder.Services.AddScoped<Favo.Books.Modules.Community.Application.PublicReaderRatings>();
 builder.Services.AddScoped<Favo.Books.Api.ReaderAchievements>();
 
+builder.Services.AddScoped<Favo.Books.Modules.Identity.Application.Users.ReaderNetwork>();
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
@@ -74,5 +75,6 @@ app.MapProfilesEndpoints();
 app.MapCommunityEndpoints();
 Favo.Books.Api.ReaderEndpoints.MapReaderEndpoints(app);
 
+Favo.Books.Api.SocialEndpoints.MapSocialEndpoints(app);
 app.Run();
 public partial class Program;

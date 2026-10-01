@@ -63,7 +63,7 @@ function UserRatingPrompts() {
     return <section className="rating-prompts" aria-labelledby="rating-prompts-heading">
         <header>
             <div>
-                <h2 id="rating-prompts-heading">Bu kitaplar sende ne bıraktı?</h2>
+                <span className="rating-section-mark" aria-hidden="true">✧</span><h2 id="rating-prompts-heading">Bu kitaplar sende ne bıraktı?</h2>
             </div>
             <button type="button" className="rating-prompts-dismiss" onClick={() => setHidden(true)}>Şimdilik gizle</button>
         </header>

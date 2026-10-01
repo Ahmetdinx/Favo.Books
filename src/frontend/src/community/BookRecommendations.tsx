@@ -187,7 +187,7 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
         {error && <p role="alert">{error} {!preferences && <button type="button" onClick={() => setRetry(n => n + 1)}>Tekrar dene</button>}</p>}
         {message && <p role="status">{message}</p>}
         {!loading && preferences && <div className="reading-preferences">
-            <div className="reading-preferences-header">
+            <div className="reading-preferences-header"><span className="preferences-emblem" aria-hidden="true">✦</span>
                 <div className="reading-preferences-overview">
                     <h3>Okuma tercihlerim</h3>
                     <p>{savedPreferences?.categories.length
@@ -223,7 +223,7 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
         </div>}
         {!loading && result && <>
             <button type="button" className="recommendation-refresh" disabled={saving} onClick={() => void refreshRecommendations()}>Önerileri yenile</button>
-            {result.feedback.length > 0 && <details className="recommendation-feedback-history">
+            {!home && result.feedback.length > 0 && <details className="recommendation-feedback-history">
                 <summary>Geri bildirimlerim ({result.feedback.length})</summary>
                 <p>“İlgimi çekti” romanı okuma listene ekler. Geri bildirimi geri almak kitabı listenden silmez.</p>
                 <ul>{result.feedback.map(item => <li key={item.bookId}>

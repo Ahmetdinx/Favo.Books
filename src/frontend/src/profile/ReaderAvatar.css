@@ -30,3 +30,21 @@
 .avatar-preview div { display: grid; gap: 6px; }
 .avatar-preview small { line-height: 1.5; }
 @media (max-width: 420px) { .avatar-preview { gap: 10px; } .avatar-option { padding: 8px 2px; } }
+
+/* Engraved bookplates in warm paper and ink tones. */
+.reader-avatar-face { color: #654b34; background: #e6d2b4; --avatar-paper: #f2e2c9; overflow: hidden; }
+.reader-avatar-face svg { width: 94%; height: 94%; }
+.avatar-fox { color: #843f2a; background: #e9c6a4; --avatar-paper: #f5dfbd; }
+.avatar-cat { color: #514133; background: #d8c4ac; --avatar-paper: #efdfc9; }
+.avatar-bear { color: #64412d; background: #d6b68d; --avatar-paper: #f0ddbc; }
+.avatar-deer { color: #575c3d; background: #d9d3b4; --avatar-paper: #f2e7cd; }
+.avatar-panda { color: #3f4b43; background: #c7cebb; --avatar-paper: #eee5ce; }
+.avatar-penguin { color: #3b5260; background: #c6d1ce; --avatar-paper: #eae3d0; }
+.avatar-rabbit { color: #755348; background: #e4cfc2; --avatar-paper: #f6e7d6; }
+.avatar-badge { font: 600 calc(var(--avatar-size) * .16)/1 Georgia, serif; color: #61462d; background: #f2e3c9; }
+.avatar-options { gap: 12px; }
+.avatar-option { padding: 14px 6px; background: linear-gradient(150deg, #f9f0e1, #e7d8c0); border-color: #79563d30; border-radius: 16px; }
+.avatar-option .reader-avatar-display.small { --avatar-size: 56px; }
+.avatar-option:has(input:checked) { background: #d9c3a3; border-color: #79563d; box-shadow: inset 0 0 0 1px #79563d; }
+.avatar-preview { padding: 20px; border-radius: 18px; background: #e7dac5; margin-bottom: 16px; }
+@media (max-width: 420px) { .avatar-options { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

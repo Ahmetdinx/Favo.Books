@@ -6,6 +6,12 @@ public sealed record PublicReaderRating(Guid BookId, int? Theme, int? Language, 
     int? Pace, int? Impact, int? Experience, decimal? OverallScore);
 public sealed class PublicReaderRatings(CommunityDbContext db, Favo.Books.SharedKernel.Catalog.INovelAchievementCatalog catalog)
 {
+    public sealed record RatingActivity(Guid UserId, Guid BookId, decimal? OverallScore, DateTimeOffset UpdatedAtUtc);
+    public Task<RatingActivity[]> Recent(Guid[] readers, CancellationToken ct) =>
+        db.BookRatings.AsNoTracking().Where(r => readers.Contains(r.UserId) && r.OverallScore != null)
+            .OrderByDescending(r => r.UpdatedAtUtc).ThenBy(r => r.UserId).ThenBy(r => r.BookId).Take(12)
+            .Select(r => new RatingActivity(r.UserId, r.BookId, r.OverallScore, r.UpdatedAtUtc)).ToArrayAsync(ct);
+
     public async Task<int> CountEvaluatedNovels(Guid id, CancellationToken ct)
     {
         var ids = await db.BookRatings.AsNoTracking().Where(r => r.UserId == id && r.OverallScore != null

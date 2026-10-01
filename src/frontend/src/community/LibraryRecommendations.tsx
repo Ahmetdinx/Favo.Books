@@ -79,7 +79,7 @@ function LibraryShelf() {
                 <img src={book.coverImageUrl} alt="" loading="lazy" /><h3>{book.title}</h3>
             </Link>
             {book.reasons.length > 0 && <details className="recommendation-explanation"><summary>Neden bu roman?</summary><ul>{book.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
-            <div className="recommendation-feedback-actions"><button type="button" disabled={busy || loading} onClick={() => void start(book)}>Okumaya başla</button></div>
+            <div className="recommendation-feedback-actions"><button type="button" disabled={busy || loading} onClick={() => void start(book)}><span>Okumaya başla</span><span aria-hidden="true">↗</span></button></div>
         </article>)}</div>
     </section>
 }

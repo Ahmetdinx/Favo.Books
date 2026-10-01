@@ -16,6 +16,7 @@ import { useAuth } from '../auth/useAuth'
 
 import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
 import ReaderSettings from '../profile/ReaderSettings'
+import { ReaderConnections } from '../profile/ReaderSocial'
 import ProfileAchievements from '../profile/ProfileAchievements'
 
 import {
@@ -633,6 +634,7 @@ function ProfilePage() {
             </header>
 
             <ReaderSettings />
+            <ReaderConnections />
             <ProfileFeaturedBooksSection />
             <ProfileAchievements />
             <section

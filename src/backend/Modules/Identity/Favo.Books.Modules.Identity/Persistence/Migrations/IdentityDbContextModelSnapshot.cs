@@ -63,6 +63,27 @@ namespace Favo.Books.Modules.Identity.Persistence.Migrations
                     b.ToTable("refresh_tokens", "identity");
                 });
 
+            modelBuilder.Entity("Favo.Books.Modules.Identity.Domain.Users.ReaderFollow", b =>
+                {
+                    b.Property<Guid>("FollowerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FollowedId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("FollowerId", "FollowedId");
+
+                    b.HasIndex("FollowedId", "CreatedAtUtc");
+
+                    b.ToTable("reader_follows", "identity", t =>
+                        {
+                            t.HasCheckConstraint("CK_reader_follows_not_self", "\"FollowerId\" <> \"FollowedId\"");
+                        });
+                });
+
             modelBuilder.Entity("Favo.Books.Modules.Identity.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -121,6 +142,21 @@ namespace Favo.Books.Modules.Identity.Persistence.Migrations
                     b.HasOne("Favo.Books.Modules.Identity.Domain.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Favo.Books.Modules.Identity.Domain.Users.ReaderFollow", b =>
+                {
+                    b.HasOne("Favo.Books.Modules.Identity.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("FollowedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Favo.Books.Modules.Identity.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

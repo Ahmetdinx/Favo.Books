@@ -6,6 +6,7 @@ import type { BookSummary } from '../catalog/catalogTypes'
 import '../profile/Readers.css'
 import AchievementTracks, { type AchievementTrack } from '../profile/AchievementTracks'
 import ReaderAvatar from '../profile/ReaderAvatar'
+import { FollowReader } from '../profile/ReaderSocial'
 
 const criteria = { theme: 'Konu / Fikir', language: 'Anlatım ve Dil', characters: 'Karakterler', structure: 'Kurgu ve Yapı',
     pace: 'Tempo', impact: 'Duygusal / Düşünsel Etki', experience: 'Okuma Deneyimi' }
@@ -71,6 +72,7 @@ export default function PublicReaderPage() {
         {busy ? <p role="status">Kitaplık yükleniyor…</p> : error ? <div role="alert"><p>{error}</p><button onClick={() => setVersion(v => v + 1)}>Tekrar dene</button></div> : data && <>
             <header className="public-reader-header"><ReaderAvatar avatarId={data.avatarId} achievements={data.achievements} size="large" />
                 <div><h1>@{data.nickname}</h1><p>{data.library.totalCount} roman · Açık kitaplık</p></div></header>
+            <FollowReader key={data.nickname} nickname={data.nickname} />
             {(data.showcase.bedsideBookId || data.showcase.influentialBooks.length > 0) && <div className="reader-showcase">
                 {data.showcase.bedsideBookId && <section><h2>Başucu kitabı</h2>{card(data.showcase.bedsideBookId)}</section>}
                 {data.showcase.influentialBooks.length > 0 && <section><h2>İz bırakanlar</h2><div className="reader-rail">{data.showcase.influentialBooks.map(b => card(b.bookId))}</div></section>}

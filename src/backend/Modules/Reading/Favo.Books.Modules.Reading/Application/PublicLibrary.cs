@@ -6,6 +6,12 @@ public sealed record PublicLibraryItem(Guid BookId, string Status);
 public sealed record PublicLibraryPage(PublicLibraryItem[] Items, int TotalCount);
 public sealed class PublicLibrary(ReadingDbContext db, Favo.Books.SharedKernel.Catalog.INovelAchievementCatalog catalog)
 {
+    public sealed record ReadingActivity(Guid UserId, Guid BookId, DateTimeOffset UpdatedAtUtc);
+    public Task<ReadingActivity[]> CurrentReading(Guid[] readers, CancellationToken ct) =>
+        db.LibraryEntries.AsNoTracking().Where(e => readers.Contains(e.UserId) && e.Status == Domain.LibraryEntries.LibraryEntryStatus.Reading)
+            .OrderByDescending(e => e.UpdatedAtUtc).ThenBy(e => e.UserId).ThenBy(e => e.BookId).Take(12)
+            .Select(e => new ReadingActivity(e.UserId, e.BookId, e.UpdatedAtUtc)).ToArrayAsync(ct);
+
     public async Task<int> CountCompletedNovels(Guid id, CancellationToken ct)
     {
         var ids = await db.LibraryEntries.AsNoTracking()
