@@ -19,6 +19,8 @@ public static class SocialEndpoints
         });
         group.MapGet("/me/network", async (ClaimsPrincipal user, ReaderNetwork network, CancellationToken ct) =>
             Results.Ok(await network.State(Id(user), Id(user), ct)));
+        group.MapGet("/me/network-members", async (ClaimsPrincipal user, ReaderNetwork network, CancellationToken ct) =>
+            Results.Ok(new { following = await network.LinkedReaders(Id(user), false, ct), followers = await network.LinkedReaders(Id(user), true, ct) }));
         group.MapGet("/me/connections", async (string? kind, int? page, ClaimsPrincipal user, ReaderNetwork network, CancellationToken ct) =>
         {
             if (kind is not ("followers" or "following") || (page ?? 1) < 1 || (page ?? 1) > 50000)

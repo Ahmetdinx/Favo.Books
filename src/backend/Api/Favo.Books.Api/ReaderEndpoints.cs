@@ -51,6 +51,11 @@ public static class ReaderEndpoints
             var names = await directory.Search(term, page ?? 1, ct);
             return Results.Ok(new { items = names.Take(20), hasMore = names.Length > 20 });
         });
+        group.MapGet("/{nickname}/identity", async (string nickname, ReaderDirectory directory, CancellationToken ct) =>
+        {
+            var reader = await directory.FindPublic(nickname.Trim().ToLowerInvariant(), ct);
+            return reader is null ? Results.NotFound() : Results.Ok(new { reader.Id, reader.Nickname });
+        });
         group.MapGet("/{nickname}", async (string nickname, int? page, ReaderDirectory directory,
             PublicLibrary library, PublicShowcase showcase, PublicReaderRatings ratings, ReaderAchievements achievements, CancellationToken ct) =>
         {
