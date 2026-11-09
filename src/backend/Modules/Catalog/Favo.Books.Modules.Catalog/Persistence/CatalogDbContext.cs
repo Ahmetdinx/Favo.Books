@@ -1,4 +1,5 @@
-﻿using Favo.Books.Modules.Catalog.Domain.Authors;
+﻿using Favo.Books.Modules.Catalog.Application.Books.Browse;
+using Favo.Books.Modules.Catalog.Domain.Authors;
 using Favo.Books.Modules.Catalog.Domain.Books;
 using Favo.Books.Modules.Catalog.Domain.Categories;
 using Favo.Books.Modules.Catalog.Domain.Editions;
@@ -48,6 +49,11 @@ public sealed class CatalogDbContext : DbContext
         ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("catalog");
+
+        modelBuilder
+            .HasDbFunction(typeof(CatalogSearchText).GetMethod(nameof(CatalogSearchText.Fold))!)
+            .HasName("translate")
+            .IsBuiltIn();
 
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(CatalogDbContext).Assembly);

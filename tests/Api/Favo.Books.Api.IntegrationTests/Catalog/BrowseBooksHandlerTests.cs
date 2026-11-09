@@ -147,7 +147,88 @@ public sealed class BrowseBooksHandlerTests
             "https://example.com/turkish-cover.jpg",
             turkishItem.CoverImageUrl);
 
-        Assert.Empty(englishResult.Items);
+        Assert.DoesNotContain(
+            englishResult.Items,
+            item => item.BookId == englishFallbackBook.Id);
+    }
+
+    [Theory]
+    [InlineData("kurk mantolu")]
+    [InlineData("KÜRK MANTOLU")]
+    [InlineData("madonna kürk")]
+    [InlineData("sabahattin kurk")]
+    [InlineData("ALİ madonna")]
+    public async Task Search_MatchesTurkishLettersAndWordsAcrossFields(string text)
+    {
+        using var scope = _factory.Services.CreateScope();
+        var marker = Guid.NewGuid().ToString("N");
+        var book = await SeedBook(scope, $"Kürk Mantolu Madonna {marker}", "Sabahattin Ali");
+        var handler = scope.ServiceProvider.GetRequiredService<BrowseBooksHandler>();
+
+        var result = await handler.HandleAsync(
+            new BrowseBooksQuery($"{text} {marker}", CatalogBookSearchField.All, null, 1, 10, CatalogBookSort.RecentlyAdded));
+
+        Assert.Equal(book.Id, Assert.Single(result.Items).BookId);
+    }
+
+    [Fact]
+    public async Task Search_FindsBookByHyphenatedIsbn()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var digits = Random.Shared.NextInt64(1_000_000_000, 9_999_999_999).ToString();
+        var book = await SeedBook(scope, $"Isbn {Guid.NewGuid():N}", "Yazar", "978" + digits);
+        var handler = scope.ServiceProvider.GetRequiredService<BrowseBooksHandler>();
+
+        var result = await handler.HandleAsync(
+            new BrowseBooksQuery($"978-{digits}", CatalogBookSearchField.All, null, 1, 10, CatalogBookSort.RecentlyAdded));
+
+        Assert.Equal(book.Id, Assert.Single(result.Items).BookId);
+    }
+
+    [Fact]
+    public async Task Search_TreatsWildcardsAsLiteralText()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var marker = Guid.NewGuid().ToString("N");
+        await SeedBook(scope, $"Joker {marker}", "Yazar");
+        var handler = scope.ServiceProvider.GetRequiredService<BrowseBooksHandler>();
+
+        var result = await handler.HandleAsync(
+            new BrowseBooksQuery($"J_ker% {marker}", CatalogBookSearchField.All, null, 1, 10, CatalogBookSort.RecentlyAdded));
+
+        Assert.Empty(result.Items);
+    }
+
+    [Fact]
+    public async Task Search_RanksTitlePrefixFirstUnderDefaultSort()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var marker = Guid.NewGuid().ToString("N");
+        var prefix = await SeedBook(scope, $"{marker} Başlangıç", "Yazar");
+        await SeedBook(scope, $"Sonra {marker}", "Yazar");
+        var handler = scope.ServiceProvider.GetRequiredService<BrowseBooksHandler>();
+
+        var result = await handler.HandleAsync(
+            new BrowseBooksQuery(marker, CatalogBookSearchField.All, null, 1, 10, CatalogBookSort.RecentlyAdded));
+
+        Assert.Equal(2, result.TotalCount);
+        Assert.Equal(prefix.Id, result.Items[0].BookId);
+    }
+
+    private static async Task<Book> SeedBook(IServiceScope scope, string title, string authorName, string? isbn13 = null)
+    {
+        var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        var book = new Book(title, "tur");
+        var author = new Favo.Books.Modules.Catalog.Domain.Authors.Author(authorName);
+        db.Books.Add(book);
+        db.Authors.Add(author);
+        db.BookAuthors.Add(new BookAuthor(book.Id, author.Id, 1));
+        db.Editions.Add(new Edition(book.Id, title, "tur", EditionFormat.Paperback,
+            isbn13: isbn13, coverImageUrl: "https://example.com/test.jpg"));
+        db.NovelReviews.Add(new NovelReview(book.Id, NovelDecision.Novel, Guid.NewGuid().ToString("N"),
+            "https://example.com/novel", "Verified fixture", "test", "test-v1"));
+        await db.SaveChangesAsync();
+        return book;
     }
 
     [Theory]

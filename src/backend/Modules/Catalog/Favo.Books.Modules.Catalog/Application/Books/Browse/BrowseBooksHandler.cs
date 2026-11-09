@@ -44,63 +44,58 @@ public sealed class BrowseBooksHandler
                     normalizedCategorySlug));
         }
 
+        const string from = CatalogSearchText.TurkishLetters;
+        const string to = CatalogSearchText.PlainLetters;
+
         if (normalizedQuery is not null)
         {
-            string searchPattern =
-                $"%{normalizedQuery}%";
-
-            books = query.SearchField switch
+            foreach (string term in CatalogSearchText.Terms(normalizedQuery))
             {
-                CatalogBookSearchField.Title =>
-                    books.Where(book =>
-                        EF.Functions.ILike(
-                            book.Title,
-                            searchPattern) ||
-                        (
-                            book.OriginalTitle != null &&
-                            EF.Functions.ILike(
-                                book.OriginalTitle,
-                                searchPattern)
-                        ) ||
-                        book.Editions.Any(edition =>
-                            EF.Functions.ILike(
-                                edition.Title,
-                                searchPattern))),
+                string pattern = CatalogSearchText.Contains(term);
+                string isbn = CatalogSearchText.IsbnDigits(term);
 
-                CatalogBookSearchField.Author =>
-                    books.Where(book =>
-                        book.Authors.Any(bookAuthor =>
-                            EF.Functions.ILike(
-                                bookAuthor.Author.Name,
-                                searchPattern))),
+                books = query.SearchField switch
+                {
+                    CatalogBookSearchField.Title =>
+                        books.Where(book =>
+                            EF.Functions.ILike(CatalogSearchText.Fold(book.Title, from, to), pattern) ||
+                            (book.OriginalTitle != null &&
+                                EF.Functions.ILike(CatalogSearchText.Fold(book.OriginalTitle, from, to), pattern)) ||
+                            book.Editions.Any(edition =>
+                                EF.Functions.ILike(CatalogSearchText.Fold(edition.Title, from, to), pattern))),
 
-                _ =>
-                    books.Where(book =>
-                        EF.Functions.ILike(
-                            book.Title,
-                            searchPattern) ||
-                        (
-                            book.OriginalTitle != null &&
-                            EF.Functions.ILike(
-                                book.OriginalTitle,
-                                searchPattern)
-                        ) ||
-                        book.Editions.Any(edition =>
-                            EF.Functions.ILike(
-                                edition.Title,
-                                searchPattern)) ||
-                        book.Authors.Any(bookAuthor =>
-                            EF.Functions.ILike(
-                                bookAuthor.Author.Name,
-                                searchPattern)))
-            };
+                    CatalogBookSearchField.Author =>
+                        books.Where(book =>
+                            book.Authors.Any(bookAuthor =>
+                                EF.Functions.ILike(CatalogSearchText.Fold(bookAuthor.Author.Name, from, to), pattern))),
+
+                    _ =>
+                        books.Where(book =>
+                            EF.Functions.ILike(CatalogSearchText.Fold(book.Title, from, to), pattern) ||
+                            (book.OriginalTitle != null &&
+                                EF.Functions.ILike(CatalogSearchText.Fold(book.OriginalTitle, from, to), pattern)) ||
+                            book.Editions.Any(edition =>
+                                EF.Functions.ILike(CatalogSearchText.Fold(edition.Title, from, to), pattern) ||
+                                edition.Isbn13 == isbn ||
+                                edition.Isbn10 == isbn) ||
+                            book.Authors.Any(bookAuthor =>
+                                EF.Functions.ILike(CatalogSearchText.Fold(bookAuthor.Author.Name, from, to), pattern)))
+                };
+            }
         }
 
         int totalCount =
             await books.CountAsync(cancellationToken);
 
         var demoted = demotedBookIds ?? [];
-        var prioritized = books.OrderBy(book => demoted.Contains(book.Id));
+        string? titlePrefix = normalizedQuery is null
+            ? null
+            : CatalogSearchText.StartsWith(CatalogSearchText.Normalize(normalizedQuery));
+        var prioritized = books
+            .OrderBy(book => demoted.Contains(book.Id))
+            .ThenByDescending(book =>
+                titlePrefix != null &&
+                EF.Functions.ILike(CatalogSearchText.Fold(book.Title, from, to), titlePrefix));
         IQueryable<Book> orderedBooks =
             query.Sort switch
             {
