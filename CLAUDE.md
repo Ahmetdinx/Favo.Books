@@ -60,6 +60,7 @@ Modüler monolit: tek API, tek PostgreSQL, modül başına şema ve `DbContext`.
 ### Kimlik ve ön yüz
 
 - Erişim JWT'si 15 dakikadır ve bellekte tutulur. Refresh token HttpOnly çerezde, `/api/identity` yoluna bağlıdır; rotasyon ve tekrar kullanımda aile iptali vardır.
+- Katalog yönetim uçları `AuthorizationPolicies.CatalogAdmin` politikasını ister; JWT `role=admin` iddiası `identity.users."IsAdmin"` alanından gelir. Rol verme ucu yoktur, SQL ile verilir (README, Administrators).
 - `KitapKivo` adlı JWT issuer/audience, çerez adı ve user-secrets kimliği uyumluluk için bilerek korunur; değiştirmek mevcut oturumları ve yerel ayarları bozar.
 - Gizli profiller arama, liste ve akışlarda görünmez; takip için takip edenin profili de herkese açık olmalıdır.
 - Ön yüz hem `/` hem `/kitap/` tabanında çalışır; yönlendirme ve paylaşım linkleri `import.meta.env.BASE_URL` kullanmalıdır.
@@ -67,4 +68,4 @@ Modüler monolit: tek API, tek PostgreSQL, modül başına şema ve `DbContext`.
 
 ## Belgeler
 
-`PROJECT_CONTEXT.md` tarih sıralı oturum notlarıdır ve eski yollar içerir. Kapsam için `docs/novel-product-plan.md` esastır. `ROADMAP.md` film ve takip akışlarını hâlâ kapsam dışı gösterir, oysa ikisi de uygulanmıştır.
+`PROJECT_CONTEXT.md` tarih sıralı oturum notlarıdır ve eski yollar içerir. Kapsam için `docs/novel-product-plan.md` esastır.

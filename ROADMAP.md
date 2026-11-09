@@ -4,6 +4,9 @@ Revised 2026-09-25. Authoritative scope and acceptance criteria:
 [Novel discovery product plan](docs/novel-product-plan.md).
 Checked items indicate implementation, not production certification.
 
+Note (2026-11-09): reader following and activity feeds shipped after this revision; see
+[reader network](docs/reader-network.md).
+
 ## Foundation retained
 
 - [x] Modular API, PostgreSQL migrations and React frontend.
@@ -84,8 +87,8 @@ Checked items indicate implementation, not production certification.
 
 ## Explicit exclusions
 
-Posts, messages, chat, review/comment threads, follow feeds, universal recommendation
-homepage, film/series and in-app reading. Additional providers, native apps and
+Posts, messages, chat, review/comment threads, universal recommendation
+homepage and in-app reading. Film lives in the separate Favo.Movie repository. Additional providers, native apps and
 advanced rankings await evidence of useful discovery and repeat use.
 
 See the product plan for the eight-week sequence and scope-reduction rules.

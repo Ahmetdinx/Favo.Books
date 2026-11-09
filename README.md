@@ -52,7 +52,7 @@ lockfile, and Docker with Compose for PostgreSQL and integration tests. Node
 
 From the repository root:
 
-1. Create an untracked `.env` with `POSTGRES_DB`, `POSTGRES_USER`, and
+1. Copy `.env.example` to an untracked `.env` and set `POSTGRES_DB`, `POSTGRES_USER`, and
    `POSTGRES_PASSWORD`. These values configure Compose, not the API.
 2. Run `docker compose up -d postgres`.
    On a fresh installation, first run `docker volume create favo-kitap-postgres-data`.
@@ -101,6 +101,16 @@ The Community detailed-rating migration preserves old 1-5 votes as legacy data.
 They are excluded from new averages until users submit all seven criterion scores.
 See [ADR 0005](docs/decisions/0005-detailed-book-ratings.md) for weights and contracts.
 
+### Administrators
+
+Catalog management endpoints (import jobs, external resolve, author creation) require an
+admin account. There is no endpoint for granting the role; set it in the database, then sign
+in again so the access token carries it:
+
+```sql
+UPDATE identity.users SET "IsAdmin" = true WHERE "Email" = 'user@example.com';
+```
+
 ### Verification
 
 ```powershell
@@ -129,5 +139,5 @@ not yet been added. Passing these commands does not verify live external data.
 - [Architecture decisions](docs/decisions/)
 
 Open Library is the implemented external provider. Wikidata enrichment and Google
-Books fallback are planned, not implemented. User following, likes, feeds,
-notifications, and a dedicated administration panel remain outside the initial MVP.
+Books fallback are planned, not implemented. Reader following and activity feeds are
+implemented. Likes, notifications and a dedicated administration panel remain out of scope.
