@@ -3,7 +3,8 @@ import { Link } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
 import { getBookSummaries } from '../catalog/catalogApi'
-import { catalogCoverUrl } from '../catalog/coverImage'
+import { cleanBookTitle } from '../catalog/bookTitle'
+import BookObject from '../components/BookObject'
 import type { BookSummary } from '../catalog/catalogTypes'
 import ReaderAvatar from './ReaderAvatar'
 import './ReaderSocial.css'
@@ -112,12 +113,6 @@ export function ReaderConnections() {
     </section>
 }
 
-function ActivityCover({ book }: { book: BookSummary | undefined }) {
-    const [failed, setFailed] = useState(false)
-    return book?.coverImageUrl && !failed ? <img className="social-cover" src={catalogCoverUrl(book.coverImageUrl)} alt="" loading="lazy" onError={() => setFailed(true)} />
-        : <span className="social-cover social-cover-empty" aria-hidden="true">▤</span>
-}
-
 export default function ReaderActivity() {
     const feed = useSocial<Feed>('/api/readers/me/activity')
     const [books, setBooks] = useState<BookSummary[]>([])
@@ -132,19 +127,21 @@ export default function ReaderActivity() {
         return () => controller.abort()
     }, [feed.data])
     const byId = new Map(books.map(book => [book.bookId, book]))
-    return <section className="reader-activity" aria-label="Okur çevrenden">
+    const items = [
+        ...(feed.data?.reading ?? []).map(item => ({ ...item, kind: 'reading' as const })),
+        ...(feed.data?.reviews ?? []).map(item => ({ ...item, kind: 'review' as const })),
+    ].sort((a, b) => b.updatedAtUtc.localeCompare(a.updatedAtUtc)).slice(0, 12)
+    return <section className="reader-feed" aria-labelledby="reader-feed-heading">
+        <h2 id="reader-feed-heading">Okur çevrenden</h2>
         <LoadState busy={feed.busy} error={feed.error || catalogError} retry={feed.refresh} />
-        <div className="social-columns">{(['reading', 'reviews'] as const).map(kind => <section className={'social-panel social-panel-' + kind} key={kind}>
-            <header><span className="social-panel-mark" aria-hidden="true">{kind === 'reading' ? '▤' : '✧'}</span><h2>{kind === 'reading' ? 'Takip ettiklerin okuyor' : 'Takipçilerin değerlendirdi'}</h2></header>
-            {feed.data && !feed.data[kind].length && <div className="social-empty"><span aria-hidden="true">{kind === 'reading' ? '↗' : '☆'}</span><p>{kind === 'reading' ? 'Okur çevrenin sıradaki sayfaları burada.' : 'Yeni değerlendirmeler burada buluşacak.'}</p><Link to="/profile">Okur çevrem</Link></div>}
-            <ul>{(feed.data?.[kind] ?? []).map(item => { const book = byId.get(item.bookId); return <li key={item.nickname + item.bookId}>
-                <Link className="social-book-cover" to={'/catalog/books/' + item.bookId}><ActivityCover key={book?.coverImageUrl ?? item.bookId} book={book} /><span className="social-sr-only">{book?.title ?? 'Kitap detayları'}</span></Link>
-                <div className="social-activity-copy"><Link className="social-reader" to={'/okur/' + item.nickname}><ReaderAvatar avatarId={item.avatarId} size="small" /><span>@{item.nickname}</span></Link>
-                    <Link className="social-book-title" to={'/catalog/books/' + item.bookId}>{book?.title ?? 'Kitap detayları'}</Link>
-                    <div className="social-meta">{kind === 'reviews' ? <strong>★ {item.overallScore?.toLocaleString('tr-TR', { maximumFractionDigits: 1 })}<small> / 10</small></strong> : <span>Şu an okuyor</span>}
-                        <time dateTime={item.updatedAtUtc}>{new Date(item.updatedAtUtc).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}</time></div>
-                </div>
-            </li> })}</ul>
-        </section>)}</div>
+        {feed.data && !items.length && <p className="reader-feed-empty">Takip ettiklerin burada görünür.</p>}
+        {items.length > 0 && <ol>{items.map(item => { const book = byId.get(item.bookId); const title = book ? cleanBookTitle(book.title) : 'Kitap detayları'; return <li key={item.kind + item.nickname + item.bookId}>
+            <Link to={'/catalog/books/' + item.bookId} aria-label={title}><BookObject title={title} coverImageUrl={book?.coverImageUrl} size="xs" /></Link>
+            <div className="reader-feed-copy">
+                <Link className="social-reader" to={'/okur/' + item.nickname}><ReaderAvatar avatarId={item.avatarId} size="small" /><span>@{item.nickname}</span></Link>
+                <Link className="reader-feed-title" to={'/catalog/books/' + item.bookId}>{title}</Link>
+                <span className="reader-feed-meta">{item.kind === 'review' ? `${item.overallScore?.toLocaleString('tr-TR', { maximumFractionDigits: 1 })} / 10 verdi` : 'Şu an okuyor'} · <time dateTime={item.updatedAtUtc}>{new Date(item.updatedAtUtc).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}</time></span>
+            </div>
+        </li> })}</ol>}
     </section>
 }

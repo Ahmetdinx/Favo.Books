@@ -18,6 +18,8 @@ import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
 import ReaderSettings from '../profile/ReaderSettings'
 import { ReaderConnections } from '../profile/ReaderSocial'
 import ProfileAchievements from '../profile/ProfileAchievements'
+import BookObject from '../components/BookObject'
+import { cleanBookTitle } from '../catalog/bookTitle'
 
 import {
     getBookSummaries,
@@ -56,18 +58,6 @@ type ProfileLibraryItem = {
     book: BookSummary | null
 }
 
-type ProfileSummaryCard = {
-    filter: LibraryFilter
-    label: string
-    description: string
-    count: number
-}
-
-type ProfileBookCoverProps = {
-    coverImageUrl: string | null
-    title: string
-}
-
 const pageSize = 12
 
 const filterOptions: ReadonlyArray<{
@@ -101,44 +91,6 @@ const statusLabels: Record<
     Read: 'Okudum',
     OnHold: 'Ara Verdim',
     Dropped: 'Yarım Bıraktım',
-}
-
-function ProfileBookCover({
-    coverImageUrl,
-    title,
-}: ProfileBookCoverProps) {
-    const [
-        hasImageError,
-        setHasImageError,
-    ] = useState(false)
-
-    if (!coverImageUrl || hasImageError) {
-        const firstLetter =
-            title
-                .trim()
-                .charAt(0)
-                .toLocaleUpperCase('tr-TR') ||
-            'K'
-
-        return (
-            <div className="profile-book-cover-placeholder">
-                <span>{firstLetter}</span>
-                <small>Kapak bulunamadı</small>
-            </div>
-        )
-    }
-
-    return (
-        <img
-            className="profile-book-cover-image"
-            src={coverImageUrl}
-            alt={`${title} kapak görseli`}
-            loading="lazy"
-            onError={() =>
-                setHasImageError(true)
-            }
-        />
-    )
 }
 
 function ProfilePage() {
@@ -236,49 +188,6 @@ function ProfilePage() {
             : Math.ceil(
                 totalCount / pageSize,
             )
-
-    const summaryCards: ProfileSummaryCard[] =
-        librarySummary
-            ? [
-                {
-                    filter: 'all',
-                    label: 'Toplam',
-                    description:
-                        'Kişisel kitaplığındaki ' +
-                        'tüm kitaplar',
-                    count:
-                        librarySummary.totalCount,
-                },
-                {
-                    filter: 'WantToRead',
-                    label: 'Okuma Listem',
-                    description:
-                        'Sırada bekleyen ' +
-                        'kitapların',
-                    count:
-                        librarySummary
-                            .wantToReadCount,
-                },
-                {
-                    filter: 'Reading',
-                    label: 'Okuyorum',
-                    description:
-                        'Şu anda eşlik eden ' +
-                        'kitapların',
-                    count:
-                        librarySummary
-                            .readingCount,
-                },
-                {
-                    filter: 'Read',
-                    label: 'Okudum',
-                    description:
-                        'Tamamladığın kitapların',
-                    count:
-                        librarySummary.readCount,
-                },
-            ]
-            : []
 
     useEffect(() => {
         if (!userId) {
@@ -624,480 +533,103 @@ function ProfilePage() {
         return null
     }
 
+    const tabCounts: Record<LibraryFilter, number | undefined> = {
+        all: librarySummary?.totalCount,
+        WantToRead: librarySummary?.wantToReadCount,
+        Reading: librarySummary?.readingCount,
+        Read: librarySummary?.readCount,
+    }
+
     return (
         <section className="profile-page">
-            <header className="profile-page-header">
-                <div>
-
-                    <h1>Kitaplığım</h1>
-                </div>
+            <header className="library-room-header">
+                <h1>Kitaplığım</h1>
+                {librarySummary && <p>{librarySummary.totalCount} kitap · {librarySummary.readCount} tanesi okundu</p>}
             </header>
 
-            <ReaderSettings />
-            <ReaderConnections />
             <ProfileFeaturedBooksSection />
+
+            <section className="bookcase-section" aria-labelledby="bookcase-heading">
+                <h2 id="bookcase-heading" className="profile-visually-hidden">Raflarım</h2>
+
+                <div className="bookcase-tabs" role="group" aria-label="Kitaplık rafları">
+                    {filterOptions.map(option => (
+                        <button key={option.value} type="button"
+                            aria-pressed={selectedFilter === option.value}
+                            onClick={() => { setSelectedFilter(option.value); setPage(1) }}>
+                            {option.label}
+                            <strong>{tabCounts[option.value] ?? (isSummaryLoading ? '…' : '')}</strong>
+                        </button>
+                    ))}
+                </div>
+
+                {isLibraryLoading && <div className="bookcase-state" role="status">Raflar diziliyor…</div>}
+
+                {!isLibraryLoading && libraryErrorMessage && (
+                    <div className="bookcase-state">
+                        <p role="alert">{libraryErrorMessage}</p>
+                        <button className="button secondary-button" type="button"
+                            onClick={() => setLibraryRequestVersion(current => current + 1)}>
+                            Tekrar dene
+                        </button>
+                    </div>
+                )}
+
+                {!isLibraryLoading && !libraryErrorMessage && libraryItems.length === 0 && (
+                    <div className="bookcase-state">
+                        <h3>Bu raf henüz boş</h3>
+                        <Link className="button primary-button" to="/catalog">Kataloğu keşfet</Link>
+                    </div>
+                )}
+
+                {!isLibraryLoading && !libraryErrorMessage && libraryItems.length > 0 && (
+                    <div className="bookcase">
+                        {libraryItems.map(({ entry, book }) => {
+                            const title = book ? cleanBookTitle(book.title) : 'Katalog kaydı bulunamadı'
+                            const authors = book?.authors.map(author => author.name).join(', ') ?? ''
+                            const volume = <BookObject title={title} author={authors} coverImageUrl={book?.coverImageUrl} />
+                            return (
+                                <article className="bookcase-slot" key={entry.libraryEntryId}>
+                                    <div className="bookcase-book">
+                                        {book
+                                            ? <Link to={`/catalog/books/${book.bookId}`} aria-label={`${title} detaylarını görüntüle`}>{volume}</Link>
+                                            : volume}
+                                        <span className={`bookcase-ribbon status-${entry.status.toLowerCase()}`}>{statusLabels[entry.status]}</span>
+                                    </div>
+                                    <div className="bookcase-label">
+                                        <h3 title={title}>{book ? <Link to={`/catalog/books/${book.bookId}`}>{title}</Link> : title}</h3>
+                                        <p title={authors}>{authors || 'Yazar bilgisi yok'}</p>
+                                    </div>
+                                </article>
+                            )
+                        })}
+                    </div>
+                )}
+
+                {summaryErrorMessage && !isSummaryLoading && (
+                    <p className="bookcase-note" role="alert">
+                        {summaryErrorMessage}{' '}
+                        <button type="button" onClick={() => setSummaryRequestVersion(current => current + 1)}>Tekrar dene</button>
+                    </p>
+                )}
+
+                {totalPages > 1 && !isLibraryLoading && (
+                    <nav className="profile-pagination" aria-label="Kitaplık sayfaları">
+                        <button className="button secondary-button" type="button" disabled={page <= 1}
+                            onClick={() => setPage(current => Math.max(1, current - 1))}>Önceki</button>
+                        <span>{page} / {totalPages}</span>
+                        <button className="button secondary-button" type="button" disabled={page >= totalPages}
+                            onClick={() => setPage(current => Math.min(totalPages, current + 1))}>Sonraki</button>
+                    </nav>
+                )}
+            </section>
+
             <ProfileAchievements />
-            <section
-                className="profile-summary-section"
-                aria-labelledby={
-                    'reading-summary-heading'
-                }
-            >
-                <h2 id="reading-summary-heading" className="profile-visually-hidden">Kitaplık özeti</h2>
-
-                {isSummaryLoading && (
-                    <div
-                        className={
-                            'profile-summary-message'
-                        }
-                        role="status"
-                    >
-                        İstatistikleriniz
-                        yükleniyor...
-                    </div>
-                )}
-
-                {!isSummaryLoading &&
-                    summaryErrorMessage && (
-                        <div className="profile-summary-message profile-summary-error">
-                            <p role="alert">
-                                {
-                                    summaryErrorMessage
-                                }
-                            </p>
-
-                            <button
-                                className={
-                                    'button ' +
-                                    'secondary-button'
-                                }
-                                type="button"
-                                onClick={() =>
-                                    setSummaryRequestVersion(
-                                        (
-                                            current,
-                                        ) =>
-                                            current +
-                                            1,
-                                    )
-                                }
-                            >
-                                Tekrar dene
-                            </button>
-                        </div>
-                    )}
-
-                {!isSummaryLoading &&
-                    !summaryErrorMessage &&
-                    librarySummary && (
-                        <div className="profile-summary-grid">
-                            {summaryCards.map(
-                                (card) => (
-                                    <button
-                                        key={
-                                            card.filter
-                                        }
-                                        className={
-                                            'profile-summary-card' +
-                                            (
-                                                selectedFilter ===
-                                                    card.filter
-                                                    ? ' active'
-                                                    : ''
-                                            )
-                                        }
-                                        type="button"
-                                        aria-pressed={
-                                            selectedFilter ===
-                                            card.filter
-                                        }
-                                        onClick={() => {
-                                            setSelectedFilter(
-                                                card.filter,
-                                            )
-
-                                            setPage(1)
-                                        }}
-                                    >
-                                        <span>
-                                            {
-                                                card.label
-                                            }
-                                        </span>
-
-                                        <strong>
-                                            {
-                                                card.count
-                                            }
-                                        </strong>
-                                    </button>
-                                ),
-                            )}
-                        </div>
-                    )}
-            </section>
-
-            <section className="profile-library-section">
-                <div className="profile-library-header">
-                    <div>
-
-                        <h2>Kitapların</h2>
-                    </div>
-
-                    <div className="profile-library-count">
-                        <strong>
-                            {totalCount}
-                        </strong>
-
-                        <span>
-                            {selectedFilter ===
-                                'all'
-                                ? 'kitap'
-                                : 'bu durumda kitap'}
-                        </span>
-                    </div>
-                </div>
-
-                <div
-                    className="profile-filter-tabs"
-                    aria-label={
-                        'Kitaplık filtreleri'
-                    }
-                >
-                    {filterOptions.map(
-                        (option) => (
-                            <button
-                                key={
-                                    option.value
-                                }
-                                className={
-                                    'profile-filter-button' +
-                                    (
-                                        selectedFilter ===
-                                            option.value
-                                            ? ' active'
-                                            : ''
-                                    )
-                                }
-                                type="button"
-                                aria-pressed={
-                                    selectedFilter ===
-                                    option.value
-                                }
-                                onClick={() => {
-                                    setSelectedFilter(
-                                        option.value,
-                                    )
-
-                                    setPage(1)
-                                }}
-                            >
-                                {option.label}
-                            </button>
-                        ),
-                    )}
-                </div>
-
-                {isLibraryLoading && (
-                    <div
-                        className={
-                            'profile-library-state'
-                        }
-                        role="status"
-                    >
-                        Kitaplığınız yükleniyor...
-                    </div>
-                )}
-
-                {!isLibraryLoading &&
-                    libraryErrorMessage && (
-                        <div className="profile-library-state profile-library-error">
-                            <p role="alert">
-                                {
-                                    libraryErrorMessage
-                                }
-                            </p>
-
-                            <button
-                                className={
-                                    'button ' +
-                                    'secondary-button'
-                                }
-                                type="button"
-                                onClick={() =>
-                                    setLibraryRequestVersion(
-                                        (
-                                            current,
-                                        ) =>
-                                            current +
-                                            1,
-                                    )
-                                }
-                            >
-                                Tekrar dene
-                            </button>
-                        </div>
-                    )}
-
-                {!isLibraryLoading &&
-                    !libraryErrorMessage &&
-                    libraryItems.length ===
-                    0 && (
-                        <div className="profile-library-state profile-library-empty">
-                            <h3>
-                                Bu bölüm henüz boş
-                            </h3>
-
-                            <Link
-                                className={
-                                    'button ' +
-                                    'primary-button'
-                                }
-                                to="/catalog"
-                            >
-                                Kataloğu Keşfet
-                            </Link>
-                        </div>
-                    )}
-
-                {!isLibraryLoading &&
-                    !libraryErrorMessage &&
-                    libraryItems.length >
-                    0 && (
-                        <>
-                            <div className="profile-library-grid">
-                                {libraryItems.map(
-                                    ({
-                                        entry,
-                                        book,
-                                    }) => {
-                                        const title =
-                                            book?.title ??
-                                            'Katalog kaydı bulunamadı'
-
-                                        const authors =
-                                            book?.authors
-                                                .map(
-                                                    (
-                                                        author,
-                                                    ) =>
-                                                        author.name,
-                                                )
-                                                .join(
-                                                    ', ',
-                                                ) ??
-                                            ''
-
-                                        const statusClass =
-                                            entry.status
-                                                .toLowerCase()
-
-                                        return (
-                                            <article
-                                                className={
-                                                    'profile-book-card'
-                                                }
-                                                key={
-                                                    entry.libraryEntryId
-                                                }
-                                            >
-                                                <div className="profile-book-cover">
-                                                    {book ? (
-                                                        <Link
-                                                            to={`/catalog/books/${book.bookId}`}
-                                                            aria-label={`${book.title} detaylarını görüntüle`}
-                                                        >
-                                                            <ProfileBookCover
-                                                                coverImageUrl={
-                                                                    book.coverImageUrl
-                                                                }
-                                                                title={
-                                                                    book.title
-                                                                }
-                                                            />
-                                                        </Link>
-                                                    ) : (
-                                                        <ProfileBookCover
-                                                            coverImageUrl={
-                                                                null
-                                                            }
-                                                            title={
-                                                                title
-                                                            }
-                                                        />
-                                                    )}
-
-                                                </div>
-                                                    <span
-                                                        className={
-                                                            'profile-book-status ' +
-                                                            `status-${statusClass}`
-                                                        }
-                                                    >
-                                                        {
-                                                            statusLabels[
-                                                            entry
-                                                                .status
-                                                            ]
-                                                        }
-                                                    </span>
-
-                                                <div className="profile-book-content">
-                                                    {book
-                                                        ?.firstPublishedYear && (
-                                                            <p className="profile-book-year">
-                                                                İlk
-                                                                yayın:{' '}
-                                                                {
-                                                                    book.firstPublishedYear
-                                                                }
-                                                            </p>
-                                                        )}
-
-                                                    <h3>
-                                                        {book ? (
-                                                            <Link
-                                                                to={`/catalog/books/${book.bookId}`}
-                                                            >
-                                                                {
-                                                                    book.title
-                                                                }
-                                                            </Link>
-                                                        ) : (
-                                                            title
-                                                        )}
-                                                    </h3>
-
-                                                    <p className="profile-book-authors">
-                                                        {authors ||
-                                                            'Yazar bilgisi yok'}
-                                                    </p>
-
-                                                    {book &&
-                                                        book
-                                                            .categories
-                                                            .length >
-                                                        0 && (
-                                                            <div className="profile-book-categories">
-                                                                {book.categories
-                                                                    .slice(
-                                                                        0,
-                                                                        3,
-                                                                    )
-                                                                    .map(
-                                                                        (
-                                                                            category,
-                                                                        ) => (
-                                                                            <Link
-                                                                                key={
-                                                                                    category.categoryId
-                                                                                }
-                                                                                to={`/catalog?category=${encodeURIComponent(
-                                                                                    category.slug,
-                                                                                )}&page=1`}
-                                                                            >
-                                                                                {
-                                                                                    category.name
-                                                                                }
-                                                                            </Link>
-                                                                        ),
-                                                                    )}
-                                                            </div>
-                                                        )}
-
-                                                    {book ? (
-                                                        <Link
-                                                            className={
-                                                                'profile-book-detail-link'
-                                                            }
-                                                            to={`/catalog/books/${book.bookId}`}
-                                                        >
-                                                            Kitabı
-                                                            incele
-                                                        </Link>
-                                                    ) : (
-                                                        <span className="profile-book-missing">
-                                                            Kitap
-                                                            katalogda
-                                                            bulunamadı.
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </article>
-                                        )
-                                    },
-                                )}
-                            </div>
-
-                            {totalPages > 1 && (
-                                <nav
-                                    className={
-                                        'profile-pagination'
-                                    }
-                                    aria-label={
-                                        'Kitaplık sayfaları'
-                                    }
-                                >
-                                    <button
-                                        className={
-                                            'button ' +
-                                            'secondary-button'
-                                        }
-                                        type="button"
-                                        disabled={
-                                            page <= 1
-                                        }
-                                        onClick={() =>
-                                            setPage(
-                                                (
-                                                    current,
-                                                ) =>
-                                                    Math.max(
-                                                        1,
-                                                        current -
-                                                        1,
-                                                    ),
-                                            )
-                                        }
-                                    >
-                                        Önceki
-                                    </button>
-
-                                    <span>
-                                        {page} /{' '}
-                                        {totalPages}
-                                    </span>
-
-                                    <button
-                                        className={
-                                            'button ' +
-                                            'secondary-button'
-                                        }
-                                        type="button"
-                                        disabled={
-                                            page >=
-                                            totalPages
-                                        }
-                                        onClick={() =>
-                                            setPage(
-                                                (
-                                                    current,
-                                                ) =>
-                                                    Math.min(
-                                                        totalPages,
-                                                        current +
-                                                        1,
-                                                    ),
-                                            )
-                                        }
-                                    >
-                                        Sonraki
-                                    </button>
-                                </nav>
-                            )}
-                        </>
-                    )}
-            </section>
+            <ReaderConnections />
+            <details className="library-settings">
+                <summary>Profil ayarları</summary>
+                <ReaderSettings />
+            </details>
         </section>
     )
 }

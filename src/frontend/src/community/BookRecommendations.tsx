@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type FormEvent, type MouseEvent, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
+import { cleanBookTitle } from '../catalog/bookTitle'
+import BookObject from '../components/BookObject'
 import { saveInterestedBook } from '../reading/readingApi'
 import './BookRecommendations.css'
 
@@ -17,16 +19,16 @@ type Recommendations = { hasPersonalSignals: boolean; feedback: FeedbackItem[]; 
     shelf: string; genres: string[]; priorityScores: Record<string, number>
 }[] }
 
-export default function BookRecommendations({ home = false }: { home?: boolean }) {
+export default function BookRecommendations({ home = false, social }: { home?: boolean; social?: ReactNode }) {
     const { session } = useAuth()
     const [preview, setPreview] = useState(false)
     return session ? <>
         {import.meta.env.DEV && <div className="recommendation-preview-toggle"><button type="button" onClick={() => setPreview(value => !value)}>{preview ? 'Gerçek önerilere dön' : 'Test verileriyle önerileri dene'}</button></div>}
-        <PersonalRecommendations key={session.userId + ':' + preview} home={home} preview={import.meta.env.DEV && preview} />
+        <PersonalRecommendations key={session.userId + ':' + preview} home={home} social={social} preview={import.meta.env.DEV && preview} />
     </> : null
 }
 
-function PersonalRecommendations({ home, preview }: { home: boolean; preview: boolean }) {
+function PersonalRecommendations({ home, preview, social }: { home: boolean; preview: boolean; social?: ReactNode }) {
     const Heading = home ? 'h1' : 'h2'
     const authenticatedFetch = useAuthenticatedFetch()
     const previewChoices = useRef<Record<string, FeedbackItem['choice']>>({})
@@ -180,12 +182,23 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
         finally { if (!controller.signal.aborted) setSaving(false); saveRequest.current = null; feedbackPending.current = false }
     }
 
+    const featured = home ? result?.items.slice(0, 2) ?? [] : []
+    const guardPreview = (event: MouseEvent) => { if (preview) event.preventDefault() }
+    const feedbackButtons = (book: Recommendations['items'][number], compact = false) => <div className="recommendation-feedback-actions" role="group" aria-label={`${cleanBookTitle(book.title)} için geri bildirim`}>
+        <button type="button" disabled={saving} aria-label="İlgimi çekti, okuma listeme ekle" title="İlgimi çekti"
+            aria-pressed={!!result?.feedback.some(f => f.bookId === book.bookId && f.choice === 'interested')}
+            onClick={() => void giveFeedback(book.bookId, book.title, 'interested')}>{compact ? '+' : '+ Listeme ekle'}</button>
+        <button type="button" disabled={saving} aria-label="Bana uygun değil" title="Bana uygun değil"
+            onClick={() => void giveFeedback(book.bookId, book.title, 'dismissed')}>✕</button>
+    </div>
+
     return <section className="personal-discovery" aria-labelledby="discovery-heading" aria-busy={loading || saving}>
         {preview && <aside className="recommendation-preview-note"><strong>Test ön izlemesi · Gerçek puanlar değildir</strong><p>Klasikler + anlatım, karakterler ve tempo. “Sınır testi” 9 puanla, “Az veri” iki değerlendirmeyle güçlü eşleşmeye girmez. Butonlar yalnızca bu ön izlemeyi değiştirir.</p><button type="button" disabled={saving} onClick={() => { previewChoices.current = {}; setRetry(value => value + 1) }}>Testi sıfırla</button></aside>}
         <Heading id="discovery-heading">Şimdi ne okumalı?</Heading>
         {loading && <p role="status">Öneriler yükleniyor…</p>}
         {error && <p role="alert">{error} {!preferences && <button type="button" onClick={() => setRetry(n => n + 1)}>Tekrar dene</button>}</p>}
         {message && <p role="status">{message}</p>}
+        {!loading && !featured.length && social}
         {!loading && preferences && <div className="reading-preferences">
             <div className="reading-preferences-header"><span className="preferences-emblem" aria-hidden="true">✦</span>
                 <div className="reading-preferences-overview">
@@ -222,7 +235,7 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
             </form>
         </div>}
         {!loading && result && <>
-            <button type="button" className="recommendation-refresh" disabled={saving} onClick={() => void refreshRecommendations()}>Önerileri yenile</button>
+            <button type="button" className="recommendation-refresh" disabled={saving} onClick={() => void refreshRecommendations()}>{home ? '↻ Yenile' : 'Önerileri yenile'}</button>
             {!home && result.feedback.length > 0 && <details className="recommendation-feedback-history">
                 <summary>Geri bildirimlerim ({result.feedback.length})</summary>
                 <p>“İlgimi çekti” romanı okuma listene ekler. Geri bildirimi geri almak kitabı listenden silmez.</p>
@@ -233,34 +246,40 @@ function PersonalRecommendations({ home, preview }: { home: boolean; preview: bo
                 </li>)}</ul>
             </details>}
             {result.items.length === 0 ? <p>Yeni öneri yok. <Link to="/catalog">Kataloğu keşfet</Link></p>
-                : <div className="recommendation-shelves">{[
+                : <div className="recommendation-shelves">
+                {featured.length > 0 && <div className="featured-spread">{featured.map(book => <article className="featured-page" key={book.bookId}>
+                    <Link onClick={guardPreview} aria-disabled={preview || undefined} aria-label={`${cleanBookTitle(book.title)} detaylarını görüntüle`} to={`/catalog/books/${book.bookId}`}>
+                        <BookObject title={book.title} coverImageUrl={book.coverImageUrl} size="md" priority />
+                    </Link>
+                    <div className="featured-page-copy">
+                        <h2><Link onClick={guardPreview} to={`/catalog/books/${book.bookId}`}>{cleanBookTitle(book.title)}</Link></h2>
+                        {book.reasons[0] && <p>{book.reasons[0]}</p>}
+                        {feedbackButtons(book)}
+                    </div>
+                </article>)}</div>}
+                {featured.length > 0 && social}
+                {[
                     { key: 'perfect', title: 'Dört dörtlük eşleşmeler' },
                     { key: 'personal', title: 'Sana göre romanlar' },
                     { key: 'discovery', title: 'Başka türlerde, aynı keyif' },
                 ].map(shelf => {
-                    const books = result.items.filter(book => (book.shelf ?? 'personal') === shelf.key)
+                    const books = result.items.filter(book => !featured.includes(book) && (book.shelf ?? 'personal') === shelf.key).slice(0, 6)
                     if (!books.length) return null
                     return <section key={shelf.key} className={`recommendation-shelf recommendation-shelf-${shelf.key}`} aria-labelledby={`shelf-${shelf.key}`}>
                     <header><h3 id={`shelf-${shelf.key}`}>{shelf.title}</h3></header>
-                    <div className="recommendation-grid">{books.map(book => <article key={book.bookId}>
-                    <Link className="recommendation-book" onClick={event => { if (preview) event.preventDefault() }} aria-disabled={preview || undefined} to={`/catalog/books/${book.bookId}`}>
-                        <img src={book.coverImageUrl} alt="" loading="lazy" />
-                        <h3>{book.title}</h3>
-                    </Link>
-                    <p className="recommendation-genres">{book.genres?.join(' · ')}</p>
-                    {Object.keys(book.priorityScores ?? {}).length > 0 && <div className="recommendation-score-chips">{Object.entries(book.priorityScores).map(([key, score]) => <span key={key}>{criteria.find(([id]) => id === key)?.[1]} <strong>{score.toLocaleString('tr-TR', { maximumFractionDigits: 2 })}/10</strong></span>)}<small>{book.ratingCount} değerlendirme</small></div>}
-                    {book.reasons.length > 0 && <details className="recommendation-explanation"><summary>Neden bu roman?</summary><ul>{book.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
-                    {book.ratingCount < 3 && <small>Okur puanı verisi henüz sınırlı.</small>}
-                    <div className="recommendation-feedback-actions" role="group" aria-label={`${book.title} için geri bildirim`}>
-                        <button type="button" disabled={saving}
-                            aria-pressed={result.feedback.some(f => f.bookId === book.bookId && f.choice === 'interested')}
-                            onClick={() => void giveFeedback(book.bookId, book.title,
-                                'interested')}>İlgimi çekti</button>
-                        <button type="button" disabled={saving} onClick={() => void giveFeedback(book.bookId, book.title, 'dismissed')}>Bana uygun değil</button>
+                    <div className="shelf-row">{books.map(book => <article className="shelf-tile" key={book.bookId}>
+                    <div className="shelf-tile-cover">
+                        <Link onClick={guardPreview} aria-disabled={preview || undefined} aria-label={`${cleanBookTitle(book.title)} detaylarını görüntüle`} title={book.reasons.join(' ') || undefined} to={`/catalog/books/${book.bookId}`}>
+                            <BookObject title={book.title} coverImageUrl={book.coverImageUrl} size="md" />
+                        </Link>
+                        {feedbackButtons(book, true)}
+                    </div>
+                    <div className="shelf-tile-copy">
+                        <h4><Link onClick={guardPreview} to={`/catalog/books/${book.bookId}`}>{cleanBookTitle(book.title)}</Link></h4>
                     </div>
                 </article>)}</div></section>
                 })}</div>}
-            <details className="discovery-footnote"><summary>Öneriler nasıl seçiliyor?</summary><p>Dört dörtlük eşleşme için en az bir tür ve üç öncelik seçmelisin. Her önceliğin okur ortalaması 9’un üzerinde ve romanda en az üç değerlendirme olmalı. Bu bir beğeni garantisi değildir.</p></details>
+            {!home && <details className="discovery-footnote"><summary>Öneriler nasıl seçiliyor?</summary><p>Dört dörtlük eşleşme için en az bir tür ve üç öncelik seçmelisin. Her önceliğin okur ortalaması 9’un üzerinde ve romanda en az üç değerlendirme olmalı. Bu bir beğeni garantisi değildir.</p></details>}
         </>}
     </section>
 }

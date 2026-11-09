@@ -4,6 +4,8 @@ import { useAuth } from '../auth/useAuth'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
 import { getBookSummaries } from '../catalog/catalogApi'
 import type { BookSummary } from '../catalog/catalogTypes'
+import { cleanBookTitle } from '../catalog/bookTitle'
+import BookObject from '../components/BookObject'
 import './RatingPrompts.css'
 
 export default function RatingPrompts() {
@@ -63,16 +65,15 @@ function UserRatingPrompts() {
     return <section className="rating-prompts" aria-labelledby="rating-prompts-heading">
         <header>
             <div>
-                <span className="rating-section-mark" aria-hidden="true">✧</span><h2 id="rating-prompts-heading">Bu kitaplar sende ne bıraktı?</h2>
+                <h2 id="rating-prompts-heading">Değerlendir</h2>
             </div>
-            <button type="button" className="rating-prompts-dismiss" onClick={() => setHidden(true)}>Şimdilik gizle</button>
+            <button type="button" className="rating-prompts-dismiss" onClick={() => setHidden(true)}>Gizle</button>
         </header>
         <ul>
             {books.map(book => <li key={book.bookId}>
                 <div className="rating-prompt-book">
-                    <span className="rating-prompt-mark" aria-hidden="true">↳</span>
-                    <div><h3><Link to={`/catalog/books/${book.bookId}`}>{book.title}</Link></h3>
-                        <p>{book.authors.map(author => author.name).join(', ')}</p></div>
+                    <BookObject title={book.title} coverImageUrl={book.coverImageUrl} size="xs" />
+                    <h3><Link to={`/catalog/books/${book.bookId}`}>{cleanBookTitle(book.title)}</Link></h3>
                 </div>
                 <Link className="button secondary-button" to={`/catalog/books/${book.bookId}#book-rating`}>
                     Değerlendir

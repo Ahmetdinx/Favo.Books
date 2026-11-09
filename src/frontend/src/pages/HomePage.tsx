@@ -9,7 +9,11 @@ import RatingPrompts from '../community/RatingPrompts'
 function HomePage() {
     const { session, isInitializing } = useAuth()
     if (isInitializing) return <p role="status">Kitaplığın hazırlanıyor…</p>
-    if (session) return <div className="reader-home"><ReaderActivity /><BookRecommendations home /><LibraryRecommendations /><RatingPrompts /></div>
+    if (session) return <div className="reader-home">
+        <BookRecommendations home social={<ReaderActivity />} />
+        <LibraryRecommendations />
+        <RatingPrompts />
+    </div>
     return (
         <section className="home-page">
             <div className="hero-copy">

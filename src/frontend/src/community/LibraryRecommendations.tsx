@@ -3,6 +3,8 @@ import { Link } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
 import { getLibraryEntryByBook, updateLibraryStatus } from '../reading/readingApi'
+import { cleanBookTitle } from '../catalog/bookTitle'
+import BookObject from '../components/BookObject'
 
 type Book = { bookId: string; title: string; coverImageUrl: string; reasons: string[] }
 
@@ -74,12 +76,16 @@ function LibraryShelf() {
         {error && <p role="alert">{error} <button type="button" onClick={() => setVersion(v => v + 1)}>Tekrar dene</button></p>}
         {loading && <p role="status">Listen gözden geçiriliyor…</p>}
         {!loading && !error && !books.length && <p>Yeni öneri yok. <Link to="/catalog">Okuma listene roman ekle</Link></p>}
-        <div className="recommendation-grid">{books.map(book => <article key={book.bookId}>
-            <Link className="recommendation-book" to={`/catalog/books/${book.bookId}`}>
-                <img src={book.coverImageUrl} alt="" loading="lazy" /><h3>{book.title}</h3>
-            </Link>
-            {book.reasons.length > 0 && <details className="recommendation-explanation"><summary>Neden bu roman?</summary><ul>{book.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul></details>}
-            <div className="recommendation-feedback-actions"><button type="button" disabled={busy || loading} onClick={() => void start(book)}><span>Okumaya başla</span><span aria-hidden="true">↗</span></button></div>
-        </article>)}</div>
+        {books.length > 0 && <div className="shelf-row">{books.slice(0, 6).map(book => <article className="shelf-tile" key={book.bookId}>
+            <div className="shelf-tile-cover">
+                <Link aria-label={`${cleanBookTitle(book.title)} detaylarını görüntüle`} title={book.reasons.join(' ') || undefined} to={`/catalog/books/${book.bookId}`}>
+                    <BookObject title={book.title} coverImageUrl={book.coverImageUrl} size="md" />
+                </Link>
+            </div>
+            <div className="shelf-tile-copy">
+                <h4><Link to={`/catalog/books/${book.bookId}`}>{cleanBookTitle(book.title)}</Link></h4>
+                <div className="shelf-start"><button type="button" disabled={busy || loading} onClick={() => void start(book)}>Okumaya başla</button></div>
+            </div>
+        </article>)}</div>}
     </section>
 }

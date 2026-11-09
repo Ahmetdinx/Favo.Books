@@ -13,7 +13,8 @@ import {
 import { useAuth } from '../auth/useAuth'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
 import { browseBooks, getCatalogCategories, type CatalogCategory } from '../catalog/catalogApi'
-import { catalogCoverUrl } from '../catalog/coverImage'
+import { cleanBookTitle } from '../catalog/bookTitle'
+import BookObject from '../components/BookObject'
 import { useCatalogLibrary } from '../reading/useCatalogLibrary'
 import CatalogLibraryActions from '../reading/CatalogLibraryActions'
 
@@ -53,51 +54,6 @@ function parseSort(
         value === 'first-published-newest'
         ? value
         : 'recently-added'
-}
-
-type BookCoverProps = {
-    coverImageUrl: string | null
-    title: string
-    priority: boolean
-}
-
-function BookCover({
-    coverImageUrl,
-    title,
-    priority,
-}: BookCoverProps) {
-    const [hasError, setHasError] =
-        useState(false)
-
-    useEffect(() => {
-        setHasError(false)
-    }, [coverImageUrl])
-
-    if (!coverImageUrl || hasError) {
-        return (
-            <div
-                className="catalog-cover-placeholder"
-                aria-label={`${title} için kapak bulunamadı`}
-            >
-                <span>K</span>
-                <small>Kapak bulunamadı</small>
-            </div>
-        )
-    }
-
-    return (
-        <img
-            className="catalog-cover-image"
-            src={catalogCoverUrl(coverImageUrl)}
-            alt={`${title} kitap kapağı`}
-            width={124}
-            height={184}
-            loading={priority ? 'eager' : 'lazy'}
-            fetchPriority={priority ? 'high' : 'auto'}
-            decoding="async"
-            onError={() => setHasError(true)}
-        />
-    )
 }
 
 function CatalogPage() {
@@ -331,331 +287,151 @@ function CatalogPage() {
         })
     }
 
+    const visibleCategories = categories.filter(item => item.bookCount > 0 || item.slug === category)
+    const hasFilters = !!query || !!category
+
     return (
         <section className="catalog-page">
-            <header className="catalog-page-header">
+            <header className="catalog-hero">
                 <div>
-
                     <h1>Katalog</h1>
+                    <p>
+                        {result
+                            ? `${result.totalCount.toLocaleString('tr-TR')} roman ${hasFilters ? 'bulundu' : 'rafta'}`
+                            : 'Raflar hazırlanıyor…'}
+                    </p>
                 </div>
 
-                {result && (
-                    <div className="catalog-count">
-                        <strong>
-                            {result.totalCount}
-                        </strong>
-
-                        <span>kitap bulundu</span>
-                    </div>
-                )}
+                <form className="catalog-search" role="search" onSubmit={handleSearch}>
+                    <label className="catalog-search-box">
+                        <span className="profile-visually-hidden">Kitap, yazar veya ISBN ara</span>
+                        <input
+                            type="search"
+                            maxLength={200}
+                            placeholder="Kitap, yazar veya ISBN ara"
+                            value={draftQuery}
+                            onChange={(event) => setDraftQuery(event.target.value)}
+                        />
+                    </label>
+                    <button className="button primary-button" type="submit">Ara</button>
+                </form>
             </header>
 
-            <form
-                className="catalog-toolbar"
-                onSubmit={handleSearch}
-            >
-                <label className="catalog-field catalog-search-field">
-                    <span>Arama</span>
+            <div className="catalog-filters">
+                <div className="catalog-genres" role="group" aria-label="Roman türleri">
+                    <button type="button" aria-pressed={!category} disabled={categoriesLoading}
+                        onClick={() => handleCategoryChange('')}>Tüm türler</button>
+                    {visibleCategories.map(item => (
+                        <button type="button" key={item.categoryId} aria-pressed={item.slug === category}
+                            onClick={() => handleCategoryChange(item.slug)}>
+                            {item.name}<small>{item.bookCount}</small>
+                        </button>
+                    ))}
+                </div>
 
-                    <input
-                        type="search"
-                        maxLength={200}
-                        placeholder="Kitap veya yazar ara..."
-                        value={draftQuery}
-                        onChange={(event) =>
-                            setDraftQuery(
-                                event.target.value,
-                            )
-                        }
-                    />
-                </label>
-
-                <label className="catalog-field">
-                    <span>Arama alanı</span>
-
-                    <select
-                        value={draftSearchField}
-                        onChange={(event) =>
-                            setDraftSearchField(
-                                event.target
-                                    .value as
-                                CatalogSearchField,
-                            )
-                        }
-                    >
-                        <option value="all">
-                            Tümü
-                        </option>
-
-                        <option value="title">
-                            Kitap adı
-                        </option>
-
-                        <option value="author">
-                            Yazar
-                        </option>
-                    </select>
-                </label>
-
-                <label className="catalog-field">
-                    <span>Roman türleri</span>
-                    <select value={category} disabled={categoriesLoading || categoryError}
-                        onChange={event => handleCategoryChange(event.target.value)}>
-                        <option value="">{categoriesLoading ? 'Türler yükleniyor…' : 'Tüm türler'}</option>
-                        {category && !categories.some(item => item.slug === category) &&
-                            <option value={category}>{category}</option>}
-                        {categories.map(item => <option key={item.categoryId} value={item.slug}>
-                            {item.name} ({item.bookCount})
-                        </option>)}
-                    </select>
-                </label>
-
-                <label className="catalog-field">
-                    <span>Sıralama</span>
-
-                    <select
-                        value={sort}
-                        onChange={(event) =>
-                            handleSortChange(
-                                event.target
-                                    .value as
-                                CatalogBookSort,
-                            )
-                        }
-                    >
-                        <option value="recently-added">
-                            Son eklenenler
-                        </option>
-
-                        <option value="title">
-                            Kitap adına göre
-                        </option>
-
-                        <option value="first-published-newest">
-                            En yeni yayınlanan
-                        </option>
-                    </select>
-                </label>
-
-                <button
-                    className="button primary-button catalog-search-button"
-                    type="submit"
-                >
-                    Ara
-                </button>
-            </form>
+                <div className="catalog-controls">
+                    <label>
+                        <span>Ara:</span>
+                        <select aria-label="Arama alanı" value={draftSearchField}
+                            onChange={(event) => setDraftSearchField(event.target.value as CatalogSearchField)}>
+                            <option value="all">Tümü</option>
+                            <option value="title">Kitap adı</option>
+                            <option value="author">Yazar</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span>Sırala:</span>
+                        <select aria-label="Sıralama" value={sort}
+                            onChange={(event) => handleSortChange(event.target.value as CatalogBookSort)}>
+                            <option value="recently-added">Son eklenenler</option>
+                            <option value="title">Kitap adına göre</option>
+                            <option value="first-published-newest">En yeni yayınlanan</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
 
             {categoryError && <p className="catalog-category-error" role="alert">
                 Roman türleri yüklenemedi. <button type="button"
                     onClick={() => setCategoryRetry(value => value + 1)}>Tekrar dene</button>
             </p>}
 
-            {category && (
-                <div className="catalog-active-filter">
-                    <span>
-                        Roman türü:
-                        <strong>{categories.find(item => item.slug === category)?.name ?? category}</strong>
-                    </span>
-
-                    <button
-                        type="button"
-                        onClick={() =>
-                            updateSearchParameters({
-                                category: null,
-                                page: '1',
-                            })
-                        }
-                    >
-                        Filtreyi kaldır
-                    </button>
-                </div>
-            )}
-
             <div className="catalog-results" aria-busy={isLoading}>
-            <div className="catalog-update-status" role="status">{isLoading && result ? 'Sonuçlar güncelleniyor…' : ''}</div>
-            {isLoading && !result && (
-                <div
-                    className="catalog-status"
-                    role="status"
-                >
-                    Kitaplar yükleniyor...
-                </div>
-            )}
+                <div className="catalog-update-status" role="status">{isLoading && result ? 'Sonuçlar güncelleniyor…' : ''}</div>
 
-            {errorMessage && !isLoading && (
-                <div
-                    className="catalog-status catalog-error"
-                    role="alert"
-                >
-                    <p>{errorMessage}</p>
-
-                    <button
-                        className="button primary-button"
-                        type="button"
-                        onClick={() =>
-                            setRequestVersion(
-                                (current) =>
-                                    current + 1,
-                            )
-                        }
-                    >
-                        Tekrar dene
-                    </button>
-                </div>
-            )}
-
-            {result &&
-                result.items.length === 0 && (
-                    <div className="catalog-status">
-                        <strong>
-                            Sonuç bulunamadı
-                        </strong>
+                {isLoading && !result && (
+                    <div className="book-leaves" role="status" aria-label="Kitaplar yükleniyor">
+                        {Array.from({ length: 6 }, (_, index) => <div className="book-leaf book-leaf-skeleton" key={index} />)}
                     </div>
                 )}
 
-            {result &&
-                result.items.length > 0 && (
+                {errorMessage && !isLoading && (
+                    <div className="catalog-status catalog-error" role="alert">
+                        <p>{errorMessage}</p>
+                        <button className="button primary-button" type="button"
+                            onClick={() => setRequestVersion((current) => current + 1)}>
+                            Tekrar dene
+                        </button>
+                    </div>
+                )}
+
+                {result && result.items.length === 0 && (
+                    <div className="catalog-empty">
+                        <h2>{query ? `“${query}” için sonuç yok` : 'Bu rafta kitap yok'}</h2>
+                        <p>Yazımı değiştirmeyi ya da yalnızca yazarın soyadını aramayı deneyebilirsin.</p>
+                        {hasFilters && <button className="button secondary-button" type="button"
+                            onClick={() => updateSearchParameters({ query: null, category: null, page: '1' })}>
+                            Filtreleri temizle
+                        </button>}
+                    </div>
+                )}
+
+                {result && result.items.length > 0 && (
                     <>
-                        <div className="catalog-grid" data-updating={isLoading}>
-                            {result.items.map(
-                                (book, index) => (
-                                    <article
-                                        className="catalog-book-card"
-                                        key={book.bookId}
-                                    >
-                                        <Link
-                                            className="catalog-cover-link"
-                                            to={`/catalog/books/${book.bookId}`}
-                                            aria-label={`${book.title} detaylarını görüntüle`}
-                                        >
-                                            <div className="catalog-cover">
-                                                <BookCover
-                                                    coverImageUrl={
-                                                        book.coverImageUrl
-                                                    }
-                                                    title={book.title}
-                                                    priority={index < 2}
-                                                />
-                                            </div>
-                                        </Link>
-
-                                        <div className="catalog-book-content">
-                                            <p className="catalog-book-year">
-                                                {book.firstPublishedYear
-                                                    ? `İlk yayın: ${book.firstPublishedYear}`
-                                                    : 'Yayın yılı bilinmiyor'}
-                                            </p>
-
-                                            <h2>
-                                                <Link
-                                                    className="catalog-book-title-link"
-                                                    to={`/catalog/books/${book.bookId}`}
-                                                >
-                                                    {book.title}
-                                                </Link>
-                                            </h2>
-
-                                            <p className="catalog-book-authors">
-                                                {book.authors
-                                                    .length >
-                                                    0
-                                                    ? book.authors
-                                                        .map(
-                                                            (
-                                                                author,
-                                                            ) =>
-                                                                author.name,
-                                                        )
-                                                        .join(
-                                                            ', ',
-                                                        )
-                                                    : 'Yazar bilgisi bulunmuyor'}
-                                            </p>
-
-                                            {book.categories
-                                                .length >
-                                                0 && (
-                                                    <div className="catalog-categories">
-                                                        {book.categories.map(
-                                                            (
-                                                                bookCategory,
-                                                            ) => (
-                                                                <button
-                                                                    key={
-                                                                        bookCategory.categoryId
-                                                                    }
-                                                                    type="button"
-                                                                    onClick={() =>
-                                                                        handleCategoryChange(
-                                                                            bookCategory.slug,
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        bookCategory.name
-                                                                    }
-                                                                </button>
-                                                            ),
-                                                        )}
+                        <div className="book-leaves" data-updating={isLoading}>
+                            {result.items.map((book, index) => {
+                                const title = cleanBookTitle(book.title)
+                                const authors = book.authors.map(author => author.name).join(', ')
+                                return (
+                                    <article className="book-leaf" key={book.bookId}>
+                                        <div className="book-leaf-body">
+                                            <Link to={`/catalog/books/${book.bookId}`} aria-label={`${title} detaylarını görüntüle`}>
+                                                <BookObject title={title} author={authors} coverImageUrl={book.coverImageUrl} priority={index < 3} />
+                                            </Link>
+                                            <div className="book-leaf-copy">
+                                                {book.firstPublishedYear && <p className="book-leaf-year">{book.firstPublishedYear}</p>}
+                                                <h2><Link to={`/catalog/books/${book.bookId}`}>{title}</Link></h2>
+                                                <p className="book-leaf-author">{authors || 'Yazar bilgisi bulunmuyor'}</p>
+                                                {book.categories.length > 0 && (
+                                                    <div className="book-leaf-genres">
+                                                        {book.categories.map(bookCategory => (
+                                                            <button key={bookCategory.categoryId} type="button"
+                                                                onClick={() => handleCategoryChange(bookCategory.slug)}>
+                                                                {bookCategory.name}
+                                                            </button>
+                                                        ))}
                                                     </div>
                                                 )}
+                                            </div>
                                         </div>
-                                        <CatalogLibraryActions bookId={book.bookId} title={book.title} library={library} />
-                                        <Link
-                                            className="catalog-detail-link"
-                                            to={`/catalog/books/${book.bookId}`}
-                                        >
-                                            Detayları Gör
-                                        </Link>
+                                        <CatalogLibraryActions bookId={book.bookId} title={title} library={library} />
+                                        <p className="book-leaf-number" aria-hidden="true">— {(result.page - 1) * result.pageSize + index + 1} —</p>
                                     </article>
-                                ),
-                            )}
+                                )
+                            })}
                         </div>
 
                         {result.totalPages > 1 && (
-                            <nav
-                                className="catalog-pagination"
-                                aria-label="Katalog sayfaları"
-                            >
-                                <button
-                                    className="button secondary-button"
-                                    type="button"
-                                    disabled={
-                                        isLoading || result.page <= 1
-                                    }
-                                    onClick={() =>
-                                        handlePageChange(
-                                            result.page -
-                                            1,
-                                        )
-                                    }
-                                >
+                            <nav className="catalog-pagination" aria-label="Katalog sayfaları">
+                                <button className="button secondary-button" type="button"
+                                    disabled={isLoading || result.page <= 1}
+                                    onClick={() => handlePageChange(result.page - 1)}>
                                     Önceki
                                 </button>
-
-                                <span>
-                                    Sayfa{' '}
-                                    <strong>
-                                        {result.page}
-                                    </strong>{' '}
-                                    /{' '}
-                                    {result.totalPages}
-                                </span>
-
-                                <button
-                                    className="button secondary-button"
-                                    type="button"
-                                    disabled={
-                                        isLoading || result.page >=
-                                        result.totalPages
-                                    }
-                                    onClick={() =>
-                                        handlePageChange(
-                                            result.page +
-                                            1,
-                                        )
-                                    }
-                                >
+                                <span>Sayfa <strong>{result.page}</strong> / {result.totalPages}</span>
+                                <button className="button secondary-button" type="button"
+                                    disabled={isLoading || result.page >= result.totalPages}
+                                    onClick={() => handlePageChange(result.page + 1)}>
                                     Sonraki
                                 </button>
                             </nav>
