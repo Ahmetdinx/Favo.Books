@@ -83,7 +83,7 @@ Note (2026-11-09): reader following and activity feeds shipped after this revisi
 - [ ] Concurrent load, accessibility and mobile checks.
 - [ ] Production secrets, data transfer, migration/rollback and restore rehearsal.
 - [ ] Database readiness, error/availability/cost monitoring and support channel.
-- [ ] Closed beta and controlled public beta around 2026-11-17.
+- [ ] Closed beta and controlled public beta once the project is complete; no fixed date.
 
 ## Explicit exclusions
 
