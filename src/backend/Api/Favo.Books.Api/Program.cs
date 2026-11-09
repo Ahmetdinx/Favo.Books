@@ -1,4 +1,6 @@
+using System.Net;
 using Favo.Books.Modules.Identity;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi;
 using Favo.Books.Modules.Catalog;
 using Favo.Books.Modules.Reading;
@@ -15,6 +17,16 @@ builder.Services.AddScoped<Favo.Books.Modules.Community.Application.PublicReader
 builder.Services.AddScoped<Favo.Books.Api.ReaderAchievements>();
 
 builder.Services.AddScoped<Favo.Books.Modules.Identity.Application.Users.ReaderNetwork>();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    // Loopback proxies are trusted by default; a remote gateway must be listed in Proxy:KnownProxies.
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor;
+    options.ForwardLimit = 1;
+    foreach (string proxy in builder.Configuration.GetSection("Proxy:KnownProxies").Get<string[]>() ?? [])
+    {
+        options.KnownProxies.Add(IPAddress.Parse(proxy));
+    }
+});
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
@@ -49,6 +61,7 @@ builder.Services.AddCommunityModule(builder.Configuration);
 
 
 var app = builder.Build();
+app.UseForwardedHeaders();
 app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
@@ -58,6 +71,7 @@ if (app.Environment.IsDevelopment())
 
 }
 
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 

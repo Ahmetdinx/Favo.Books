@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
+using Favo.Books.SharedKernel.Authorization;
+
 namespace Favo.Books.Modules.Catalog.Presentation
     .Imports.GetById;
 
@@ -18,7 +20,7 @@ internal static class GetCatalogImportJobByIdEndpoint
                 "/books/external/import-jobs/{jobId:guid}",
                 HandleAsync)
             .WithName("GetCatalogImportJobById")
-            .RequireAuthorization()
+            .RequireAuthorization(AuthorizationPolicies.CatalogAdmin)
             .Produces<GetCatalogImportJobByIdResponse>(
                 StatusCodes.Status200OK)
             .ProducesValidationProblem(

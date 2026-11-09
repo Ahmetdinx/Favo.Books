@@ -92,6 +92,14 @@ function LoginPage() {
                 return
             }
 
+            if (response.status === 429) {
+                setErrorMessage(
+                    'Çok fazla deneme yapıldı. Biraz sonra tekrar dene.',
+                )
+
+                return
+            }
+
             if (response.status === 401) {
                 setErrorMessage(
                     'E-posta adresi veya parola hatalı.',

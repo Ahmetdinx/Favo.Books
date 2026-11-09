@@ -12,10 +12,12 @@ public sealed class CatalogImportJobEndpointsTests
         "/api/catalog/books/external/import-jobs";
 
     private readonly HttpClient _client;
+    private readonly FavoBooksWebApplicationFactory _factory;
 
     public CatalogImportJobEndpointsTests(
         FavoBooksWebApplicationFactory factory)
     {
+        _factory = factory;
         _client = factory.CreateClient();
     }
 
@@ -265,7 +267,7 @@ public sealed class CatalogImportJobEndpointsTests
             response.StatusCode);
     }
 
-    private static async Task AuthenticateAsync(
+    private async Task AuthenticateAsync(
         HttpClient client)
     {
         string email =
@@ -288,6 +290,8 @@ public sealed class CatalogImportJobEndpointsTests
         Assert.Equal(
             HttpStatusCode.Created,
             registerResponse.StatusCode);
+
+        await _factory.PromoteToAdminAsync(email);
 
         using HttpResponseMessage loginResponse =
             await client.PostAsJsonAsync(

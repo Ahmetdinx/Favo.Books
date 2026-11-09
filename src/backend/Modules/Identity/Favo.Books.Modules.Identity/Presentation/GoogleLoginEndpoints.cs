@@ -36,8 +36,8 @@ internal static class GoogleLoginEndpoints
             var nonce = challenges.Create();
             context.Response.Cookies.Append(NonceCookie, nonce, Cookie);
             return Results.Ok(new { Nonce = nonce });
-        });
-        group.MapPost("/google", Login);
+        }).RequireRateLimiting(IdentityRateLimits.Session);
+        group.MapPost("/google", Login).RequireRateLimiting(IdentityRateLimits.Login);
     }
 
     private static async Task<IResult> Login(GoogleRequest request, HttpContext context, IConfiguration config,
@@ -72,7 +72,7 @@ internal static class GoogleLoginEndpoints
         try { await db.SaveChangesAsync(ct); }
         catch (DbUpdateException error) when (error.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
         { return Results.Conflict(new { Message = "Hesap bilgileri değişti. Lütfen Google ile tekrar giriş yap." }); }
-        var access = accessTokens.Generate(user.Id, user.Email);
+        var access = accessTokens.Generate(user.Id, user.Email, user.IsAdmin);
         context.Response.Cookies.Append(options.Value.CookieName, refresh.Value, new CookieOptions {
             HttpOnly = true, Secure = true, SameSite = SameSiteMode.Lax, IsEssential = true,
             Path = "/api/identity", Expires = refresh.ExpiresAtUtc });

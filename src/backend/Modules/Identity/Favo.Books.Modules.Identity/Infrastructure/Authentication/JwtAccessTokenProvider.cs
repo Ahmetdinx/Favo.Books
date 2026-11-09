@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 
 using Favo.Books.Modules.Identity.Application.Abstractions.Security;
+using Favo.Books.SharedKernel.Authorization;
 
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -22,7 +23,8 @@ internal sealed class JwtAccessTokenProvider
 
     public AccessToken Generate(
         Guid userId,
-        string email)
+        string email,
+        bool isAdmin)
     {
         DateTimeOffset issuedAtUtc =
             DateTimeOffset.UtcNow;
@@ -31,7 +33,7 @@ internal sealed class JwtAccessTokenProvider
             issuedAtUtc.AddMinutes(
                 _options.ExpirationMinutes);
 
-        Claim[] claims =
+        List<Claim> claims =
         [
             new Claim(
                 JwtRegisteredClaimNames.Sub,
@@ -45,6 +47,11 @@ internal sealed class JwtAccessTokenProvider
                 JwtRegisteredClaimNames.Jti,
                 Guid.NewGuid().ToString())
         ];
+
+        if (isAdmin)
+        {
+            claims.Add(new Claim(AuthorizationPolicies.RoleClaim, AuthorizationPolicies.AdminRole));
+        }
 
         byte[] secretBytes =
             Encoding.UTF8.GetBytes(_options.Secret);

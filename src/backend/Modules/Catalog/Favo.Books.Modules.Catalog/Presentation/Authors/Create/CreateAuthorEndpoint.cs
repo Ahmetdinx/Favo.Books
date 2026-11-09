@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
+using Favo.Books.SharedKernel.Authorization;
+
 namespace Favo.Books.Modules.Catalog.Presentation.Authors.Create;
 
 internal static class CreateAuthorEndpoint
@@ -13,7 +15,7 @@ internal static class CreateAuthorEndpoint
     {
         group.MapPost("/authors", HandleAsync)
             .WithName("CreateAuthor")
-            .RequireAuthorization()
+            .RequireAuthorization(AuthorizationPolicies.CatalogAdmin)
             .Produces<CreateAuthorResponse>(
                 StatusCodes.Status201Created)
             .ProducesValidationProblem(

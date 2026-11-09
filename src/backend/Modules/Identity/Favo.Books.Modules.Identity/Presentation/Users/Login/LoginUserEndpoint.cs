@@ -16,6 +16,7 @@ internal static class LoginUserEndpoint
     public static RouteGroupBuilder MapLoginUserEndpoint(this RouteGroupBuilder group)
     {
         group.MapPost("/login", HandleAsync)
+            .RequireRateLimiting(IdentityRateLimits.Login)
             .WithName("LoginUser")
             .Produces<LoginUserResponse>(StatusCodes.Status200OK)
             .ProducesValidationProblem(StatusCodes.Status400BadRequest)

@@ -14,6 +14,7 @@ internal static class RegisterUserEndpoint
         this RouteGroupBuilder group)
     {
         group.MapPost("/register", HandleAsync)
+            .RequireRateLimiting(IdentityRateLimits.Register)
             .WithName("RegisterUser")
             .Produces<RegisterUserResponse>(
                 StatusCodes.Status201Created)

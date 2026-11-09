@@ -9,6 +9,8 @@ namespace Favo.Books.Modules.Identity.Application.Users.Login;
 
 public sealed class LoginUserHandler
 {
+    private static string? s_decoyPasswordHash;
+
     private readonly IdentityDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IAccessTokenProvider _accessTokenProvider;
@@ -44,6 +46,10 @@ public sealed class LoginUserHandler
 
         if (user is null)
         {
+            // Costs the same as a wrong password, so timing does not reveal registered emails.
+            s_decoyPasswordHash ??= _passwordHasher.Hash(Guid.NewGuid().ToString());
+            _passwordHasher.Verify(s_decoyPasswordHash, command.Password);
+
             return LoginUserResult.InvalidCredentials();
         }
 
@@ -59,7 +65,8 @@ public sealed class LoginUserHandler
         AccessToken accessToken =
             _accessTokenProvider.Generate(
                 user.Id,
-                user.Email);
+                user.Email,
+                user.IsAdmin);
 
 
         IssuedRefreshToken issuedRefreshToken =

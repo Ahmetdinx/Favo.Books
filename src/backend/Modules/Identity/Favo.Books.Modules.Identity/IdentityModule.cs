@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Favo.Books.Modules.Identity.Application.Users.RefreshSession;
 using Favo.Books.Modules.Identity.Application.Users.LogoutSession;
+using Favo.Books.SharedKernel.Authorization;
 namespace Favo.Books.Modules.Identity;
 
 public static class IdentityModule
@@ -24,6 +25,8 @@ public static class IdentityModule
         string connectionString = configuration.GetConnectionString("Database") ?? throw new InvalidOperationException("Connection string 'Database' was not found.");
 
         services.AddDbContext<IdentityDbContext>(options => options.UseNpgsql(connectionString));
+
+        services.AddIdentityRateLimits();
 
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
 
@@ -70,7 +73,9 @@ public static class IdentityModule
      "Refresh token cookie adı zorunludur.").ValidateOnStart();
 
 
-        services.AddAuthorization();
+        services.AddAuthorization(options => options.AddPolicy(
+            AuthorizationPolicies.CatalogAdmin,
+            policy => policy.RequireClaim(AuthorizationPolicies.RoleClaim, AuthorizationPolicies.AdminRole)));
         services.AddSingleton<IGoogleIdentityValidator, GoogleIdentityValidator>();
         services.AddSingleton<GoogleLoginChallenges>();
 

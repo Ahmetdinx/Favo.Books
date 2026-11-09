@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
+using Favo.Books.SharedKernel.Authorization;
+
 namespace Favo.Books.Modules.Catalog.Presentation
     .Books.ResolveExternal;
 
@@ -28,7 +30,7 @@ internal static class ResolveExternalBookEndpoint
                 "/books/external/resolve",
                 HandleAsync)
             .WithName("ResolveExternalBook")
-            .RequireAuthorization()
+            .RequireAuthorization(AuthorizationPolicies.CatalogAdmin)
             .Produces<ResolveExternalBookResponse>(
                 StatusCodes.Status201Created)
             .Produces<ResolveExternalBookResponse>(

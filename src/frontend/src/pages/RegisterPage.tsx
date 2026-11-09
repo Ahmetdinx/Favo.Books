@@ -53,6 +53,14 @@ function RegisterPage() {
                 return
             }
 
+            if (response.status === 429) {
+                setErrorMessage(
+                    'Çok fazla deneme yapıldı. Biraz sonra tekrar dene.',
+                )
+
+                return
+            }
+
             if (response.status === 409) {
                 const apiError = (await response.json()) as ApiError
 

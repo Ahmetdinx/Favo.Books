@@ -134,7 +134,8 @@ public sealed class RefreshSessionHandler
         AccessToken accessToken =
             _accessTokenProvider.Generate(
                 user.Id,
-                user.Email);
+                user.Email,
+                user.IsAdmin);
 
         await _dbContext.SaveChangesAsync(
             cancellationToken);

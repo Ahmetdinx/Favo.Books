@@ -30,6 +30,8 @@ public sealed class User
         GoogleSubject = subject;
     }
 
+    public bool IsAdmin { get; private set; }
+
     public string? Nickname { get; private set; }
     public bool IsPublic { get; private set; }
     public string AvatarId { get; private set; } = "owl";

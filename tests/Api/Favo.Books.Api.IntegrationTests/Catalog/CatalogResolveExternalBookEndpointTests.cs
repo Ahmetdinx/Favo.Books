@@ -326,7 +326,7 @@ public sealed class CatalogResolveExternalBookEndpointTests
         });
     }
 
-    private static async Task AuthenticateAsync(
+    private async Task AuthenticateAsync(
         HttpClient client)
     {
         string email =
@@ -348,6 +348,8 @@ public sealed class CatalogResolveExternalBookEndpointTests
         Assert.Equal(
             HttpStatusCode.Created,
             registerResponse.StatusCode);
+
+        await _factory.PromoteToAdminAsync(email);
 
         using HttpResponseMessage loginResponse =
             await client.PostAsJsonAsync(

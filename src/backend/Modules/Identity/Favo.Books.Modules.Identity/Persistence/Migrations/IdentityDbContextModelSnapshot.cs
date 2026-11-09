@@ -109,6 +109,11 @@ namespace Favo.Books.Modules.Identity.Persistence.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<bool>("IsAdmin")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
                     b.Property<bool>("IsPublic")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")

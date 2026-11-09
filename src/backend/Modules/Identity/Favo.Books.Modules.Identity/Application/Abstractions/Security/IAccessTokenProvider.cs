@@ -4,5 +4,6 @@ public interface IAccessTokenProvider
 {
     AccessToken Generate(
         Guid userId,
-        string email);
+        string email,
+        bool isAdmin);
 }

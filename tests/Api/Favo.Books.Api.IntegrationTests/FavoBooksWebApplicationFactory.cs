@@ -70,6 +70,16 @@ public sealed class FavoBooksWebApplicationFactory
         });
     }
 
+    public async Task PromoteToAdminAsync(string email)
+    {
+        using IServiceScope scope = Services.CreateScope();
+        IdentityDbContext dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+
+        await dbContext.Users
+            .Where(user => user.Email == email)
+            .ExecuteUpdateAsync(user => user.SetProperty(u => u.IsAdmin, true));
+    }
+
     public async Task InitializeAsync()
     {
         await _postgresContainer.StartAsync();

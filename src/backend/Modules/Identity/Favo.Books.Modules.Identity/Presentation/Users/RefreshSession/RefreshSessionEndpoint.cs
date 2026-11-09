@@ -20,6 +20,7 @@ internal static class RefreshSessionEndpoint
             this RouteGroupBuilder group)
     {
         group.MapPost("/refresh", HandleAsync)
+            .RequireRateLimiting(IdentityRateLimits.Session)
             .WithName("RefreshSession")
             .Produces<RefreshSessionResponse>(
                 StatusCodes.Status200OK)

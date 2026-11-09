@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
+using Favo.Books.SharedKernel.Authorization;
+
 namespace Favo.Books.Modules.Catalog.Presentation
     .Imports.Create;
 
@@ -21,7 +23,7 @@ internal static class CreateCatalogImportJobEndpoint
                 "/books/external/import-jobs",
                 HandleAsync)
             .WithName("CreateCatalogImportJob")
-            .RequireAuthorization()
+            .RequireAuthorization(AuthorizationPolicies.CatalogAdmin)
             .Produces<CreateCatalogImportJobResponse>(
                 StatusCodes.Status202Accepted)
             .ProducesValidationProblem(
