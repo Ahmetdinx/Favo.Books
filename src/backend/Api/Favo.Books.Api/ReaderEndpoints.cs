@@ -29,6 +29,31 @@ public static class ReaderEndpoints
             if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
             return Results.Ok(new { items = await achievements.Get(id, ct) });
         }).RequireAuthorization();
+        group.MapGet("/me/taste", async (ClaimsPrincipal principal, ReaderTaste taste, CancellationToken ct) =>
+        {
+            if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
+            return Results.Ok(await taste.Get(id, ct));
+        }).RequireAuthorization();
+        group.MapGet("/{nickname}/taste", async (string nickname, ReaderDirectory directory, ReaderTaste taste, CancellationToken ct) =>
+        {
+            var normalized = nickname.Trim().ToLowerInvariant();
+            var reader = await directory.FindPublic(normalized, ct);
+            if (reader is null) return Results.NotFound();
+            var profile = await taste.Get(reader.Id, ct);
+            // Recheck after loading: closing/renaming a profile invalidates subsequent responses.
+            return (await directory.FindPublic(normalized, ct))?.Id != reader.Id ? Results.NotFound() : Results.Ok(profile);
+        });
+        group.MapGet("/{nickname}/compatibility", async (string nickname, ClaimsPrincipal principal, ReaderDirectory directory,
+            ReaderCompatibility compatibility, CancellationToken ct) =>
+        {
+            if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
+            var normalized = nickname.Trim().ToLowerInvariant();
+            var reader = await directory.FindPublic(normalized, ct);
+            if (reader is null) return Results.NotFound();
+            if (reader.Id == id) return Results.BadRequest(new { message = "Kendinle uyumun hesaplanmaz." });
+            var result = await compatibility.Get(id, reader.Id, ct);
+            return (await directory.FindPublic(normalized, ct))?.Id != reader.Id ? Results.NotFound() : Results.Ok(result);
+        }).RequireAuthorization();
         group.MapGet("/me/ratings", async (string? bookIds, ClaimsPrincipal principal, PublicReaderRatings ratings, CancellationToken ct) =>
         {
             if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();

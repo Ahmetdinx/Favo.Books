@@ -20,6 +20,15 @@ public sealed class PublicLibrary(ReadingDbContext db, Favo.Books.SharedKernel.C
         return await catalog.CountEligibleAsync(ids, ct);
     }
 
+    public Task<Guid[]> ReadBookIds(Guid id, CancellationToken ct) =>
+        db.LibraryEntries.AsNoTracking()
+            .Where(e => e.UserId == id && e.Status == Domain.LibraryEntries.LibraryEntryStatus.Read)
+            .Select(e => e.BookId).Distinct().ToArrayAsync(ct);
+
+    /// <summary>Every book on the reader's shelves, whatever its status.</summary>
+    public Task<Guid[]> AllBookIds(Guid id, CancellationToken ct) =>
+        db.LibraryEntries.AsNoTracking().Where(e => e.UserId == id).Select(e => e.BookId).Distinct().ToArrayAsync(ct);
+
     public async Task<PublicLibraryPage> Get(Guid id, int page, CancellationToken ct)
     {
         var query = db.LibraryEntries.AsNoTracking().Where(e => e.UserId == id);

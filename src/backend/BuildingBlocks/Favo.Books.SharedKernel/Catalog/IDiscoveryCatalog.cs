@@ -4,6 +4,8 @@ public interface IDiscoveryCatalog
 {
     Task<IReadOnlyList<DiscoveryCategory>> GetGenresAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<DiscoveryBook>> GetBooksAsync(CancellationToken cancellationToken = default);
+    /// <summary>Public novel genres (and the classics mark) of the given visible novels; unknown or hidden books are omitted.</summary>
+    Task<IReadOnlyDictionary<Guid, DiscoveryCategory[]>> GetGenresForBooksAsync(Guid[] bookIds, CancellationToken cancellationToken = default);
 }
 
 public sealed record DiscoveryCategory(string Slug, string Name);

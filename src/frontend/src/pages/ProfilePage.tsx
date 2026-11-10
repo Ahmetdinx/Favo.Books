@@ -15,6 +15,7 @@ import {
 import { useAuth } from '../auth/useAuth'
 
 import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
+import TasteCard from '../profile/TasteCard'
 import ReaderSettings from '../profile/ReaderSettings'
 import { ReaderConnections } from '../profile/ReaderSocial'
 import ProfileAchievements from '../profile/ProfileAchievements'
@@ -563,6 +564,8 @@ function ProfilePage() {
                 <h1>Kitaplığım</h1>
                 {librarySummary && <p>{librarySummary.totalCount} kitap · {librarySummary.readCount} tanesi okundu</p>}
             </header>
+
+            <TasteCard own />
 
             <ProfileFeaturedBooksSection />
 

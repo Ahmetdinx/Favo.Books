@@ -15,6 +15,8 @@ builder.Services.AddScoped<Favo.Books.Modules.Reading.Application.PublicLibrary>
 builder.Services.AddScoped<Favo.Books.Modules.Profiles.Application.PublicShowcase>();
 builder.Services.AddScoped<Favo.Books.Modules.Community.Application.PublicReaderRatings>();
 builder.Services.AddScoped<Favo.Books.Api.ReaderAchievements>();
+builder.Services.AddScoped<Favo.Books.Api.ReaderTaste>();
+builder.Services.AddScoped<Favo.Books.Api.ReaderCompatibility>();
 
 builder.Services.AddScoped<Favo.Books.Modules.Identity.Application.Users.ReaderNetwork>();
 builder.Services.Configure<ForwardedHeadersOptions>(options =>

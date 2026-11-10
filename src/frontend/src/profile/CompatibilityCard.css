@@ -1,0 +1,53 @@
+/* Reader match: a quiet dial and the other reader's loved, unread novels. */
+.match-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: 22px 34px;
+    margin: 0 0 30px;
+    padding: 22px 26px;
+    color: var(--library-ink);
+    background: #fffaf2;
+    border: 1px solid #e6d6bd;
+    border-radius: 6px;
+}
+.match-summary { display: flex; align-items: center; gap: 20px; }
+.match-dial {
+    --match: 0;
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 92px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: conic-gradient(#8a6143 calc(var(--match) * 1%), #eadbc4 0);
+}
+.match-dial span {
+    display: grid;
+    place-items: center;
+    width: 74px;
+    aspect-ratio: 1;
+    font: 600 1.25rem Georgia, serif;
+    font-variant-numeric: lining-nums tabular-nums;
+    background: #fffaf2;
+    border-radius: 50%;
+}
+.match-kicker { margin: 0; font: 600 .72rem Georgia, serif; letter-spacing: .1em; text-transform: uppercase; color: #96403a; }
+.match-card h2 { margin: 4px 0 6px; font: 400 1.35rem/1.2 Georgia, serif; }
+.match-card h2 strong { font-weight: 600; font-variant-numeric: lining-nums; }
+.match-card .match-genres { margin: 0; font: italic .92rem Georgia, serif; color: #6b4c33; }
+.match-card .match-details { margin: 4px 0 0; font-size: .8rem; color: var(--library-muted); font-variant-numeric: lining-nums; }
+.match-suggestions h3 { margin: 0 0 10px; font: 600 .74rem Georgia, serif; letter-spacing: .08em; text-transform: uppercase; color: #8a6a4a; }
+.match-suggestions ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.match-suggestions li { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start; gap: 8px; }
+.match-suggestions li > div { min-width: 0; }
+.match-book-title { display: -webkit-box; overflow: hidden; font: 600 .86rem/1.25 Georgia, serif; color: var(--library-ink); text-decoration: none; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow-wrap: break-word; }
+.match-book-title:hover { text-decoration: underline; }
+.match-suggestions p { margin: 2px 0 0; overflow: hidden; font-size: .76rem; color: var(--library-muted); text-overflow: ellipsis; white-space: nowrap; }
+.match-suggestions .match-why { color: #96403a; font-variant-numeric: lining-nums; }
+.match-card-pending { display: block; padding: 14px 22px; }
+.match-card-pending p { margin: 0; font-size: .88rem; color: var(--library-muted); }
+@media (max-width: 900px) {
+    .match-card { grid-template-columns: 1fr; padding: 18px 16px; }
+    .match-suggestions ul { grid-template-columns: 1fr; }
+    .match-suggestions li { grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 10px; }
+}

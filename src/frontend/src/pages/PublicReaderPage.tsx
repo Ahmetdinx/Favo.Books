@@ -9,6 +9,8 @@ import '../profile/Readers.css'
 import AchievementTracks, { type AchievementTrack } from '../profile/AchievementTracks'
 import ReaderAvatar from '../profile/ReaderAvatar'
 import { FollowReader } from '../profile/ReaderSocial'
+import TasteCard from '../profile/TasteCard'
+import CompatibilityCard from '../profile/CompatibilityCard'
 
 const criteria = { theme: 'Konu / Fikir', language: 'Anlatım ve Dil', characters: 'Karakterler', structure: 'Kurgu ve Yapı',
     pace: 'Tempo', impact: 'Duygusal / Düşünsel Etki', experience: 'Okuma Deneyimi' }
@@ -75,6 +77,9 @@ export default function PublicReaderPage() {
             </div>
             <FollowReader key={data.nickname} nickname={data.nickname} />
         </header>
+
+        <TasteCard key={data.nickname} own={false} nickname={data.nickname} />
+        <CompatibilityCard key={'match-' + data.nickname} nickname={data.nickname} />
 
         {(bedside || influential.length > 0) && <div className="reader-spread">
             {bedside && <section className="reader-spread-page reader-bedside" aria-labelledby="reader-bedside-heading">

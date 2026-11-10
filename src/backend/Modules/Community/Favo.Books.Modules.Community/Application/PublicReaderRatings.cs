@@ -21,6 +21,14 @@ public sealed class PublicReaderRatings(CommunityDbContext db, Favo.Books.Shared
         return await catalog.CountEligibleAsync(ids, ct);
     }
 
+    /// <summary>Every rating of the reader with all seven criteria filled in.</summary>
+    public Task<PublicReaderRating[]> Complete(Guid id, CancellationToken ct) =>
+        db.BookRatings.AsNoTracking().Where(r => r.UserId == id && r.OverallScore != null
+                && r.Theme != null && r.Language != null && r.Characters != null && r.Structure != null
+                && r.Pace != null && r.Impact != null && r.Experience != null)
+            .Select(r => new PublicReaderRating(r.BookId, r.Theme, r.Language, r.Characters, r.Structure,
+                r.Pace, r.Impact, r.Experience, r.OverallScore)).ToArrayAsync(ct);
+
     public Task<PublicReaderRating[]> Get(Guid id, Guid[] bookIds, CancellationToken ct) =>
         db.BookRatings.AsNoTracking().Where(r => r.UserId == id && bookIds.Contains(r.BookId))
             .Select(r => new PublicReaderRating(r.BookId, r.Theme, r.Language, r.Characters, r.Structure,
