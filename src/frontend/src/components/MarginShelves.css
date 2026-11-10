@@ -1,0 +1,25 @@
+/* The margins become the walls of a library corridor; only where the margin is wide enough. */
+.margin-shelves { display: none; }
+@media (min-width: 1480px) {
+    .margin-shelves {
+        --wall: calc((100vw - 1200px) / 2 - 28px);
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        display: block;
+        pointer-events: none;
+    }
+    .margin-wall {
+        position: absolute;
+        top: 0;
+        width: var(--wall);
+        height: 100vh;
+    }
+    .margin-wall-left { left: 0; }
+    /* The right wall is the same corridor seen from the other side. */
+    .margin-wall-right { right: 0; transform: scaleX(-1); }
+}
+@media (min-width: 1480px) and (prefers-contrast: more) {
+    .margin-shelves { display: none; }
+}
+@media print { .margin-shelves { display: none; } }

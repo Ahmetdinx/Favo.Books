@@ -10,6 +10,7 @@ import {
 import { useAuth } from '../auth/useAuth'
 import ReaderSearch from './ReaderSearch'
 import FavoBrand from './FavoBrand'
+import MarginShelves from './MarginShelves'
 import AchievementCelebration from '../profile/AchievementCelebration'
 import ReaderAvatar from '../profile/ReaderAvatar'
 import { ReaderBadgesContext } from '../profile/avatarOptions'
@@ -91,7 +92,7 @@ function AppLayout() {
     }
 
     return (
-        <ReaderBadgesContext.Provider value={achievements}><div className="app">
+        <ReaderBadgesContext.Provider value={achievements}><div className="app"><MarginShelves />
             <header className="header">
                 <NavLink
                     className="logo"
