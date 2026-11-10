@@ -66,7 +66,7 @@ function RatingEditor({ bookId, userId }: Props & { userId?: string }) {
         const storage = draftStorage()
         const saved = !!storage && !!userId && writeRatingDraft(storage, userId, bookId, next)
         setHasDraft(true)
-        setDraftNotice(saved ? 'Taslak bu tarayıcıda saklandı. Daha sonra devam edebilirsin.' : 'Taslak saklanamadı. Sayfadan ayrılırsan değişikliklerin kaybolabilir.')
+        setDraftNotice(saved ? 'Taslak bu tarayıcıda saklandı.' : 'Taslak saklanamadı.')
     }
 
     useEffect(() => {
@@ -89,7 +89,7 @@ function RatingEditor({ bookId, userId }: Props & { userId?: string }) {
                 const localDraft = storage && userId ? readRatingDraft(storage, userId, bookId) : null
                 setDraft(localDraft ?? result.currentUserRating?.scores ?? emptyRatingDraft())
                 setHasDraft(!!localDraft)
-                setDraftNotice(localDraft ? 'Yarım kalan değerlendirmen hazır. Kaldığın yerden devam et.' : '')
+                setDraftNotice(localDraft ? 'Yarım kalan taslağın açıldı.' : '')
             })
             .catch((failure: unknown) => {
                 if (!controller.signal.aborted) setError(errorMessage(failure))
@@ -117,7 +117,7 @@ function RatingEditor({ bookId, userId }: Props & { userId?: string }) {
                 setSummary(result)
                 setDraft(result.currentUserRating?.scores ?? emptyRatingDraft())
                 clearLocalDraft()
-                setMessage('Değerlendirmen kaydedildi. Okuma zevkini tanımamıza yardımcı olduğun için teşekkürler!')
+                setMessage('Değerlendirmen kaydedildi.')
                 window.dispatchEvent(new Event('achievements-changed'))
             }
         } catch (failure) {
@@ -146,7 +146,7 @@ function RatingEditor({ bookId, userId }: Props & { userId?: string }) {
             if (!controller.signal.aborted) {
                 setSummary(result)
                 setDraft(emptyRatingDraft())
-                setMessage('Değerlendirmeniz kaldırıldı.')
+                setMessage('Değerlendirmen kaldırıldı.')
                 window.dispatchEvent(new Event('achievements-changed'))
             }
         } catch (failure) {
@@ -159,26 +159,24 @@ function RatingEditor({ bookId, userId }: Props & { userId?: string }) {
 
     const preview = summary ? previewOverallScore(draft, summary.criteria) : null
     const hasRating = !!summary?.currentUserRating || summary?.currentUserLegacyScore != null
+    const filled = Object.values(draft).filter(value => value !== '').length
+    const scores = summary ? Array.from({ length: summary.maximumScore - summary.minimumScore + 1 }, (_, index) => summary.minimumScore + index) : []
 
     return (
-        <section ref={panel} id="book-rating" tabIndex={-1} className="detailed-rating" aria-labelledby="book-rating-title" aria-busy={isLoading || isSaving}>
-            <header className="detailed-rating-header">
-                <div>
-                    <p className="eyebrow">Okurların değerlendirmesi</p>
-                    <h2 id="book-rating-title">Bir kitabın yedi yönü</h2>
-                    <p>Her puan, okuma zevkinden bir ipucu.</p>
-                </div>
+        <section ref={panel} id="book-rating" tabIndex={-1} className="rating-card" aria-labelledby="book-rating-title" aria-busy={isLoading || isSaving}>
+            <header className="rating-card-header">
+                <h2 id="book-rating-title">Değerlendirme</h2>
                 {summary && (
-                    <div className="detailed-rating-overall">
-                        <strong>{summary.averageScore == null ? '—' : formatScore(summary.averageScore)}</strong>
-                        <span>/ 10 genel puan</span>
-                        <small>{summary.ratingCount} ayrıntılı değerlendirme</small>
-                    </div>
+                    <p className="rating-card-community">
+                        {summary.averageScore == null
+                            ? <span>Henüz okur puanı yok</span>
+                            : <><strong>{formatScore(summary.averageScore)}</strong><span> / 10 · {summary.ratingCount} okur</span></>}
+                    </p>
                 )}
             </header>
 
-            {isLoading && <p role="status">Değerlendirmeler yükleniyor…</p>}
-            {error && <p className="detailed-rating-error" role="alert">{error}</p>}
+            {isLoading && <p className="rating-card-quiet" role="status">Değerlendirmeler yükleniyor…</p>}
+            {error && <p className="rating-card-error" role="alert">{error}</p>}
             {!summary && !isLoading && (
                 <button className="button secondary-button" type="button" onClick={() => setReload((value) => value + 1)}>
                     Tekrar dene
@@ -187,88 +185,95 @@ function RatingEditor({ bookId, userId }: Props & { userId?: string }) {
 
             {summary && !isLoading && (
                 <>
-                    <details className="rating-community-details"><summary>Okur puanlarını incele</summary>
-                    <dl className="detailed-rating-averages" aria-label="Kriterlere göre okur ortalamaları">
-                        {summary.criteria.map((criterion) => {
-                            const average = summary.criteriaAverages?.[criterion.key]
-                            return (
-                                <div key={criterion.key}>
-                                    <dt>{criterion.label} <small>%{criterion.weight}</small></dt>
-                                    <dd>
-                                        {average != null && <meter min={0} max={summary.maximumScore} value={average}
-                                            aria-label={`${criterion.label} ortalaması`} />}
-                                        <span>{average == null ? 'Henüz puan yok' : `${formatScore(average)} / 10`}</span>
-                                    </dd>
-                                </div>
-                            )
-                        })}
-                    </dl></details>
-                    {summary.ratingCount === 0 && <p>Bu kitabı yedi kriterle ilk değerlendiren siz olun.</p>}
+                    {summary.ratingCount > 0 && <details className="rating-community-details"><summary>Okur ortalamaları</summary>
+                        <dl className="rating-averages" aria-label="Kriterlere göre okur ortalamaları">
+                            {summary.criteria.map((criterion) => {
+                                const average = summary.criteriaAverages?.[criterion.key]
+                                return (
+                                    <div key={criterion.key}>
+                                        <dt>{criterion.label}</dt>
+                                        <dd>
+                                            <span className="rating-average-bar" aria-hidden="true">
+                                                <span style={{ width: `${((average ?? 0) / summary.maximumScore) * 100}%` }} />
+                                            </span>
+                                            <span>{average == null ? '—' : formatScore(average)}</span>
+                                        </dd>
+                                    </div>
+                                )
+                            })}
+                        </dl>
+                    </details>}
                     {summary.legacyRatingCount > 0 && (
-                        <p className="detailed-rating-note">
-                            Eski sistemdeki {summary.legacyRatingCount} tek puanlı değerlendirme, kriter puanları bulunmadığı için bu ortalamalara dahil değildir.
+                        <p className="rating-card-quiet">
+                            {summary.legacyRatingCount} eski tek puanlı değerlendirme ortalamaya dahil değil.
                         </p>
                     )}
 
                     {signedIn ? (
-                        <form onSubmit={(event) => void save(event)}>
+                        <form className="rating-form" onSubmit={(event) => void save(event)}>
                             <fieldset disabled={isSaving || isLoading}>
-                                <legend>{hasRating ? 'Değerlendirmeni güncelle' : 'Sende nasıl bir iz bıraktı?'}</legend>
-                                <div className="rating-draft-progress">
-                                    <span>{Object.values(draft).filter(value => value !== '').length} / 7 kriter</span>
-                                    <progress max={7} value={Object.values(draft).filter(value => value !== '').length} aria-label="Tamamlanan kriterler" />
-                                    <small>Taslaklar puanlara ve başarılara dahil edilmez.</small>
-                                </div>
-                                {draftNotice && <p className="rating-draft-notice" role="status">{draftNotice}</p>}
+                                <legend className="rating-visually-hidden">{hasRating ? 'Değerlendirmeni güncelle' : 'Kitabı yedi kriterle puanla'}</legend>
                                 {summary.currentUserLegacyScore != null && (
-                                    <p className="detailed-rating-note">
-                                        Önceki puanınız {summary.currentUserLegacyScore} / 5. Yedi kriteri doldurduğunuzda yeni değerlendirmenizle değiştirilecek.
+                                    <p className="rating-card-quiet">
+                                        Önceki puanın {summary.currentUserLegacyScore} / 5. Yedi kriteri doldurunca yenisiyle değişir.
                                     </p>
                                 )}
-                                {summary.criteria.map((criterion) => (
-                                    <div className="detailed-rating-field" key={criterion.key}>
-                                        <label htmlFor={`rating-${criterion.key}`}>
-                                            {criterion.label} <small>%{criterion.weight}</small>
-                                        </label>
-                                        <p id={`rating-help-${criterion.key}`}>{criterionHints[criterion.key]}</p>
-                                        <select id={`rating-${criterion.key}`} required
-                                            aria-describedby={`rating-help-${criterion.key}`}
-                                            value={draft[criterion.key]}
-                                            onChange={(event) => {
-                                                const value = event.target.value === '' ? '' : Number(event.target.value)
-                                                changeDraft({ ...draft, [criterion.key]: value })
-                                            }}>
-                                            <option value="">Puan seç</option>
-                                            {Array.from({ length: summary.maximumScore - summary.minimumScore + 1 },
-                                                (_, index) => summary.minimumScore + index).map((score) => (
-                                                <option key={score} value={score}>{score} · {scoreLabel(score)}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                ))}
-                                <div className="detailed-rating-preview" role="status">
-                                    {preview == null ? 'Yedi kriter tamamlandığında genel puanın burada görünecek.' : `Genel puanın: ${formatScore(preview)} / 10`}
+                                <div className="rating-rows">
+                                    {summary.criteria.map((criterion) => {
+                                        const value = draft[criterion.key]
+                                        return (
+                                            <div className="rating-row" key={criterion.key} role="radiogroup"
+                                                aria-labelledby={`rating-label-${criterion.key}`} aria-describedby={`rating-help-${criterion.key}`}>
+                                                <span className="rating-row-label" id={`rating-label-${criterion.key}`}
+                                                    title={`${criterionHints[criterion.key]} (ağırlık %${criterion.weight})`}>
+                                                    {criterion.label}
+                                                </span>
+                                                <span id={`rating-help-${criterion.key}`} className="rating-visually-hidden">{criterionHints[criterion.key]}</span>
+                                                <span className="rating-scale">
+                                                    {scores.map((score) => (
+                                                        <label key={score} className={value !== '' && score <= value ? 'filled' : undefined}
+                                                            title={`${score} · ${scoreLabel(score)}`}>
+                                                            <input type="radio" name={`rating-${criterion.key}`} value={score} required
+                                                                checked={value === score}
+                                                                aria-label={`${score} · ${scoreLabel(score)}`}
+                                                                onChange={() => changeDraft({ ...draft, [criterion.key]: score })} />
+                                                            <span aria-hidden="true" />
+                                                        </label>
+                                                    ))}
+                                                </span>
+                                                <span className="rating-row-value" aria-hidden="true">{value}</span>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
-                                <div className="detailed-rating-actions">
-                                    <button className="button primary-button" type="submit" disabled={preview == null || isSaving}>
-                                        {isSaving ? 'Kaydediliyor…' : hasRating ? 'Değerlendirmeyi güncelle' : 'Değerlendirmeyi kaydet'}
-                                    </button>
-                                    {hasDraft && <button className="detailed-rating-remove" type="button" onClick={() => {
-                                        clearLocalDraft()
-                                        setDraft(summary.currentUserRating?.scores ?? emptyRatingDraft())
-                                        setMessage('')
-                                    }}>Taslağı sil</button>}
-                                    {hasRating && <button className="detailed-rating-remove" type="button"
-                                        onClick={() => void remove()}>Değerlendirmemi kaldır</button>}
+
+                                <div className="rating-footer">
+                                    <div className="rating-overall" role="status">
+                                        <strong>{preview == null ? `${filled}/7` : formatScore(preview)}</strong>
+                                        <span>{preview == null ? 'kriter puanlandı' : 'genel puanın'}</span>
+                                    </div>
+                                    {draftNotice && <p className="rating-card-quiet rating-draft-notice">{draftNotice}</p>}
+                                    <div className="rating-actions">
+                                        {hasDraft && <button className="rating-link-button" type="button" onClick={() => {
+                                            clearLocalDraft()
+                                            setDraft(summary.currentUserRating?.scores ?? emptyRatingDraft())
+                                            setMessage('')
+                                        }}>Taslağı sil</button>}
+                                        {hasRating && <button className="rating-link-button" type="button"
+                                            onClick={() => void remove()}>Kaldır</button>}
+                                        <button className="button primary-button" type="submit" disabled={preview == null || isSaving}>
+                                            {isSaving ? 'Kaydediliyor…' : hasRating ? 'Güncelle' : 'Kaydet'}
+                                        </button>
+                                    </div>
                                 </div>
                             </fieldset>
                         </form>
                     ) : (
-                        <p><Link to="/login">Giriş yapın</Link> ve kitabı yedi kriterle değerlendirin.</p>
+                        <p className="rating-card-quiet"><Link to="/login">Giriş yap</Link>, kitabı yedi kriterle puanla.</p>
                     )}
                 </>
             )}
-            {message && <p className="detailed-rating-success" role="status">{message}</p>}
+            {message && <p className="rating-card-success" role="status">{message}</p>}
         </section>
     )
 }
