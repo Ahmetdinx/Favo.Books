@@ -485,6 +485,23 @@ function ProfilePage() {
         totalPages,
     ])
 
+    // My own scores, shown as a small seal on each rated book like on a public profile.
+    const [scores, setScores] = useState<Map<string, number>>(new Map())
+    const ratedBookIds = libraryItems.flatMap(({ book }) => book ? [book.bookId] : []).join(',')
+    useEffect(() => {
+        const controller = new AbortController()
+        if (!ratedBookIds) { setScores(new Map()); return }
+        void authenticatedFetch('/api/readers/me/ratings?bookIds=' + ratedBookIds, { signal: controller.signal, cache: 'no-store' })
+            .then(async response => {
+                if (!response.ok) throw new Error('Ratings unavailable')
+                const data = await response.json() as { items: { bookId: string; overallScore: number | null }[] }
+                if (!controller.signal.aborted) setScores(new Map(data.items.flatMap(item =>
+                    item.overallScore == null ? [] : [[item.bookId, item.overallScore] as const])))
+            })
+            .catch(() => { if (!controller.signal.aborted) setScores(new Map()) }) // The seals are optional.
+        return () => controller.abort()
+    }, [authenticatedFetch, ratedBookIds])
+
     if (!session) {
         return null
     }
@@ -595,6 +612,12 @@ function ProfilePage() {
                                             ? <Link to={`/catalog/books/${book.bookId}`} aria-label={`${title} detaylarını görüntüle`}>{volume}</Link>
                                             : volume}
                                         <span className={`bookcase-ribbon status-${entry.status.toLowerCase()}`}>{statusLabels[entry.status]}</span>
+                                        {book && scores.has(book.bookId) && (
+                                            <span className="bookcase-score" aria-label={`Puanın ${scores.get(book.bookId)!.toFixed(1)} / 10`}
+                                                title={`Puanın: ${scores.get(book.bookId)!.toLocaleString('tr-TR', { maximumFractionDigits: 2 })} / 10`}>
+                                                {scores.get(book.bookId)!.toLocaleString('tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="bookcase-label">
                                         <h3 title={title}>{book ? <Link to={`/catalog/books/${book.bookId}`}>{title}</Link> : title}</h3>

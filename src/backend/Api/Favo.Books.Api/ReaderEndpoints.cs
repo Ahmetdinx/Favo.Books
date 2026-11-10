@@ -29,6 +29,20 @@ public static class ReaderEndpoints
             if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
             return Results.Ok(new { items = await achievements.Get(id, ct) });
         }).RequireAuthorization();
+        group.MapGet("/me/ratings", async (string? bookIds, ClaimsPrincipal principal, PublicReaderRatings ratings, CancellationToken ct) =>
+        {
+            if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
+            var parts = (bookIds ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var ids = new List<Guid>();
+            foreach (var part in parts)
+            {
+                if (!Guid.TryParse(part, out var bookId)) return Results.BadRequest(new { message = "Geçersiz kitap kimliği." });
+                ids.Add(bookId);
+            }
+            if (ids.Count > 100) return Results.BadRequest(new { message = "En fazla 100 kitap sorgulanabilir." });
+            var items = ids.Count == 0 ? [] : await ratings.Get(id, [.. ids.Distinct()], ct);
+            return Results.Ok(new { items });
+        }).RequireAuthorization();
         group.MapPut("/me", async (UpdateReaderRequest request, ClaimsPrincipal principal, ReaderDirectory directory, CancellationToken ct) =>
         {
             if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();

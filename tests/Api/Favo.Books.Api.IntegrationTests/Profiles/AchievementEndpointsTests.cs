@@ -122,4 +122,26 @@ public sealed class AchievementEndpointsTests(FavoBooksWebApplicationFactory fac
         (await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = name, IsPublic = false })).EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.NotFound, (await anonymous.GetAsync("/api/readers/" + name)).StatusCode);
     }
+    [Fact]
+    public async Task Own_ratings_are_returned_only_for_requested_books_of_the_signed_in_reader()
+    {
+        var (owner, _, _) = await Account();
+        var (other, _, _) = await Account();
+        var rated = await Novel();
+        var unrated = await Novel();
+        await Rate(owner, rated, 8);
+        await Rate(other, unrated, 4);
+
+        var data = await owner.GetFromJsonAsync<JsonElement>($"/api/readers/me/ratings?bookIds={rated},{unrated}");
+        var items = data.GetProperty("items");
+        Assert.Equal(1, items.GetArrayLength());
+        Assert.Equal(rated, items[0].GetProperty("bookId").GetGuid());
+        Assert.Equal(8, items[0].GetProperty("overallScore").GetDecimal());
+
+        Assert.Equal(0, (await owner.GetFromJsonAsync<JsonElement>("/api/readers/me/ratings")).GetProperty("items").GetArrayLength());
+        Assert.Equal(HttpStatusCode.BadRequest, (await owner.GetAsync("/api/readers/me/ratings?bookIds=abc")).StatusCode);
+        var tooMany = string.Join(",", Enumerable.Range(0, 101).Select(_ => Guid.NewGuid()));
+        Assert.Equal(HttpStatusCode.BadRequest, (await owner.GetAsync("/api/readers/me/ratings?bookIds=" + tooMany)).StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, (await factory.CreateClient().GetAsync("/api/readers/me/ratings")).StatusCode);
+    }
 }

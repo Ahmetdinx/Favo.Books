@@ -200,6 +200,23 @@ a:focus-visible > .book-object {
 }
 .bookcase-ribbon.status-reading { color: #173322; background: #a9cfae; }
 .bookcase-ribbon.status-read { color: #fbf3e4; background: #7a3f2c; }
+/* A reader's own score, sealed on the cover. */
+.bookcase-score {
+    position: absolute;
+    top: 6px;
+    right: 14px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    font: 600 .74rem Georgia, serif;
+    font-variant-numeric: lining-nums;
+    color: #3e2d24;
+    background: #f3e3c3;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px #0000004d;
+}
 .bookcase-label { margin-top: 18px; text-align: center; color: #f0dfc6; }
 .bookcase-label h3 { margin: 0; overflow: hidden; font: 400 .84rem/1.2 Georgia, serif; white-space: nowrap; text-overflow: ellipsis; }
 .app .bookcase-label h3, .app .bookcase-label h3 a { color: #fbeeda; }
