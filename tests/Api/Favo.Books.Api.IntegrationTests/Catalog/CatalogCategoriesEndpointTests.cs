@@ -42,7 +42,7 @@ public sealed class CatalogCategoriesEndpointTests
             responseBody.RootElement;
 
         Assert.Equal(
-            11,
+            16,
             root.GetProperty("totalCount").GetInt32());
 
         JsonElement[] items = root
@@ -50,7 +50,7 @@ public sealed class CatalogCategoriesEndpointTests
             .EnumerateArray()
             .ToArray();
 
-        Assert.Equal(11, items.Length);
+        Assert.Equal(16, items.Length);
 
         Dictionary<string, string> expectedCategories =
             new()
@@ -66,7 +66,12 @@ public sealed class CatalogCategoriesEndpointTests
                 ["Macera"] = "macera",
                 ["Gerilim"] = "gerilim",
                 ["Korku"] = "korku",
-                ["Distopya"] = "distopya"
+                ["Distopya"] = "distopya",
+                ["Mizah"] = "mizah",
+                ["Savaş"] = "savas",
+                ["Toplumsal Roman"] = "toplumsal-roman",
+                ["Gençlik"] = "genclik",
+                ["Felsefi Roman"] = "felsefi-roman"
             };
 
         foreach (JsonElement item in items)

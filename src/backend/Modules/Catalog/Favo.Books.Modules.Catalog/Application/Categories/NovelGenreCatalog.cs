@@ -9,6 +9,7 @@ internal static class NovelGenreCatalog
     [
         CatalogCategorySlugs.Classics, CatalogCategorySlugs.ScienceFiction,
         CatalogCategorySlugs.Fantasy, CatalogCategorySlugs.CrimeAndMystery,
-        "tarihi-roman", "psikolojik-roman", "ask-ve-romantik", "macera", "gerilim", "korku", "distopya"
+        "tarihi-roman", "psikolojik-roman", "ask-ve-romantik", "macera", "gerilim", "korku", "distopya",
+        "mizah", "savas", "toplumsal-roman", "genclik", "felsefi-roman"
     ];
 }

@@ -143,7 +143,9 @@ internal sealed class CategoryConfiguration :
         {
             ("Tarihî Roman", "tarihi-roman"), ("Psikolojik Roman", "psikolojik-roman"),
             ("Aşk ve Romantik", "ask-ve-romantik"), ("Macera", "macera"),
-            ("Gerilim", "gerilim"), ("Korku", "korku"), ("Distopya", "distopya")
+            ("Gerilim", "gerilim"), ("Korku", "korku"), ("Distopya", "distopya"),
+            ("Mizah", "mizah"), ("Savaş", "savas"), ("Toplumsal Roman", "toplumsal-roman"),
+            ("Gençlik", "genclik"), ("Felsefi Roman", "felsefi-roman")
         };
         for (var i = 0; i < novelGenres.Length; i++)
             builder.HasData(new

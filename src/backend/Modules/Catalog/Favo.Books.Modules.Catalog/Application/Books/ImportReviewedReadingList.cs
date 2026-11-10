@@ -16,7 +16,8 @@ public sealed record ReviewedReadingListEntry(int Number, string Title, string A
     Guid? ExistingBookId = null, string? ExpectedTitle = null, string? ExpectedAuthor = null);
 public sealed record ReadingListImportItem(int Number, Guid BookId, string Title, bool Created, bool Visible);
 
-/// <summary>Offline, explicitly reviewed list import. Does not register a public write endpoint.</summary>
+/// <summary>Offline, explicitly reviewed list import. Does not register a public write endpoint.
+/// Genres are not inferred here; they are assigned by the separate genre review (docs/novel-genres.md).</summary>
 public sealed class ImportReviewedReadingList(CatalogDbContext db)
 {
     public async Task<ReadingListImportItem[]> ExecuteAsync(ReviewedReadingListEntry[] entries,
@@ -34,7 +35,6 @@ public sealed class ImportReviewedReadingList(CatalogDbContext db)
         var output = new List<ReadingListImportItem>();
         var authors = await db.Authors.ToListAsync(ct);
         var publishers = await db.Publishers.ToListAsync(ct);
-        var classic = await db.Categories.SingleAsync(c => c.Slug == "klasikler", ct);
         foreach (var e in entries.OrderBy(e => e.Number))
         {
             var fingerprint = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(
@@ -92,8 +92,6 @@ public sealed class ImportReviewedReadingList(CatalogDbContext db)
                 book.Editions.Add(edition);
                 db.Editions.Add(edition);
             }
-            if (!book.Categories.Any(c => c.CategoryId == classic.Id))
-                book.Categories.Add(new Domain.Categories.BookCategory(book.Id, classic.Id));
             book.NovelReviews.Add(new NovelReview(book.Id, e.Decision, batchId, e.SourceUrl,
                 $"{e.EvidenceNote} Source SHA256 {e.SourceSha256}; entry SHA256 {fingerprint}.",
                 "reviewed-reading-list", "requested-classics-v1"));

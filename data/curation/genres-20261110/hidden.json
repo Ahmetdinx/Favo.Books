@@ -1,0 +1,310 @@
+[
+  {
+    "id": "66de9f7e-95f7-4859-9354-ec2597dd07b4",
+    "title": "On Küçük Zenci",
+    "author": "Agatha Christie",
+    "note": "duplicate work of 16 (And Then There Were None)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "0aed442c-c978-4dae-ae3c-3466c17ac47f",
+    "title": "Dörtlerin İmzası",
+    "author": "Arthur Conan Doyle",
+    "note": "duplicate work of 123 (The Sign of Four)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "e95eb8a9-1a3d-44c9-be41-5b9f85bdc049",
+    "title": "Asena:Mağaranın Sırrı",
+    "author": "AYHAN ÖZDEN",
+    "note": "poetry (kitapyurdu: Şiir)",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "abc6d3e1-17aa-4948-a73a-4f42a1984c1f",
+    "title": "Sizin Memlekette Eşek Yok mu?",
+    "author": "Aziz Nesin",
+    "note": "story selection / memoir",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "dbcd8a59-aa65-468f-b322-f8d2e505538f",
+    "title": "Sen Ben Lenin Bir Hikaye İki Senaryo Bir Film",
+    "author": "Barış Bıçakçı",
+    "note": "screenplay",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "50181431-64fd-4ce1-99ec-3356080df7af",
+    "title": "Fukaranın Ahı - Şahane Atasözleri Defterim",
+    "author": "Başar Başarır",
+    "note": "proverb notebook, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "b901a17d-e449-4be4-b9cd-36dfb89e97a7",
+    "title": "Drakula",
+    "author": "Bram Stoker",
+    "note": "duplicate work of 212 (Dracula)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "8bf1cfd3-fac8-4256-9e25-71ff1c8a9802",
+    "title": "Kızıl Köşkün Rüyası -I- -Taşın Hikâyesi- Ciltli",
+    "author": "Cao Xuenqin",
+    "note": "first volume only; the complete work is kept",
+    "decision": "Unknown"
+  },
+  {
+    "id": "d855d3bb-6456-4cf9-9625-0378f43c2cef",
+    "title": "Büyük Umutlar",
+    "author": "Charles Dickens",
+    "note": "children's adaptation of Great Expectations",
+    "decision": "Unknown"
+  },
+  {
+    "id": "e468ae47-83da-4bc0-a395-d2c8cc7a7830",
+    "title": "Kuşlar",
+    "author": "Daphne du Maurier",
+    "note": "story collection (The Birds)",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "3d93edb6-dfdb-42a3-9d33-ad19bf142cb3",
+    "title": "Aynadaki Bakışlar",
+    "author": "Doğan Hızlan",
+    "note": "literary criticism, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "46567939-5a8c-4b5d-a353-578b7acbe682",
+    "title": "Kahramanlar Hep Erkek",
+    "author": "Duygu Asena",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "7dd0a2fc-ce0a-4895-a136-0b4a017fd05c",
+    "title": "Dağlar Kendini Seveni Sever",
+    "author": "FATOŞ GÜNEY",
+    "note": "memoir",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "67bf035a-6d45-45c2-a043-21ad5abce502",
+    "title": "Madame Bovary",
+    "author": "Gustave Flaubert",
+    "note": "English-language edition record (Madame Bovary) next to the Turkish one (559)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "813d6b14-89ec-409d-9a20-5aacf595d4dc",
+    "title": "Goethe – Bir Dehanın Romanı",
+    "author": "Hasan Âli Yücel",
+    "note": "biographical study (Goethe), not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "bbc2ac8e-be70-45fb-9ed2-af967838e275",
+    "title": "Moby Dick ya da Balina",
+    "author": "Herman Melville",
+    "note": "duplicate work of 664 (Moby Dick)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "f5419b31-ab5b-4a9a-ba75-beba828be70e",
+    "title": "İnsanlar Ve İnsanlar",
+    "author": "İLKER ASLAN",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "4d3e721f-074f-4f30-a864-59bad6b9ce6e",
+    "title": "Kosova'ya Üç Ağıt",
+    "author": "İsmail Kadare",
+    "note": "story collection (three novellas)",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "4f2631a3-3493-4c21-b595-5dabbdf54e42",
+    "title": "Sürgün Melekler",
+    "author": "Jale Sancak",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "a9bd22e7-459d-48bb-a5fe-32be9a8840c5",
+    "title": "Dublinliler",
+    "author": "James Joyce",
+    "note": "story collection (Dubliners)",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "c2ca80cf-21d9-43b5-8181-55d326ef6520",
+    "title": "Faust",
+    "author": "Johann Wolfgang von Goethe",
+    "note": "Faust is a play",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "a497cdc6-edd1-407c-bfdc-c31ce9335c2a",
+    "title": "Yolda Olmak",
+    "author": "Kadir Işık",
+    "note": "travel narrative, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "b8ca5af0-6ec1-467b-8a68-397473ca6814",
+    "title": "Karşı Yaka Memleket",
+    "author": "Kemal Anadol",
+    "note": "memoir",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "cf44d74d-7aaf-47a5-8b19-045da56d6b37",
+    "title": "Bir Şarkıyı Dinlerken",
+    "author": "Kemal Ateş",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "f633d9f1-81f8-4f7b-aedd-718695b9fdbc",
+    "title": "Mezbaha 5",
+    "author": "Kurt Vonnegut",
+    "note": "graphic-novel edition of Slaughterhouse-Five next to 937",
+    "decision": "Unknown"
+  },
+  {
+    "id": "e2e14f25-5964-4eb1-84e2-15d7514d719f",
+    "title": "Savaş ve Barış 2 Cilt",
+    "author": "Lev Nikolayeviç Tolstoy",
+    "note": "duplicate work of 954 (War and Peace)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "08790a90-1b64-4605-a31b-624b2295bc2d",
+    "title": "Bir Yaz Yağmuruydu",
+    "author": "Mario Levi",
+    "note": "essays, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "51decd08-5cff-4379-896f-e1b2cad2dfed",
+    "title": "Frankenstein ya da Modern Prometheus",
+    "author": "Mary Shelley",
+    "note": "duplicate work of 1042 (Frankenstein)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "ebf4337a-f3dd-4d1f-8c93-b05a2d1cc0ab",
+    "title": "Zamanımızın Kahramanı",
+    "author": "Mihail Yuryeviç Lermontov",
+    "note": "duplicate work of 1116 (A Hero of Our Time)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "2e99499b-4255-416e-9735-7aae9f758ad3",
+    "title": "Ayna Çarpması",
+    "author": "Murat Özyaşar",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "ebdd8ab6-4c64-4e71-b1ab-782966c3066e",
+    "title": "Kimi Güzelliklere Doğar",
+    "author": "Nadine Gordimer",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "b972d91b-f173-49db-81cb-b949dfd784d2",
+    "title": "Kızıl Damga",
+    "author": "Nathaniel Hawthorne",
+    "note": "duplicate work of 1153 (The Scarlet Letter)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "9e9657dc-1920-465b-b5f5-b18cdc0cad54",
+    "title": "Bana Sen Söyle",
+    "author": "Necati Tosuner",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "cb61b08b-fb22-4982-b45f-f6657aa3f238",
+    "title": "Güneş Giderken",
+    "author": "Necati Tosuner",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "d815926c-7fa3-45bc-8940-ed31a479b995",
+    "title": "Yaşar Kemal",
+    "author": "Nedim Gürsel",
+    "note": "essay on Yaşar Kemal, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "d33e00cc-9952-456d-8be9-cbae925a8c23",
+    "title": "Palto",
+    "author": "Nikolay Gogol",
+    "note": "story (The Overcoat), part of Petersburg Tales",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "dd3f2b39-4135-4d8c-ba0a-c615b692dd2d",
+    "title": "Karadeniz'de Üç Liman: Temmuz, Ağustos ve Sinop",
+    "author": "Osman Çağlar",
+    "note": "political history, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "99b83cf3-3c73-4969-a673-7937383cf9cd",
+    "title": "Jartiyer, Kırbaç ve Baby-Doll'ün Ötesindekiler",
+    "author": "Özen Yula",
+    "note": "essays, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "be47b943-1ac7-4d04-891b-13e8187e719d",
+    "title": "Pülümür'de Aşk",
+    "author": "Rahşan Ecevit",
+    "note": "screenplay",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "165149fe-3f29-42b1-9ab4-2b77601bcd85",
+    "title": "Dr. Jekyll ve Bay Hyde",
+    "author": "Robert Louis Stevenson",
+    "note": "duplicate work of 1380 (Jekyll and Hyde)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "84abb758-e308-421d-9065-b87f3f7b8df5",
+    "title": "Beni Ararken",
+    "author": "Seda Diker",
+    "note": "youth self-help, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "3dbdad71-6b59-40b9-bf4d-300b6e68fe19",
+    "title": "Ağula",
+    "author": "Sibel K. Türker",
+    "note": "story collection",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "85c3ad05-3ad1-4ad0-8fe7-161e109d6924",
+    "title": "Doktordan Az Kullanılmış",
+    "author": "Tayfun Hancılar",
+    "note": "humorous memoir, not a novel",
+    "decision": "NotNovel"
+  },
+  {
+    "id": "19c8f18d-a222-47c2-b852-1396799d4f62",
+    "title": "Maskenin Düştüğü Yer",
+    "author": "Yankı Enki",
+    "note": "literary study, not a novel",
+    "decision": "NotNovel"
+  }
+]
