@@ -65,7 +65,7 @@ export default function ReaderSettings() {
                 <form onSubmit={save} className="reader-settings-form">
                     <div className="avatar-preview">
                         <ReaderAvatar avatarId={avatarId} achievements={achievements} size="large" />
-                        <div><strong>Okur avatarın</strong><small>Solda okuma, sağda değerlendirme rozetin.</small></div>
+                        <div><strong>Okur avatarın</strong><small>Halkanın rengi okuma, yıldız değerlendirme rozetin.</small></div>
                     </div>
                     <fieldset className="avatar-picker" disabled={busy}>
                         <legend>Avatar seç</legend>
