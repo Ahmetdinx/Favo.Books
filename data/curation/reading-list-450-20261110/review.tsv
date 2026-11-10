@@ -1,0 +1,483 @@
+Number	Status	Requested	Author	Edition	EditionAuthor	Publisher	Isbn	Pages	Url	Note
+1	OK	Kar	Orhan Pamuk	Kar	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750825910	464	https://www.kitapyurdu.com/kitap/kar/311001.html	
+2	OK	Benim Adım Kırmızı	Orhan Pamuk	Benim Adım Kırmızı	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750825927	555	https://www.kitapyurdu.com/kitap/benim-adim-kirmizi/310999.html	
+3	OK	Masumiyet Müzesi	Orhan Pamuk	Masumiyet Müzesi	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750826146	524	https://www.kitapyurdu.com/kitap/masumiyet-muzesi/317427.html	
+4	OK	Kara Kitap	Orhan Pamuk	Kara Kitap	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750826139	476	https://www.kitapyurdu.com/kitap/kara-kitap/317429.html	
+5	OK	Beyaz Kale	Orhan Pamuk	Beyaz Kale	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750826306	152	https://www.kitapyurdu.com/kitap/beyaz-kale/317428.html	
+6	OK	Sessiz Ev	Orhan Pamuk	Sessiz Ev	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750826702	304	https://www.kitapyurdu.com/kitap/sessiz-ev/327886.html	
+7	OK	Cevdet Bey ve Oğulları	Orhan Pamuk	Cevdet Bey ve Oğulları	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750826313	644	https://www.kitapyurdu.com/kitap/cevdet-bey-ve-ogullari/320040.html	
+8	OK	Kafamda Bir Tuhaflık	Orhan Pamuk	Kafamda Bir Tuhaflık	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750830884	480	https://www.kitapyurdu.com/kitap/kafamda-bir-tuhaflik/356099.html	
+9	OK	Kırmızı Saçlı Kadın	Orhan Pamuk	Kırmızı Saçlı Kadın	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750835605	204	https://www.kitapyurdu.com/kitap/kirmizi-sacli-kadin/386294.html	
+10	OK	Veba Geceleri	Orhan Pamuk	Veba Geceleri	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750849282	544	https://www.kitapyurdu.com/kitap/veba-geceleri/575761.html	
+11	OK	Yeni Hayat	Orhan Pamuk	Yeni Hayat	Orhan Pamuk	YAPI KREDİ YAYINLARI	9789750826481	247	https://www.kitapyurdu.com/kitap/yeni-hayat/322086.html	
+12	OK	İnce Memed 1	Yaşar Kemal	İnce Memed 1	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807145	436	https://www.kitapyurdu.com/kitap/ince-memed-1/57300.html	
+13	OK	İnce Memed 2	Yaşar Kemal	İnce Memed 2	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807176	459	https://www.kitapyurdu.com/kitap/ince-memed-2/57301.html	
+14	OK	İnce Memed 3	Yaşar Kemal	İnce Memed 3	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807039	629	https://www.kitapyurdu.com/kitap/ince-memed-3/57302.html	
+15	OK	İnce Memed 4	Yaşar Kemal	İnce Memed 4	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750806995	639	https://www.kitapyurdu.com/kitap/ince-memed-4/57303.html	
+16	OK	Yer Demir Gök Bakır	Yaşar Kemal	Yer Demir Gök Bakır / Dağın Öte Yüzü 2	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807251	383	https://www.kitapyurdu.com/kitap/yer-demir-gok-bakir-dagin-ote-yuzu-2/57316.html	
+17	OK	Ortadirek	Yaşar Kemal	Ortadirek (Dağın Öte Yüzü 1)	Yaşar Kemal	ADAM YAYINCILIK	9789754183320	338	https://www.kitapyurdu.com/kitap/ortadirek-dagin-ote-yuzu-1/7042.html	
+18	OK	Ölmez Otu	Yaşar Kemal	Ölmez Otu (Dağın Öte Yüzü 3)	Yaşar Kemal	ADAM YAYINCILIK	9789754183344	337	https://www.kitapyurdu.com/kitap/olmez-otu-dagin-ote-yuzu-3/7053.html	
+19	OK	Teneke	Yaşar Kemal	Teneke	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807190	158	https://www.kitapyurdu.com/kitap/teneke/57290.html	
+20	OK	Ağrıdağı Efsanesi	Yaşar Kemal	Ağrıdağı Efsanesi	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807411	120	https://www.kitapyurdu.com/kitap/agridagi-efsanesi/57283.html	
+21	OK	Binboğalar Efsanesi	Yaşar Kemal	Binboğalar Efsanesi	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807015	281	https://www.kitapyurdu.com/kitap/binbogalar-efsanesi/57289.html	
+22	OK	Demirciler Çarşısı Cinayeti	Yaşar Kemal	Demirciler Çarşısı Cinayeti (Akçasazın Ağaları 1)	Yaşar Kemal	ADAM YAYINCILIK	9789754183443	545	https://www.kitapyurdu.com/kitap/demirciler-carsisi-cinayeti-akcasazin-agalari-1/7023.html	
+23	OK	Deniz Küstü	Yaşar Kemal	Deniz Küstü	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807138	419	https://www.kitapyurdu.com/kitap/deniz-kustu/57315.html	
+24	IN_CATALOG	Kuyucaklı Yusuf	Sabahattin Ali
+25	IN_CATALOG	İçimizdeki Şeytan	Sabahattin Ali
+26	IN_CATALOG	Kürk Mantolu Madonna	Sabahattin Ali
+27	OK	Tutunamayanlar	Oğuz Atay	Tutunamayanlar (Ciltli Özel Baskı)	Oğuz Atay	İLETİŞİM YAYINLARI	9789750539022	807	https://www.kitapyurdu.com/kitap/tutunamayanlar-ciltli-ozel-baski/739045.html	
+28	OK	Tehlikeli Oyunlar	Oğuz Atay	Tehlikeli Oyunlar (Ciltli Özel Baskı)	Oğuz Atay	İLETİŞİM YAYINLARI	9789750539039	560	https://www.kitapyurdu.com/kitap/tehlikeli-oyunlar-ciltli-ozel-baski/739047.html	
+29	OK	Bir Bilim Adamının Romanı	Oğuz Atay	Bir Bilim Adamının Romanı (Ciltli Özel Baskı)	Oğuz Atay	İLETİŞİM YAYINLARI	9789750538896	320	https://www.kitapyurdu.com/kitap/bir-bilim-adaminin-romani-ciltli-ozel-baski/739052.html	
+30	OK	Anayurt Oteli	Yusuf Atılgan	Anayurt Oteli	Yusuf Atılgan	YAPI KREDİ YAYINLARI	9789750800665	108	https://www.kitapyurdu.com/kitap/anayurt-oteli/69253.html	
+31	OK	Aylak Adam	Yusuf Atılgan	Aylak Adam	Yusuf Atılgan	YAPI KREDİ YAYINLARI	9789750802447	156	https://www.kitapyurdu.com/kitap/aylak-adam/28933.html	
+32	OK	Saatleri Ayarlama Enstitüsü	Ahmet Hamdi Tanpınar	Saatleri Ayarlama Enstitüsü	Ahmet Hamdi Tanpınar	YAPI KREDİ YAYINLARI	9789750801976	366	https://www.kitapyurdu.com/kitap/saatleri-ayarlama-enstitusu/47313.html	
+33	OK	Huzur	Ahmet Hamdi Tanpınar	Huzur	Ahmet Hamdi Tanpınar	DERGAH YAYINLARI	9786256839472	384	https://www.kitapyurdu.com/kitap/huzur/665700.html	invalid isbn: : https://www.kitapyurdu.com/kitap/huzur/47309.html
+34	OK	Sahnenin Dışındakiler	Ahmet Hamdi Tanpınar	Sahnenin Dışındakiler	Ahmet Hamdi Tanpınar	DERGAH YAYINLARI	9789759958251	280	https://www.kitapyurdu.com/kitap/sahnenin-disindakiler/4770.html	
+35	OK	Mahur Beste	Ahmet Hamdi Tanpınar	Mahur Beste	Ahmet Hamdi Tanpınar	YAPI KREDİ YAYINLARI	9789750802140	150	https://www.kitapyurdu.com/kitap/mahur-beste/32688.html	
+36	OK	Çalıkuşu	Reşat Nuri Güntekin	Çalıkuşu	Reşat Nuri Güntekin	İNKILAP KİTABEVİ	9789751047236	384	https://www.kitapyurdu.com/kitap/calikusu/7419.html	
+37	OK	Yaprak Dökümü	Reşat Nuri Güntekin	Yaprak Dökümü	Reşat Nuri Güntekin	İNKILAP KİTABEVİ	9789751047380	120	https://www.kitapyurdu.com/kitap/yaprak-dokumu/7436.html	
+38	OK	Acımak	Reşat Nuri Güntekin	Acımak	Reşat Nuri Güntekin	İNKILAP KİTABEVİ	9789751047373	120	https://www.kitapyurdu.com/kitap/acimak/7414.html	
+39	OK	Dudaktan Kalbe	Reşat Nuri Güntekin	Dudaktan Kalbe	Reşat Nuri Güntekin	İNKILAP KİTABEVİ	9789751047526	288	https://www.kitapyurdu.com/kitap/dudaktan-kalbe/7422.html	
+40	OK	Yeşil Gece	Reşat Nuri Güntekin	Yeşil Gece	Reşat Nuri Güntekin	İNKILAP KİTABEVİ	9789751048752	208	https://www.kitapyurdu.com/kitap/yesil-gece/723090.html	
+41	MISSING	Kızılcık Dalları	Reşat Nuri Güntekin							no candidate by this author
+42	OK	Miskinler Tekkesi	Reşat Nuri Güntekin	Miskinler Tekkesi	Reşat Nuri Güntekin	İNKILAP KİTABEVİ	9789751048318	192	https://www.kitapyurdu.com/kitap/miskinler-tekkesi/7431.html	
+43	OK	Sinekli Bakkal	Halide Edib Adıvar	Sinekli Bakkal	Halide Edib Adıvar	CAN YAYINLARI	9789750721663	476	https://www.kitapyurdu.com/kitap/sinekli-bakkal/94987.html	
+44	OK	Ateşten Gömlek	Halide Edib Adıvar	Ateşten Gömlek	Halide Edib Adıvar	CAN YAYINLARI	9789750723322	224	https://www.kitapyurdu.com/kitap/atesten-gomlek/94989.html	
+45	OK	Vurun Kahpeye	Halide Edib Adıvar	Vurun Kahpeye	Halide Edib Adıvar	CAN YAYINLARI	9789750721670	214	https://www.kitapyurdu.com/kitap/vurun-kahpeye/94988.html	
+46	OK	Handan	Halide Edib Adıvar	Handan	Halide Edib Adıvar	CAN YAYINLARI	9789750723537	224	https://www.kitapyurdu.com/kitap/handan/102222.html	
+47	OK	Dokuzuncu Hariciye Koğuşu	Peyami Safa	Dokuzuncu Hariciye Koğuşu	Peyami Safa	ÖTÜKEN NEŞRİYAT	9786254085086	112	https://www.kitapyurdu.com/kitap/dokuzuncu-hariciye-kogusu/641158.html	
+48	OK	Fatih-Harbiye	Peyami Safa	Fatih Harbiye	Peyami Safa	ÖTÜKEN NEŞRİYAT	9786254085079	128	https://www.kitapyurdu.com/kitap/fatih-harbiye/14301.html	
+49	OK	Yalnızız	Peyami Safa	Yalnızız	Peyami Safa	ÖTÜKEN NEŞRİYAT	9789754370577	416	https://www.kitapyurdu.com/kitap/yalniziz/14300.html	
+50	OK	Matmazel Noraliya'nın Koltuğu	Peyami Safa	Matmazel Noraliya'nın Koltuğu	Peyami Safa	ÖTÜKEN NEŞRİYAT	9786254085123	319	https://www.kitapyurdu.com/kitap/matmazel-noraliyanin-koltugu/14303.html	
+51	OK	Bir Tereddüdün Romanı	Peyami Safa	Bir Tereddüdün Romanı	Peyami Safa	ÖTÜKEN NEŞRİYAT	9786254085055	200	https://www.kitapyurdu.com/kitap/bir-tereddudun-romani/28515.html	
+52	IN_CATALOG	Aşk-ı Memnu	Halit Ziya Uşaklıgil
+53	IN_CATALOG	Mai ve Siyah	Halit Ziya Uşaklıgil
+54	IN_CATALOG	Kırık Hayatlar	Halit Ziya Uşaklıgil
+55	OK	Bereketli Topraklar Üzerinde	Orhan Kemal	Bereketli Topraklar Üzerinde	Orhan Kemal	EVEREST YAYINLARI	9789752895546	380	https://www.kitapyurdu.com/kitap/bereketli-topraklar-uzerinde/121072.html	invalid isbn: : https://www.kitapyurdu.com/kitap/bereketli-topraklar-uzerinde/12780.html
+56	OK	Eskici ve Oğulları	Orhan Kemal	Eskici ve Oğulları	Orhan Kemal	EVEREST YAYINLARI	9789752895034	378	https://www.kitapyurdu.com/kitap/eskici-ve-ogullari/115038.html	
+57	OK	Cemile	Orhan Kemal	Cemile	Orhan Kemal	EVEREST YAYINLARI	9789752895539	150	https://www.kitapyurdu.com/kitap/cemile/120258.html	
+58	OK	Murtaza	Orhan Kemal	Murtaza	Orhan Kemal	EVEREST YAYINLARI	9789752893795	360	https://www.kitapyurdu.com/kitap/murtaza/93154.html	invalid isbn: : https://www.kitapyurdu.com/kitap/murtaza/12781.html
+59	OK	Avare Yıllar	Orhan Kemal	Avare Yıllar	Orhan Kemal	EVEREST YAYINLARI	9789752895058	122	https://www.kitapyurdu.com/kitap/avare-yillar/141757.html	
+60	OK	Baba Evi	Orhan Kemal	Baba Evi	Orhan Kemal	EPSİLON YAYINEVİ	9789753317177	104	https://www.kitapyurdu.com/kitap/baba-evi/67556.html	
+61	OK	Gurbet Kuşları	Orhan Kemal	Gurbet Kuşları	Orhan Kemal	EVEREST YAYINLARI	9789752893726	384	https://www.kitapyurdu.com/kitap/gurbet-kuslari/91864.html	
+62	SKIPPED	Hanımın Çiftliği	Orhan Kemal							Only the second volume was found as a Turkish edition.
+63	OK	Vukuat Var	Orhan Kemal	Vukuat Var	Orhan Kemal	EPSİLON YAYINEVİ	9789753316965	415	https://www.kitapyurdu.com/kitap/vukuat-var/65890.html	
+64	OK	Devlet Kuşu	Orhan Kemal	Devlet Kuşu	Orhan Kemal	EVEREST YAYINLARI	9789752897830	264	https://www.kitapyurdu.com/kitap/devlet-kusu/243222.html	
+65	OK	Kanlı Topraklar	Orhan Kemal	Kanlı Topraklar	Orhan Kemal	EVEREST YAYINLARI	9789752894150	377	https://www.kitapyurdu.com/kitap/kanli-topraklar/96818.html	
+66	OK	Devlet Ana	Kemal Tahir	Devlet Ana	Kemal Tahir	İTHAKİ YAYINLARI	9789752731332	632	https://www.kitapyurdu.com/kitap/devlet-ana/71807.html	
+67	OK	Yorgun Savaşçı	Kemal Tahir	Yorgun Savaşçı	Kemal Tahir	İTHAKİ YAYINLARI	9789752731608	496	https://www.kitapyurdu.com/kitap/yorgun-savasci/71808.html	
+68	OK	Esir Şehrin İnsanları	Kemal Tahir	Esir Şehrin İnsanları (Esir Şehir Üçlemesi 1.Kitap)	Kemal Tahir	İTHAKİ YAYINLARI	9789752730762	448	https://www.kitapyurdu.com/kitap/esir-sehrin-insanlari-esir-sehir-uclemesi-1kitap/65408.html	
+69	OK	Kurt Kanunu	Kemal Tahir	Kurt Kanunu	Kemal Tahir	İTHAKİ YAYINLARI	9786053759799	304	https://www.kitapyurdu.com/kitap/kurt-kanunu/73342.html	
+70	OK	Rahmet Yolları Kesti	Kemal Tahir	Rahmet Yolları Kesti	Kemal Tahir	İTHAKİ YAYINLARI	9786053756378	383	https://www.kitapyurdu.com/kitap/rahmet-yollari-kesti/82730.html	
+71	OK	Yediçınar Yaylası	Kemal Tahir	Yediçınar Yaylası	Kemal Tahir	İTHAKİ YAYINLARI	9789752734166	336	https://www.kitapyurdu.com/kitap/yedicinar-yaylasi/115524.html	
+72	OK	Köyün Kamburu	Kemal Tahir	Köyün Kamburu	Kemal Tahir	İTHAKİ YAYINLARI	9786053758051	328	https://www.kitapyurdu.com/kitap/koyun-kamburu/77694.html	
+73	OK	Cemo	Kemal Bilbaşar	Cemo	Kemal Bilbaşar	CAN YAYINLARI	9789750731877	212	https://www.kitapyurdu.com/kitap/cemo/52329.html	
+74	OK	Hababam Sınıfı	Rıfat Ilgaz	Hababam Sınıfı	Rıfat Ilgaz	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053601005	516	https://www.kitapyurdu.com/kitap/hababam-sinifi/249205.html	
+75	OK	Karartma Geceleri	Rıfat Ilgaz	Karartma Geceleri	Rıfat Ilgaz	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053600992	276	https://www.kitapyurdu.com/kitap/karartma-geceleri/249198.html	
+76	OK	Zübük	Aziz Nesin	Zübük	Aziz Nesin	ADAM YAYINCILIK	9789754181296	275	https://www.kitapyurdu.com/kitap/zubuk/336.html	
+77	OK	Gol Kralı	Aziz Nesin	Gol Kralı	Aziz Nesin	NESİN YAYINEVİ	9789759038700	305	https://www.kitapyurdu.com/kitap/gol-krali/145753.html	
+78	OK	Patasana	Ahmet Ümit	Patasana	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750845970	432	https://www.kitapyurdu.com/kitap/patasana/518980.html	
+79	OK	Beyoğlu Rapsodisi	Ahmet Ümit	Beyoğlu Rapsodisi	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750846205	456	https://www.kitapyurdu.com/kitap/beyoglu-rapsodisi/523756.html	
+80	OK	İstanbul Hatırası	Ahmet Ümit	İstanbul Hatırası	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750845987	632	https://www.kitapyurdu.com/kitap/istanbul-hatirasi/518971.html	
+81	OK	Sultanı Öldürmek	Ahmet Ümit	Sultanı Öldürmek	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750846076	584	https://www.kitapyurdu.com/kitap/sultani-oldurmek/518981.html	
+82	OK	Kavim	Ahmet Ümit	Kavim	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750845994	440	https://www.kitapyurdu.com/kitap/kavim/518977.html	
+83	OK	Elveda Güzel Vatanım	Ahmet Ümit	Elveda Güzel Vatanım	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750847134	616	https://www.kitapyurdu.com/kitap/elveda-guzel-vatanim/538303.html	
+84	OK	Beyoğlu'nun En Güzel Abisi	Ahmet Ümit	Beyoğlu'nun En Güzel Abisi	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750846298	456	https://www.kitapyurdu.com/kitap/beyoglunun-en-guzel-abisi/523753.html	
+85	OK	Kırlangıç Çığlığı	Ahmet Ümit	Kırlangıç Çığlığı	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750845857	436	https://www.kitapyurdu.com/kitap/kirlangic-cigligi/517810.html	
+86	OK	Bab-ı Esrar	Ahmet Ümit	Bab-ı Esrar	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750845963	440	https://www.kitapyurdu.com/kitap/babi-esrar/518973.html	
+87	OK	Kukla	Ahmet Ümit	Kukla	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750846342	552	https://www.kitapyurdu.com/kitap/kukla/524513.html	
+88	OK	Ninatta'nın Bileziği	Ahmet Ümit	Ninatta'nın Bileziği	Ahmet Ümit	YAPI KREDİ YAYINLARI	9789750846335	120	https://www.kitapyurdu.com/kitap/ninattanin-bilezigi/523755.html	
+89	IN_CATALOG	Serenad	Zülfü Livaneli
+90	IN_CATALOG	Mutluluk	Zülfü Livaneli
+91	IN_CATALOG	Leyla'nın Evi	Zülfü Livaneli
+92	IN_CATALOG	Kardeşimin Hikayesi	Zülfü Livaneli
+93	IN_CATALOG	Huzursuzluk	Zülfü Livaneli
+94	IN_CATALOG	Konstantiniyye Oteli	Zülfü Livaneli
+95	IN_CATALOG	Son Ada	Zülfü Livaneli
+96	REJECTED	Engereğin Gözündeki Kamaşma	Zülfü Livaneli							invalid isbn: : https://www.kitapyurdu.com/kitap/engeregin-gozundeki-kamasma/10162.html
+97	OK	Sevgili Arsız Ölüm	Latife Tekin	Sevgili Arsız Ölüm	Latife Tekin	YAPI KREDİ YAYINLARI	9789750809866	206	https://www.kitapyurdu.com/kitap/sevgili-arsiz-olum/73236.html	
+98	OK	Berci Kristin Çöp Masalları	Latife Tekin	Berci Kristin Çöp Masalları	Latife Tekin	CAN YAYINLARI	9789750738722	144	https://www.kitapyurdu.com/kitap/berci-kristin-cop-masallari/482413.html	
+99	OK	Ölmeye Yatmak	Adalet Ağaoğlu	Ölmeye Yatmak (Ciltsiz)	Adalet Ağaoğlu	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9789754588620	364	https://www.kitapyurdu.com/kitap/olmeye-yatmak-ciltsiz/114832.html	invalid isbn: : https://www.kitapyurdu.com/kitap/olmeye-yatmak/11477.html
+100	OK	Bir Düğün Gecesi	Adalet Ağaoğlu	Bir Düğün Gecesi	Adalet Ağaoğlu	YAPI KREDİ YAYINLARI	9789753633420	300	https://www.kitapyurdu.com/kitap/bir-dugun-gecesi/11478.html	
+101	OK	Çocukluğun Soğuk Geceleri	Tezer Özlü	Çocukluğun Soğuk Geceleri	Tezer Özlü	YAPI KREDİ YAYINLARI	9789753632607	65	https://www.kitapyurdu.com/kitap/cocuklugun-soguk-geceleri/12215.html	
+102	OK	Tante Rosa	Sevgi Soysal	Tante Rosa	Sevgi Soysal	BİLGİ YAYINEVİ	9789754946178	136	https://www.kitapyurdu.com/kitap/tante-rosa/4422.html	
+103	OK	Yürümek	Sevgi Soysal	Yürümek / Bütün Eserleri 2	Sevgi Soysal	İLETİŞİM YAYINLARI	9789750501005	152	https://www.kitapyurdu.com/kitap/yurumek-butun-eserleri-2/50628.html	
+104	OK	Küçük Ağa	Tarık Buğra	Küçük Ağa / Toplu Eserleri 1	Tarık Buğra	İLETİŞİM YAYINLARI	9789750501982	477	https://www.kitapyurdu.com/kitap/kucuk-aga-toplu-eserleri-1/56756.html	invalid isbn: : https://www.kitapyurdu.com/kitap/kucuk-aga/14336.html
+105	OK	Osmancık	Tarık Buğra	Osmancık	Tarık Buğra	ÖTÜKEN NEŞRİYAT	9789754370799	376	https://www.kitapyurdu.com/kitap/osmancik/14334.html	
+106	OK	İbiş'in Rüyası	Tarık Buğra	İbiş'in Rüyası	Tarık Buğra	ÖTÜKEN NEŞRİYAT	9789754371222	229	https://www.kitapyurdu.com/kitap/ibisin-ruyasi/14337.html	
+107	OK	Uzun Hikaye	Mustafa Kutlu	Uzun Hikaye	Mustafa Kutlu	DERGAH YAYINLARI	9789759953331	120	https://www.kitapyurdu.com/kitap/uzun-hikaye/19088.html	
+108	OK	Füreya	Ayşe Kulin	Füreya	Ayşe Kulin	EVEREST YAYINLARI	9789752892514	424	https://www.kitapyurdu.com/kitap/fureya/73450.html	
+109	OK	Adı: Aylin	Ayşe Kulin	Adı Aylin	Ayşe Kulin	EVEREST YAYINLARI	9789752890435	398	https://www.kitapyurdu.com/kitap/adi-aylin/73449.html	
+110	OK	Nefes Nefese	Ayşe Kulin	Nefes Nefese	Ayşe Kulin	EVEREST YAYINLARI	9789752894532	372	https://www.kitapyurdu.com/kitap/nefes-nefese/103598.html	
+111	OK	Veda	Ayşe Kulin	Veda (Cep Boy)	Ayşe Kulin	EVEREST YAYINLARI	9789752895096	390	https://www.kitapyurdu.com/kitap/veda-cep-boy/115103.html	
+112	OK	Sevdalinka	Ayşe Kulin	Sevdalinka	Ayşe Kulin	EVEREST YAYINLARI	9789752892422	340	https://www.kitapyurdu.com/kitap/sevdalinka/73452.html	
+113	OK	Bir Gün	Ayşe Kulin	Bir Gün	Ayşe Kulin	EVEREST YAYINLARI	9789752892361	202	https://www.kitapyurdu.com/kitap/bir-gun/71299.html	
+114	OK	Kumral Ada Mavi Tuna	Buket Uzuner	Kumral Ada Mavi Tuna	Buket Uzuner	EVEREST YAYINLARI	9789752890244	500	https://www.kitapyurdu.com/kitap/kumral-ada-mavi-tuna/48433.html	
+115	OK	Puslu Kıtalar Atlası	İhsan Oktay Anar	Puslu Kıtalar Atlası	İhsan Oktay Anar	İLETİŞİM YAYINLARI	9789754704723	238	https://www.kitapyurdu.com/kitap/puslu-kitalar-atlasi/1650.html	
+116	OK	Kitab-ül Hiyel	İhsan Oktay Anar	Kitab-ül Hiyel	İhsan Oktay Anar	İLETİŞİM YAYINLARI	9789754705423	154	https://www.kitapyurdu.com/kitap/kitabul-hiyel/1658.html	
+117	OK	Efrasiyab'ın Hikayeleri	İhsan Oktay Anar	Efrasiyab'ın Hikayeleri	İhsan Oktay Anar	İLETİŞİM YAYINLARI	9789754706482	245	https://www.kitapyurdu.com/kitap/efrasiyabin-hikayeleri/1663.html	
+118	OK	Amat	İhsan Oktay Anar	Amat	İhsan Oktay Anar	İLETİŞİM YAYINLARI	9789750503726	239	https://www.kitapyurdu.com/kitap/amat/74065.html	
+119	OK	Suskunlar	İhsan Oktay Anar	Suskunlar	İhsan Oktay Anar	İLETİŞİM YAYINLARI	9789750505386	269	https://www.kitapyurdu.com/kitap/suskunlar/100201.html	
+120	OK	Yedinci Gün	İhsan Oktay Anar	Yedinci Gün	İhsan Oktay Anar	İLETİŞİM YAYINLARI	9789750510861	240	https://www.kitapyurdu.com/kitap/yedinci-gun/280326.html	
+121	OK	Dublörün Dilemması	Murat Menteş	Dublörün Dilemması	Murat Menteş	İLETİŞİM YAYINLARI	9789750503221	263	https://www.kitapyurdu.com/kitap/dublorun-dilemmasi/68964.html	
+122	OK	Ruhi Mücerret	Murat Menteş	Ruhi Mücerret	Murat Menteş	EVEREST YAYINLARI	9786253696900	352	https://www.kitapyurdu.com/kitap/ruhi-mucerret/768762.html	
+123	OK	Bizim Büyük Çaresizliğimiz	Barış Bıçakçı	Bizim Büyük Çaresizliğimiz	Barış Bıçakçı	İLETİŞİM YAYINLARI	9789750502637	167	https://www.kitapyurdu.com/kitap/bizim-buyuk-caresizligimiz/61699.html	
+124	IN_CATALOG	Medarı Maişet Motoru	Sait Faik Abasıyanık
+125	SKIPPED	Tütün Zamanı	Necati Cumalı							Published in Turkish only as a trilogy with different volume titles.
+126	OK	Yılanların Öcü	Fakir Baykurt	Yılanların Öcü	Fakir Baykurt	LİTERATÜR YAYINLARI	9789750403958	280	https://www.kitapyurdu.com/kitap/yilanlarin-ocu/87419.html	
+127	OK	Irazca'nın Dirliği	Fakir Baykurt	Irazca'nın Dirliği	Fakir Baykurt	LİTERATÜR YAYINLARI	9789750403965	292	https://www.kitapyurdu.com/kitap/irazcanin-dirligi/87418.html	
+128	OK	Sokaktaki Adam	Attilâ İlhan	Sokaktaki Adam	Attila İlhan	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9789754584332	240	https://www.kitapyurdu.com/kitap/sokaktaki-adam/52322.html	
+129	OK	Kurtlar Sofrası	Attilâ İlhan	Kurtlar Sofrası	Attila İlhan	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9789754583236	683	https://www.kitapyurdu.com/kitap/kurtlar-sofrasi/55475.html	
+130	OK	Yezid'in Kızı	Refik Halit Karay	Yezidin Kızı	Refik Halid Karay	İNKILAP KİTABEVİ	9789751047397	160	https://www.kitapyurdu.com/kitap/yezidin-kizi/7599.html	
+131	OK	Sürgün	Refik Halit Karay	Sürgün	Refik Halid Karay	İNKILAP KİTABEVİ	9789751047595	232	https://www.kitapyurdu.com/kitap/surgun/7596.html	
+132	OK	Bu Bizim Hayatımız	Refik Halit Karay	Bu Bizim Hayatımız	Refik Halid Karay	İNKILAP KİTABEVİ	9789751045751	278	https://www.kitapyurdu.com/kitap/bu-bizim-hayatimiz/7443.html	
+133	OK	Nilgün	Refik Halit Karay	Nilgün	Refik Halid Karay	İNKILAP KİTABEVİ	9789751029409	1032	https://www.kitapyurdu.com/kitap/nilgun/7593.html	
+134	IN_CATALOG	İntibah	Namık Kemal
+135	OK	Sergüzeşt	Samipaşazade Sezai	Sergüzeşt (Günümüz Türkçesiyle)	Samipaşazade Sezai	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786052958896	112	https://www.kitapyurdu.com/kitap/serguzest-gunumuz-turkcesiyle/510479.html	
+136	IN_CATALOG	Araba Sevdası	Recaizade Mahmut Ekrem
+137	OK	Yaban	Yakup Kadri Karaosmanoğlu	Yaban Bütün Eserleri 1	Yakup Kadri Karaosmanoğlu	İLETİŞİM YAYINLARI	9789754700060	215	https://www.kitapyurdu.com/kitap/yaban-butun-eserleri-1/18176.html	
+138	OK	Kiralık Konak	Yakup Kadri Karaosmanoğlu	Kiralık Konak Bütün Eserleri 4	Yakup Kadri Karaosmanoğlu	İLETİŞİM YAYINLARI	9789754700084	232	https://www.kitapyurdu.com/kitap/kiralik-konak-butun-eserleri-4/18167.html	
+139	OK	Sodom ve Gomore	Yakup Kadri Karaosmanoğlu	Sodom ve Gomore Bütün Eserleri 11	Yakup Kadri Karaosmanoğlu	İLETİŞİM YAYINLARI	9789754700497	311	https://www.kitapyurdu.com/kitap/sodom-ve-gomore-butun-eserleri-11/18174.html	
+140	OK	Ankara	Yakup Kadri Karaosmanoğlu	Ankara Bütün Eserleri 10	Yakup Kadri Karaosmanoğlu	İLETİŞİM YAYINLARI	9789754701340	252	https://www.kitapyurdu.com/kitap/ankara-butun-eserleri-10/18159.html	
+141	OK	Nur Baba	Yakup Kadri Karaosmanoğlu	Nur Baba Bütün Eserleri 2	Yakup Kadri Karaosmanoğlu	İLETİŞİM YAYINLARI	9789754703696	196	https://www.kitapyurdu.com/kitap/nur-baba-butun-eserleri-2/18169.html	
+142	OK	Kılıç Yarası Gibi	Ahmet Altan	Kılıç Yarası Gibi	Ahmet Altan	CAN YAYINLARI	9789755108230	344	https://www.kitapyurdu.com/kitap/kilic-yarasi-gibi/12720.html	
+143	OK	İsyan Günlerinde Aşk	Ahmet Altan	İsyan Günlerinde Aşk	Ahmet Altan	CAN YAYINLARI	9789750700903	468	https://www.kitapyurdu.com/kitap/isyan-gunlerinde-ask/33335.html	
+144	OK	Nun Masalları	Nazan Bekiroğlu	Nun Masalları	Prof. Dr. Nazan Bekiroğlu	DERGAH YAYINLARI	9789757032120	152	https://www.kitapyurdu.com/kitap/nun-masallari/4871.html	
+145	OK	Yusuf ile Züleyha	Nazan Bekiroğlu	Yusuf ile Züleyha (Kalbin Üzerinde Titreyen Hüzün)	Prof. Dr. Nazan Bekiroğlu	TİMAŞ YAYINLARI	9789753625579	224	https://www.kitapyurdu.com/kitap/yusuf-ile-zuleyha-kalbin-uzerinde-titreyen-huzun/24885.html	
+146	OK	Babil'de Ölüm İstanbul'da Aşk	İskender Pala	Babil'de Ölüm İstanbul'da Aşk	Prof. Dr. İskender Pala	KAPI YAYINLARI	9789758950119	416	https://www.kitapyurdu.com/kitap/babilde-olum-istanbulda-ask/62042.html	
+147	OK	Katre-i Matem	İskender Pala	Katre-i Matem	Prof. Dr. İskender Pala	KAPI YAYINLARI	9789944486903	480	https://www.kitapyurdu.com/kitap/katrei-matem/127764.html	
+148	OK	Şah ve Sultan	İskender Pala	Şah ve Sultan	Prof. Dr. İskender Pala	KAPI YAYINLARI	9786054322374	390	https://www.kitapyurdu.com/kitap/sah-ve-sultan/242868.html	
+149	OK	Od	İskender Pala	Od	Prof. Dr. İskender Pala	KAPI YAYINLARI	9786054322848	361	https://www.kitapyurdu.com/kitap/od/261783.html	
+150	OK	Kurtlar	Peride Celal	Kurtlar	Peride Celal	CAN YAYINLARI	9789755102290	568	https://www.kitapyurdu.com/kitap/kurtlar/12738.html	
+151	OK	Aganta Burina Burinata	Halikarnas Balıkçısı	Aganta Burina Burinata	Halikarnas Balıkçısı	BİLGİ YAYINEVİ	9789754941883	192	https://www.kitapyurdu.com/kitap/aganta-burina-burinata/3653.html	
+152	OK	Kan Konuşmaz	Nazım Hikmet	Kan Konuşmaz / Romanlar-1	Nazım Hikmet	YAPI KREDİ YAYINLARI	9789750804441	300	https://www.kitapyurdu.com/kitap/kan-konusmaz-romanlar1/48051.html	
+153	OK	Yaşamak Güzel Şey Be Kardeşim	Nazım Hikmet	Yaşamak Güzel Şey Be Kardeşim Romanlar 3	Nazım Hikmet	ADAM YAYINCILIK	9789754180039	162	https://www.kitapyurdu.com/kitap/yasamak-guzel-sey-be-kardesim-romanlar-3/6777.html	
+154	IN_CATALOG	Suç ve Ceza	Fyodor Dostoyevski
+155	IN_CATALOG	Karamazov Kardeşler	Fyodor Dostoyevski
+156	IN_CATALOG	Budala	Fyodor Dostoyevski
+157	IN_CATALOG	Ecinniler	Fyodor Dostoyevski
+158	IN_CATALOG	Yeraltından Notlar	Fyodor Dostoyevski
+159	OK	Beyaz Geceler	Fyodor Dostoyevski	Beyaz Geceler (Karton Kapak)	Fyodor Mihailoviç Dostoyevski	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053321392	218	https://www.kitapyurdu.com/kitap/beyaz-geceler-karton-kapak/343541.html	
+160	IN_CATALOG	Kumarbaz	Fyodor Dostoyevski
+161	OK	İnsancıklar	Fyodor Dostoyevski	İnsancıklar	Fyodor Mihailoviç Dostoyevski	CAN YAYINLARI	9789750739606	184	https://www.kitapyurdu.com/kitap/insanciklar/293425.html	
+162	OK	Ölüler Evinden Notlar	Fyodor Dostoyevski	Ölüler Evinden Notlar	Fyodor Mihailoviç Dostoyevski	CAN YAYINLARI	9789750715167	384	https://www.kitapyurdu.com/kitap/oluler-evinden-notlar/280146.html	
+163	OK	Netoçka Nezvanova	Fyodor Dostoyevski	Netoçka Nezvanova	Fyodor Mihailoviç Dostoyevski	İLETİŞİM YAYINLARI	9789750536212	224	https://www.kitapyurdu.com/kitap/netocka-nezvanova/88929.html	
+164	OK	Öteki	Fyodor Dostoyevski	Öteki	Fyodor Mihailoviç Dostoyevski	KAPRA YAYINCILIK	9786257751766	167	https://www.kitapyurdu.com/kitap/oteki/601082.html	
+165	OK	Savaş ve Barış	Lev Tolstoy	Savaş ve Barış (2 Cilt)	Lev N. Tolstoy	CAN YAYINLARI	9789750739545	1712	https://www.kitapyurdu.com/kitap/savas-ve-baris-2-cilt/492613.html	
+166	IN_CATALOG	Anna Karenina	Lev Tolstoy
+167	IN_CATALOG	İvan İlyiç'in Ölümü	Lev Tolstoy
+168	IN_CATALOG	Diriliş	Lev Tolstoy
+169	OK	Hacı Murat	Lev Tolstoy	Hacı Murat (Karton Kapak)	Lev N. Tolstoy	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9789944883863	165	https://www.kitapyurdu.com/kitap/haci-murat-karton-kapak/116778.html	
+170	OK	Kreutzer Sonat	Lev Tolstoy	Kreutzer Sonat (Karton Kapak)	Lev N. Tolstoy	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053608929	144	https://www.kitapyurdu.com/kitap/kreutzer-sonat-karton-kapak/310712.html	
+171	IN_CATALOG	Kazaklar	Lev Tolstoy
+172	IN_CATALOG	Ölü Canlar	Nikolay Gogol
+173	IN_CATALOG	Palto	Nikolay Gogol
+174	OK	Taras Bulba	Nikolay Gogol	Taras Bulba (Karton Kapak)	Nikolay Vasilievich Gogol	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9789944888844	286	https://www.kitapyurdu.com/kitap/taras-bulba-karton-kapak/149662.html	
+175	IN_CATALOG	Babalar ve Oğullar	Ivan Turgenyev
+176	OK	İlk Aşk	Ivan Turgenyev	İlk Aşk	Ivan Sergeyeviç Turgenyev	CAN YAYINLARI	9789750763649	104	https://www.kitapyurdu.com/kitap/ilk-ask/685148.html	
+177	OK	Rudin	Ivan Turgenyev	Rudin	Ivan Sergeyeviç Turgenyev	KAPRA YAYINCILIK	9786257784146	176	https://www.kitapyurdu.com/kitap/rudin/564201.html	
+178	OK	Altıncı Koğuş	Anton Çehov	Altıncı Koğuş	Anton Çehov	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786052951569	68	https://www.kitapyurdu.com/kitap/altinci-kogus/433707.html	
+179	OK	Bozkır	Anton Çehov	Bozkır	Anton Çehov	KAPRA YAYINCILIK	9786256475939	128	https://www.kitapyurdu.com/kitap/bozkir/669338.html	
+180	IN_CATALOG	Yüzbaşının Kızı	Aleksandr Puşkin
+181	IN_CATALOG	Yevgeni Onegin	Aleksandr Puşkin
+182	OK	Zamanımızın Bir Kahramanı	Mihail Lermontov	Zamanımızın Bir Kahramanı	Mihail Yuryeviç Lermontov	CAN YAYINLARI	9789750710513	188	https://www.kitapyurdu.com/kitap/zamanimizin-bir-kahramani/127466.html	
+183	IN_CATALOG	Oblomov	İvan Gonçarov
+184	IN_CATALOG	Usta ile Margarita	Mihail Bulgakov
+185	OK	Köpek Kalbi	Mihail Bulgakov	Köpek Kalbi	Mihail Bulgakov	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053325949	136	https://www.kitapyurdu.com/kitap/kopek-kalbi/379003.html	
+186	OK	Beyaz Muhafız	Mihail Bulgakov	Beyaz Muhafız	Mihail Bulgakov	İTHAKİ YAYINLARI	9786052650554	392	https://www.kitapyurdu.com/kitap/beyaz-muhafiz/637120.html	
+187	IN_CATALOG	Lolita	Vladimir Nabokov
+188	OK	Pnin	Vladimir Nabokov	Pnin	Vladimir Nabokov	İLETİŞİM YAYINLARI	9789754707557	172	https://www.kitapyurdu.com/kitap/pnin/17237.html	
+189	IN_CATALOG	Doktor Jivago	Boris Pasternak
+190	OK	Biz	Yevgeni Zamyatin	Biz (Karton Kapak)	Yevgeni Zamyatin	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786254058530	232	https://www.kitapyurdu.com/kitap/biz-karton-kapak/605387.html	
+191	IN_CATALOG	Ana	Maksim Gorki
+192	OK	İvan Denisoviç'in Bir Günü	Aleksandr Soljenitsin	İvan Denisoviç'in Bir Günü	Aleksander Soljenitsin	İLETİŞİM YAYINLARI	9789750508738	157	https://www.kitapyurdu.com/kitap/ivan-denisovicin-bir-gunu/251683.html	
+193	IN_CATALOG	1984	George Orwell
+194	IN_CATALOG	Hayvan Çiftliği	George Orwell
+195	IN_CATALOG	Boğulmamak İçin	George Orwell
+196	IN_CATALOG	Cesur Yeni Dünya	Aldous Huxley
+197	IN_CATALOG	Fahrenheit 451	Ray Bradbury
+198	IN_CATALOG	Sineklerin Tanrısı	William Golding
+199	IN_CATALOG	Otomatik Portakal	Anthony Burgess
+200	IN_CATALOG	İki Şehrin Hikayesi	Charles Dickens
+201	IN_CATALOG	Büyük Umutlar	Charles Dickens
+202	IN_CATALOG	Oliver Twist	Charles Dickens
+203	IN_CATALOG	David Copperfield	Charles Dickens
+204	IN_CATALOG	Bir Noel Şarkısı	Charles Dickens
+205	IN_CATALOG	Zor Zamanlar	Charles Dickens
+206	IN_CATALOG	Gurur ve Önyargı	Jane Austen
+207	IN_CATALOG	Emma	Jane Austen
+208	IN_CATALOG	Mansfield Park	Jane Austen
+209	IN_CATALOG	Jane Eyre	Charlotte Brontë
+210	IN_CATALOG	Uğultulu Tepeler	Emily Brontë
+211	OK	Frankenstein	Mary Shelley	Frankenstein	Mary Shelley	CAN YAYINLARI	9789750738371	267	https://www.kitapyurdu.com/kitap/frankenstein/518064.html	
+212	IN_CATALOG	Drakula	Bram Stoker
+213	IN_CATALOG	Dorian Gray'in Portresi	Oscar Wilde
+214	IN_CATALOG	Define Adası	Robert Louis Stevenson
+215	OK	Dr. Jekyll ve Bay Hyde	Robert Louis Stevenson	Dr. Jekyll ve Bay Hyde	Robert Louis Stevenson	PETA KİTAP YAYINCILIK	9786257232524	64	https://www.kitapyurdu.com/kitap/dr-jekyll-ve-bay-hyde/651824.html	
+216	IN_CATALOG	Robinson Crusoe	Daniel Defoe
+217	IN_CATALOG	Gulliver'in Gezileri	Jonathan Swift
+218	OK	Tess	Thomas Hardy	Tess	Thomas Hardy	CAN YAYINLARI	9789750752636	528	https://www.kitapyurdu.com/kitap/tess/591879.html	
+219	OK	Çılgın Kalabalıktan Uzak	Thomas Hardy	Çılgın Kalabalıktan Uzak	Thomas Hardy	CAN YAYINLARI	9789750759093	496	https://www.kitapyurdu.com/kitap/cilgin-kalabaliktan-uzak/676536.html	
+220	IN_CATALOG	Mrs Dalloway	Virginia Woolf
+221	IN_CATALOG	Deniz Feneri	Virginia Woolf
+222	IN_CATALOG	Orlando	Virginia Woolf
+223	OK	Dalgalar	Virginia Woolf	Dalgalar	Virginia Woolf	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053328605	256	https://www.kitapyurdu.com/kitap/dalgalar/406703.html	
+224	IN_CATALOG	Sanatçının Bir Genç Adam Olarak Portresi	James Joyce
+225	IN_CATALOG	Ulysses	James Joyce
+226	OK	Karanlığın Yüreği	Joseph Conrad	Karanlığın Yüreği	Joseph Conrad	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786257070324	136	https://www.kitapyurdu.com/kitap/karanligin-yuregi/542166.html	
+227	OK	Lord Jim	Joseph Conrad	Lord Jim	Joseph Conrad	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786052951552	408	https://www.kitapyurdu.com/kitap/lord-jim/433706.html	
+228	IN_CATALOG	Kim	Rudyard Kipling
+229	OK	Hindistan'a Bir Geçit	E. M. Forster	Hindistan'a Bir Geçit	E.M. Forster	İLETİŞİM YAYINLARI	9789750521621	396	https://www.kitapyurdu.com/kitap/hindistana-bir-gecit/31723.html	
+230	OK	Manzaralı Bir Oda	E. M. Forster	Manzaralı Bir Oda	E.M. Forster	İLETİŞİM YAYINLARI	9789750529696	292	https://www.kitapyurdu.com/kitap/manzarali-bir-oda/45730.html	
+231	OK	Lady Chatterley'in Sevgilisi	D. H. Lawrence	Lady Chatterley'in Sevgilisi	D.H. Lawrence	YAPI KREDİ YAYINLARI	9789753637671	368	https://www.kitapyurdu.com/kitap/lady-chatterleyin-sevgilisi/12195.html	
+232	IN_CATALOG	Günden Kalanlar	Kazuo Ishiguro
+233	IN_CATALOG	Beni Asla Bırakma	Kazuo Ishiguro
+234	MISSING	Klara ve Güneş	Kazuo Ishiguro							no candidate by this author
+235	OK	Kefaret	Ian McEwan	Kefaret	Ian McEwan	YAPI KREDİ YAYINLARI	9789750843587	336	https://www.kitapyurdu.com/kitap/kefaret/480104.html	
+236	SKIPPED	Amsterdam	Ian McEwan							Turkish title differs (Amsterdam'da Düello); not verified as the same novel.
+237	IN_CATALOG	Geceyarısı Çocukları	Salman Rushdie
+238	IN_CATALOG	Hobbit	J. R. R. Tolkien
+239	OK	Yüzük Kardeşliği	J. R. R. Tolkien	Yüzük Kardeşliği Yüzüklerin Efendisi 1	J. R. R. Tolkien	METİS YAYINLARI	9789753425988	520	https://www.kitapyurdu.com/kitap/yuzuk-kardesligi-yuzuklerin-efendisi-1/41788.html	
+240	OK	İki Kule	J. R. R. Tolkien	İki Kule Yüzüklerin Efendisi 2	J. R. R. Tolkien	METİS YAYINLARI	9789753421812	432	https://www.kitapyurdu.com/kitap/iki-kule-yuzuklerin-efendisi-2/41789.html	
+241	OK	Kralın Dönüşü	J. R. R. Tolkien	Kralın Dönüşü Yüzüklerin Efendisi 3	J. R. R. Tolkien	METİS YAYINLARI	9789753422024	428	https://www.kitapyurdu.com/kitap/kralin-donusu-yuzuklerin-efendisi-3/41790.html	
+242	OK	Silmarillion	J. R. R. Tolkien	Silmarillion	J. R. R. Tolkien	İTHAKİ YAYINLARI	9789752733947	696	https://www.kitapyurdu.com/kitap/silmarillion/103308.html	
+243	IN_CATALOG	Aslan, Cadı ve Dolap	C. S. Lewis
+244	IN_CATALOG	Harry Potter ve Felsefe Taşı	J. K. Rowling
+245	OK	Harry Potter ve Sırlar Odası	J. K. Rowling	Harry Potter ve Sırlar Odası	J. K. Rowling	YAPI KREDİ YAYINLARI	9789750802959	314	https://www.kitapyurdu.com/kitap/harry-potter-ve-sirlar-odasi/33343.html	
+246	OK	Harry Potter ve Azkaban Tutsağı	J. K. Rowling	Harry Potter ve Azkaban Tutsağı	J. K. Rowling	YAPI KREDİ YAYINLARI	9789750803116	396	https://www.kitapyurdu.com/kitap/harry-potter-ve-azkaban-tutsagi/40084.html	
+247	OK	Harry Potter ve Ateş Kadehi	J. K. Rowling	Harry Potter ve Ateş Kadehi	J. K. Rowling	YAPI KREDİ YAYINLARI	9789750803314	664	https://www.kitapyurdu.com/kitap/harry-potter-ve-ates-kadehi/42018.html	
+248	OK	Harry Potter ve Zümrüdüanka Yoldaşlığı	J. K. Rowling	Harry Potter ve Zümrüdüanka Yoldaşlığı	J. K. Rowling	YAPI KREDİ YAYINLARI	9789750806452	975	https://www.kitapyurdu.com/kitap/harry-potter-ve-zumruduanka-yoldasligi/54178.html	
+249	OK	Harry Potter ve Melez Prens	J. K. Rowling	Harry Potter ve Melez Prens	J. K. Rowling	YAPI KREDİ YAYINLARI	9789750809958	594	https://www.kitapyurdu.com/kitap/harry-potter-ve-melez-prens/73637.html	
+250	OK	Harry Potter ve Ölüm Yadigarları	J. K. Rowling	Harry Potter ve Ölüm Yadigarları	J. K. Rowling	YAPI KREDİ YAYINLARI	9789750812989	696	https://www.kitapyurdu.com/kitap/harry-potter-ve-olum-yadigarlari/99637.html	
+251	IN_CATALOG	Alice Harikalar Diyarında	Lewis Carroll
+252	IN_CATALOG	Peter Pan	J. M. Barrie
+253	IN_CATALOG	Baskerville'lerin Köpeği	Arthur Conan Doyle
+254	IN_CATALOG	Kızıl Dosya	Arthur Conan Doyle
+255	OK	Dörtlerin Yemini	Arthur Conan Doyle	Dörtlerin Yemini (Karton Kapak)	Sir Arthur Conan Doyle	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053600725	158	https://www.kitapyurdu.com/kitap/dortlerin-yemini-karton-kapak/248724.html	
+256	OK	On Küçük Zenci	Agatha Christie	On Küçük Zenci	Agatha Christie	ALTIN KİTAPLAR	9789754050226	192	https://www.kitapyurdu.com/kitap/on-kucuk-zenci/3174.html	
+257	IN_CATALOG	Doğu Ekspresinde Cinayet	Agatha Christie
+258	IN_CATALOG	Roger Ackroyd Cinayeti	Agatha Christie
+259	IN_CATALOG	Nil'de Ölüm	Agatha Christie
+260	OK	Mezopotamya'da Cinayet	Agatha Christie	Mezopotamya'da Cinayet	Agatha Christie	ALTIN KİTAPLAR	9789752117600	285	https://www.kitapyurdu.com/kitap/mezopotamyada-cinayet/324126.html	
+261	MISSING	ABC Cinayetleri	Agatha Christie							no candidate by this author
+262	IN_CATALOG	Köstebek	John le Carré
+263	OK	Yolun Sonundaki Okyanus	Neil Gaiman	Yolun Sonundaki Okyanus	Neil Gaiman	İTHAKİ YAYINLARI	9786057762801	216	https://www.kitapyurdu.com/kitap/yolun-sonundaki-okyanus/321640.html	
+264	OK	Amerikan Tanrıları	Neil Gaiman	Amerikan Tanrıları (Ciltsiz)	Neil Gaiman	İTHAKİ YAYINLARI	9786053756637	712	https://www.kitapyurdu.com/kitap/amerikan-tanrilari-ciltsiz/423192.html	
+265	OK	Taht Oyunları	George R. R. Martin	Taht Oyunları / Buz ve Ateşin Şarkısı 1	George R.R. Martin	EPSİLON YAYINEVİ	9789944824354	847	https://www.kitapyurdu.com/kitap/taht-oyunlari-buz-ve-atesin-sarkisi-1/258036.html	not turkish: : https://www.kitapyurdu.com/kitap/taht-oyunlari-rusca/390833.html
+266	OK	Kralların Çarpışması	George R. R. Martin	Kralların Çarpışması Kısım 1 / Buz ve Ateşin Şarkısı 2	George R.R. Martin	EPSİLON YAYINEVİ	9789944824644	504	https://www.kitapyurdu.com/kitap/krallarin-carpismasi-kisim-1-buz-ve-atesin-sarkisi-2/263077.html	
+267	OK	Kılıçların Fırtınası	George R. R. Martin	Kılıçların Fırtınası Kısım 1 / Buz ve Ateşin Şarkısı 3	George R.R. Martin	EPSİLON YAYINEVİ	9789944825337	624	https://www.kitapyurdu.com/kitap/kiliclarin-firtinasi-kisim-1-buz-ve-atesin-sarkisi-3/273687.html	
+268	IN_CATALOG	Otostopçunun Galaksi Rehberi	Douglas Adams
+269	IN_CATALOG	Vakıf	Isaac Asimov
+270	OK	Vakıf ve İmparatorluk	Isaac Asimov	Vakıf ve İmparatorluk	Isaac Asimov	İTHAKİ YAYINLARI	9786053757740	284	https://www.kitapyurdu.com/kitap/vakif-ve-imparatorluk/450523.html	
+271	OK	İkinci Vakıf	Isaac Asimov	İkinci Vakıf	Isaac Asimov	İTHAKİ YAYINLARI	9786053757986	264	https://www.kitapyurdu.com/kitap/ikinci-vakif/457928.html	
+272	IN_CATALOG	Ben, Robot	Isaac Asimov
+273	IN_CATALOG	Dune	Frank Herbert
+274	IN_CATALOG	Dune Mesihi	Frank Herbert
+275	OK	Dune Çocukları	Frank Herbert	Dune Çocukları	Frank Herbert	İTHAKİ YAYINLARI	9786053756026	553	https://www.kitapyurdu.com/kitap/dune-cocuklari/406602.html	
+276	IN_CATALOG	2001: Bir Uzay Destanı	Arthur C. Clarke
+277	IN_CATALOG	Çocukluğun Sonu	Arthur C. Clarke
+278	IN_CATALOG	Androidler Elektrikli Koyun Düşler mi?	Philip K. Dick
+279	IN_CATALOG	Yüksek Şatodaki Adam	Philip K. Dick
+280	OK	Karanlığın Sol Eli	Ursula K. Le Guin	Karanlığın Sol Eli	Ursula K. Le Guin	AYRINTI YAYINLARI	9789755390444	304	https://www.kitapyurdu.com/kitap/karanligin-sol-eli/29591.html	
+281	OK	Mülksüzler	Ursula K. Le Guin	Mülksüzler	Ursula K. Le Guin	METİS YAYINLARI	9789753425285	344	https://www.kitapyurdu.com/kitap/mulksuzler/5757.html	
+282	OK	Yerdeniz Büyücüsü	Ursula K. Le Guin	Yerdeniz Büyücüsü - Yerdeniz 1	Ursula K. Le Guin	METİS YAYINLARI	9789753420570	192	https://www.kitapyurdu.com/kitap/yerdeniz-buyucusu-yerdeniz-1/5553.html	
+283	IN_CATALOG	Neuromancer	William Gibson
+284	OK	Ender'in Oyunu	Orson Scott Card	Ender'in Oyunu / Ender Efsanesi 1	Orson Scott Card	PEGASUS YAYINLARI	9786254103407	384	https://www.kitapyurdu.com/kitap/enderin-oyunu-ender-efsanesi-1/728822.html	
+285	OK	Mezbaha 5	Kurt Vonnegut	Mezbaha 5	Kurt Vonnegut	DEX KİTAP	9786258021684	192	https://www.kitapyurdu.com/kitap/mezbaha-5/615525.html	
+286	IN_CATALOG	Kedi Beşiği	Kurt Vonnegut
+287	IN_CATALOG	Madde 22	Joseph Heller
+288	IN_CATALOG	Guguk Kuşu	Ken Kesey
+289	IN_CATALOG	Çavdar Tarlasında Çocuklar	J. D. Salinger
+290	IN_CATALOG	Muhteşem Gatsby	F. Scott Fitzgerald
+291	MISSING	Gece Sakin	F. Scott Fitzgerald							no candidate by this author
+292	IN_CATALOG	Silahlara Veda	Ernest Hemingway
+293	IN_CATALOG	Çanlar Kimin İçin Çalıyor	Ernest Hemingway
+294	IN_CATALOG	Yaşlı Adam ve Deniz	Ernest Hemingway
+295	IN_CATALOG	Güneş de Doğar	Ernest Hemingway
+296	IN_CATALOG	Fareler ve İnsanlar	John Steinbeck
+297	IN_CATALOG	Gazap Üzümleri	John Steinbeck
+298	IN_CATALOG	Cennetin Doğusu	John Steinbeck
+299	OK	Sardalye Sokağı	John Steinbeck	Sardalye Sokağı	John Steinbeck	İLETİŞİM YAYINLARI	9789750532634	204	https://www.kitapyurdu.com/kitap/sardalye-sokagi/605559.html	
+300	OK	Ses ve Öfke	William Faulkner	Ses ve Öfke	William Faulkner	YAPI KREDİ YAYINLARI	9789750808869	294	https://www.kitapyurdu.com/kitap/ses-ve-ofke/64868.html	
+301	OK	Döşeğimde Ölürken	William Faulkner	Döşeğimde Ölürken	William Faulkner	İLETİŞİM YAYINLARI	9789750531224	242	https://www.kitapyurdu.com/kitap/dosegimde-olurken/18238.html	
+302	IN_CATALOG	Bülbülü Öldürmek	Harper Lee
+303	IN_CATALOG	Tom Sawyer'ın Maceraları	Mark Twain
+304	IN_CATALOG	Huckleberry Finn'in Maceraları	Mark Twain
+305	IN_CATALOG	Moby Dick	Herman Melville
+306	IN_CATALOG	Martin Eden	Jack London
+307	IN_CATALOG	Vahşetin Çağrısı	Jack London
+308	IN_CATALOG	Beyaz Diş	Jack London
+309	OK	Kızıl Harf	Nathaniel Hawthorne	Kızıl Harf	Nathaniel Hawthorne	KAPRA YAYINCILIK	9786258281156	264	https://www.kitapyurdu.com/kitap/kizil-harf/634827.html	
+310	OK	Sırça Fanus	Sylvia Plath	Sırça Fanus	Sylvia Plath	CAN YAYINLARI	9789755100166	272	https://www.kitapyurdu.com/kitap/sirca-fanus/10192.html	
+311	IN_CATALOG	Yolda	Jack Kerouac
+312	OK	Postane	Charles Bukowski	Postane	Charles Bukowski	PARANTEZ YAYINLARI	9789758441785	168	https://www.kitapyurdu.com/kitap/postane/51454.html	
+313	OK	Ekmek Arası	Charles Bukowski	Ekmek Arası	Charles Bukowski	METİS YAYINLARI	9789753420723	272	https://www.kitapyurdu.com/kitap/ekmek-arasi/5713.html	
+314	IN_CATALOG	Sevilen	Toni Morrison
+315	OK	New York Üçlemesi	Paul Auster	New York Üçlemesi	Paul Auster	CAN YAYINLARI	9789750704581	382	https://www.kitapyurdu.com/kitap/new-york-uclemesi/63248.html	
+316	OK	Ay Sarayı	Paul Auster	Ay Sarayı	Paul Auster	CAN YAYINLARI	9789750735943	312	https://www.kitapyurdu.com/kitap/ay-sarayi/10052.html	
+317	OK	Yanılsamalar Kitabı	Paul Auster	Yanılsamalar Kitabı (Ciltsiz)	Paul Auster	CAN YAYINLARI	9789750735172	306	https://www.kitapyurdu.com/kitap/yanilsamalar-kitabi-ciltsiz/48815.html	
+318	OK	4 3 2 1	Paul Auster	4 3 2 1	Paul Auster	CAN YAYINLARI	9789750735844	1128	https://www.kitapyurdu.com/kitap/4-3-2-1/437364.html	
+319	IN_CATALOG	Yol	Cormac McCarthy
+320	IN_CATALOG	Kan Meridyeni	Cormac McCarthy
+321	IN_CATALOG	O	Stephen King
+322	IN_CATALOG	Medyum	Stephen King
+323	REJECTED	Misery	Stephen King							not turkish: : https://www.kitapyurdu.com/kitap/misery/375708.html | title mismatch: Montgomery Bonbon 3 / Malikanenin Gizemi | title mismatch: Mister Miracle Cilt 1
+324	IN_CATALOG	Hayvan Mezarlığı	Stephen King
+325	REJECTED	Carrie	Stephen King							not turkish: : https://www.kitapyurdu.com/kitap/carrie/485028.html
+326	IN_CATALOG	Yeşil Yol	Stephen King
+327	IN_CATALOG	Uçurtma Avcısı	Khaled Hosseini
+328	IN_CATALOG	Bin Muhteşem Güneş	Khaled Hosseini
+329	IN_CATALOG	Ve Dağlar Yankılandı	Khaled Hosseini
+330	OK	Aynı Yıldızın Altında	John Green	Aynı Yıldızın Altında (Ciltli)	John Green	PEGASUS YAYINLARI	9786053430933	320	https://www.kitapyurdu.com/kitap/ayni-yildizin-altinda-ciltli/304317.html	not turkish: : https://www.kitapyurdu.com/kitap/ayni-yildizin-altinda-rusca/390840.html
+331	IN_CATALOG	Kitap Hırsızı	Markus Zusak
+332	OK	Senden Önce Ben	Jojo Moyes	Senden Önce Ben	Jojo Moyes	PEGASUS YAYINLARI	9786053430674	480	https://www.kitapyurdu.com/kitap/senden-once-ben/299852.html	
+333	OK	Normal İnsanlar	Sally Rooney	Normal İnsanlar	Sally Rooney	CAN YAYINLARI	9789750741173	264	https://www.kitapyurdu.com/kitap/normal-insanlar/515279.html	
+334	MISSING	Kerevitlerin Şarkı Söylediği Yer	Delia Owens							no candidate by this author
+335	OK	Gece Yarısı Kütüphanesi	Matt Haig	Gece Yarısı Kütüphanesi	Matt Haig	DOMİNGO YAYINEVİ	9786051981833	283	https://www.kitapyurdu.com/kitap/gece-yarisi-kutuphanesi/582550.html	
+336	MISSING	Ove Diye Bir Adam	Fredrik Backman							no candidate by this author
+337	OK	Rüzgarın Gölgesi	Carlos Ruiz Zafón	Rüzgarın Gölgesi	Carlos Ruiz Zafon	ALTIN KİTAPLAR	9789752105584	528	https://www.kitapyurdu.com/kitap/ruzgarin-golgesi/67938.html	
+338	OK	Meleğin Oyunu	Carlos Ruiz Zafón	Meleğin Oyunu	Carlos Ruiz Zafon	ALTIN KİTAPLAR	9789752112346	512	https://www.kitapyurdu.com/kitap/melegin-oyunu/150835.html	
+339	MISSING	Cennetin Tutsağı	Carlos Ruiz Zafón							no candidate by this author
+340	IN_CATALOG	Simyacı	Paulo Coelho
+341	OK	Veronika Ölmek İstiyor	Paulo Coelho	Veronika Ölmek İstiyor	Paulo Coelho	CAN YAYINLARI	9789750730153	198	https://www.kitapyurdu.com/kitap/veronika-olmek-istiyor/18703.html	
+342	OK	Piedra Irmağı'nın Kıyısında Oturdum Ağladım	Paulo Coelho	Piedra Irmağının Kıyısında Oturdum Ağladım	Paulo Coelho	CAN YAYINLARI	9789750728730	208	https://www.kitapyurdu.com/kitap/piedra-irmaginin-kiyisinda-oturdum-agladim/12881.html	
+343	OK	Zahir	Paulo Coelho	Zahir	Paulo Coelho	CAN YAYINLARI	9789750736674	320	https://www.kitapyurdu.com/kitap/zahir/73639.html	
+344	IN_CATALOG	Yüzyıllık Yalnızlık	Gabriel García Márquez
+345	OK	Kolera Günlerinde Aşk	Gabriel García Márquez	Kolera Günlerinde Aşk	Gabriel Garcia Marquez	CAN YAYINLARI	9789750766268	480	https://www.kitapyurdu.com/kitap/kolera-gunlerinde-ask/10072.html	
+346	OK	Kırmızı Pazartesi	Gabriel García Márquez	Kırmızı Pazartesi	Gabriel Garcia Marquez	CAN YAYINLARI	9789750721571	120	https://www.kitapyurdu.com/kitap/kirmizi-pazartesi/13006.html	
+347	OK	Albaya Mektup Yok	Gabriel García Márquez	Albaya Mektup Yok	Gabriel Garcia Marquez	CAN YAYINLARI	9789750725616	80	https://www.kitapyurdu.com/kitap/albaya-mektup-yok/9938.html	
+348	OK	Labirentindeki General	Gabriel García Márquez	Labirentindeki General	Gabriel Garcia Marquez	CAN YAYINLARI	9789750735950	256	https://www.kitapyurdu.com/kitap/labirentindeki-general/13009.html	
+349	OK	Ruhlar Evi	Isabel Allende	Ruhlar Evi	Isabel Allende	CAN YAYINLARI	9789750758720	544	https://www.kitapyurdu.com/kitap/ruhlar-evi/640095.html	
+350	OK	Eva Luna	Isabel Allende	Eva Luna	Isabel Allende	CAN YAYINLARI	9789755102115	352	https://www.kitapyurdu.com/kitap/eva-luna/30017.html	
+351	OK	Teke Şenliği	Mario Vargas Llosa	Teke Şenliği	Mario Vargas Llosa	CAN YAYINLARI	9789750744211	552	https://www.kitapyurdu.com/kitap/teke-senligi/56654.html	
+352	OK	Kent ve Köpekler	Mario Vargas Llosa	Kent ve Köpekler	Mario Vargas Llosa	CAN YAYINLARI	9789750746062	448	https://www.kitapyurdu.com/kitap/kent-ve-kopekler/10045.html	
+353	MISSING	Kötü Kızın Yaramazlıkları	Mario Vargas Llosa							no candidate by this author
+354	OK	Seksek	Julio Cortázar	Seksek	Julio Cortazar	YAPI KREDİ YAYINLARI	9789750810602	645	https://www.kitapyurdu.com/kitap/seksek/78359.html	
+355	OK	Tünel	Ernesto Sabato	Tünel	Ernesto Sabato	CAN YAYINLARI	9789750767111	144	https://www.kitapyurdu.com/kitap/tunel/751727.html	
+356	OK	Vahşi Hafiyeler	Roberto Bolaño	Vahşi Hafiyeler	Roberto Bolano	CAN YAYINLARI	9789750739033	787	https://www.kitapyurdu.com/kitap/vahsi-hafiyeler/490331.html	
+357	OK	2666	Roberto Bolaño	2666	Roberto Bolano	CAN YAYINLARI	9789750749087	1192	https://www.kitapyurdu.com/kitap/2666/574451.html	
+358	IN_CATALOG	Körlük	José Saramago
+359	IN_CATALOG	Görmek	José Saramago
+360	OK	Ölüm Bir Varmış Bir Yokmuş	José Saramago	Ölüm Bir Varmış Bir Yokmuş	Jose Saramago	KIRMIZI KEDİ YAYINEVİ	9786052982617	208	https://www.kitapyurdu.com/kitap/olum-bir-varmis-bir-yokmus/310427.html	
+361	OK	Kopyalanmış Adam	José Saramago	Kopyalanmış Adam (Karton Kapak)	Jose Saramago	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9789944888899	308	https://www.kitapyurdu.com/kitap/kopyalanmis-adam-karton-kapak/150502.html	
+362	IN_CATALOG	Mağara	José Saramago
+363	IN_CATALOG	Sefiller	Victor Hugo
+364	IN_CATALOG	Notre Dame'ın Kamburu	Victor Hugo
+365	OK	Deniz İşçileri	Victor Hugo	Deniz İşçileri (Karton Kapak)	Victor Hugo	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786052959060	464	https://www.kitapyurdu.com/kitap/deniz-iscileri-karton-kapak/513080.html	
+366	OK	Bir İdam Mahkumunun Son Günü	Victor Hugo	Bir İdam Mahkumunun Son Günü (Karton Kapak)	Victor Hugo	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053609902	88	https://www.kitapyurdu.com/kitap/bir-idam-mahkumunun-son-gunu-karton-kapak/323224.html	
+367	SKIPPED	Monte Kristo Kontu	Alexandre Dumas							Only abridged-length Turkish edition found (416 pages for a ~1500-page novel).
+368	IN_CATALOG	Üç Silahşörler	Alexandre Dumas
+369	OK	Kamelyalı Kadın	Alexandre Dumas	Kamelyalı Kadın (Ciltsiz)	Alexandre Dumas	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9789754588255	234	https://www.kitapyurdu.com/kitap/kamelyali-kadin-ciltsiz/84593.html	
+370	IN_CATALOG	Germinal	Émile Zola
+371	IN_CATALOG	Nana	Émile Zola
+372	OK	Meyhane	Émile Zola	Meyhane	Emile Zola	İLETİŞİM YAYINLARI	9789750539510	548	https://www.kitapyurdu.com/kitap/meyhane/404073.html	invalid isbn: : https://www.kitapyurdu.com/kitap/meyhane/10056.html
+373	IN_CATALOG	Yabancı	Albert Camus
+374	IN_CATALOG	Veba	Albert Camus
+375	IN_CATALOG	Düşüş	Albert Camus
+376	OK	Mutlu Ölüm	Albert Camus	Mutlu Ölüm	Albert Camus	CAN YAYINLARI	9789750756054	152	https://www.kitapyurdu.com/kitap/mutlu-olum/608054.html	
+377	IN_CATALOG	Bulantı	Jean-Paul Sartre
+378	OK	Akıl Çağı	Jean-Paul Sartre	Akıl Çağı/ Özgürlük Yolları 1	Jean Paul Sartre	CAN YAYINLARI	9789750738876	437	https://www.kitapyurdu.com/kitap/akil-cagi-ozgurluk-yollari-1/9930.html	
+379	IN_CATALOG	Küçük Prens	Antoine de Saint-Exupéry
+380	OK	Gece Uçuşu	Antoine de Saint-Exupéry	Gece Uçuşu	Antoine De Saint Exupery	CAN YAYINLARI	9789755104218	104	https://www.kitapyurdu.com/kitap/gece-ucusu/13519.html	
+381	OK	Swann'ların Tarafı	Marcel Proust	Swann'ların Tarafı	Marcel Proust	ZEPLİN	9786057775733	448	https://www.kitapyurdu.com/kitap/swannlarin-tarafi/615513.html	
+382	OK	Mandarinler	Simone de Beauvoir	Mandarinler (Karton Kapak)	Simone de Beauvoir	EVEREST YAYINLARI	9786253690601	816	https://www.kitapyurdu.com/kitap/mandarinler-karton-kapak/686989.html	
+383	OK	Sevgili	Marguerite Duras	Sevgili (Ciltsiz)	Marguerite Duras	CAN YAYINLARI	9789755103969	112	https://www.kitapyurdu.com/kitap/sevgili-ciltsiz/10214.html	
+384	OK	Hadrianus'un Anıları	Marguerite Yourcenar	Hadrianus'un Anıları	Marguerite Yourcenar	HELİKOPTER YAYINLARI	9786055819040	320	https://www.kitapyurdu.com/kitap/hadrianusun-anilari/126241.html	
+385	IN_CATALOG	Dar Kapı	André Gide
+386	IN_CATALOG	Tehlikeli İlişkiler	Choderlos de Laclos
+387	IN_CATALOG	Candide	Voltaire
+388	OK	Operadaki Hayalet	Gaston Leroux	Operadaki Hayalet	Gaston Leroux	İTHAKİ YAYINLARI	9786257650472	360	https://www.kitapyurdu.com/kitap/operadaki-hayalet/577694.html	
+389	OK	Bel Ami	Guy de Maupassant	Bel-Ami	Guy de Maupassant	İLETİŞİM YAYINLARI	9789750517679	382	https://www.kitapyurdu.com/kitap/belami/367596.html	
+390	IN_CATALOG	Kırmızı ve Siyah	Stendhal
+391	IN_CATALOG	Madam Bovary	Gustave Flaubert
+392	IN_CATALOG	Goriot Baba	Honoré de Balzac
+393	IN_CATALOG	Varolmanın Dayanılmaz Hafifliği	Milan Kundera
+394	IN_CATALOG	Şaka	Milan Kundera
+395	OK	Ölümsüzlük	Milan Kundera	Ölümsüzlük	Milan Kundera	CAN YAYINLARI	9789750726668	348	https://www.kitapyurdu.com/kitap/olumsuzluk/50120.html	
+396	MISSING	Boyun Eğme	Michel Houellebecq							no candidate by this author
+397	MISSING	Harita ve Bölge	Michel Houellebecq							no candidate by this author
+398	OK	Karanlık Dükkanlar Sokağı	Patrick Modiano	Karanlık Dükkanlar Sokağı	Patrick Modiano	CAN YAYINLARI	9789750745492	176	https://www.kitapyurdu.com/kitap/karanlik-dukkanlar-sokagi/554234.html	
+399	REJECTED	Günaydın Hüzün	Françoise Sagan							invalid isbn: : https://www.kitapyurdu.com/kitap/gunaydin-huzun/8972.html
+400	IN_CATALOG	Dava	Franz Kafka
+401	IN_CATALOG	Dönüşüm	Franz Kafka
+402	IN_CATALOG	Şato	Franz Kafka
+403	IN_CATALOG	Amerika	Franz Kafka
+404	OK	Büyülü Dağ	Thomas Mann	Büyülü Dağ Cilt 1	Thomas Mann	TURKUVAZ KİTAP	9786256548589	432	https://www.kitapyurdu.com/kitap/buyulu-dag-cilt-1/752930.html	
+405	OK	Buddenbrooklar	Thomas Mann	Buddenbrooklar / Bir Ailenin Çöküşü	Thomas Mann	CAN YAYINLARI	9789750735349	666	https://www.kitapyurdu.com/kitap/buddenbrooklar-bir-ailenin-cokusu/82639.html	
+406	OK	Venedik'te Ölüm	Thomas Mann	Venedik'te Ölüm	Thomas Mann	CAN YAYINLARI	9789750722479	104	https://www.kitapyurdu.com/kitap/venedikte-olum/91555.html	
+407	IN_CATALOG	Siddhartha	Hermann Hesse
+408	IN_CATALOG	Bozkırkurdu	Hermann Hesse
+409	IN_CATALOG	Demian	Hermann Hesse
+410	IN_CATALOG	Narziss ve Goldmund	Hermann Hesse
+411	OK	Satranç	Stefan Zweig	Satranç	Stefan Zweig	YAPI KREDİ YAYINLARI	9789750863240	72	https://www.kitapyurdu.com/kitap/satranc/685362.html	
+412	OK	Bilinmeyen Bir Kadının Mektubu	Stefan Zweig	Bilinmeyen Bir Kadının Mektubu	Stefan Zweig	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786254290350	56	https://www.kitapyurdu.com/kitap/bilinmeyen-bir-kadinin-mektubu/621185.html	
+413	OK	Amok Koşucusu	Stefan Zweig	Amok Koşucusu	Stefan Zweig	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053329053	64	https://www.kitapyurdu.com/kitap/amok-kosucusu/411043.html	
+414	OK	Olağanüstü Bir Gece	Stefan Zweig	Olağanüstü Bir Gece	Stefan Zweig	TÜRKİYE İŞ BANKASI KÜLTÜR YAYINLARI	9786053326090	80	https://www.kitapyurdu.com/kitap/olaganustu-bir-gece/380471.html	
+415	OK	Sabırsız Yürek	Stefan Zweig	Sabırsız Yürek	Stefan Zweig	CAN YAYINLARI	9789750732072	460	https://www.kitapyurdu.com/kitap/sabirsiz-yurek/80244.html	
+416	IN_CATALOG	Batı Cephesinde Yeni Bir Şey Yok	Erich Maria Remarque
+417	OK	Zafer Takı	Erich Maria Remarque	Zafer Takı	Erich Maria Remarque	EVEREST YAYINLARI	9786051857527	524	https://www.kitapyurdu.com/kitap/zafer-taki/615601.html	
+418	IN_CATALOG	Üç Arkadaş	Erich Maria Remarque
+419	IN_CATALOG	Koku	Patrick Süskind
+420	OK	Güvercin	Patrick Süskind	Güvercin	Patrick Süskind	CAN YAYINLARI	9789750751646	80	https://www.kitapyurdu.com/kitap/guvercin/587736.html	
+421	IN_CATALOG	Genç Werther'in Acıları	Johann Wolfgang von Goethe
+422	IN_CATALOG	Teneke Trampet	Günter Grass
+423	MISSING	Bir Palyaçonun Bakışları	Heinrich Böll							no candidate by this author
+424	OK	Katharina Blum'un Çiğnenen Onuru	Heinrich Böll	Katharina Blum'un Çiğnenen Onuru	Heinrich Böll	CAN YAYINLARI	9789750733857	126	https://www.kitapyurdu.com/kitap/katharina-blumun-cignenen-onuru/30039.html	
+425	OK	Momo	Michael Ende	Momo	Michael Ende	PEGASUS YAYINLARI	9786052993019	304	https://www.kitapyurdu.com/kitap/momo/434330.html	
+426	OK	Bitmeyecek Öykü	Michael Ende	Bitmeyecek Öykü	Michael Ende	PEGASUS YAYINLARI	9786052993125	512	https://www.kitapyurdu.com/kitap/bitmeyecek-oyku/439777.html	
+427	IN_CATALOG	Gülün Adı	Umberto Eco
+428	OK	Foucault Sarkacı	Umberto Eco	Foucault Sarkacı	Umberto Eco	CAN YAYINLARI	9789750732775	912	https://www.kitapyurdu.com/kitap/foucault-sarkaci/10182.html	
+429	IN_CATALOG	Prag Mezarlığı	Umberto Eco
+430	OK	Görünmez Kentler	Italo Calvino	Görünmez Kentler	Italo Calvino	YAPI KREDİ YAYINLARI	9789750804663	203	https://www.kitapyurdu.com/kitap/gorunmez-kentler/69528.html	
+431	OK	Bir Kış Gecesi Eğer Bir Yolcu	Italo Calvino	Bir Kış Gecesi Eğer Bir Yolcu	Italo Calvino	YAPI KREDİ YAYINLARI	9789750813818	249	https://www.kitapyurdu.com/kitap/bir-kis-gecesi-eger-bir-yolcu/106109.html	
+432	OK	Ağaca Tüneyen Baron	Italo Calvino	Ağaca Tüneyen Baron (Ciltsiz)	Italo Calvino	YAPI KREDİ YAYINLARI	9789750822117	224	https://www.kitapyurdu.com/kitap/agaca-tuneyen-baron-ciltsiz/126422.html	
+433	OK	İkiye Bölünen Vikont	Italo Calvino	İkiye Bölünen Vikont (Karton Kapak)	Italo Calvino	YAPI KREDİ YAYINLARI	9789750815461	104	https://www.kitapyurdu.com/kitap/ikiye-bolunen-vikont-karton-kapak/125073.html	
+434	OK	Varolmayan Şövalye	Italo Calvino	Varolmayan Şövalye (Karton Kapak)	Italo Calvino	YAPI KREDİ YAYINLARI	9789750824401	152	https://www.kitapyurdu.com/kitap/varolmayan-sovalye-karton-kapak/128487.html	
+435	REJECTED	Olağanüstü Arkadaşım	Elena Ferrante							title mismatch: Benim Olağanüstü Akıllı Arkadaşım | title mismatch: Benim Olağanüstü Akıllı Arkadaşım (Midi Boy) | title mismatch: Benim Olağanüstü Akıllı Arkadaşım (Ciltli)
+436	OK	İpek	Alessandro Baricco	İpek	Alessandro Baricco	CAN YAYINLARI	9789750735752	120	https://www.kitapyurdu.com/kitap/ipek/12822.html	
+437	OK	Leopar	Giuseppe Tomasi di Lampedusa	Leopar	Giuseppe Tomasi Di Lampedusa	CAN YAYINLARI	9789750726477	208	https://www.kitapyurdu.com/kitap/leopar/12916.html	
+438	OK	Tatar Çölü	Dino Buzzati	Tatar Çölü	Dino Buzzati	CAN YAYINLARI	9789755106816	174	https://www.kitapyurdu.com/kitap/tatar-colu/10173.html	
+439	IN_CATALOG	Pinokyo	Carlo Collodi
+440	IN_CATALOG	Don Kişot	Miguel de Cervantes
+441	OK	Zorba	Nikos Kazancakis	Zorba (Ciltsiz)	Nikos Kazancakis	CAN YAYINLARI	9789750722486	348	https://www.kitapyurdu.com/kitap/zorba-ciltsiz/10230.html	
+442	OK	Kaptan Mihalis	Nikos Kazancakis	Kaptan Mihalis	Nikos Kazancakis	CAN YAYINLARI	9789755102924	544	https://www.kitapyurdu.com/kitap/kaptan-mihalis/10001.html	
+443	OK	Günaha Son Çağrı	Nikos Kazancakis	Günaha Son Çağrı	Nikos Kazancakis	CAN YAYINLARI	9789750732324	600	https://www.kitapyurdu.com/kitap/gunaha-son-cagri/53524.html	
+444	OK	Açlık	Knut Hamsun	Açlık	Knut Hamsun	CAN YAYINLARI	9789750760617	200	https://www.kitapyurdu.com/kitap/aclik/645667.html	
+445	MISSING	Toprağın Bereketi	Knut Hamsun							no candidate by this author
+446	OK	Sofie'nin Dünyası	Jostein Gaarder	Sofie'nin Dünyası Felsefe Tarihi Üzerine Bir Roman	Jostein Gaarder	PAN YAYINCILIK	9789758434572	591	https://www.kitapyurdu.com/kitap/sofienin-dunyasi-felsefe-tarihi-uzerine-bir-roman/5636.html	
+447	IN_CATALOG	Ejderha Dövmeli Kız	Stieg Larsson
+448	OK	Gürültülü Yalnızlık	Bohumil Hrabal	Gürültülü Yalnızlık	Bohumil Hrabal	NOTOS KİTAP	9786057643087	118	https://www.kitapyurdu.com/kitap/gurultulu-yalnizlik/516894.html	
+449	SKIPPED	Aslan Asker Şvayk	Jaroslav Hašek							Only an 80-page pocket edition found; the novel spans several volumes.
+450	OK	Drina Köprüsü	İvo Andriç	Drina Köprüsü	İvo Andriç	İLETİŞİM YAYINLARI	9789754707823	354	https://www.kitapyurdu.com/kitap/drina-koprusu/19413.html	
+451	OK	Ölü Ordunun Generali	İsmail Kadare	Ölü Ordunun Generali	İsmail Kadare	KETEBE YAYINEVİ	9786257854566		https://www.kitapyurdu.com/kitap/olu-ordunun-generali/558540.html	
+452	REJECTED	Norwegian Wood	Haruki Murakami							not turkish: : https://www.kitapyurdu.com/kitap/norwegian-wood/411521.html
+453	IN_CATALOG	Sahilde Kafka	Haruki Murakami
+454	IN_CATALOG	Zemberek Kuşu'nun Güncesi	Haruki Murakami
+455	MISSING	Kar Ülkesi	Yasunari Kawabata							no candidate by this author
+456	IN_CATALOG	Bin Beyaz Turna	Yasunari Kawabata
+457	IN_CATALOG	Bir Maskenin İtirafları	Yukio Mishima
+458	IN_CATALOG	İnsanlığımı Yitirirken	Osamu Dazai
+459	OK	Kızıl Darı Tarlaları	Mo Yan	Kızıl Darı Tarlaları	Mo Yan	CAN YAYINLARI	9789750734427	528	https://www.kitapyurdu.com/kitap/kizil-dari-tarlalari/306111.html	
+460	OK	Yaşamak	Yu Hua	Yaşamak	Yu Hua	JAGUAR KİTAP	9786056587887	210	https://www.kitapyurdu.com/kitap/yasamak/393974.html	
+461	OK	Parçalanma	Chinua Achebe	Parçalanma	Chinua Achebe	İTHAKİ YAYINLARI	9786053759287	184	https://www.kitapyurdu.com/kitap/parcalanma/254506.html	
+462	OK	Utanç	J. M. Coetzee	Utanç / J. M. Coetzee	J. M. Coetzee	CAN YAYINLARI	9789750736506	258	https://www.kitapyurdu.com/kitap/utanc-j-m-coetzee/30666.html	
+463	OK	Barbarları Beklerken	J. M. Coetzee	Barbarları Beklerken	J. M. Coetzee	CAN YAYINLARI	9789750736476	200	https://www.kitapyurdu.com/kitap/barbarlari-beklerken/79045.html	
+464	MISSING	Aşk ve Karanlık Üzerine Bir Hikaye	Amos Oz							no candidate by this author
+465	OK	Elflerin Kanı	Andrzej Sapkowski	Elflerin Kanı / The Witcher Serisi 3	Andrzej Sapkowski	PEGASUS YAYINLARI	9786052992715	416	https://www.kitapyurdu.com/kitap/elflerin-kani-the-witcher-serisi-3/435251.html	
+466	MISSING	Sisdoğan	Brandon Sanderson							no candidate by this author
+467	OK	Rüzgarın Adı	Patrick Rothfuss	Rüzgarın Adı / Kral Katili Güncesi 1. Gün	Patrick Rothfuss	İTHAKİ YAYINLARI	9786053751342	736	https://www.kitapyurdu.com/kitap/ruzgarin-adi-kral-katili-guncesi-1-gun/258972.html	
+468	OK	Açlık Oyunları	Suzanne Collins	Açlık Oyunları	Suzanne Collins	PEGASUS YAYINLARI	9786055943639	384	https://www.kitapyurdu.com/kitap/aclik-oyunlari/125117.html	
+469	OK	Saksı Olmanın Faydaları	Stephen Chbosky	Saksı Olmanın Faydaları	Stephen Chbosky	FENİKS KİTAP	9786054726196	256	https://www.kitapyurdu.com/kitap/saksi-olmanin-faydalari/301311.html	
+470	OK	Nietzsche Ağladığında	Irvin D. Yalom	Nietzsche Ağladığında	Irvin D. Yalom	AYRINTI YAYINLARI	9789755391465	416	https://www.kitapyurdu.com/kitap/nietzsche-agladiginda/9632.html	
+471	SKIPPED	Schopenhauer Tedavisi	Irvin D. Yalom							Only found bundled with another book.
+472	OK	Spinoza Problemi	Irvin D. Yalom	Spinoza Problemi	Irvin D. Yalom	PEGASUS YAYINLARI	9786052996263	440	https://www.kitapyurdu.com/kitap/spinoza-problemi/507466.html	
+473	OK	Altın Pusula	Philip Pullman	Altın Pusula	Philip Pullman	İTHAKİ YAYINLARI	9786257737135	432	https://www.kitapyurdu.com/kitap/altin-pusula/559367.html	
+474	IN_CATALOG	Küçük Kadınlar	Louisa May Alcott
+475	IN_CATALOG	Gizli Bahçe	Frances Hodgson Burnett
+476	IN_CATALOG	Heidi	Johanna Spyri
+477	OK	Çocuk Kalbi	Edmondo De Amicis	Çocuk Kalbi	Edmondo De Amicis	YAPI KREDİ YAYINLARI	9789750868290	320	https://www.kitapyurdu.com/kitap/cocuk-kalbi/760514.html	
+478	OK	Uçan Sınıf	Erich Kästner	Uçan Sınıf	Erich Kastner	CAN ÇOCUK YAYINLARI	9789755100937	188	https://www.kitapyurdu.com/kitap/ucan-sinif/9942.html	
+479	OK	Şeker Portakalı	José Mauro de Vasconcelos	Şeker Portakalı (Ciltsiz)	Jose Mauro De Vasconcelos	CAN YAYINLARI	9789750738609	184	https://www.kitapyurdu.com/kitap/seker-portakali-ciltsiz/10139.html	
+480	OK	Fırat Suyu Kan Akıyor Baksana	Yaşar Kemal	Fırat Suyu Kan Akıyor Baksana / Bir Ada Hikayesi 1	Yaşar Kemal	YAPI KREDİ YAYINLARI	9789750807060	318	https://www.kitapyurdu.com/kitap/firat-suyu-kan-akiyor-baksana-bir-ada-hikayesi-1/57317.html	
+481	IN_CATALOG	Kayıp Aranıyor	Sait Faik Abasıyanık
+482	OK	Huzur Sokağı	Şule Yüksel Şenler	Huzur Sokağı	Şule Yüksel Şenler	TİMAŞ YAYINLARI	9789757544425	552	https://www.kitapyurdu.com/kitap/huzur-sokagi/387.html	

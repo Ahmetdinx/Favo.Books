@@ -66,3 +66,22 @@ test('catalog API reuses cached pages, separates filters, honors cancellation an
         assert.equal(calls, 5)
     } finally { globalThis.fetch = originalFetch }
 })
+
+test('book titles drop edition notes but keep series names', async () => {
+    const { cleanBookTitle } = await import('../src/catalog/bookTitle.ts')
+    const cases = [
+        ['Tutunamayanlar (Ciltli Özel Baskı)', 'Tutunamayanlar'],
+        ['Biz (Karton Kapak)', 'Biz'],
+        ['Savaş ve Barış (2 Cilt)', 'Savaş ve Barış'],
+        ['Veda (Cep Boy)', 'Veda'],
+        ['Sergüzeşt (Günümüz Türkçesiyle)', 'Sergüzeşt'],
+        ['Yaban Bütün Eserleri 1', 'Yaban'],
+        ['Kan Konuşmaz / Romanlar-1', 'Kan Konuşmaz'],
+        ['Küçük Ağa / Toplu Eserleri 1', 'Küçük Ağa'],
+        ['Sefiller – 2 Cilt', 'Sefiller'],
+        ['Ortadirek (Dağın Öte Yüzü 1)', 'Ortadirek (Dağın Öte Yüzü 1)'],
+        ['"Middlemarch"', 'Middlemarch'],
+        ['Romanlar', 'Romanlar'],
+    ]
+    for (const [input, expected] of cases) assert.equal(cleanBookTitle(input), expected)
+})
