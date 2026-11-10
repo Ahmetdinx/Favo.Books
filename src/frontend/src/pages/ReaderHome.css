@@ -118,3 +118,41 @@
     /* Books share the shelf evenly, whatever their number. */
     .shelf-row { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
 }
+
+/* Signed-out welcome: one sentence, two doors and a real shelf of books. */
+.app .main-content > .welcome-home { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; gap: clamp(32px, 6vw, 80px); width: 100%; }
+.welcome-copy h1 { margin: 0; font: 400 clamp(2.6rem, 5.4vw, 4.2rem)/1.04 Georgia, serif; letter-spacing: -.025em; color: var(--library-ink); }
+.welcome-copy h1 span { display: block; font-style: italic; color: #7a4a30; }
+.welcome-copy > p { max-width: 34ch; margin: 18px 0 0; font-size: 1.05rem; line-height: 1.55; color: var(--library-muted); }
+.welcome-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.welcome-browse { display: inline-block; margin-top: 18px; font-size: .9rem; color: #705039; }
+.welcome-shelf {
+    padding: 34px 26px 0;
+    border: 12px solid #553a27;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #2a1b11, #47301f 18%, #4d3524 50%, #47301f 82%, #2a1b11);
+    box-shadow: 0 22px 40px #3a24143d;
+}
+.welcome-shelf-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    min-height: 168px;
+    padding: 0 6px;
+    border-bottom: 13px solid #70492f;
+    box-shadow: 0 13px 0 -1px #2a1b11;
+}
+.welcome-shelf-row > a { flex: 0 1 92px; min-width: 0; }
+.welcome-shelf-row .book-object { --w: 100%; }
+.welcome-shelf-gap { flex: 0 1 92px; aspect-ratio: 2 / 3; background: #ffffff0d; border-radius: 2px 5px 5px 2px; }
+.welcome-shelf::after { content: ""; display: block; height: 26px; }
+@media (max-width: 760px) {
+    .app .main-content > .welcome-home { grid-template-columns: minmax(0, 1fr); }
+    .welcome-shelf { padding: 22px 12px 0; border-width: 8px; }
+    .welcome-shelf-row { gap: 6px; min-height: 110px; }
+    .welcome-shelf-row > a:nth-child(n + 6), .welcome-shelf-gap:nth-child(n + 6) { display: none; }
+}
+.welcome-shelf-row + .welcome-shelf-row { margin-top: 30px; }
+.welcome-shelf-row { min-height: 0; justify-content: space-around; gap: 14px; padding: 0 10px; }
+.welcome-shelf-row > a, .welcome-shelf-gap { flex: 0 1 112px; }

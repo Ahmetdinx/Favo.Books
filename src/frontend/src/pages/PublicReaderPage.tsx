@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
 import { getBookSummaries } from '../catalog/catalogApi'
-import { catalogCoverUrl } from '../catalog/coverImage'
+import { cleanBookTitle } from '../catalog/bookTitle'
+import BookObject from '../components/BookObject'
+import './PublicReader.css'
 import type { BookSummary } from '../catalog/catalogTypes'
 import '../profile/Readers.css'
 import AchievementTracks, { type AchievementTrack } from '../profile/AchievementTracks'
@@ -13,14 +15,7 @@ const criteria = { theme: 'Konu / Fikir', language: 'Anlatım ve Dil', character
 type Rating = { bookId: string; overallScore: number | null } & Record<keyof typeof criteria, number | null>
 type Reader = { nickname: string; avatarId: string; achievements: AchievementTrack[]; library: { items: { bookId: string; status: string }[]; totalCount: number };
     showcase: { bedsideBookId: string | null; influentialBooks: { bookId: string; position: number }[] }; ratings: Rating[] }
-const statuses: Record<string, string> = { WantToRead: 'Okumak istiyor', Reading: 'Okuyor', Read: 'Okudu', OnHold: 'Ara verdi', Dropped: 'Bıraktı' }
-
-function Cover({ book }: { book: BookSummary }) {
-    const [failed, setFailed] = useState(false)
-    return book.coverImageUrl && !failed
-        ? <img src={catalogCoverUrl(book.coverImageUrl)} alt={book.title} loading="lazy" onError={() => setFailed(true)} />
-        : <span className="reader-cover-empty" aria-label="Kapak bulunamadı">{book.title[0]}</span>
-}
+const statuses: Record<string, string> = { WantToRead: 'Okuma listesi', Reading: 'Okuyor', Read: 'Okudu', OnHold: 'Ara verdi', Dropped: 'Bıraktı' }
 
 export default function PublicReaderPage() {
     const { nickname = '' } = useParams()
@@ -54,37 +49,86 @@ export default function PublicReaderPage() {
         return () => { controller.abort(); document.removeEventListener('visibilitychange', refresh) }
     }, [nickname, page, version])
     const byId = new Map(books.map(b => [b.bookId, b]))
-    function card(id: string, status?: string) {
-        const book = byId.get(id)
-        if (!book) return <article className="reader-book" key={id}><p>Katalogda bulunamayan kitap</p></article>
-        const rating = data?.ratings.find(r => r.bookId === id)
-        return <article className="reader-book" key={id}>
-            <Link to={'/catalog/books/' + id}><Cover key={book.coverImageUrl} book={book} /><h3>{book.title}</h3></Link>
-            <p>{book.authors.map(a => a.name).join(', ')}</p>
-            {status && <small>{statuses[status] ?? status}</small>}
-            {rating?.overallScore != null && <details><summary>{rating.overallScore.toFixed(1)} / 10 · Puanlar</summary>
-                <dl>{Object.entries(criteria).map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{rating[key as keyof typeof criteria] ?? '—'}</dd></div>)}</dl>
-            </details>}
-        </article>
+    const ratings = new Map(data?.ratings.map(r => [r.bookId, r]))
+    const titleOf = (book: BookSummary) => cleanBookTitle(book.title)
+    const authorsOf = (book: BookSummary) => book.authors.map(a => a.name).join(', ')
+    const bedside = data?.showcase.bedsideBookId ? byId.get(data.showcase.bedsideBookId) : undefined
+    const influential = [...(data?.showcase.influentialBooks ?? [])].sort((x, y) => x.position - y.position)
+        .flatMap(b => { const book = byId.get(b.bookId); return book ? [{ book, position: b.position }] : [] })
+    const totalPages = data ? Math.ceil(data.library.totalCount / 20) : 1
+
+    function scoreLabel(rating: Rating) {
+        return Object.entries(criteria).map(([key, label]) => `${label}: ${rating[key as keyof typeof criteria] ?? '—'}`).join('\n')
     }
-    return <section className="readers-page">
-        <Link to="/">← Ana Sayfa</Link>
-        {busy ? <p role="status">Kitaplık yükleniyor…</p> : error ? <div role="alert"><p>{error}</p><button onClick={() => setVersion(v => v + 1)}>Tekrar dene</button></div> : data && <>
-            <header className="public-reader-header"><ReaderAvatar avatarId={data.avatarId} achievements={data.achievements} size="large" />
-                <div><h1>@{data.nickname}</h1><p>{data.library.totalCount} roman · Açık kitaplık</p></div></header>
+
+    if (busy) return <p className="public-reader-state" role="status">Kitaplık yükleniyor…</p>
+    if (error) return <div className="public-reader-state" role="alert"><p>{error}</p>
+        <button className="button secondary-button" type="button" onClick={() => setVersion(v => v + 1)}>Tekrar dene</button></div>
+    if (!data) return null
+
+    return <section className="public-reader-page">
+        <header className="public-reader-header">
+            <ReaderAvatar avatarId={data.avatarId} achievements={data.achievements} size="large" />
+            <div className="public-reader-title">
+                <h1>@{data.nickname}</h1>
+                <p>{data.library.totalCount} roman</p>
+            </div>
             <FollowReader key={data.nickname} nickname={data.nickname} />
-            {(data.showcase.bedsideBookId || data.showcase.influentialBooks.length > 0) && <div className="reader-showcase">
-                {data.showcase.bedsideBookId && <section><h2>Başucu kitabı</h2>{card(data.showcase.bedsideBookId)}</section>}
-                {data.showcase.influentialBooks.length > 0 && <section><h2>İz bırakanlar</h2><div className="reader-rail">{data.showcase.influentialBooks.map(b => card(b.bookId))}</div></section>}
-            </div>}
-            <AchievementTracks items={data.achievements} publicView />
-            <h2>Kitaplık</h2>
-            {data.library.totalCount === 0 ? <p>Henüz kitap eklenmemiş.</p> : <div className="reader-books">{data.library.items.map(b => card(b.bookId, b.status))}</div>}
-            {data.library.totalCount > 20 && <div className="reader-pagination">
-                <button disabled={page === 1} onClick={() => setParams({ page: String(page - 1) })}>Önceki</button>
-                <span>{page} / {Math.ceil(data.library.totalCount / 20)}</span>
-                <button disabled={page * 20 >= data.library.totalCount} onClick={() => setParams({ page: String(page + 1) })}>Sonraki</button>
-            </div>}
-        </>}
+        </header>
+
+        {(bedside || influential.length > 0) && <div className="reader-spread">
+            {bedside && <section className="reader-spread-page reader-bedside" aria-labelledby="reader-bedside-heading">
+                <Link to={'/catalog/books/' + bedside.bookId} aria-label={titleOf(bedside)}>
+                    <BookObject title={bedside.title} author={authorsOf(bedside)} coverImageUrl={bedside.coverImageUrl} priority />
+                </Link>
+                <div>
+                    <h2 id="reader-bedside-heading">Başucu kitabı</h2>
+                    <h3><Link to={'/catalog/books/' + bedside.bookId}>{titleOf(bedside)}</Link></h3>
+                    <p>{authorsOf(bedside)}</p>
+                </div>
+            </section>}
+            {influential.length > 0 && <section className="reader-spread-page reader-influential" aria-labelledby="reader-influential-heading">
+                <h2 id="reader-influential-heading">İz bırakanlar</h2>
+                <ol>{influential.map(({ book, position }) => <li key={position}>
+                    <Link to={'/catalog/books/' + book.bookId} aria-label={`${position}. ${titleOf(book)}`} title={titleOf(book)}>
+                        <BookObject title={book.title} author={authorsOf(book)} coverImageUrl={book.coverImageUrl} size="sm" />
+                    </Link>
+                    <span aria-hidden="true">{position}</span>
+                </li>)}</ol>
+            </section>}
+        </div>}
+
+        <section className="bookcase-section" aria-labelledby="public-bookcase-heading">
+            <h2 id="public-bookcase-heading" className="public-reader-heading">Kitaplık</h2>
+            {data.library.totalCount === 0 ? <div className="bookcase-state"><h3>Raflar henüz boş</h3></div>
+                : <div className="bookcase">{data.library.items.map(item => {
+                    const book = byId.get(item.bookId)
+                    const rating = ratings.get(item.bookId)
+                    const title = book ? titleOf(book) : 'Katalog kaydı bulunamadı'
+                    const authors = book ? authorsOf(book) : ''
+                    const volume = <BookObject title={book?.title ?? title} author={authors} coverImageUrl={book?.coverImageUrl} />
+                    return <article className="bookcase-slot" key={item.bookId}>
+                        <div className="bookcase-book">
+                            {book ? <Link to={'/catalog/books/' + book.bookId} aria-label={title}>{volume}</Link> : volume}
+                            <span className={`bookcase-ribbon status-${item.status.toLowerCase()}`}>{statuses[item.status] ?? item.status}</span>
+                            {rating?.overallScore != null && <span className="bookcase-score" title={scoreLabel(rating)}
+                                aria-label={`${rating.overallScore.toFixed(1)} / 10. ${scoreLabel(rating).replaceAll('\n', ', ')}`}>
+                                {rating.overallScore.toLocaleString('tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                            </span>}
+                        </div>
+                        <div className="bookcase-label">
+                            <h3 title={title}>{book ? <Link to={'/catalog/books/' + book.bookId}>{title}</Link> : title}</h3>
+                            <p title={authors}>{authors}</p>
+                        </div>
+                    </article>
+                })}</div>}
+            {totalPages > 1 && <nav className="profile-pagination" aria-label="Kitaplık sayfaları">
+                <button className="button secondary-button" type="button" disabled={page === 1} onClick={() => setParams({ page: String(page - 1) })}>Önceki</button>
+                <span>{page} / {totalPages}</span>
+                <button className="button secondary-button" type="button" disabled={page >= totalPages} onClick={() => setParams({ page: String(page + 1) })}>Sonraki</button>
+            </nav>}
+        </section>
+
+        <AchievementTracks items={data.achievements} publicView />
     </section>
 }

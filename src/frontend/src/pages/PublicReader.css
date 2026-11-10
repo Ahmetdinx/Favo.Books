@@ -1,0 +1,48 @@
+/* Public reader: a visit to someone else's library room. */
+.public-reader-page { width: 100%; min-width: 0; text-align: left; }
+.public-reader-state { margin: 40px auto; text-align: center; color: var(--library-muted); }
+.public-reader-header { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-bottom: 26px; }
+.public-reader-title { flex: 1; min-width: 0; }
+.public-reader-title h1 { margin: 0; font: 400 clamp(2rem, 4.5vw, 3rem)/1.05 Georgia, serif; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.public-reader-title p { margin: 4px 0 0; color: var(--library-muted); }
+.public-reader-header .reader-follow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.public-reader-header .social-counts { display: flex; gap: 14px; font-size: .86rem; color: var(--library-muted); }
+.public-reader-header .social-counts strong { font-weight: 600; color: var(--library-ink); }
+.public-reader-header .social-button { padding: 9px 18px; font-size: .86rem; color: #fbf3e6; cursor: pointer; background: #69482f; border: 0; border-radius: 999px; }
+.public-reader-header .social-button[aria-pressed="true"] { color: #5c4432; background: transparent; border: 1px solid #b89c7d; }
+.public-reader-header .social-state { flex-basis: 100%; margin: 0; font-size: .8rem; color: var(--library-muted); }
+
+/* Bedside book and the five that left a mark, on an open book. */
+.reader-spread {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    border-radius: 6px;
+    background: linear-gradient(90deg, #f6eddd 0, #f9f3e7 44%, #e4d5bc 49%, #cdb998 50%, #e9dcc6 51%, #fbf6ec 56%, #fcf8ef 100%);
+    box-shadow: 0 2px 0 #cbb99f, 0 4px 0 #f2e8d8, 0 5px 0 #cbb99f, 0 18px 30px #4a2e1a24;
+}
+.reader-spread:has(> :only-child) { background: linear-gradient(90deg, #f6eddd, #fcf8ef); }
+.reader-spread-page { min-width: 0; padding: 28px 38px; }
+.reader-spread-page h2 { margin: 0; font-size: .74rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #8d7662; }
+.reader-bedside { display: flex; align-items: center; gap: 24px; }
+.reader-bedside .book-object { --w: 116px; }
+.reader-bedside h3 { margin: 8px 0 0; font: 400 clamp(1.25rem, 2.2vw, 1.6rem)/1.2 Georgia, serif; overflow-wrap: anywhere; }
+.reader-bedside h3 a { color: var(--library-ink); }
+.reader-bedside p { margin: 6px 0 0; font: italic .92rem Georgia, serif; color: var(--library-muted); }
+.reader-influential ol { display: flex; align-items: flex-end; gap: 14px; margin: 16px 0 0; padding: 0; list-style: none; }
+.reader-influential li { display: flex; flex: 0 1 92px; flex-direction: column; align-items: center; gap: 8px; min-width: 0; }
+.reader-influential .book-object { --w: min(92px, 100%); }
+.reader-influential li > a { display: block; width: 100%; }
+.reader-influential li > span { font: italic .8rem Georgia, serif; color: #8d7662; }
+
+.public-reader-page .bookcase-section { margin-top: 34px; }
+.public-reader-heading { margin: 0 0 14px; font: 400 1.4rem Georgia, serif; }
+.public-reader-page .achievement-section { margin-top: 34px; }
+
+@media (max-width: 760px) {
+    .reader-spread { grid-auto-flow: row; background: linear-gradient(180deg, #f9f3e7, #fcf8ef); }
+    .reader-spread-page { padding: 20px 18px; }
+    .reader-spread-page + .reader-spread-page { border-top: 1px solid #cbb99f; }
+    .reader-bedside .book-object { --w: 88px; }
+    .reader-influential ol { gap: 8px; }
+}

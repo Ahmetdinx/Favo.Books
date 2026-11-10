@@ -1,6 +1,6 @@
 .personal-discovery { margin: 28px 0; color: var(--library-ink); }
 .personal-discovery :is(h1, h2) { font: 1.7rem Georgia, serif; margin: 8px 0 12px; }
-.discovery-intro, .discovery-hint, .discovery-footnote { color: var(--library-muted); line-height: 1.65; font-size: .9rem; max-width: 80ch; }
+.discovery-footnote { color: var(--library-muted); line-height: 1.65; font-size: .9rem; max-width: 80ch; }
 .reading-preferences { margin: 16px 0; background: var(--library-paper); border: 1px solid var(--library-line); border-radius: 10px; padding: 12px 16px; }
 .reading-preferences-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .reading-preferences-overview { min-width: 0; }
@@ -17,13 +17,7 @@
 .preference-options input { width: 16px; height: 16px; accent-color: var(--library-accent); }
 .preference-options label:has(:checked) { background: var(--library-line); }
 .preference-options label:has(:disabled) { opacity: .6; }
-.recommendation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
-.recommendation-grid article { padding: 18px; border: 1px solid var(--library-line); background: var(--library-paper); border-radius: 10px; }
-.recommendation-book { display: flex; align-items: center; gap: 14px; }
-.recommendation-book img { width: 58px; height: 86px; object-fit: cover; border-radius: 3px; flex-shrink: 0; }
-.recommendation-book h3 { font: 1.1rem/1.4 Georgia, serif; overflow-wrap: anywhere; margin: 0; }
-.recommendation-grid ul { padding-left: 17px; color: var(--library-muted); font-size: .82rem; line-height: 1.6; }
-.recommendation-grid small, .discovery-footnote { color: var(--library-muted); font-size: .75rem; }
+.discovery-footnote { color: var(--library-muted); font-size: .75rem; }
 .recommendation-feedback-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .recommendation-feedback-actions button, .recommendation-feedback-history button, .recommendation-refresh { border: 1px solid var(--library-line); border-radius: 6px; padding: 8px 10px; background: transparent; color: var(--library-ink); cursor: pointer; font: inherit; font-size: .78rem; }
 .recommendation-feedback-actions button[aria-pressed="true"] { background: var(--library-line); }
@@ -35,11 +29,8 @@
 .recommendation-feedback-history li span { overflow-wrap: anywhere; min-width: 0; }
 .recommendation-feedback-history button { flex-shrink: 0; }
 .personal-discovery button:disabled { cursor: wait; opacity: .6; }
-@media(max-width: 900px) { .recommendation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media(max-width: 580px) { .recommendation-grid { grid-template-columns: 1fr; } .reading-preferences { padding: 12px; } .reading-preferences-header { gap: 8px; } }
-
-.recommendation-explanation { color: var(--library-muted); font-size: .78rem; margin: 10px 0; }
-.recommendation-explanation summary, .discovery-footnote summary { cursor: pointer; width: fit-content; }
+@media(max-width: 580px) { .reading-preferences { padding: 12px; } .reading-preferences-header { gap: 8px; } }
+.discovery-footnote summary { cursor: pointer; width: fit-content; }
 .personal-discovery summary:focus-visible { outline: 2px solid var(--library-accent); outline-offset: 4px; }
 
 .recommendation-shelf { margin-top: 26px; }
@@ -47,10 +38,6 @@
 .recommendation-shelf > header p { margin: 6px 0; color: var(--library-muted); font-size: .82rem; }
 .recommendation-shelf-perfect { border-top: 2px solid #ae8559; padding-top: 18px; }
 .recommendation-shelf-discovery { border-top: 1px dashed var(--library-line); padding-top: 20px; }
-.recommendation-genres { color: var(--library-muted); font-size: .75rem; }
-.recommendation-score-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
-.recommendation-score-chips > span { padding: 6px 8px; background: #79563d0c; border-radius: 6px; font-size: .72rem; }
-.recommendation-score-chips > small { flex-basis: 100%; }
 .recommendation-preview-toggle button, .recommendation-preview-note button { padding: 9px 12px; border: 1px solid var(--library-line); border-radius: 6px; background: var(--library-paper); color: var(--library-ink); cursor: pointer; }
 .recommendation-preview-note { border: 1px dashed var(--library-accent); border-radius: 10px; padding: 16px; margin-bottom: 20px; background: var(--library-paper); }
 .recommendation-preview-note p { font-size: .85rem; line-height: 1.6; }

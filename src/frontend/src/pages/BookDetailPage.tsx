@@ -12,93 +12,54 @@ import { getBookById } from '../catalog/catalogApi'
 import ReadingStatusPanel from '../reading/readingStatusPanel'
 import BookProfileActionsPanel from '../profile/BookProfileActionsPanel'
 import BookRatingPanel from '../community/BookRatingPanel'
+import BookObject from '../components/BookObject'
+import { cleanBookTitle } from '../catalog/bookTitle'
+import './BookDetail.css'
 
 import type {
     BookDetailsResponse,
     BookEdition,
 } from '../catalog/catalogTypes'
 
-type DetailCoverProps = {
-    coverImageUrl: string | null
-    title: string
+const languageNames: Record<string, string> = {
+    tur: 'Türkçe', tr: 'Türkçe', eng: 'İngilizce', en: 'İngilizce',
+    fre: 'Fransızca', fra: 'Fransızca', fr: 'Fransızca',
+    ger: 'Almanca', deu: 'Almanca', de: 'Almanca',
+    rus: 'Rusça', ru: 'Rusça', spa: 'İspanyolca', es: 'İspanyolca',
+    ita: 'İtalyanca', it: 'İtalyanca', jpn: 'Japonca', ja: 'Japonca',
+    por: 'Portekizce', pt: 'Portekizce', chi: 'Çince', zho: 'Çince',
+    ara: 'Arapça', per: 'Farsça', fas: 'Farsça', gre: 'Yunanca', ell: 'Yunanca',
+    cze: 'Çekçe', ces: 'Çekçe', pol: 'Lehçe', swe: 'İsveççe', nor: 'Norveççe',
+    dan: 'Danca', dut: 'Felemenkçe', nld: 'Felemenkçe', hun: 'Macarca',
 }
 
-function DetailCover({
-    coverImageUrl,
-    title,
-}: DetailCoverProps) {
-    const [hasError, setHasError] =
-        useState(false)
-
-    useEffect(() => {
-        setHasError(false)
-    }, [coverImageUrl])
-
-    if (!coverImageUrl || hasError) {
-        return (
-            <div
-                className="book-detail-cover-placeholder"
-                aria-label={`${title} için kapak bulunamadı`}
-            >
-                <span>K</span>
-                <small>Kapak bulunamadı</small>
-            </div>
-        )
+/** Turkish language name, or null when the language is unknown. */
+function getLanguageName(languageCode: string) {
+    const code = languageCode.toLowerCase()
+    if (!code || code === 'und' || code === 'mul') return null
+    if (languageNames[code]) return languageNames[code]
+    try {
+        return new Intl.DisplayNames(['tr'], { type: 'language' }).of(code) ?? null
+    } catch {
+        return null
     }
-
-    return (
-        <img
-            className="book-detail-cover-image"
-            src={coverImageUrl}
-            alt={`${title} kitap kapağı`}
-            onError={() => setHasError(true)}
-        />
-    )
 }
 
-function getLanguageName(
-    languageCode: string,
-) {
-    const normalizedCode =
-        languageCode.toLowerCase()
-
-    if (
-        normalizedCode === 'tur' ||
-        normalizedCode === 'tr'
-    ) {
-        return 'Türkçe'
-    }
-
-    if (
-        normalizedCode === 'eng' ||
-        normalizedCode === 'en'
-    ) {
-        return 'İngilizce'
-    }
-
-    return languageCode.toUpperCase()
+const formatNames: Record<string, string> = {
+    hardcover: 'Ciltli',
+    paperback: 'Karton kapak',
+    ebook: 'E-kitap',
+    audiobook: 'Sesli kitap',
 }
 
-function getFormatName(format: string) {
-    switch (format.toLowerCase()) {
-        case 'hardcover':
-            return 'Ciltli'
-
-        case 'paperback':
-            return 'Karton kapak'
-
-        case 'ebook':
-            return 'E-kitap'
-
-        case 'audiobook':
-            return 'Sesli kitap'
-
-        case 'unknown':
-            return 'Belirtilmemiş'
-
-        default:
-            return format
-    }
+function editionFacts(edition: BookEdition) {
+    return [
+        ['Yayınevi', edition.publisher?.name],
+        ['Yıl', edition.publicationYear?.toString()],
+        ['Sayfa', edition.pageCount?.toString()],
+        ['Format', formatNames[edition.format.toLowerCase()]],
+        ['ISBN', edition.isbn13 ?? edition.isbn10],
+    ].filter((fact): fact is [string, string] => !!fact[1])
 }
 
 function BookDetailPage() {
@@ -291,216 +252,91 @@ function BookDetailPage() {
                 )
         })
 
+    const authorNames = book.authors.map((author) => author.name).join(', ')
+    const originalLanguage = getLanguageName(book.originalLanguageCode)
+    const facts = [
+        book.firstPublishedYear?.toString(),
+        originalLanguage && `${originalLanguage} aslından`,
+        editions.length > 1 ? `${editions.length} baskı` : null,
+    ].filter(Boolean)
+
     return (
         <section className="book-detail-page">
-            <Link
-                className="book-detail-back-link"
-                to="/catalog"
-            >
-                ← Kataloğa dön
+            <Link className="book-detail-back-link" to="/catalog">
+                ← Katalog
             </Link>
 
-            <div className="book-detail-hero">
-                <div className="book-detail-cover">
-                    <DetailCover
-                        coverImageUrl={displayCover}
+            <div className="book-spread">
+                <div className="book-spread-cover">
+                    <BookObject
                         title={displayTitle}
+                        author={authorNames}
+                        coverImageUrl={displayCover}
+                        size="lg"
+                        priority
                     />
                 </div>
 
-                <div className="book-detail-summary">
-                    <p className="eyebrow">
-                        Kitap detayları
-                    </p>
-
-                    <h1>{displayTitle}</h1>
+                <div className="book-spread-copy">
+                    <h1>{cleanBookTitle(displayTitle)}</h1>
 
                     {secondaryTitle && (
-                        <p className="book-detail-original-title">
+                        <p className="book-spread-original">
                             {secondaryTitle}
                         </p>
                     )}
 
-                    <p className="book-detail-authors">
-                        {book.authors.length > 0
-                            ? book.authors
-                                .map(
-                                    (author) =>
-                                        author.name,
-                                )
-                                .join(', ')
-                            : 'Yazar bilgisi bulunmuyor'}
-                    </p>
-
-                    {book.categories.length > 0 && (
-                        <div className="book-detail-categories">
-                            {book.categories.map(
-                                (category) => (
-                                    <Link
-                                        key={
-                                            category.categoryId
-                                        }
-                                        to={
-                                            '/catalog?' +
-                                            new URLSearchParams({
-                                                category:
-                                                    category.slug,
-                                                page: '1',
-                                            }).toString()
-                                        }
-                                    >
-                                        {category.name}
-                                    </Link>
-                                ),
-                            )}
-                        </div>
+                    {authorNames && (
+                        <p className="book-spread-author">{authorNames}</p>
                     )}
 
-                    <ReadingStatusPanel
-                        bookId={book.bookId}
-                    />
+                    {(facts.length > 0 || book.categories.length > 0) && (
+                        <p className="book-spread-facts">
+                            {facts.join(' · ')}
+                            {book.categories.map((category) => (
+                                <Link
+                                    key={category.categoryId}
+                                    to={'/catalog?' + new URLSearchParams({ category: category.slug, page: '1' }).toString()}
+                                >
+                                    {category.name}
+                                </Link>
+                            ))}
+                        </p>
+                    )}
 
-                    <BookProfileActionsPanel
-                        bookId={book.bookId}
-                    />
-
-
-                    <dl className="book-detail-facts">
-                        <dt>İlk yayın yılı</dt>
-                        <dd>
-                            {book.firstPublishedYear ??
-                                'Bilinmiyor'}
-                        </dd>
-
-                        <dt>Orijinal dil</dt>
-                        <dd>
-                            {getLanguageName(
-                                book.originalLanguageCode,
-                            )}
-                        </dd>
-
-                        <dt>Kayıtlı baskı</dt>
-                        <dd>
-                            {book.editions.length}
-                        </dd>
-                    </dl>
-
+                    <ReadingStatusPanel bookId={book.bookId} />
+                    <BookProfileActionsPanel bookId={book.bookId} />
                 </div>
             </div>
 
             <BookRatingPanel bookId={book.bookId} />
 
-            <section className="book-editions-section">
-                <div className="book-editions-header">
-                    <div>
-                        <p className="eyebrow">
-                            Yayın bilgileri
-                        </p>
+            {editions.length > 0 && (
+                <section className="book-editions-section" aria-labelledby="book-editions-heading">
+                    <h2 id="book-editions-heading">
+                        {editions.length > 1 ? 'Baskılar' : 'Baskı'}
+                    </h2>
 
-                        <h2>Baskılar</h2>
+                    <div className="edition-leaves">
+                        {editions.map((edition) => (
+                            <article className="edition-leaf" key={edition.editionId}>
+                                <h3>{cleanBookTitle(edition.title)}</h3>
+                                {getLanguageName(edition.languageCode) && edition.languageCode.toLowerCase() !== 'tur' && (
+                                    <p className="edition-leaf-language">{getLanguageName(edition.languageCode)}</p>
+                                )}
+                                <dl>
+                                    {editionFacts(edition).map(([label, value]) => (
+                                        <div key={label}>
+                                            <dt>{label}</dt>
+                                            <dd>{value}</dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            </article>
+                        ))}
                     </div>
-
-                    <span>
-                        {editions.length} baskı
-                    </span>
-                </div>
-
-                {editions.length === 0 ? (
-                    <div className="catalog-status">
-                        Bu kitap için kayıtlı baskı
-                        bulunmuyor.
-                    </div>
-                ) : (
-                    <div className="book-editions-grid">
-                        {editions.map(
-                            (
-                                edition:
-                                    BookEdition,
-                            ) => {
-                                const isPrimary =
-                                    edition.editionId ===
-                                    book.primaryEditionId
-
-                                return (
-                                    <article
-                                        className={
-                                            'book-edition-card' +
-                                            (isPrimary
-                                                ? ' primary-edition'
-                                                : '')
-                                        }
-                                        key={
-                                            edition.editionId
-                                        }
-                                    >
-                                        <header>
-                                            <div>
-                                                <span className="book-edition-language">
-                                                    {getLanguageName(
-                                                        edition.languageCode,
-                                                    )}
-                                                </span>
-
-                                                {isPrimary && (
-                                                    <span className="primary-edition-badge">
-                                                        Ana baskı
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <h3>
-                                                {
-                                                    edition.title
-                                                }
-                                            </h3>
-                                        </header>
-
-                                        <dl>
-                                            <dt>Format</dt>
-                                            <dd>
-                                                {getFormatName(
-                                                    edition.format,
-                                                )}
-                                            </dd>
-
-                                            <dt>Yayınevi</dt>
-                                            <dd>
-                                                {edition.publisher
-                                                    ?.name ??
-                                                    'Bilinmiyor'}
-                                            </dd>
-
-                                            <dt>Yayın yılı</dt>
-                                            <dd>
-                                                {edition.publicationYear ??
-                                                    'Bilinmiyor'}
-                                            </dd>
-
-                                            <dt>Sayfa</dt>
-                                            <dd>
-                                                {edition.pageCount ??
-                                                    'Bilinmiyor'}
-                                            </dd>
-
-                                            <dt>ISBN-13</dt>
-                                            <dd>
-                                                {edition.isbn13 ??
-                                                    'Bulunmuyor'}
-                                            </dd>
-
-                                            <dt>ISBN-10</dt>
-                                            <dd>
-                                                {edition.isbn10 ??
-                                                    'Bulunmuyor'}
-                                            </dd>
-                                        </dl>
-                                    </article>
-                                )
-                            },
-                        )}
-                    </div>
-                )}
-            </section>
+                </section>
+            )}
         </section>
     )
 }

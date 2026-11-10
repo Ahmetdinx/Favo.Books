@@ -52,45 +52,12 @@ body {
 .app .primary-button { background: var(--library-accent); color: #faf7f0; }
 .app .secondary-button { background: var(--library-paper); border: 1px solid var(--library-line); }
 .app :is(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid #79563d; outline-offset: 4px; }
-.app :is(.catalog-page-header, .profile-page-header) { margin-bottom: 24px; gap: 24px; }
-.app :is(.catalog-page-header, .profile-page-header, .book-detail-summary) h1 {
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: clamp(1.9rem, 3.8vw, 2.65rem); line-height: 1.15; margin: 8px 0 12px;
-}
-.app :is(.catalog-page-header > div > p:last-child, .profile-page-description) { color: var(--library-muted); font-size: 0.9rem; line-height: 1.65; max-width: 540px; }
 
 /* Catalog: small covers resting on quiet, evenly spaced shelves. */
-.app .catalog-toolbar { grid-template-columns: minmax(190px, 1.5fr) minmax(105px, .7fr) minmax(150px, 1fr) minmax(150px, 1fr) auto; gap: 12px; padding: 16px; background: var(--library-paper); border-color: var(--library-line); border-radius: 10px; box-shadow: none; }
-.app .catalog-field { min-width: 0; gap: 6px; }
-.app .catalog-field :is(input, select) { height: 42px; padding: 0 10px; font-size: 0.83rem; background: #f3eee5; border-color: var(--library-line); border-radius: 6px; }
-.app .catalog-field > span { font-weight: 600; }
-.app .catalog-count { background: transparent; border: 0; min-width: auto; padding: 0; }
-.app .catalog-count strong { font-size: 1.6rem; }
-.app .catalog-count span { color: var(--library-muted); }
-.app .catalog-grid { gap: 20px; margin-top: 24px; }
-.app .catalog-book-card { padding: 14px; border: 1px solid var(--library-line); border-radius: 8px; background: var(--library-paper); box-shadow: 0 3px 8px #3d392b08; transition: border-color 160ms ease, background-color 160ms ease; }
-.app .catalog-book-card:hover { transform: none; box-shadow: none; border-color: #928c7d; background: #efe9df; }
-.app .catalog-cover { width: 124px; height: 184px; aspect-ratio: auto; margin: 4px auto 0; border-radius: 3px 6px 6px 3px; box-shadow: 3px 4px 8px #302f2420; background: #d5cdbf; }
-.app .catalog-cover-image { object-fit: contain; }
-.app .catalog-book-content { padding: 15px 0 5px; }
-.app .catalog-book-content h2 { font-size: 1.05rem; line-height: 1.35; }
-.app .catalog-book-authors { font-size: 0.79rem; color: var(--library-muted); }
-.app .catalog-book-year { font-size: 0.62rem; color: #665e51; }
-.app .catalog-categories { gap: 5px; }
-.app .catalog-categories button { font-size: 0.65rem; padding: 5px 7px; background: #e5d6c4; color: #604733; border-radius: 4px; }
-.app .catalog-detail-link { padding: 10px 0 0; margin-top: 10px; border-top: 1px solid var(--library-line); font-size: 0.75rem; }
-.app .catalog-active-filter { font-size: 0.83rem; background: #e1ceb8; border-radius: 6px; }
 .app .catalog-category-error { font-size: 0.85rem; }
 .app .catalog-category-error button { background: none; color: #79563d; text-decoration: underline; cursor: pointer; }
 
 /* Book details: information first, a compact reading control, then the evaluation. */
-.app .book-detail-hero { grid-template-columns: 185px minmax(0, 1fr); gap: 34px; align-items: start; }
-.app .book-detail-cover { width: 185px; border-radius: 4px 8px 8px 4px; box-shadow: 4px 7px 14px #302f2425; }
-.app .book-detail-cover-image { object-fit: contain; }
-.app .book-detail-original-title { font-size: 1rem; }
-.app .book-detail-authors { font-size: 0.95rem; }
-.app .book-detail-categories a { background: #e5d6c4; font-size: 0.73rem; padding: 6px 10px; }
-.app :is(.reading-status-panel, .profile-book-actions, .detailed-rating, .book-edition-card) { background: var(--library-paper); border: 1px solid var(--library-line); border-radius: 10px; box-shadow: none; }
 .app .reading-status-panel { padding: 16px; margin-top: 20px; }
 .app .reading-status-heading h2 { font-family: Georgia, serif; font-size: 1.15rem; }
 .app .reading-status-description { font-size: 0.84rem; margin: 8px 0; }
@@ -101,57 +68,13 @@ body {
 .app .profile-book-actions { margin-top: 10px; }
 .app .profile-book-actions > summary { padding: 14px 16px; font-size: 0.85rem; }
 .app .profile-feature-editor { background: #f0ebe2; border-color: var(--library-line); box-shadow: none; }
-.app .book-detail-facts { margin-top: 20px; padding: 16px 0; }
-.app .book-detail-description h2 { font-size: 1.2rem; }
-.app .book-detail-description p { font-size: 0.9rem; line-height: 1.8; max-width: 70ch; }
 .app .book-editions-section { margin-top: 28px; }
-.app .book-editions-header h2 { font-size: 1.5rem; }
-.app .book-edition-card { padding: 18px; }
-.app .book-edition-card.primary { background: #e9ddcd; border-color: #baa085; }
-.app .detailed-rating { padding: 24px; margin-top: 30px; }
-.app .detailed-rating h2 { font-family: Georgia, serif; font-size: 1.55rem; }
-.app .detailed-rating-overall { padding-left: 20px; border-left: 1px solid var(--library-line); }
-.app .detailed-rating-overall strong { font-family: Georgia, serif; font-size: 2rem; }
-.app .detailed-rating-averages { grid-template-columns: 1fr 1fr; gap: 16px 32px; padding: 20px 0; }
-.app .detailed-rating-averages > div { grid-template-columns: 1fr; gap: 7px; }
-.app .detailed-rating dd meter { flex: 1; }
-.app .detailed-rating fieldset { display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; }
-.app .detailed-rating-field { padding: 14px 0; border-bottom: 1px solid var(--library-line); margin-bottom: 0; }
-.app .detailed-rating-field label { font-size: 0.84rem; font-weight: 600; }
-.app .detailed-rating-field select { background: #f3eee5; border-color: #b7b5a7; min-height: 42px; }
-.app .detailed-rating-field p { color: var(--library-muted); font-size: 0.79rem; }
-.app .detailed-rating :is(.detailed-rating-preview, .detailed-rating-actions, .detailed-rating-note) { grid-column: 1 / -1; }
-.app .detailed-rating-preview { margin-top: 18px; background: #e4d1bb; }
 
 /* Profile: a personal shelf, with restrained summary cards and book-sized covers. */
-.app .profile-identity-card { min-width: 0; padding: 12px 16px; border: 1px solid var(--library-line); background: var(--library-paper); box-shadow: none; border-radius: 8px; }
-.app .profile-avatar { width: 38px; height: 38px; border-radius: 50%; background: #dcc5ad; color: #62452f; font-size: 1.1rem; }
-.app :is(.profile-summary-header, .profile-library-header) h2 { font-size: 1.5rem; }
-.app .profile-summary-section { padding: 0; margin-top: 24px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
-.app .profile-summary-grid { gap: 10px; }
-.app .profile-summary-card { min-height: 68px; padding: 12px 18px; border: 1px solid var(--library-line); border-radius: 7px; background: var(--library-paper); color: var(--library-ink); box-shadow: none; }
-.app .profile-summary-card strong { font-size: 1.55rem; color: #64452f; }
-.app .profile-summary-card :is(span, small) { color: var(--library-muted); }
-.app .profile-summary-card.active { background: #dfc9b0; color: #513924; border-color: #ad8967; box-shadow: inset 0 -3px #ad8967; }
-.app .profile-summary-card:hover { transform: none; background: #eadcca; }
-.app .profile-library-section { padding-top: 24px; }
-.app .profile-filter-tabs { gap: 7px; padding: 10px 0; }
-.app .profile-filter-button { padding: 9px 12px; border-radius: 6px; font-size: 0.8rem; background: #e0dbd0; color: #654c39; }
-.app .profile-filter-button.active { background: var(--library-accent); color: #f6f3ea; }
-.app .profile-library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.app .profile-book-card { border-radius: 8px; padding: 16px; background: var(--library-paper); box-shadow: none; border: 1px solid var(--library-line); }
-.app .profile-book-cover { width: 94px; height: 140px; aspect-ratio: auto; margin: 0 auto; border-radius: 3px; box-shadow: 3px 4px 8px #302f2418; }
-.app .profile-book-cover-image { object-fit: contain; }
-.app .profile-book-content { padding: 14px 0 0; }
-.app .profile-book-content h3 { font-size: 1.05rem; }
-.app .profile-book-status { position: static; display: inline-flex; width: fit-content; align-self: start; margin-top: 10px; font-size: 0.64rem; padding: 5px 7px; background: #dfc9b0; color: #60432c; box-shadow: none; }
 
 /* Keep the shelf mounted while live-search results arrive. */
 .catalog-results { min-height: 360px; }
 .catalog-update-status { min-height: 24px; margin-top: 12px; font-size: .8rem; color: var(--library-muted); }
-.catalog-results .catalog-grid { transition: opacity 220ms ease; }
-.catalog-results .catalog-grid[data-updating="true"] { opacity: .72; }
-.catalog-results .catalog-book-card { animation: catalog-result-arrive 260ms ease-out; }
 @keyframes catalog-result-arrive { from { opacity: .65; } to { opacity: 1; } }
 
 /* Open around the spine; pathname changes only, never live-search parameters. */
@@ -184,80 +107,25 @@ body {
     .library-page-turn { animation-duration: 680ms; }
     .library-page-turn::before { animation-duration: 680ms; }
 }
-@media (max-width: 960px) {
-    .app .catalog-toolbar { grid-template-columns: 2fr 1fr 1fr; }
-    .app .catalog-search-field { grid-column: span 2; }
-    .app .catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-}
 @media (max-width: 680px) {
     .app .header, .app .main-content, .app .footer { width: calc(100% - 32px); }
     .app .header { flex-wrap: wrap; gap: 12px; }
     .app .navigation { flex-wrap: wrap; gap: 2px; }
     .app .navigation-user { display: none; }
     .app .main-content { padding-top: 22px; }
-    .app .catalog-toolbar { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .app .catalog-search-field { grid-column: 1 / -1; }
-    .app .catalog-grid, .app .profile-library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .app .catalog-book-card { padding: 12px; }
-    .app .catalog-cover { width: 100px; height: 150px; }
-    .app .catalog-count { align-self: flex-start; }
-    .app .book-detail-hero { grid-template-columns: 1fr; gap: 22px; }
-    .app .book-detail-cover { width: 142px; justify-self: start; }
-    .app .book-detail-summary h1 { font-size: 1.9rem; }
-    .app .detailed-rating { padding: 18px; }
-    .app .detailed-rating fieldset { grid-template-columns: 1fr; }
-    .app .detailed-rating-averages { grid-template-columns: 1fr; gap: 14px; }
-    .app .detailed-rating-overall { border-left: 0; padding-left: 0; }
-    .app .profile-page-header { align-items: flex-start; }
-    .app .profile-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .app .profile-book-card { padding: 12px; }
-    .app .profile-book-cover { width: 82px; height: 124px; }
 }
 @media (prefers-reduced-motion: reduce) {
     .library-page-turn { animation: none; transform: none; }
-    .library-page-turn::before, .catalog-results .catalog-book-card { animation: none; }
+    .library-page-turn::before { animation: none; }
     .app *, .app *::before, .app *::after { scroll-behavior: auto; transition: none; }
 }
 
 /* Warm shared accents and a compact, cover-led profile. */
 .app .navigation a:is(:hover, [aria-current="page"]) { color: var(--library-ink); background: #79563d14; }
 .app .secondary-button { color: var(--library-ink); }
-.app :is(h1, h2, h3, .catalog-detail-link, .profile-book-detail-link) { color: var(--library-ink); }
-.app .profile-page-header { margin-bottom: 16px; align-items: center; }
-.app .profile-page-header h1 { margin: 0; font-size: 2rem; }
-.app .profile-identity-card { padding: 0; border: 0; background: transparent; gap: 10px; }
-.app .profile-identity-card strong { color: var(--library-muted); font-size: 0.8rem; }
-.app .profile-summary-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 12px; }
-.app .profile-summary-card > span { font-size: 0.78rem; letter-spacing: 0; text-transform: none; }
-.app .profile-summary-card > strong { margin: 0; font-size: 1.4rem; }
-.app .profile-library-header { margin-bottom: 8px; }
-.app .profile-library-header h2 { font-size: 1.25rem; }
-.app .profile-filter-button { border-radius: 20px; }
 .profile-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 
 /* Quiet ivory surfaces against the warmer, textured reading room. */
-.app :is(.catalog-toolbar, .reading-preferences, .reader-settings,
-    .profile-influential-showcase, .reading-status-panel, .profile-book-actions,
-    .detailed-rating, .book-edition-card, .auth-page) {
-    background: linear-gradient(145deg, var(--library-paper-light), var(--library-paper));
-    border-color: #c5aa8b;
-    box-shadow: var(--library-soft-shadow);
-}
-.app :is(.catalog-book-card, .profile-book-card, .reader-book) {
-    background: linear-gradient(155deg, #faf2e7 0%, #eee0cd 100%);
-    border-color: #c9b297;
-    box-shadow: 0 4px 12px #57371e0b, inset 0 1px 0 #fffaf0b3;
-    border-radius: 12px;
-}
-.app :is(.catalog-book-card, .profile-book-card):hover {
-    background: linear-gradient(155deg, #fff7ec, #f1e3d0);
-    border-color: #a6815e;
-    box-shadow: 0 7px 18px #57371e14, inset 0 1px 0 #fffaf0;
-}
-.app :is(.catalog-cover, .profile-book-cover, .book-detail-cover,
-    .profile-bedside-cover-shell, .profile-influential-cover) {
-    box-shadow: 4px 6px 10px #4a2e202b, 1px 1px 2px #4a2e201c;
-}
 .app .profile-bedside-showcase {
     background:
         radial-gradient(ellipse at 15% 5%, #fff0d399, transparent 65%),
@@ -274,7 +142,6 @@ body {
     box-shadow: inset 0 1px 0 #fce2be26, 0 2px 4px #5134201a;
 }
 .app .primary-button:hover { background: linear-gradient(135deg, #795536, #593a26); }
-.app .accent-text { color: #805735; }
 .app .footer { border-top-color: #8b654735; color: #644b37; }
 @media (max-width: 680px) {
     body {
@@ -284,10 +151,4 @@ body {
 }
 @media (forced-colors: active) {
     .app::before { display: none; }
-}
-@media (max-width: 620px) {
-    .app .profile-page-header { gap: 12px; }
-    .app .profile-identity-card { max-width: 100%; }
-    .app .profile-identity-card strong { overflow-wrap: anywhere; }
-    .app .profile-summary-card { padding: 12px; }
 }

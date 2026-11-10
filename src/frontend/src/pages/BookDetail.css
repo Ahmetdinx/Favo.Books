@@ -1,0 +1,74 @@
+/* Book detail: the book stands on the left page, its story on the right. */
+.app .book-detail-page { width: 100%; min-width: 0; text-align: left; }
+.app .book-detail-back-link { display: inline-block; margin-bottom: 18px; font-size: .86rem; color: #705039; }
+
+.book-spread {
+    display: grid;
+    grid-template-columns: minmax(240px, 2fr) minmax(0, 3fr);
+    border-radius: 6px;
+    background: linear-gradient(90deg, #f6eddd 0, #f9f3e7 36%, #e4d5bc 39.4%, #cdb998 40%, #e9dcc6 40.6%, #fbf6ec 46%, #fcf8ef 100%);
+    box-shadow: 0 2px 0 #cbb99f, 0 4px 0 #f2e8d8, 0 5px 0 #cbb99f, 0 18px 30px #4a2e1a24;
+}
+.book-spread-cover { display: flex; align-items: center; justify-content: center; padding: 44px 32px; }
+.book-spread-cover .book-object { --w: min(220px, 100%); }
+.book-spread-copy { min-width: 0; padding: 44px 48px 40px; }
+.book-spread-copy h1 { margin: 0; font: 400 clamp(2rem, 4vw, 2.9rem)/1.08 Georgia, serif; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.book-spread-original { margin: 8px 0 0; font: italic 1rem Georgia, serif; color: var(--library-muted); }
+.book-spread-author { margin: 14px 0 0; font: 400 1.15rem Georgia, serif; color: #6b4a33; }
+.book-spread-facts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 10px 0 0; font-size: .84rem; color: var(--library-muted); }
+.book-spread-facts a { color: #79563d; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #79563d55; }
+
+/* Reading status: a row of quiet choices instead of a boxed form. */
+.app .book-spread .reading-status-panel { margin-top: 28px; padding: 22px 0 0; background: none; border: 0; border-top: 1px solid #8b654733; border-radius: 0; }
+.app .book-spread .reading-status-panel .eyebrow,
+.app .book-spread .reading-status-heading h2 { display: none; }
+.app .book-spread .reading-status-heading { justify-content: flex-start; }
+.app .book-spread .reading-status-heading > strong { max-width: none; font: 400 .84rem Georgia, serif; color: var(--library-muted); text-align: left; }
+.app .book-spread .reading-status-panel > h2 { margin: 0; font: 400 1.05rem Georgia, serif; color: var(--library-ink); }
+.app .book-spread .reading-status-description { margin: 4px 0 14px; }
+.app .book-spread .reading-status-options { gap: 6px; margin-top: 10px; }
+.app .book-spread .reading-status-button {
+    flex: 0 1 auto;
+    min-height: 38px;
+    padding: 8px 15px;
+    font-size: .84rem;
+    color: #5c4432;
+    background: transparent;
+    border: 1px solid #b89c7d;
+    border-radius: 999px;
+}
+.app .book-spread .reading-status-button:hover:not(:disabled) { background: #f4eadb; transform: none; }
+.app .book-spread .reading-status-button.selected { color: #fbf3e6; background: #69482f; border-color: #69482f; }
+.app .book-spread .reading-remove-button { margin-top: 10px; font-size: .78rem; color: #8a5a43; }
+
+/* Profile showcase: a single quiet line that opens when needed. */
+.app .book-spread .profile-book-actions { margin-top: 18px; background: none; border: 0; border-top: 1px solid #8b654733; border-radius: 0; }
+.app .book-spread .profile-book-actions > summary { min-height: 0; padding: 14px 0 0; }
+.app .book-spread .profile-book-actions > summary .eyebrow { display: none; }
+.app .book-spread .profile-book-actions > summary strong { font: 400 1rem Georgia, serif; color: var(--library-ink); }
+.app .book-spread .profile-book-actions > summary > span { font-size: .78rem; font-weight: 400; color: var(--library-muted); }
+.app .book-spread .profile-book-actions > summary::after { width: 28px; height: 28px; font-size: 1.1rem; background: #69482f; }
+.app .book-spread .profile-book-actions-content { padding: 14px 0 0; }
+
+/* Editions: small index cards. */
+.app .book-detail-page .book-editions-section { margin-top: 38px; }
+.book-editions-section > h2 { margin: 0 0 14px; font: 400 1.4rem Georgia, serif; }
+.edition-leaves { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.edition-leaf { min-width: 0; padding: 16px 18px; background: #fbf5ea; border-radius: 3px 8px 8px 3px; box-shadow: 2px 2px 0 #cbb99f, 6px 9px 16px #4a2e1a1f; }
+.edition-leaf h3 { margin: 0; font: 400 1rem/1.3 Georgia, serif; overflow-wrap: anywhere; }
+.edition-leaf-language { margin: 2px 0 0; font-size: .76rem; color: var(--library-muted); }
+.edition-leaf dl { display: grid; gap: 4px; margin: 10px 0 0; font-size: .8rem; }
+.edition-leaf dl > div { display: flex; justify-content: space-between; gap: 12px; padding-top: 4px; border-top: 1px dotted #b89c7d66; }
+.edition-leaf dt { color: var(--library-muted); }
+.edition-leaf dd { margin: 0; text-align: right; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 760px) {
+    .book-spread { grid-template-columns: minmax(0, 1fr); background: linear-gradient(180deg, #f6eddd, #fcf8ef); }
+    .book-spread-cover { padding: 28px 20px 8px; }
+    .book-spread-cover .book-object { --w: 150px; }
+    .book-spread-copy { padding: 18px 20px 26px; text-align: center; }
+    .book-spread-facts { justify-content: center; }
+    .app .book-spread .reading-status-options { justify-content: center; }
+    .app .book-spread .reading-status-heading { justify-content: center; align-items: center; }
+    .app .book-spread .profile-book-actions > summary { text-align: left; }
+}
