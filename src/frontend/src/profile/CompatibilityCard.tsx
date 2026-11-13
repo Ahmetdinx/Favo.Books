@@ -7,6 +7,7 @@ import { cleanBookTitle } from '../catalog/bookTitle'
 import type { BookSummary } from '../catalog/catalogTypes'
 import BookObject from '../components/BookObject'
 import './CompatibilityCard.css'
+import ShareCompatibility from './ShareCompatibility'
 
 type Compatibility = {
     ready: boolean
@@ -24,6 +25,7 @@ export default function CompatibilityCard({ nickname }: { nickname: string }) {
     const request = useAuthenticatedFetch()
     const [data, setData] = useState<Compatibility | null>(null)
     const [books, setBooks] = useState<BookSummary[]>([])
+    const [sharing, setSharing] = useState(false)
 
     useEffect(() => {
         if (!session) return
@@ -65,6 +67,7 @@ export default function CompatibilityCard({ nickname }: { nickname: string }) {
                 <h2 id="match-card-heading">@{nickname} ile <strong>%{percent}</strong> uyumlusunuz</h2>
                 {data.sharedGenres.length > 0 && <p className="match-genres">Ortak rafınız: {data.sharedGenres.join(', ')}</p>}
                 {details && <p className="match-details">{details}</p>}
+                <button type="button" className="match-share" onClick={() => setSharing(true)}>Uyumu paylaş</button>
             </div>
         </div>
         {suggestions.length > 0 && <div className="match-suggestions">
@@ -85,5 +88,7 @@ export default function CompatibilityCard({ nickname }: { nickname: string }) {
                 </li>
             })}</ul>
         </div>}
+        <ShareCompatibility open={sharing} onClose={() => setSharing(false)} other={nickname} percent={percent} label={data.label}
+            sharedGenres={data.sharedGenres} commonBooks={data.commonBooks} suggestionId={suggestions[0]?.bookId ?? null} />
     </section>
 }

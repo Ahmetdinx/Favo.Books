@@ -74,3 +74,5 @@
     .app .book-spread .reading-status-heading { justify-content: center; align-items: center; }
     .app .book-spread .profile-book-actions > summary { text-align: left; }
 }
+.book-share-button { margin-top: 14px; padding: 7px 16px; font-size: .82rem; color: #5c4432; cursor: pointer; background: none; border: 1px solid #b89c7d; border-radius: 999px; }
+.book-share-button:hover { background: #79563d10; }

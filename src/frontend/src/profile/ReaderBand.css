@@ -87,3 +87,10 @@
     .reader-band-chips .popover-panel, .band-pop-identity .popover-panel { right: 0; width: auto; max-width: none; transform: none !important; }
     .band-badge-card { width: auto; }
 }
+
+.referral-card { box-sizing: border-box; width: min(320px, calc(100vw - 24px)); padding: 16px 18px; text-align: left; background: var(--library-paper-light); border: 1px solid var(--library-line); border-radius: 12px; box-shadow: 0 18px 40px #3a24161f, 0 3px 8px #3a241614; }
+.referral-card h3 { margin: 0; font: 400 1.1rem Georgia, serif; color: var(--library-ink); }
+.referral-card p { margin: 6px 0 0; font-size: .82rem; line-height: 1.45; color: var(--library-muted); }
+.referral-card ul { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 12px 0 0; padding: 0; list-style: none; }
+.referral-card li a { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--library-ink); text-decoration: none; }
+.referral-share { margin-top: 12px; padding: 7px 14px; font-size: .8rem; color: #fbf3e6; cursor: pointer; background: #5f3f2c; border: 0; border-radius: 999px; }

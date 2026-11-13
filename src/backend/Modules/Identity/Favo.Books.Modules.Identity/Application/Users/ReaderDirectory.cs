@@ -7,6 +7,7 @@ namespace Favo.Books.Modules.Identity.Application.Users;
 // Internal composition data. Public endpoints never serialize the User entity.
 public sealed record ReaderIdentity(Guid Id, string Nickname, string AvatarId);
 public sealed record ReaderSettings(string? Nickname, bool IsPublic, string AvatarId);
+public sealed record ReferralSummary(int Total, ReaderIdentity[] Readers);
 public sealed class ReaderDirectory(IdentityDbContext db)
 {
     public Task<ReaderSettings?> Settings(Guid id, CancellationToken ct) =>
@@ -20,6 +21,16 @@ public sealed class ReaderDirectory(IdentityDbContext db)
     public async Task<string[]> Search(string query, int page, CancellationToken ct) =>
         await db.Users.AsNoTracking().Where(u => u.IsPublic && u.Nickname != null && u.Nickname.StartsWith(query))
             .OrderBy(u => u.Nickname).Skip((page - 1) * 20).Take(21).Select(u => u.Nickname!).ToArrayAsync(ct);
+
+    /// <summary>Readers who signed up through this reader's shares. Only public ones are named; the total counts everyone.</summary>
+    public async Task<ReferralSummary> Referrals(Guid id, CancellationToken ct)
+    {
+        var referred = db.Users.AsNoTracking().Where(u => u.ReferredById == id);
+        var total = await referred.CountAsync(ct);
+        var named = await referred.Where(u => u.IsPublic && u.Nickname != null).OrderByDescending(u => u.CreatedAtUtc).Take(12)
+            .Select(u => new ReaderIdentity(u.Id, u.Nickname!, u.AvatarId)).ToArrayAsync(ct);
+        return new(total, named);
+    }
 
     public async Task<string> Update(Guid id, string? nickname, bool isPublic, CancellationToken ct, string? avatarId = null)
     {

@@ -41,7 +41,9 @@ internal static class RegisterUserEndpoint
         RegisterUserCommand command = new(
             request.Email!.Trim(),
             request.Password!,
-            request.Nickname);
+            request.Nickname,
+            request.Referrer,
+            request.ReferralSource);
 
         RegisterUserResult result =
             await handler.HandleAsync(

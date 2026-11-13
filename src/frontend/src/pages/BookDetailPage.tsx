@@ -10,6 +10,7 @@ import {
 
 import { getBookById } from '../catalog/catalogApi'
 import ReadingStatusPanel from '../reading/readingStatusPanel'
+import ShareBook from '../profile/ShareBook'
 import BookProfileActionsPanel from '../profile/BookProfileActionsPanel'
 import BookRatingPanel from '../community/BookRatingPanel'
 import BookObject from '../components/BookObject'
@@ -310,6 +311,7 @@ function BookDetailPage() {
 
                     <ReadingStatusPanel bookId={book.bookId} />
                     <BookProfileActionsPanel bookId={book.bookId} />
+                    <ShareBook bookId={book.bookId} summary={book.description} />
                 </div>
             </div>
 

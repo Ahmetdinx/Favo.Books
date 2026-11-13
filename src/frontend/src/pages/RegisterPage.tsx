@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { identityRequest } from '../auth/sessionTransport'
 import { useAuth } from '../auth/useAuth'
+import { inviteRequestFields } from './onboardingState'
 import type { AuthSession } from '../auth/authTypes'
 
 type ValidationProblem = {
@@ -42,6 +43,7 @@ function RegisterPage() {
                     email,
                     nickname,
                     password,
+                    ...inviteRequestFields(),
                 }),
             })
 

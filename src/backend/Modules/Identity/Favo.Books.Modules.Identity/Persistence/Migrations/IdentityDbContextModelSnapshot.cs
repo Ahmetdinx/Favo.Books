@@ -128,6 +128,13 @@ namespace Favo.Books.Modules.Identity.Persistence.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
 
+                    b.Property<string>("ReferralSource")
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)");
+
+                    b.Property<Guid?>("ReferredById")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -138,6 +145,8 @@ namespace Favo.Books.Modules.Identity.Persistence.Migrations
 
                     b.HasIndex("Nickname")
                         .IsUnique();
+
+                    b.HasIndex("ReferredById");
 
                     b.ToTable("users", "identity");
                 });
@@ -164,6 +173,14 @@ namespace Favo.Books.Modules.Identity.Persistence.Migrations
                         .HasForeignKey("FollowerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Favo.Books.Modules.Identity.Domain.Users.User", b =>
+                {
+                    b.HasOne("Favo.Books.Modules.Identity.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("ReferredById")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 #pragma warning restore 612, 618
         }

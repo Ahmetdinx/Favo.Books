@@ -17,6 +17,7 @@ import { ReaderBadgesContext } from '../profile/avatarOptions'
 import type { AchievementTrack } from '../profile/AchievementTracks'
 import { useAuthenticatedFetch } from '../auth/useAuthenticatedFetch'
 import '../profile/Readers.css'
+import { captureInviteFromUrl } from '../pages/onboardingState'
 
 function AppLayout() {
     const {
@@ -32,6 +33,8 @@ function AppLayout() {
     const [achievements, setAchievements] = useState<AchievementTrack[]>([])
     const [achievementOwner, setAchievementOwner] = useState<string | null>(null)
     const [readerVersion, setReaderVersion] = useState(0)
+    // A shared link (?ref=<nickname>&src=...) credits a later sign-up to the reader who shared it.
+    useEffect(() => { if (!isInitializing && !session) captureInviteFromUrl(location.search) }, [location.search, session, isInitializing])
     useEffect(() => {
         const update = () => setReaderVersion(v => v + 1)
         window.addEventListener('reader-settings-changed', update)

@@ -46,6 +46,20 @@ public sealed class User
         AvatarId = avatarId;
     }
 
+    /// <summary>The reader whose shared card, profile or link brought this account, and which kind of share it was.</summary>
+    public Guid? ReferredById { get; private set; }
+    public string? ReferralSource { get; private set; }
+
+    public static bool IsValidReferralSource(string source) => source is "kart" or "link" or "uyum" or "kitap" or "profil";
+
+    /// <summary>Recorded once, at sign-up; a reader cannot refer themselves and an unknown source is stored as "profil".</summary>
+    public void SetReferral(Guid referrerId, string? source)
+    {
+        if (ReferredById is not null || referrerId == Id || referrerId == Guid.Empty) return;
+        ReferredById = referrerId;
+        ReferralSource = source is not null && IsValidReferralSource(source) ? source : "profil";
+    }
+
     public void SetProfile(string nickname, bool isPublic)
     {
         Nickname = UserNickname.Normalize(nickname);

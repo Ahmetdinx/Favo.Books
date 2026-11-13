@@ -27,8 +27,11 @@ const ink = '#3e2d24'
 const sepia = '#8a6a4a'
 
 /** The public profile address printed on the card, so viewers can find the reader (and Favo). */
-export function profileUrl(nickname: string) {
-    return new URL(import.meta.env.BASE_URL + 'okur/' + encodeURIComponent(nickname), window.location.origin).href
+export function profileUrl(nickname: string, source?: 'kart' | 'link' | 'uyum' | 'kitap') {
+    const url = new URL(import.meta.env.BASE_URL + 'okur/' + encodeURIComponent(nickname), window.location.origin)
+    // The tagged form is for links people click; the printed card keeps the short address.
+    if (source) { url.searchParams.set('ref', nickname); url.searchParams.set('src', source) }
+    return url.href
 }
 
 function wrap(ctx: CanvasRenderingContext2D, text: string, maxWidth: number, maxLines = 3) {
@@ -62,12 +65,14 @@ export async function loadSignatureBook(bookId: string | null | undefined): Prom
     } catch { return null }
 }
 
-/** priority: lower is more essential; the title (0) is always drawn. */
-type Section = { height: number; priority: number; draw: (y: number) => void }
+export type CardFrame = { ctx: CanvasRenderingContext2D; story: boolean; left: number; right: number; width: number; top: number; bottom: number; footerTop: number }
 
-/** Draws the reader identity card. Sections are measured first and the block is centred on the card. */
-export function drawTasteCard(canvas: HTMLCanvasElement, profile: TasteProfile, nickname: string | null,
-    format: CardFormat = 'post', signature: SignatureBook | null = null, linkProfile = true) {
+/**
+ * The shared look of every Favo share card: warm desk, ruled library card, a header line and a footer
+ * that always leads back to Favo (a question for the viewer, the address, the brand).
+ */
+export function drawCardFrame(canvas: HTMLCanvasElement, format: CardFormat, header: { kicker: string; right?: string; owner?: string | null },
+    footer: { question: string; address: string; detail?: string }): CardFrame {
     const H = HEIGHT[format]
     const story = format === 'story'
     canvas.width = W
@@ -76,7 +81,6 @@ export function drawTasteCard(canvas: HTMLCanvasElement, profile: TasteProfile, 
     const left = 210, right = W - 130, width = right - left
     const top = 110, bottom = H - 110
 
-    // Warm desk and the paper library card.
     const desk = ctx.createLinearGradient(0, 0, W, H)
     desk.addColorStop(0, '#d9c3a1'); desk.addColorStop(1, '#a3815f')
     ctx.fillStyle = desk; ctx.fillRect(0, 0, W, H)
@@ -90,28 +94,52 @@ export function drawTasteCard(canvas: HTMLCanvasElement, profile: TasteProfile, 
     ctx.strokeStyle = 'rgba(190, 80, 70, .45)'
     ctx.beginPath(); ctx.moveTo(170, top + 10); ctx.lineTo(170, bottom - 10); ctx.stroke()
 
-    // Header.
     ctx.fillStyle = sepia; ctx.font = `600 30px ${serif}`
-    ctx.fillText('OKUR KİMLİĞİ', left, top + 90)
-    ctx.textAlign = 'right'; ctx.font = `italic 30px ${serif}`
-    ctx.fillText('№ ' + String(profile.readCount + profile.ratingCount).padStart(3, '0'), right, top + 90)
-    ctx.textAlign = 'left'
-    if (nickname) { ctx.font = `36px ${serif}`; ctx.fillStyle = '#6b4c33'; ctx.fillText('@' + nickname, left, top + 145) }
+    ctx.fillText(header.kicker, left, top + 90)
+    if (header.right) { ctx.textAlign = 'right'; ctx.font = `italic 30px ${serif}`; ctx.fillText(header.right, right, top + 90); ctx.textAlign = 'left' }
+    if (header.owner) { ctx.font = `36px ${serif}`; ctx.fillStyle = '#6b4c33'; ctx.fillText('@' + header.owner, left, top + 145) }
 
-    // Footer: the way back to Favo.
     const footerTop = bottom - (story ? 230 : 170)
     ctx.strokeStyle = 'rgba(138, 106, 74, .35)'; ctx.lineWidth = 2
     ctx.beginPath(); ctx.moveTo(left, footerTop); ctx.lineTo(right, footerTop); ctx.stroke()
     ctx.fillStyle = ink; ctx.font = `italic ${story ? 44 : 38}px ${serif}`
-    ctx.fillText('Sen hangi okursun?', left, footerTop + (story ? 75 : 62))
+    ctx.fillText(footer.question, left, footerTop + (story ? 75 : 62))
     ctx.fillStyle = sepia; ctx.font = `${story ? 30 : 27}px ${serif}`
-    const address = nickname && linkProfile ? profileUrl(nickname).replace(/^https?:\/\//, '') : window.location.host
-    ctx.fillText(wrap(ctx, address, width - 200, 1)[0], left, footerTop + (story ? 130 : 110))
+    ctx.fillText(wrap(ctx, footer.address.replace(/^https?:\/\//, ''), width - 200, 1)[0], left, footerTop + (story ? 130 : 110))
     ctx.textAlign = 'right'; ctx.font = `600 ${story ? 46 : 40}px ${serif}`; ctx.fillStyle = '#5b3a26'
     ctx.fillText('favo', right, footerTop + (story ? 75 : 62))
-    ctx.font = `${story ? 26 : 24}px ${serif}`; ctx.fillStyle = sepia
-    ctx.fillText(`${profile.readCount} okunmuş · ${profile.ratingCount} puan`, right, footerTop + (story ? 130 : 110))
+    if (footer.detail) { ctx.font = `${story ? 26 : 24}px ${serif}`; ctx.fillStyle = sepia; ctx.fillText(footer.detail, right, footerTop + (story ? 130 : 110)) }
     ctx.textAlign = 'left'
+    return { ctx, story, left, right, width, top, bottom, footerTop }
+}
+
+/** Takes sections from most to least essential while they fit, then draws the chosen ones in reading order. */
+export function layoutSections(frame: CardFrame, sections: Section[]) {
+    const areaTop = frame.top + 200, areaBottom = frame.footerTop - 30, gap = frame.story ? 48 : 34
+    let used = -gap
+    const chosen = new Set<Section>()
+    for (const section of [...sections].sort((a, b) => a.priority - b.priority)) {
+        if (section.priority > 0 && used + gap + section.height > areaBottom - areaTop) continue
+        used += gap + section.height
+        chosen.add(section)
+    }
+    let y = areaTop + Math.max(0, (areaBottom - areaTop - used) / 2)
+    for (const section of sections.filter(s => chosen.has(s))) { section.draw(y); y += section.height + gap }
+}
+
+export { wrap, serif, ink, sepia }
+
+/** priority: lower is more essential; the title (0) is always drawn. */
+export type Section = { height: number; priority: number; draw: (y: number) => void }
+
+/** Draws the reader identity card. Sections are measured first and the block is centred on the card. */
+export function drawTasteCard(canvas: HTMLCanvasElement, profile: TasteProfile, nickname: string | null,
+    format: CardFormat = 'post', signature: SignatureBook | null = null, linkProfile = true) {
+    const frame = drawCardFrame(canvas, format,
+        { kicker: 'OKUR KİMLİĞİ', right: '№ ' + String(profile.readCount + profile.ratingCount).padStart(3, '0'), owner: nickname },
+        { question: 'Sen hangi okursun?', address: nickname && linkProfile ? profileUrl(nickname) : window.location.host,
+            detail: `${profile.readCount} okunmuş · ${profile.ratingCount} puan` })
+    const { ctx, story, left, right, width } = frame
 
     // Body sections, measured before drawing.
     const titleSize = story ? 100 : 78
@@ -188,17 +216,7 @@ export function drawTasteCard(canvas: HTMLCanvasElement, profile: TasteProfile, 
         })
     }
 
-    // Take sections from most to least essential while they fit, then draw the chosen ones in reading order.
-    const areaTop = top + 200, areaBottom = footerTop - 30, gap = story ? 48 : 34
-    let used = -gap
-    const chosen = new Set<Section>()
-    for (const section of [...sections].sort((a, b) => a.priority - b.priority)) {
-        if (section.priority > 0 && used + gap + section.height > areaBottom - areaTop) continue
-        used += gap + section.height
-        chosen.add(section)
-    }
-    let y = areaTop + Math.max(0, (areaBottom - areaTop - used) / 2)
-    for (const section of sections.filter(s => chosen.has(s))) { section.draw(y); y += section.height + gap }
+    layoutSections(frame, sections)
 }
 
 export async function renderTasteCard(profile: TasteProfile, nickname: string | null, format: CardFormat,
@@ -208,26 +226,10 @@ export async function renderTasteCard(profile: TasteProfile, nickname: string | 
     return await new Promise<Blob>((resolve, reject) => canvas.toBlob(b => b ? resolve(b) : reject(new Error('empty')), 'image/png'))
 }
 
-/** Shares the card through the system share sheet when possible, otherwise downloads it. */
-export async function shareCardImage(blob: Blob, nickname: string | null, linkProfile: boolean): Promise<'shared' | 'downloaded'> {
-    const file = new File([blob], 'favo-okur-kimligi.png', { type: 'image/png' })
-    if (navigator.canShare?.({ files: [file] })) {
-        try {
-            await navigator.share({ files: [file], title: 'Okur kimliğim',
-                text: nickname && linkProfile ? `Okur kimliğim Favo'da: ${profileUrl(nickname)}` : 'Okur kimliğim Favo\'da' })
-            return 'shared'
-        } catch (error) {
-            if (error instanceof DOMException && error.name === 'AbortError') return 'shared'
-        }
-    }
-    downloadCardImage(blob)
-    return 'downloaded'
-}
-
-export function downloadCardImage(blob: Blob) {
+export function downloadCardImage(blob: Blob, fileName = 'favo-okur-kimligi.png') {
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
-    link.download = 'favo-okur-kimligi.png'
+    link.download = fileName
     // Attached to the document so every browser follows the download link.
     document.body.append(link)
     link.click()

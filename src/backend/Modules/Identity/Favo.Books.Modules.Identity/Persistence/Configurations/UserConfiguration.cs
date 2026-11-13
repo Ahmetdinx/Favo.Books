@@ -21,6 +21,9 @@ internal sealed class UserConfiguration
         builder.Property(user => user.IsPublic).HasDefaultValue(false);
         builder.Property(user => user.IsAdmin).HasDefaultValue(false);
         builder.Property(user => user.AvatarId).HasMaxLength(16).HasDefaultValue("owl").IsRequired();
+        builder.Property(user => user.ReferralSource).HasMaxLength(16);
+        builder.HasIndex(user => user.ReferredById);
+        builder.HasOne<User>().WithMany().HasForeignKey(user => user.ReferredById).OnDelete(DeleteBehavior.SetNull);
 
         builder.Property(user => user.Email)
             .HasMaxLength(320)

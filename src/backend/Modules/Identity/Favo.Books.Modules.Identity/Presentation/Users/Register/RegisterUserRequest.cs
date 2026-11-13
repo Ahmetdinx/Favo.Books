@@ -3,4 +3,6 @@
 public sealed record RegisterUserRequest(
     string? Email,
     string? Password,
-    string? Nickname = null);
+    string? Nickname = null,
+    string? Referrer = null,
+    string? ReferralSource = null);

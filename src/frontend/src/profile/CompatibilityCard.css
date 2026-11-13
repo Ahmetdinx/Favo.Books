@@ -51,3 +51,5 @@
     .match-suggestions ul { grid-template-columns: 1fr; }
     .match-suggestions li { grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 10px; }
 }
+.match-share { margin-top: 10px; padding: 6px 14px; font-size: .8rem; color: #fbf3e6; cursor: pointer; background: #5f3f2c; border: 0; border-radius: 999px; }
+.match-share:hover { background: #4a3122; }

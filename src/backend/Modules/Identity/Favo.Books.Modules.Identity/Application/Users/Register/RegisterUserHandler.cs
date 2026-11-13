@@ -52,6 +52,7 @@ public sealed class RegisterUserHandler
             DateTimeOffset.UtcNow);
 
         user.SetProfile(nickname, false);
+        await ReferralLookup.ApplyAsync(_dbContext, user, command.Referrer, command.ReferralSource, cancellationToken);
         _dbContext.Users.Add(user);
 
         try

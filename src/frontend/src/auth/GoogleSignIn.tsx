@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { useAuth } from './useAuth'
 import type { AuthSession } from './authTypes'
-import { firstRunPath } from '../pages/onboardingState'
+import { firstRunPath, inviteRequestFields } from '../pages/onboardingState'
 import './GoogleSignIn.css'
 
 type GoogleSdk = { accounts: { id: {
@@ -57,7 +57,7 @@ export default function GoogleSignIn() {
                         if (submitting || controller.signal.aborted) return
                         submitting = true; setBusy(true); setError('')
                         void identityRequest('/api/identity/google', { method: 'POST', credentials: 'include', signal: controller.signal,
-                            headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ credential }) })
+                            headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ credential, ...inviteRequestFields() }) })
                             .then(async result => {
                                 if (!result.ok) {
                                     const data = await result.json().catch(() => ({})) as { message?: string }

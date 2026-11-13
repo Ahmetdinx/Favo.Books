@@ -10,6 +10,7 @@ import ReaderSettings from './ReaderSettings'
 import { ReaderConnections } from './ReaderSocial'
 import { TasteCardView } from './TasteCard'
 import ShareIdentity from './ShareIdentity'
+import ReferralChip from './ReferralChip'
 import { useTasteProfile } from './useTasteProfile'
 import './ReaderBand.css'
 
@@ -97,6 +98,7 @@ export default function ReaderBand() {
                     </span>}>
                     <div className="band-badge-card"><AchievementCard track={track} openMilestones /></div>
                 </Popover>)}
+                <ReferralChip onShare={profile?.ready ? () => setSharing(true) : undefined} />
             </div>
 
             <div className="reader-band-side">

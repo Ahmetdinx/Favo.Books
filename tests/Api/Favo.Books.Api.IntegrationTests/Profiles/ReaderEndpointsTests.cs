@@ -204,4 +204,31 @@ public sealed class ReaderEndpointsTests(FavoBooksWebApplicationFactory factory)
         foreach (var url in new[] { "/api/readers/?query=a", "/api/readers/?query=ab&page=0", "/api/readers/?query=%25", "/api/readers/example?page=-1" })
             Assert.Equal(HttpStatusCode.BadRequest, (await visitor.GetAsync(url)).StatusCode);
     }
+
+    [Fact]
+    public async Task Referrals_count_sign_ups_through_a_readers_share_and_name_only_public_ones()
+    {
+        var (sharer, sharerName, _) = await Account();
+        async Task<HttpClient> Invited(string? referrer, string? source)
+        {
+            var client = factory.CreateClient();
+            var name = Name();
+            var credentials = new { Email = Guid.NewGuid() + "@example.com", Password = "Test1234!", Nickname = name, Referrer = referrer, ReferralSource = source };
+            Assert.Equal(HttpStatusCode.Created, (await client.PostAsJsonAsync("/api/identity/register", credentials)).StatusCode);
+            var login = await (await client.PostAsJsonAsync("/api/identity/login", credentials)).Content.ReadFromJsonAsync<JsonElement>();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", login.GetProperty("accessToken").GetString());
+            await client.PutAsJsonAsync("/api/readers/me", new { Nickname = name, IsPublic = source == "kart" });
+            return client;
+        }
+
+        await Invited(sharerName.ToUpperInvariant(), "kart");
+        await Invited(sharerName, "bilinmeyen-kaynak");
+        await Invited("boyle_biri_yok_" + Guid.NewGuid().ToString("N")[..6], "link");
+        await Invited("geçersiz ad!", "link");
+
+        var summary = await sharer.GetFromJsonAsync<JsonElement>("/api/readers/me/referrals");
+        Assert.Equal(2, summary.GetProperty("total").GetInt32());
+        Assert.Equal(1, summary.GetProperty("readers").GetArrayLength());
+        Assert.Equal(HttpStatusCode.Unauthorized, (await factory.CreateClient().GetAsync("/api/readers/me/referrals")).StatusCode);
+    }
 }

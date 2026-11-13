@@ -16,7 +16,7 @@ namespace Favo.Books.Modules.Identity;
 internal static class GoogleLoginEndpoints
 {
     private const string NonceCookie = "kitapkivo_google_nonce";
-    internal sealed record GoogleRequest(string? Credential);
+    internal sealed record GoogleRequest(string? Credential, string? Referrer = null, string? ReferralSource = null);
     private static CookieOptions Cookie => new() { HttpOnly = true, Secure = true, SameSite = SameSiteMode.Strict,
         Path = "/api/identity/google", IsEssential = true, MaxAge = TimeSpan.FromMinutes(5) };
 
@@ -65,6 +65,7 @@ internal static class GoogleLoginEndpoints
                 return Results.Conflict(new { Message = "Bu e-posta ile bir hesabın var. E-posta ve parolanla giriş yap." });
             user = User.Create(identity.Email, passwordHasher.Hash(Convert.ToHexString(System.Security.Cryptography.RandomNumberGenerator.GetBytes(48))), DateTimeOffset.UtcNow);
             user.SetGoogleSubject(identity.Subject);
+            await Application.Users.ReferralLookup.ApplyAsync(db, user, request.Referrer, request.ReferralSource, ct);
             db.Users.Add(user);
         }
         var refresh = refreshTokens.Issue();

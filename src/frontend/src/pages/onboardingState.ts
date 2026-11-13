@@ -26,8 +26,24 @@ export async function firstRunPath(userId: string, accessToken: string, fallback
 const inviteKey = 'favo:invited-by'
 const inviteTtl = 24 * 60 * 60 * 1000
 
-export function rememberInvite(nickname: string) {
-    try { window.localStorage.setItem(inviteKey, JSON.stringify({ nickname, at: Date.now() })) } catch { /* optional */ }
+/** source: which kind of share brought the visitor (kart, link, uyum, kitap, profil); the server validates it. */
+export function rememberInvite(nickname: string, source = 'profil') {
+    try { window.localStorage.setItem(inviteKey, JSON.stringify({ nickname, source, at: Date.now() })) } catch { /* optional */ }
+}
+
+/** Records ?ref=<nickname>&src=<source> from a shared link, so a later sign-up is credited to that reader. */
+export function captureInviteFromUrl(search: string) {
+    const params = new URLSearchParams(search)
+    const ref = params.get('ref')
+    if (ref && /^[a-zA-Z][a-zA-Z0-9_]{2,23}$/.test(ref)) rememberInvite(ref, params.get('src') ?? 'link')
+}
+
+/** The pending invitation as the register and Google sign-in requests expect it. */
+export function inviteRequestFields(): { referrer?: string; referralSource?: string } {
+    try {
+        const value = JSON.parse(window.localStorage.getItem(inviteKey) ?? 'null') as { nickname?: string; source?: string; at?: number } | null
+        return value?.nickname && value.at && Date.now() - value.at < inviteTtl ? { referrer: value.nickname, referralSource: value.source } : {}
+    } catch { return {} }
 }
 
 export function pendingInvite(): string | null {

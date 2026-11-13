@@ -29,6 +29,12 @@ public static class ReaderEndpoints
             if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
             return Results.Ok(new { items = await achievements.Get(id, ct) });
         }).RequireAuthorization();
+        group.MapGet("/me/referrals", async (ClaimsPrincipal principal, ReaderDirectory directory, CancellationToken ct) =>
+        {
+            if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
+            var summary = await directory.Referrals(id, ct);
+            return Results.Ok(new { total = summary.Total, readers = summary.Readers.Select(r => new { r.Nickname, r.AvatarId }) });
+        }).RequireAuthorization();
         group.MapGet("/me/taste", async (ClaimsPrincipal principal, ReaderTaste taste, CancellationToken ct) =>
         {
             if (!Guid.TryParse(principal.FindFirst("sub")?.Value, out var id)) return Results.Unauthorized();
