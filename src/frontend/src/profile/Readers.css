@@ -16,3 +16,14 @@
     .reader-settings { padding: 14px; }
     .reader-settings-heading { gap: 10px; }
 }
+
+.reader-invite { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin: 0 0 28px; padding: 24px 28px; text-align: left; color: #fbf3e6; background: linear-gradient(120deg, #5f3f2c, #7a5238); border-radius: 14px; box-shadow: 0 14px 30px #3a24143d; }
+.reader-invite-copy { flex: 1 1 360px; min-width: 0; }
+.reader-invite-kicker { margin: 0 0 6px; font-size: .74rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #e7cfa9; }
+.reader-invite h2 { margin: 0; font: 400 clamp(1.35rem, 2.6vw, 1.8rem)/1.25 Georgia, serif; }
+.reader-invite h2 em { color: #f3d9ae; }
+.reader-invite-copy > p:last-child { margin: 8px 0 0; font-size: .9rem; line-height: 1.5; color: #ead9c2; }
+.reader-invite-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.app .reader-invite .primary-button { color: #3e2d24; background: #f6e6c8; border-color: #f6e6c8; }
+.app .reader-invite .primary-button:hover { background: #fff3dc; }
+.reader-invite-login { font-size: .86rem; color: #f0dcbc; }

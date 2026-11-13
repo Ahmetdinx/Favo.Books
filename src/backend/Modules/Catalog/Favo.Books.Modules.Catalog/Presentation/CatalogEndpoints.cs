@@ -21,6 +21,8 @@ using Favo.Books.Modules.Catalog.Presentation
 using Favo.Books.Modules.Catalog.Presentation
     .Books.GetSummaries;
 
+using Favo.Books.Modules.Catalog.Presentation.Books.Cover;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -47,6 +49,7 @@ public static class CatalogEndpoints
         group.MapGetCatalogImportJobByIdEndpoint();
         group.MapBrowseBooksEndpoint();
         group.MapGetBookSummariesEndpoint();
+        group.MapGetBookCoverImageEndpoint();
         group.MapGetCategoriesEndpoint();
 
 

@@ -8,8 +8,10 @@ import { cleanBookTitle } from '../catalog/bookTitle'
 import type { BrowseBookItem } from '../catalog/catalogTypes'
 import BookObject from '../components/BookObject'
 import { addBookToLibrary, getLibrary, removeBookFromLibrary, ReadingApiError } from '../reading/readingApi'
-import { markOnboardingSeen } from './onboardingState'
+import { clearInvite, markOnboardingSeen, pendingInvite } from './onboardingState'
 import { getReaderSettings, makeProfilePublic } from '../profile/profileVisibility'
+import { TasteCardView } from '../profile/TasteCard'
+import { useTasteProfile } from '../profile/useTasteProfile'
 
 type Genre = { slug: string; name: string }
 type Preferences = { categories: string[]; criteria: string[]; availableCategories: Genre[] }
@@ -48,7 +50,10 @@ export default function OnboardingPage() {
 
     function finish() {
         if (session) markOnboardingSeen(session.userId)
-        navigate('/', { replace: true })
+        // Visitors who came from a shared profile go back to it to see their compatibility.
+        const invite = pendingInvite()
+        clearInvite()
+        navigate(invite ? '/okur/' + encodeURIComponent(invite) : '/', { replace: true })
     }
 
     async function saveGenres(event: FormEvent) {
@@ -240,8 +245,25 @@ function ResultsStep({ onFinish, headingRef }: { onFinish: () => void; headingRe
     }, [request])
 
     const featured = useMemo(() => items ?? [], [items])
+    const { profile: identity } = useTasteProfile(true)
+    const [nickname, setNickname] = useState<string | null>(null)
+    useEffect(() => {
+        const controller = new AbortController()
+        getReaderSettings(request, controller.signal).then(settings => setNickname(settings.nickname)).catch(() => { /* card shows without @name */ })
+        return () => controller.abort()
+    }, [request])
+    const revealed = identity?.ready ? identity : null
     return <div>
-        <h1 id="onboarding-heading" ref={headingRef} tabIndex={-1}>Sana göre <em>{featured.length || ''} roman</em></h1>
+        {revealed && <section className="onboarding-identity" aria-labelledby="onboarding-heading">
+            <div className="onboarding-identity-copy">
+                <p className="onboarding-kicker">Okur kimliğin hazır</p>
+                <h1 id="onboarding-heading" ref={headingRef} tabIndex={-1}>{revealed.title}</h1>
+                <p className="onboarding-lead">İşaretlediğin romanlardan çıkardık. Kartını hikâyende paylaş; gören arkadaşların kendi kimliklerini çıkarsın.</p>
+            </div>
+            <TasteCardView profile={revealed} own nickname={nickname} />
+        </section>}
+        {revealed ? <h2 className="onboarding-subheading">Sana göre <em>{featured.length || ''} roman</em></h2>
+            : <h1 id="onboarding-heading" ref={headingRef} tabIndex={-1}>Sana göre <em>{featured.length || ''} roman</em></h1>}
         <p className="onboarding-lead">Seçtiklerine bakarak bunları hazırladık. Ana sayfada “İlgimi çekti” ya da “Bana uygun değil” dedikçe öneriler keskinleşir.</p>
         {error && <p className="onboarding-error" role="alert">{error}</p>}
         {!items && !error && <p role="status">Öneriler hazırlanıyor…</p>}
@@ -260,7 +282,7 @@ function ResultsStep({ onFinish, headingRef }: { onFinish: () => void; headingRe
         </ol>}
         <ProfileVisibilityChoice />
         <div className="onboarding-actions">
-            <button type="button" className="button primary-button" onClick={onFinish}>Kitaplığıma geç</button>
+            <button type="button" className="button primary-button" onClick={onFinish}>{pendingInvite() ? '@' + pendingInvite() + ' ile uyumumu gör' : 'Kitaplığıma geç'}</button>
         </div>
     </div>
 }

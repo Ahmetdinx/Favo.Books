@@ -44,7 +44,7 @@ export default function CompatibilityCard({ nickname }: { nickname: string }) {
 
     if (!session || !data) return null
     if (!data.ready) return <section className="match-card match-card-pending" aria-label="Okur uyumu">
-        <p>Uyumunuzu görmek için ikinizin de en az 5 okunmuş romanı ya da 3 değerlendirmesi olmalı.</p>
+        <p>Uyumunuzu görmek için ikinizin de en az 5 okunmuş romanı ya da 3 değerlendirmesi olmalı. <Link to="/baslangic">Okuduklarını işaretle →</Link></p>
     </section>
 
     const byId = new Map(books.map(b => [b.bookId, b]))

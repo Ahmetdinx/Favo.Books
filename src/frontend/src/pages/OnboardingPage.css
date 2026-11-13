@@ -74,3 +74,10 @@
 .onboarding-visibility div { flex: 1 1 320px; }
 .onboarding-visibility p { margin: 4px 0 0; font-size: .88rem; line-height: 1.45; color: var(--library-muted); }
 .onboarding-visibility strong { color: var(--library-ink); }
+
+.onboarding-identity { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); align-items: center; gap: 32px; margin-bottom: 44px; text-align: left; }
+.onboarding-kicker { margin: 0 0 8px; font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--library-accent); }
+.onboarding-identity h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+.onboarding-subheading { margin: 0; font: 400 clamp(1.6rem, 3vw, 2.2rem)/1.1 Georgia, serif; }
+.onboarding-subheading em { color: var(--library-accent); }
+@media (max-width: 760px) { .onboarding-identity { grid-template-columns: 1fr; gap: 20px; } }

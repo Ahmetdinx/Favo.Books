@@ -9,6 +9,7 @@ import ReaderAvatar from './ReaderAvatar'
 import ReaderSettings from './ReaderSettings'
 import { ReaderConnections } from './ReaderSocial'
 import { TasteCardView } from './TasteCard'
+import ShareIdentity from './ShareIdentity'
 import { useTasteProfile } from './useTasteProfile'
 import './ReaderBand.css'
 
@@ -21,6 +22,7 @@ export default function ReaderBand() {
     const { profile } = useTasteProfile(true)
     const [settings, setSettings] = useState<Settings | null>(null)
     const [settingsOpen, setSettingsOpen] = useState(false)
+    const [sharing, setSharing] = useState(false)
     const [message, setMessage] = useState('')
     const [version, setVersion] = useState(0)
 
@@ -85,8 +87,9 @@ export default function ReaderBand() {
                         </span>
                         <span className="band-chip-text"><small>Okur kimliği</small><b>{profile.ready ? profile.title : 'Hazırlanıyor'}</b></span>
                     </span>}>
-                    <TasteCardView profile={profile} own nickname={settings?.nickname} />
+                    <TasteCardView profile={profile} own nickname={settings?.nickname} onShare={() => setSharing(true)} />
                 </Popover>}
+                {profile?.ready && <ShareIdentity profile={profile} nickname={settings?.nickname ?? null} open={sharing} onClose={() => setSharing(false)} />}
                 {achievements.map(track => <Popover key={track.kind} label={track.label + ' rozetleri'} className="band-pop"
                     trigger={<span className="band-chip">
                         <AchievementEmblem track={track} />

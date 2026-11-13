@@ -11,6 +11,10 @@ import ReaderAvatar from '../profile/ReaderAvatar'
 import { FollowReader } from '../profile/ReaderSocial'
 import TasteCard from '../profile/TasteCard'
 import CompatibilityCard from '../profile/CompatibilityCard'
+import ReaderInvite from '../profile/ReaderInvite'
+import { clearInvite, pendingInvite } from './onboardingState'
+import { useTasteProfile } from '../profile/useTasteProfile'
+import { useAuth } from '../auth/useAuth'
 
 const criteria = { theme: 'Konu / Fikir', language: 'Anlatım ve Dil', characters: 'Karakterler', structure: 'Kurgu ve Yapı',
     pace: 'Tempo', impact: 'Duygusal / Düşünsel Etki', experience: 'Okuma Deneyimi' }
@@ -28,6 +32,10 @@ export default function PublicReaderPage() {
     const [error, setError] = useState('')
     const [busy, setBusy] = useState(true)
     const [version, setVersion] = useState(0)
+    const { session, isInitializing } = useAuth()
+    const { profile: taste } = useTasteProfile(false, nickname)
+    // A signed-in visit to the inviting profile completes the invitation.
+    useEffect(() => { if (session && pendingInvite()?.toLowerCase() === nickname.toLowerCase()) clearInvite() }, [session, nickname])
     useEffect(() => {
         const controller = new AbortController()
         setData(null); setBooks([]); setBusy(true); setError('')
@@ -78,6 +86,7 @@ export default function PublicReaderPage() {
             <FollowReader key={data.nickname} nickname={data.nickname} />
         </header>
 
+        {!session && !isInitializing && <ReaderInvite nickname={data.nickname} title={taste?.ready ? taste.title : null} />}
         <TasteCard key={data.nickname} own={false} nickname={data.nickname} />
         <CompatibilityCard key={'match-' + data.nickname} nickname={data.nickname} />
 

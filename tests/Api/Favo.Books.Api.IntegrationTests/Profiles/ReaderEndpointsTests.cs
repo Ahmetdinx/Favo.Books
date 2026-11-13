@@ -142,7 +142,7 @@ public sealed class ReaderEndpointsTests(FavoBooksWebApplicationFactory factory)
         using var visitor = factory.CreateClient();
         var initial = await owner.GetFromJsonAsync<JsonElement>("/api/readers/me");
         Assert.Equal("owl", initial.GetProperty("avatarId").GetString());
-        foreach (var avatar in new[] { "owl", "fox", "cat", "bear", "deer", "panda", "penguin", "rabbit" })
+        foreach (var avatar in new[] { "owl", "quill", "lantern", "moon", "compass", "key", "hourglass", "rose", "book", "tree", "anchor", "sun" })
         {
             var response = await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = false, AvatarId = avatar });
             response.EnsureSuccessStatusCode();
@@ -150,7 +150,7 @@ public sealed class ReaderEndpointsTests(FavoBooksWebApplicationFactory factory)
         }
         (await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = true })).EnsureSuccessStatusCode();
         var publicProfile = await visitor.GetFromJsonAsync<JsonElement>("/api/readers/" + nickname);
-        Assert.Equal("rabbit", publicProfile.GetProperty("avatarId").GetString());
+        Assert.Equal("sun", publicProfile.GetProperty("avatarId").GetString());
         (await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = false })).EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.NotFound, (await visitor.GetAsync("/api/readers/" + nickname)).StatusCode);
     }
@@ -168,7 +168,7 @@ public sealed class ReaderEndpointsTests(FavoBooksWebApplicationFactory factory)
         Assert.Equal(nickname, current.GetProperty("nickname").GetString());
         Assert.False(current.GetProperty("isPublic").GetBoolean());
         Assert.Equal("owl", current.GetProperty("avatarId").GetString());
-        (await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = true, AvatarId = "fox", ReadingLevel = 1000, EvaluationLevel = 1000 })).EnsureSuccessStatusCode();
+        (await owner.PutAsJsonAsync("/api/readers/me", new { Nickname = nickname, IsPublic = true, AvatarId = "lantern", ReadingLevel = 1000, EvaluationLevel = 1000 })).EnsureSuccessStatusCode();
         var progress = await owner.GetFromJsonAsync<JsonElement>("/api/readers/me/achievements");
         Assert.All(progress.GetProperty("items").EnumerateArray(), item => Assert.Equal(JsonValueKind.Null, item.GetProperty("current").ValueKind));
     }

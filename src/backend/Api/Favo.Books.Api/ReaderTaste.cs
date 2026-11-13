@@ -6,7 +6,8 @@ namespace Favo.Books.Api;
 public sealed record TasteGenre(string Slug, string Name, int Percent);
 public sealed record TasteCriterion(string Key, string Label);
 public sealed record ReaderTasteProfile(bool Ready, int ReadCount, int RatingCount, int BooksNeeded, int RatingsNeeded,
-    string? Title, TasteGenre[] Genres, TasteCriterion[] Strengths, string[] Traits, decimal? AverageScore);
+    string? Title, TasteGenre[] Genres, TasteCriterion[] Strengths, string[] Traits, decimal? AverageScore,
+    Guid? SignatureBookId = null);
 
 /// <summary>
 /// A reader's taste, derived only from their own library and complete seven-criterion ratings.
@@ -34,6 +35,38 @@ public sealed class ReaderTaste(PublicLibrary library, PublicReaderRatings ratin
         ["toplumsal-roman"] = "Hayatın tanığı", ["macera"] = "Serüven tutkunu", ["mizah"] = "Gülümseyen okur",
         ["genclik"] = "Genç ruhlu okur"
     };
+
+    // Two-genre identities read "<flavour of the second genre> <character of the first>", e.g. "Hayalperest dedektif".
+    static readonly Dictionary<string, string> Characters = new()
+    {
+        ["polisiye-ve-gizem"] = "dedektif", ["gerilim"] = "gerilim avcısı", ["korku"] = "gece kuşu",
+        ["bilim-kurgu"] = "gelecek meraklısı", ["fantastik"] = "hayal gezgini", ["distopya"] = "distopya kâşifi",
+        ["tarihi-roman"] = "zaman yolcusu", ["savas"] = "cephe tanığı", ["ask-ve-romantik"] = "romantik",
+        ["psikolojik-roman"] = "iç dünyalar kâşifi", ["felsefi-roman"] = "düşünür",
+        ["toplumsal-roman"] = "hayat gözlemcisi", ["macera"] = "serüvenci", ["mizah"] = "neşeli okur",
+        ["genclik"] = "genç ruh"
+    };
+
+    static readonly Dictionary<string, string> Flavours = new()
+    {
+        ["polisiye-ve-gizem"] = "Gizem peşindeki", ["gerilim"] = "Nefesini tutan", ["korku"] = "Karanlığa meraklı",
+        ["bilim-kurgu"] = "Geleceğe bakan", ["fantastik"] = "Hayalperest", ["distopya"] = "Sorgulayan",
+        ["tarihi-roman"] = "Geçmişe tutkun", ["savas"] = "Cesur", ["ask-ve-romantik"] = "Duygusal",
+        ["psikolojik-roman"] = "Derinlere dalan", ["felsefi-roman"] = "Felsefeci",
+        ["toplumsal-roman"] = "Hayata dikkatli", ["macera"] = "Maceraperest", ["mizah"] = "Esprili",
+        ["genclik"] = "Genç ruhlu"
+    };
+
+    /// <summary>A second genre with a real share (at least 20%) adds its flavour; otherwise the single archetype stands.</summary>
+    internal static string IdentityTitle(TasteGenre[] topGenres)
+    {
+        if (topGenres.Length == 0) return "Meraklı okur";
+        var first = topGenres[0];
+        if (topGenres.Length > 1 && topGenres[1].Percent >= 20
+            && Characters.TryGetValue(first.Slug, out var character) && Flavours.TryGetValue(topGenres[1].Slug, out var flavour))
+            return flavour + " " + character;
+        return Archetypes.GetValueOrDefault(first.Slug, "Meraklı okur");
+    }
 
     public async Task<ReaderTasteProfile> Get(Guid userId, CancellationToken ct)
     {
@@ -69,8 +102,11 @@ public sealed class ReaderTaste(PublicLibrary library, PublicReaderRatings ratin
             traits.Add(average >= 8.2m ? "Cömert puanlayıcı" : average <= 6.2m ? "Titiz puanlayıcı" : "Dengeli puanlayıcı");
         if (topGenres.Length >= 3 && topGenres[0].Percent < 35) traits.Add("Türler arasında gezen");
 
-        var title = topGenres.Length > 0 ? Archetypes.GetValueOrDefault(topGenres[0].Slug, "Meraklı okur") : "Meraklı okur";
-        return new(true, read.Length, rated.Length, booksNeeded, ratingsNeeded, title, topGenres, strengths, traits.ToArray(), average);
+        var title = IdentityTitle(topGenres);
+        // The signature book is the reader's best-loved rated novel; it needs a clear 8/10 to speak for them.
+        var signature = rated.Where(r => r.OverallScore >= 8).OrderByDescending(r => r.OverallScore).ThenBy(r => r.BookId)
+            .Select(r => (Guid?)r.BookId).FirstOrDefault();
+        return new(true, read.Length, rated.Length, booksNeeded, ratingsNeeded, title, topGenres, strengths, traits.ToArray(), average, signature);
     }
 
     /// <summary>Genre weights without the classics mark: read books count once, rated books 0.2 (1/10) to 2 (10/10).</summary>

@@ -115,4 +115,33 @@ public sealed class ReaderTasteTests(FavoBooksWebApplicationFactory factory) : I
         await db.SaveChangesAsync();
         return book;
     }
+
+    [Fact]
+    public void A_strong_second_genre_flavours_the_identity()
+    {
+        var psychological = Enumerable.Range(0, 3).Select(_ => Guid.NewGuid()).ToArray();
+        var historical = Enumerable.Range(0, 2).Select(_ => Guid.NewGuid()).ToArray();
+        var genres = psychological.ToDictionary(id => id, _ => new[] { Psychological });
+        foreach (var id in historical) genres[id] = [Historical];
+
+        var profile = ReaderTaste.Build([.. psychological, .. historical], [], genres);
+
+        Assert.Equal("Geçmişe tutkun iç dünyalar kâşifi", profile.Title);
+        Assert.Null(profile.SignatureBookId);
+    }
+
+    [Fact]
+    public void Signature_book_is_the_best_loved_rating_of_at_least_eight()
+    {
+        var ids = Enumerable.Range(0, 3).Select(_ => Guid.NewGuid()).ToArray();
+        var genres = ids.ToDictionary(id => id, _ => new[] { Historical });
+        var best = Build(ids, [Rating(ids[0], 8, 8, 8, 8, 8, 8, 8), Rating(ids[1], 10, 10, 10, 10, 10, 10, 10), Rating(ids[2], 6, 6, 6, 6, 6, 6, 6)], genres);
+        var lukewarm = Build(ids, ids.Select(id => Rating(id, 7, 7, 7, 7, 7, 7, 7)).ToArray(), genres);
+
+        Assert.Equal(ids[1], best.SignatureBookId);
+        Assert.Null(lukewarm.SignatureBookId);
+
+        static ReaderTasteProfile Build(Guid[] _, PublicReaderRating[] rated, Dictionary<Guid, DiscoveryCategory[]> genres)
+            => ReaderTaste.Build([], rated, genres);
+    }
 }

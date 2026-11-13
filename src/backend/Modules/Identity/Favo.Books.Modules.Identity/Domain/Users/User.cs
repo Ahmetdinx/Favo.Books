@@ -37,7 +37,8 @@ public sealed class User
     public string AvatarId { get; private set; } = "owl";
 
     public static bool IsValidAvatar(string avatarId) =>
-        avatarId is "owl" or "fox" or "cat" or "bear" or "deer" or "panda" or "penguin" or "rabbit";
+        avatarId is "owl" or "quill" or "lantern" or "moon" or "compass" or "key"
+            or "hourglass" or "rose" or "book" or "tree" or "anchor" or "sun";
 
     public void SetAvatar(string avatarId)
     {

@@ -34,7 +34,11 @@ export default function Popover({ label, trigger, children, className = '' }: Pr
     useEffect(() => {
         if (!open) return
         const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close() }
-        const onPointer = (e: PointerEvent) => { if (!root.current?.contains(e.target as Node)) close() }
+        // Clicks inside a modal dialog opened from the panel (top layer, outside this DOM subtree) are not outside clicks.
+        const onPointer = (e: PointerEvent) => {
+            if ((e.target as Element | null)?.closest?.('dialog[open]')) return
+            if (!root.current?.contains(e.target as Node)) close()
+        }
         document.addEventListener('keydown', onKey)
         document.addEventListener('pointerdown', onPointer)
         return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onPointer) }

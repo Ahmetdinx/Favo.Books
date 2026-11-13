@@ -20,3 +20,23 @@ export async function firstRunPath(userId: string, accessToken: string, fallback
         return summary.totalCount === 0 ? '/baslangic' : fallback
     } catch { return fallback }
 }
+
+// The reader whose shared profile brought a visitor here; after sign-up and the guide the visitor
+// lands back on that profile to see their compatibility. Kept for a day so a later sign-up still counts.
+const inviteKey = 'favo:invited-by'
+const inviteTtl = 24 * 60 * 60 * 1000
+
+export function rememberInvite(nickname: string) {
+    try { window.localStorage.setItem(inviteKey, JSON.stringify({ nickname, at: Date.now() })) } catch { /* optional */ }
+}
+
+export function pendingInvite(): string | null {
+    try {
+        const value = JSON.parse(window.localStorage.getItem(inviteKey) ?? 'null') as { nickname?: string; at?: number } | null
+        return value?.nickname && value.at && Date.now() - value.at < inviteTtl ? value.nickname : null
+    } catch { return null }
+}
+
+export function clearInvite() {
+    try { window.localStorage.removeItem(inviteKey) } catch { /* optional */ }
+}

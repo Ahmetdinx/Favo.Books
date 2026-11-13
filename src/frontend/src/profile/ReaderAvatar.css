@@ -1,4 +1,4 @@
-/* Reader avatar: a flat animal portrait inside a ring that grows richer with reading. */
+/* Reader avatar: an ex libris seal inside a ring that grows richer with reading. */
 .reader-avatar-display {
     --avatar-size: 56px;
     --ring: #fbf4e8;
@@ -23,27 +23,38 @@
 .reader-avatar-display[data-reading="1000"] { --ring: conic-gradient(from 210deg, #fff0bd, #c8952e, #f6d98a, #a87422, #fff0bd); box-shadow: 0 0 0 3px #e9c97740, 0 2px 10px #4a2e1a33; }
 
 .reader-avatar-face {
-    --fur: #a77b56;
-    --fur2: #f3e4cc;
-    --ink: #3a2a20;
-    --accent: #e3a04b;
+    --bg: #2f4a3a;
+    --line: #f1e3c6;
+    --gold: #d9b56c;
     display: block;
     width: 100%;
     height: 100%;
     overflow: hidden;
     border-radius: 50%;
-    background: var(--bg, #e9d9bf);
+    background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--bg), #fff 12%), var(--bg) 70%);
 }
 .reader-avatar-face svg { display: block; width: 100%; height: 100%; }
+.ex-libris .seal-ring { fill: none; stroke: var(--line); stroke-width: 1; opacity: .45; }
+.ex-libris .seal-dots { fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-linecap: round; stroke-dasharray: 0 3.4; opacity: .7; }
+.ex-libris .seal-emblem { fill: none; stroke: var(--line); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ex-libris .gold { stroke: var(--gold); }
+.ex-libris .gold-fill { fill: var(--gold); stroke: none; }
+/* Small sizes: thicker engraving so the emblem still reads at 38px. */
+.reader-avatar-display.small .ex-libris .seal-emblem { stroke-width: 2.3; }
+.reader-avatar-display.small .ex-libris .seal-dots { display: none; }
 
-.avatar-owl { --bg: #c9d6c3; --fur: #8a6446; --fur2: #f1e3c8; --accent: #e3a04b; }
-.avatar-fox { --bg: #f2d2b0; --fur: #d4703a; --fur2: #fbf1e3; --accent: #d4703a; }
-.avatar-cat { --bg: #d6d2e3; --fur: #8f8a86; --fur2: #f4ece4; --accent: #e7a3a0; }
-.avatar-bear { --bg: #e9d1a6; --fur: #94603d; --fur2: #e8caa0; --accent: #94603d; }
-.avatar-deer { --bg: #cfdcc8; --fur: #b98656; --fur2: #f5e7d2; --accent: #8a6446; }
-.avatar-panda { --bg: #c7dccf; --fur: #2f2a28; --fur2: #fbf8f2; --ink: #2f2a28; --accent: #2f2a28; }
-.avatar-penguin { --bg: #c6d8e3; --fur: #34404a; --fur2: #fbf8f2; --ink: #26313a; --accent: #f0a646; }
-.avatar-rabbit { --bg: #e8b9ae; --fur: #f7f0e8; --fur2: #fffaf4; --ink: #4a3a33; --accent: #e8a2a0; }
+.avatar-owl { --bg: #2f4a3a; }
+.avatar-quill { --bg: #5b2a2a; }
+.avatar-lantern { --bg: #2b3a52; }
+.avatar-moon { --bg: #22304a; }
+.avatar-compass { --bg: #6b4a22; }
+.avatar-key { --bg: #4a3b2c; }
+.avatar-hourglass { --bg: #3f4a4f; }
+.avatar-rose { --bg: #6a2e3b; }
+.avatar-book { --bg: #3b2f4f; }
+.avatar-tree { --bg: #34503c; }
+.avatar-anchor { --bg: #24464f; }
+.avatar-sun { --bg: #7a5420; }
 
 /* Evaluation badge: a small star seal. */
 .avatar-badge {
@@ -75,7 +86,7 @@
 .avatar-preview small { color: var(--library-muted); line-height: 1.45; }
 .avatar-picker { min-width: 0; margin: 4px 0 8px; padding: 0; border: 0; }
 .avatar-picker legend { margin-bottom: 10px; font-size: .85rem; font-weight: 600; }
-.avatar-options { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px 4px; }
+.avatar-options { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px 4px; }
 .avatar-option { position: relative; display: grid; justify-items: center; gap: 6px; padding: 8px 2px 6px; font-size: .76rem; color: var(--library-muted); cursor: pointer; border-radius: 12px; transition: background-color 150ms ease; }
 .avatar-option:hover { background: #79563d0f; }
 .avatar-option .reader-avatar-display.small { --avatar-size: 54px; transition: transform 150ms ease, box-shadow 150ms ease; }
@@ -86,3 +97,6 @@
 .avatar-option input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .avatar-option:has(input:disabled) { opacity: .6; cursor: default; }
 @media (max-width: 600px) { .avatar-options { grid-template-columns: repeat(4, minmax(0, 1fr)); } .avatar-option .reader-avatar-display.small { --avatar-size: 48px; } }
+/* The picker shows seals at 54px, large enough for the normal engraving. */
+.avatar-option .reader-avatar-display.small .ex-libris .seal-emblem { stroke-width: 1.7; }
+.avatar-option .reader-avatar-display.small .ex-libris .seal-dots { display: inline; }

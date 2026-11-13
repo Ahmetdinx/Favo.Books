@@ -160,6 +160,9 @@ public static class CatalogModule
             .AddHttpMessageHandler<
                 OpenLibraryRateLimitHandler>();
 
+        services.AddHttpClient(Application.Books.Cover.BookCoverImage.HttpClientName,
+            client => client.Timeout = TimeSpan.FromSeconds(10));
+        services.AddScoped<Application.Books.Cover.BookCoverImage>();
         services.AddScoped<IBookCatalog, BookCatalog>();
         services.AddScoped<CreateAuthorHandler>();
         services.AddScoped<CreateBookHandler>();

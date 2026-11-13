@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { downloadTasteCard, type TasteProfile } from './tasteCardImage'
+import type { TasteProfile } from './tasteCardImage'
+import ShareIdentity from './ShareIdentity'
 import './TasteCard.css'
 import { useTasteProfile } from './useTasteProfile'
 
@@ -13,9 +14,9 @@ type Props = {
 const spineColors = ['#7a3b2e', '#3f5a4a', '#b0813f']
 
 /** The library-card view of a reader's taste: leather header, genre spines, strengths and stamps. */
-export function TasteCardView({ profile, own, nickname }: { profile: TasteProfile; own: boolean; nickname?: string | null }) {
+/** onShare: open the share sheet from the parent instead (needed when the card sits in a popover that closes on outside clicks). */
+export function TasteCardView({ profile, own, nickname, onShare }: { profile: TasteProfile; own: boolean; nickname?: string | null; onShare?: () => void }) {
     const [sharing, setSharing] = useState(false)
-    const [message, setMessage] = useState('')
 
     if (!profile.ready) return <article className="taste-card taste-card-pending" aria-labelledby="taste-card-heading">
         <header className="taste-card-cover">
@@ -28,14 +29,6 @@ export function TasteCardView({ profile, own, nickname }: { profile: TasteProfil
         </div>
     </article>
 
-    async function share() {
-        setSharing(true); setMessage('')
-        try {
-            const result = await downloadTasteCard(profile, nickname ?? null)
-            setMessage(result === 'shared' ? 'Kart paylaşıldı.' : 'Kart indirildi.')
-        } catch { setMessage('Kart hazırlanamadı.') }
-        finally { setSharing(false) }
-    }
 
     return <article className="taste-card" aria-labelledby="taste-card-heading">
         <header className="taste-card-cover">
@@ -71,9 +64,9 @@ export function TasteCardView({ profile, own, nickname }: { profile: TasteProfil
             <footer className="taste-card-foot">
                 <p className="taste-stats">{profile.readCount} okunmuş · {profile.ratingCount} değerlendirme
                     {profile.averageScore != null && <> · ort. {profile.averageScore.toLocaleString('tr-TR', { minimumFractionDigits: 1 })}</>}</p>
-                {own && <button type="button" onClick={() => void share()} disabled={sharing}>{sharing ? 'Hazırlanıyor…' : 'Kartı paylaş'}</button>}
+                {own && <button type="button" onClick={() => onShare ? onShare() : setSharing(true)}>Kimliğini paylaş</button>}
             </footer>
-            {message && <p className="taste-card-message" role="status">{message}</p>}
+            {own && !onShare && <ShareIdentity profile={profile} nickname={nickname ?? null} open={sharing} onClose={() => setSharing(false)} />}
         </div>
     </article>
 }

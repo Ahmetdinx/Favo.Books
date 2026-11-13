@@ -1,0 +1,20 @@
+.share-identity { width: min(100vw - 32px, 520px); max-height: calc(100dvh - 32px); padding: 0; color: var(--library-ink); background: var(--library-paper-light); border: 0; border-radius: 14px; box-shadow: 0 24px 60px #2a180c66; }
+.share-identity::backdrop { background: #2a180c99; }
+.share-identity-panel { display: flex; flex-direction: column; gap: 14px; padding: 18px 20px 20px; text-align: left; }
+.share-identity header { display: flex; align-items: center; justify-content: space-between; }
+.share-identity h2 { margin: 0; font: 400 1.35rem Georgia, serif; }
+.share-identity-close { width: 34px; height: 34px; font-size: 1rem; color: var(--library-muted); cursor: pointer; background: none; border: 0; border-radius: 50%; }
+.share-identity-close:hover { background: #0000000d; }
+.share-identity-formats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.share-identity-formats button { display: flex; flex-direction: column; gap: 2px; padding: 9px 12px; text-align: left; color: var(--library-ink); cursor: pointer; background: var(--library-paper); border: 1px solid var(--library-line); border-radius: 10px; }
+.share-identity-formats button.selected { background: #d7c09e; border-color: #96744d; }
+.share-identity-formats strong { font-size: .92rem; }
+.share-identity-formats span { font-size: .74rem; color: var(--library-muted); }
+.share-identity-preview { display: grid; place-items: center; height: min(52dvh, 460px); background: #00000010; border-radius: 10px; }
+.share-identity-preview { overflow: hidden; }
+.share-identity-preview img { max-width: 100%; max-height: min(52dvh, 460px); object-fit: contain; border-radius: 6px; box-shadow: 0 8px 22px #2a180c40; }
+.share-identity-preview span { font-size: .88rem; color: var(--library-muted); }
+.share-identity-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.share-identity-actions .primary-button { flex: 1 1 140px; }
+.share-identity-message { margin: 0; font-size: .86rem; color: var(--library-accent); }
+.share-identity-note { margin: 0; font-size: .78rem; color: var(--library-muted); }
