@@ -13,6 +13,7 @@ import {
 } from 'react-router'
 
 import { useAuth } from '../auth/useAuth'
+import { firstRunPath } from './onboardingState'
 
 import type {
     AuthSession,
@@ -135,7 +136,7 @@ function LoginPage() {
                     !requestedPath.includes('\\') &&
                     requestedPath !== '/login'
                     ? requestedPath
-                    : '/profile'
+                    : await firstRunPath(loginResponse.userId, loginResponse.accessToken, '/profile')
 
             navigate(destination, {
                 replace: true,

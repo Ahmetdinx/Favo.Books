@@ -1,4 +1,5 @@
 ﻿using Favo.Books.Modules.Catalog.Domain.Books;
+using Favo.Books.Modules.Catalog.Domain.Sources;
 using Favo.Books.Modules.Catalog.Persistence;
 
 using Microsoft.EntityFrameworkCore;
@@ -102,6 +103,13 @@ public sealed class BrowseBooksHandler
                 CatalogBookSort.Title =>
                     prioritized
                         .ThenBy(book => book.Title)
+                        .ThenBy(book => book.Id),
+
+                CatalogBookSort.Popular =>
+                    prioritized
+                        .ThenByDescending(book => book.ExternalReferences.Any(reference =>
+                            reference.Source == CatalogSource.Manual))
+                        .ThenBy(book => book.CreatedAtUtc)
                         .ThenBy(book => book.Id),
 
                 CatalogBookSort.FirstPublishedNewest =>

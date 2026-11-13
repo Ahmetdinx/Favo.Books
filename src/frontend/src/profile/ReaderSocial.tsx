@@ -7,6 +7,7 @@ import { cleanBookTitle } from '../catalog/bookTitle'
 import BookObject from '../components/BookObject'
 import type { BookSummary } from '../catalog/catalogTypes'
 import ReaderAvatar from './ReaderAvatar'
+import { makeProfilePublic } from './profileVisibility'
 import './ReaderSocial.css'
 
 type Network = { followerCount: number; followingCount: number; isFollowing: boolean; isSelf: boolean }
@@ -60,16 +61,24 @@ export function FollowReader({ nickname }: { nickname: string }) {
     const { data, busy, error, refresh } = useSocial<Network>('/api/readers/' + encodeURIComponent(nickname) + '/network')
     const [saving, setSaving] = useState(false)
     const [message, setMessage] = useState('')
+    // Set when the API refuses a follow because the viewer's own profile is private.
+    const [needsPublic, setNeedsPublic] = useState(false)
     const pending = useRef<AbortController | null>(null)
     useEffect(() => () => pending.current?.abort(), [])
-    async function toggle() {
+    async function toggle(openProfileFirst = false) {
         if (!data || pending.current) return
         const controller = new AbortController()
         pending.current = controller; setSaving(true); setMessage('')
         try {
+            if (openProfileFirst) await makeProfilePublic(request, controller.signal)
             const response = await request('/api/readers/' + encodeURIComponent(nickname) + '/follow', {
                 method: data.isFollowing ? 'DELETE' : 'PUT', signal: controller.signal,
             })
+            setNeedsPublic(response.status === 409)
+            if (response.status === 409) {
+                setMessage('Takip edebilmek için senin profilin de herkese açık olmalı. Gizli profiller takip edemez ve takip edilemez.')
+                return
+            }
             if (!response.ok) {
                 const body = await response.json().catch(() => ({}))
                 throw new Error(body.message ?? 'Takip işlemi tamamlanamadı.')
@@ -88,6 +97,8 @@ export function FollowReader({ nickname }: { nickname: string }) {
             {data.isSelf ? <Link className="social-button" to="/profile">Profilim</Link> : <button className="social-button" disabled={saving || busy}
                 aria-pressed={data.isFollowing} onClick={() => void toggle()}>{saving ? 'Kaydediliyor…' : data.isFollowing ? 'Takipten çık' : '+ Takip et'}</button>}</>}
         {message && <p className="social-state" role="status">{message}</p>}
+        {needsPublic && data && !data.isFollowing && <button type="button" className="social-button" disabled={saving}
+            onClick={() => void toggle(true)}>Profilimi herkese aç ve takip et</button>}
     </div>
 }
 

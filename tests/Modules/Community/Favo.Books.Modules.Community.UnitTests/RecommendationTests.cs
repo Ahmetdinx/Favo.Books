@@ -148,4 +148,48 @@ public sealed class RecommendationTests
         var result = BookRecommendations.Rank(books, [], [], _user, new(), libraryCandidates: books.Select(b => b.BookId).ToHashSet());
         Assert.Equal(3, result.Items.Length);
     }
+
+    [Fact]
+    public void ReadBooksSteerNewReadersAndExplainWhy()
+    {
+        var author = Guid.NewGuid();
+        var read = Book("polisiye", author); var sameAuthor = Book("tarih", author);
+        var sameGenre = Book("polisiye"); var unrelated = Book("fantastik");
+        var result = BookRecommendations.Rank([unrelated, sameGenre, sameAuthor, read], [], [read.BookId], _user, new());
+        Assert.Equal([sameAuthor.BookId, sameGenre.BookId, unrelated.BookId], result.Items.Select(b => b.BookId));
+        Assert.Contains("aynı yazardan", result.Items[0].Reasons[0]);
+        Assert.Contains("ortak bir türü", result.Items[1].Reasons[0]);
+        Assert.True(result.HasPersonalSignals);
+    }
+
+    [Fact]
+    public void ReadersWithoutSignalsGetCatalogPopularityOrder()
+    {
+        var books = Enumerable.Range(0, 4).Select(_ => Book()).ToArray();
+        var result = BookRecommendations.Rank(books, [], [], _user, new());
+        Assert.Equal(books.Select(b => b.BookId), result.Items.Select(b => b.BookId));
+        Assert.False(result.HasPersonalSignals);
+    }
+
+    [Fact]
+    public void PoorlyRatedReadBookIsNotASignal()
+    {
+        var author = Guid.NewGuid();
+        var disliked = Book("polisiye", author); var sameAuthor = Book("polisiye", author);
+        var vote = BookRating.Create(_user, disliked.BookId, new RatingScores(2, 2, 2, 2, 2, 2, 2), DateTimeOffset.UtcNow);
+        var result = BookRecommendations.Rank([disliked, sameAuthor], [vote], [disliked.BookId], _user, new());
+        Assert.DoesNotContain(result.Items[0].Reasons, r => r.Contains("Okuduğun"));
+    }
+
+    [Fact]
+    public void OneAuthorFillsAtMostTwoPlaces()
+    {
+        var author = Guid.NewGuid();
+        var read = Book("polisiye", author);
+        var sameAuthor = Enumerable.Range(0, 5).Select(_ => Book("polisiye", author)).ToArray();
+        var others = Enumerable.Range(0, 5).Select(_ => Book("polisiye")).ToArray();
+        var result = BookRecommendations.Rank([read, .. sameAuthor, .. others], [], [read.BookId], _user, new());
+        Assert.Equal(6, result.Items.Length);
+        Assert.Equal(2, result.Items.Count(b => sameAuthor.Any(s => s.BookId == b.BookId)));
+    }
 }

@@ -203,7 +203,7 @@ public sealed class BrowseBooksEndpointTests
         Assert.Single(errors);
 
         Assert.Equal(
-            "Sıralama recently-added, title veya first-published-newest olmalıdır.",
+            "Sıralama recently-added, popular, title veya first-published-newest olmalıdır.",
             Assert.Single(errors["sort"]));
     }
 }

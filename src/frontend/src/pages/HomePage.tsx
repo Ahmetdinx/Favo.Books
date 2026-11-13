@@ -10,11 +10,13 @@ import { useAuth } from '../auth/useAuth'
 import BookRecommendations from '../community/BookRecommendations'
 import LibraryRecommendations from '../community/LibraryRecommendations'
 import RatingPrompts from '../community/RatingPrompts'
+import OnboardingHomeCard from './OnboardingHomeCard'
 
 function HomePage() {
     const { session, isInitializing } = useAuth()
     if (isInitializing) return <p role="status">Kitaplığın hazırlanıyor…</p>
     if (session) return <div className="reader-home">
+        <OnboardingHomeCard />
         <BookRecommendations home social={<ReaderActivity />} />
         <LibraryRecommendations />
         <RatingPrompts />

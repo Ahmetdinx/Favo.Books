@@ -19,5 +19,8 @@ public enum CatalogBookSort
 {
     RecentlyAdded,
     Title,
-    FirstPublishedNewest
+    FirstPublishedNewest,
+    // Curated lists were imported in rank order (well-known classics, then bestseller sales
+    // position), so their import order is the best popularity signal until readers produce one.
+    Popular
 }

@@ -1,7 +1,10 @@
 import GoogleSignIn from '../auth/GoogleSignIn'
 import FavoBrand from '../components/FavoBrand'
 import { useState, type FormEvent } from 'react'
-import { Link, useLocation } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
+import { identityRequest } from '../auth/sessionTransport'
+import { useAuth } from '../auth/useAuth'
+import type { AuthSession } from '../auth/authTypes'
 
 type ValidationProblem = {
     errors?: Record<string, string[]>
@@ -13,6 +16,8 @@ type ApiError = {
 
 function RegisterPage() {
     const location = useLocation()
+    const navigate = useNavigate()
+    const { signIn } = useAuth()
     const [email, setEmail] = useState('')
     const [nickname, setNickname] = useState('')
     const [password, setPassword] = useState('')
@@ -79,6 +84,21 @@ function RegisterPage() {
 
                 return
             }
+
+            // Sign the new reader in straight away so the first-run guide opens without a second form.
+            try {
+                const login = await identityRequest('/api/identity/login', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email.trim(), password }),
+                })
+                if (login.ok) {
+                    signIn((await login.json()) as AuthSession)
+                    navigate('/baslangic', { replace: true })
+                    return
+                }
+            } catch { /* Fall back to the manual sign-in link below. */ }
 
             setSuccessMessage(
                 'Hesabınız başarıyla oluşturuldu. Artık giriş yapabilirsiniz.',

@@ -1,3 +1,4 @@
+using Favo.Books.Modules.Catalog.Domain.Sources;
 using Favo.Books.Modules.Catalog.Persistence;
 using Favo.Books.SharedKernel.Catalog;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,9 @@ internal sealed class DiscoveryCatalog(CatalogDbContext db) : IDiscoveryCatalog
     {
         return await db.Books.AsNoTracking()
             .EligibleNovels()
-            .OrderBy(b => b.Id)
+            // Same popularity order as the catalog's "popular" sort; recommendations break ties with it.
+            .OrderByDescending(b => b.ExternalReferences.Any(r => r.Source == CatalogSource.Manual))
+            .ThenBy(b => b.CreatedAtUtc).ThenBy(b => b.Id)
             .Select(b => new DiscoveryBook(b.Id, b.Title,
                 b.Editions.Where(e => (e.LanguageCode == "tur" || e.LanguageCode == "tr")
                     && e.CoverImageUrl != null && e.CoverImageUrl != "")

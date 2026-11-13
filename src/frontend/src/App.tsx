@@ -10,6 +10,7 @@ import './App.css'
 import { AuthProvider } from './auth/AuthContext'
 import AppLayout from './components/AppLayout'
 import ProtectedRoute from './components/ProtectedRoute'
+import OnboardingPage from './pages/OnboardingPage'
 import CatalogPage from './pages/CatalogPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
@@ -60,6 +61,7 @@ function App() {
                                 path="profile"
                                 element={<ProfilePage />}
                             />
+                            <Route path="baslangic" element={<OnboardingPage />} />
                         </Route>
 
                         <Route

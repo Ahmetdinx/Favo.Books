@@ -7,6 +7,7 @@ export type CatalogBookSort =
     | 'recently-added'
     | 'title'
     | 'first-published-newest'
+    | 'popular'
 
 export type BrowseBookAuthor = {
     authorId: string

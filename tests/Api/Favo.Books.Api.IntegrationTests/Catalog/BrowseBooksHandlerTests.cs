@@ -2,6 +2,7 @@ using Favo.Books.Modules.Catalog.Application
     .Books.Browse;
 using Favo.Books.Modules.Catalog.Domain.Books;
 using Favo.Books.Modules.Catalog.Domain.Editions;
+using Favo.Books.Modules.Catalog.Domain.Sources;
 using Favo.Books.Modules.Catalog.Persistence;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -215,6 +216,29 @@ public sealed class BrowseBooksHandlerTests
         Assert.Equal(prefix.Id, result.Items[0].BookId);
     }
 
+    [Fact]
+    public async Task Popular_ListsCuratedBooksFirstInImportOrder()
+    {
+        using var scope = _factory.Services.CreateScope();
+        var marker = Guid.NewGuid().ToString("N");
+        var uncurated = await SeedBook(scope, $"{marker} Akış", "Yazar");
+        await Task.Delay(5);
+        var first = await SeedBook(scope, $"{marker} Birinci", "Yazar");
+        await Task.Delay(5);
+        var second = await SeedBook(scope, $"{marker} İkinci", "Yazar");
+        var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        foreach (var book in new[] { second, first })
+            db.ExternalReferences.Add(ExternalReference.CreateForBook(book.Id, CatalogSource.Manual,
+                $"https://example.com/{marker}/{book.Id}"));
+        await db.SaveChangesAsync();
+        var handler = scope.ServiceProvider.GetRequiredService<BrowseBooksHandler>();
+
+        var result = await handler.HandleAsync(
+            new BrowseBooksQuery(marker, CatalogBookSearchField.Title, null, 1, 10, CatalogBookSort.Popular));
+
+        Assert.Equal([first.Id, second.Id, uncurated.Id], result.Items.Select(item => item.BookId));
+    }
+
     private static async Task<Book> SeedBook(IServiceScope scope, string title, string authorName, string? isbn13 = null)
     {
         var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
@@ -235,6 +259,7 @@ public sealed class BrowseBooksHandlerTests
     [InlineData(CatalogBookSort.Title)]
     [InlineData(CatalogBookSort.RecentlyAdded)]
     [InlineData(CatalogBookSort.FirstPublishedNewest)]
+    [InlineData(CatalogBookSort.Popular)]
     public async Task PersonalOrderingDemotesBeforePagination(CatalogBookSort sort)
     {
         using var scope = _factory.Services.CreateScope();

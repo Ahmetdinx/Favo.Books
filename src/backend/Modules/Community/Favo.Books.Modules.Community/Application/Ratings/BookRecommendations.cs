@@ -95,6 +95,12 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
         var interested = books.Where(b => interestedIds.Contains(b.BookId)).OrderBy(b => b.BookId).ToArray();
         var likedIds = own.Where(r => r.OverallScore >= 7).Select(r => r.BookId).ToHashSet();
         var liked = books.Where(b => likedIds.Contains(b.BookId)).OrderBy(b => b.BookId).ToArray();
+        // Books on the "read" or "reading" shelves are a signal too, unless the reader rated them poorly or
+        // already counts them as liked. Without this, a reader who only marked books (e.g. in onboarding)
+        // got the same generic list as everyone else.
+        var dislikedIds = own.Where(r => r.OverallScore < 5).Select(r => r.BookId).ToHashSet();
+        var read = books.Where(b => started.Contains(b.BookId) && !likedIds.Contains(b.BookId) && !dislikedIds.Contains(b.BookId)).ToArray();
+        var popularity = books.Select((b, index) => (b.BookId, index)).ToDictionary(x => x.BookId, x => x.index);
         var byBook = ratings.GroupBy(r => r.BookId).ToDictionary(g => g.Key, g => g.ToArray());
         var candidates = new List<(RecommendedBook Book, decimal Score)>();
         foreach (var book in books.Where(b => !excluded.Contains(b.BookId) && (libraryCandidates is null || libraryCandidates.Contains(b.BookId))))
@@ -126,6 +132,20 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
                 score += 3;
                 reasons.Add($"Beğendiğin «{sameAuthor.Title}» ile aynı yazarı paylaşıyor.");
             }
+            var readAuthor = sameAuthor is null ? read.FirstOrDefault(b => b.AuthorIds.Intersect(book.AuthorIds).Any()) : null;
+            if (readAuthor is not null)
+            {
+                score += 2.5m;
+                reasons.Add($"Okuduğun «{readAuthor.Title}» ile aynı yazardan.");
+            }
+            var readGenreMatches = similar is null
+                ? read.Where(b => b.Categories.Any(c => book.Categories.Any(x => x.Slug == c.Slug))).ToArray() : [];
+            if (readGenreMatches.Length > 0)
+            {
+                // More read books in the same genre is a stronger hint, capped so one genre cannot dominate.
+                score += Math.Min(readGenreMatches.Length, 3) * 0.5m;
+                reasons.Add($"Okuduğun «{readGenreMatches[0].Title}» ile ortak bir türü var.");
+            }
             var votes = byBook.GetValueOrDefault(book.BookId) ?? [];
             // Five neutral prior votes reduce the influence of tiny samples. No match percentage is claimed.
             decimal quality = (votes.Sum(v => v.OverallScore!.Value) + 25) / (votes.Length + 5);
@@ -148,20 +168,34 @@ internal sealed class BookRecommendations(CommunityDbContext db, IDiscoveryCatal
                 : preference.Categories.Length > 0 && selectedCategory is null && book.Categories.Length > 0 && strongCriteria ? "discovery"
                 : "personal";
             // An unrelated novel without criterion evidence must not leak into the personal shelf.
-            if (libraryCandidates is null && preference.Categories.Length > 0 && selectedCategory is null && shelf != "discovery") continue;
+            // A favourite author is the exception: it is direct evidence, not an unrelated novel.
+            if (libraryCandidates is null && preference.Categories.Length > 0 && selectedCategory is null && shelf != "discovery"
+                && sameAuthor is null && readAuthor is null) continue;
             if (shelf == "perfect") reasons.Insert(0, "Seçtiğin tür ve üç önceliğin bir arada: 4/4 uyum.");
             if (shelf == "discovery") reasons.Insert(0, "Seçtiğin türlerin dışında; okuma önceliklerinin her birinde 9'un üzerinde.");
             candidates.Add((new(book.BookId, book.Title, book.CoverImageUrl, reasons.ToArray(), votes.Length,
                 shelf, book.Categories.Select(c => c.Name).ToArray(), priorityScores), score));
         }
-        var ordered = candidates.OrderByDescending(c => c.Score).ThenBy(c => c.Book.BookId).ToArray();
+        // Ties (common for new readers) fall back to catalog popularity instead of arbitrary id order.
+        var ordered = candidates.OrderByDescending(c => c.Score).ThenBy(c => popularity[c.Book.BookId]).ToArray();
         if (libraryCandidates is not null)
             return new(ordered.OrderByDescending(c => c.Book.Shelf == "perfect").Take(3).Select(c => c.Book).ToArray(),
                 preference.Categories.Length > 0 || preference.Criteria.Length > 0 || liked.Length > 0, []);
-        return new(ordered.Where(c => c.Book.Shelf == "perfect").Take(6)
-            .Concat(ordered.Where(c => c.Book.Shelf == "personal").Take(6))
-            .Concat(ordered.Where(c => c.Book.Shelf == "discovery").Take(3)).Select(c => c.Book).ToArray(),
-            preference.Categories.Length > 0 || preference.Criteria.Length > 0 || liked.Length > 0 || interested.Length > 0,
+        // At most two books per author on each shelf, so one prolific favourite does not fill the whole list.
+        var authors = books.ToDictionary(b => b.BookId, b => b.AuthorIds);
+        IEnumerable<RecommendedBook> Shelf(string name, int take)
+        {
+            var perAuthor = new Dictionary<Guid, int>();
+            return ordered.Where(c => c.Book.Shelf == name).Select(c => c.Book).Where(book =>
+            {
+                var ids = authors[book.BookId];
+                if (ids.Any(id => perAuthor.GetValueOrDefault(id) >= 2)) return false;
+                foreach (var id in ids) perAuthor[id] = perAuthor.GetValueOrDefault(id) + 1;
+                return true;
+            }).Take(take);
+        }
+        return new(Shelf("perfect", 6).Concat(Shelf("personal", 6)).Concat(Shelf("discovery", 3)).ToArray(),
+            preference.Categories.Length > 0 || preference.Criteria.Length > 0 || liked.Length > 0 || interested.Length > 0 || read.Length > 0,
             ownFeedback.OrderBy(f => f.BookId).Select(f => new FeedbackItem(f.BookId,
                 books.FirstOrDefault(b => b.BookId == f.BookId)?.Title ?? "Katalogda bulunmayan kitap", f.Choice)).ToArray());
     }

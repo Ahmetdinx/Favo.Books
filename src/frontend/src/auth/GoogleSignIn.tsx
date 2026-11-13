@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { useAuth } from './useAuth'
 import type { AuthSession } from './authTypes'
+import { firstRunPath } from '../pages/onboardingState'
 import './GoogleSignIn.css'
 
 type GoogleSdk = { accounts: { id: {
@@ -65,7 +66,11 @@ export default function GoogleSignIn() {
                                 const session = await result.json() as AuthSession & { needsNickname: boolean }
                                 if (controller.signal.aborted) return
                                 signIn(session)
-                                navigate(session.needsNickname ? '/profile' : destination, { replace: true, state: { from: destination } })
+                                // A brand-new reader with an empty library goes to the guide unless a page was requested.
+                                const target = session.needsNickname || destination !== '/' ? destination
+                                    : await firstRunPath(session.userId, session.accessToken, destination)
+                                if (controller.signal.aborted) return
+                                navigate(session.needsNickname ? '/profile' : target, { replace: true, state: { from: target } })
                             }).catch(failure => { if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : 'Google ile giriş tamamlanamadı.') })
                             .finally(() => { if (!controller.signal.aborted) setBusy(false) })
                     } })

@@ -188,7 +188,7 @@ internal static class BrowseBooksEndpoint
         {
             errors["sort"] =
             [
-                "Sıralama recently-added, title veya first-published-newest olmalıdır."
+                "Sıralama recently-added, popular, title veya first-published-newest olmalıdır."
             ];
         }
 
@@ -233,6 +233,9 @@ internal static class BrowseBooksEndpoint
 
             "first-published-newest" =>
                 CatalogBookSort.FirstPublishedNewest,
+
+            "popular" =>
+                CatalogBookSort.Popular,
 
             "firstpublishednewest" =>
                 CatalogBookSort.FirstPublishedNewest,
