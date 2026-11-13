@@ -91,25 +91,30 @@ export function FollowReader({ nickname }: { nickname: string }) {
     </div>
 }
 
-export function ReaderConnections() {
+/** `bare`: counts and list only, laid out by the parent (the reader band). */
+export function ReaderConnections({ bare = false }: { bare?: boolean }) {
     const [kind, setKind] = useState<'followers' | 'following' | null>(null)
     const [page, setPage] = useState(1)
     const counts = useSocial<Network>('/api/readers/me/network')
     const list = useSocial<Connections>(kind ? `/api/readers/me/connections?kind=${kind}&page=${page}` : null)
     function select(next: 'followers' | 'following') { setKind(kind === next ? null : next); setPage(1) }
-    return <section className="reader-connections" aria-label="Takipçiler ve takip edilenler">
-        <div className="connections-heading"><h2>Okur çevrem</h2><div className="social-counts">
-            <button aria-expanded={kind === 'followers'} aria-controls="reader-connection-list" onClick={() => select('followers')}><strong>{counts.data?.followerCount ?? '—'}</strong> takipçi</button>
-            <button aria-expanded={kind === 'following'} aria-controls="reader-connection-list" onClick={() => select('following')}><strong>{counts.data?.followingCount ?? '—'}</strong> takip</button>
-        </div></div>
-        <LoadState busy={counts.busy} error={counts.error} retry={counts.refresh} />
-        {kind && <div id="reader-connection-list"><h3>{kind === 'followers' ? 'Takipçilerim' : 'Takip ettiklerim'}</h3>
+    const countsView = <div className="social-counts">
+        <button aria-expanded={kind === 'followers'} aria-controls="reader-connection-list" onClick={() => select('followers')}><strong>{counts.data?.followerCount ?? '—'}</strong> takipçi</button>
+        <button aria-expanded={kind === 'following'} aria-controls="reader-connection-list" onClick={() => select('following')}><strong>{counts.data?.followingCount ?? '—'}</strong> takip</button>
+    </div>
+    const listView = kind && <div id="reader-connection-list" className="reader-connection-list"><h3>{kind === 'followers' ? 'Takipçilerim' : 'Takip ettiklerim'}</h3>
             <LoadState busy={list.busy} error={list.error} retry={list.refresh} />
             {list.data && <>{!list.data.items.length ? <p className="social-state">Henüz kimse yok.</p> : <ul className="connection-list">{list.data.items.map(reader => <li key={reader.nickname}>
                 <Link to={'/okur/' + reader.nickname}><ReaderAvatar avatarId={reader.avatarId} size="small" /><span>@{reader.nickname}</span><span aria-hidden="true">↗</span></Link>
             </li>)}</ul>}
             {(page > 1 || list.data.hasMore) && <nav className="social-pagination" aria-label="Okur listesi sayfaları"><button disabled={page === 1} onClick={() => setPage(p => p - 1)}>Önceki</button><span>{page}</span><button disabled={!list.data.hasMore} onClick={() => setPage(p => p + 1)}>Sonraki</button></nav>}</>}
-        </div>}
+        </div>
+    const loadState = <LoadState busy={counts.busy} error={counts.error} retry={counts.refresh} />
+    if (bare) return <>{countsView}{loadState}{listView}</>
+    return <section className="reader-connections" aria-label="Takipçiler ve takip edilenler">
+        <div className="connections-heading"><h2>Okur çevrem</h2>{countsView}</div>
+        {loadState}
+        {listView}
     </section>
 }
 

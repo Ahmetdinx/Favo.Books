@@ -224,8 +224,6 @@ a:focus-visible > .book-object {
 .bookcase-state { padding: 54px 20px; text-align: center; color: #f0dfc6; background: #47301f; border: 12px solid #553a27; border-radius: 6px; }
 .bookcase-state h3 { margin: 0 0 16px; font: 400 1.3rem Georgia, serif; color: #fbeeda; }
 .bookcase-note { margin: 10px 0 0 16px; font-size: .85rem; color: var(--library-muted); }
-.library-settings { margin-top: 34px; border-top: 1px solid #8b654733; padding-top: 14px; }
-.library-settings summary { cursor: pointer; font: 1.1rem Georgia, serif; }
 
 @media (max-width: 760px) {
     .app .main-content, .app .header, .app .footer { width: calc(100% - 32px); }

@@ -15,10 +15,7 @@ import {
 import { useAuth } from '../auth/useAuth'
 
 import ProfileFeaturedBooksSection from '../profile/ProfileFeaturedBooksSection'
-import TasteCard from '../profile/TasteCard'
-import ReaderSettings from '../profile/ReaderSettings'
-import { ReaderConnections } from '../profile/ReaderSocial'
-import ProfileAchievements from '../profile/ProfileAchievements'
+import ReaderBand from '../profile/ReaderBand'
 import BookObject from '../components/BookObject'
 import { cleanBookTitle } from '../catalog/bookTitle'
 
@@ -565,7 +562,7 @@ function ProfilePage() {
                 {librarySummary && <p>{librarySummary.totalCount} kitap · {librarySummary.readCount} tanesi okundu</p>}
             </header>
 
-            <TasteCard own />
+            <ReaderBand />
 
             <ProfileFeaturedBooksSection />
 
@@ -650,12 +647,6 @@ function ProfilePage() {
                 )}
             </section>
 
-            <ProfileAchievements />
-            <ReaderConnections />
-            <details className="library-settings">
-                <summary>Profil ayarları</summary>
-                <ReaderSettings />
-            </details>
         </section>
     )
 }

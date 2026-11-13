@@ -1,0 +1,16 @@
+.popover { position: relative; }
+.popover-trigger { display: block; padding: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; background: none; border: 0; }
+.popover-trigger:focus-visible { outline: 2px solid #8a6143; outline-offset: 3px; border-radius: 12px; }
+.popover-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    z-index: 30;
+    width: max-content;
+    max-width: min(460px, calc(100vw - 24px));
+    animation: popover-in .14s ease-out;
+}
+/* Invisible bridge so the pointer can travel from the trigger into the panel. */
+.popover-panel::before { content: ""; position: absolute; inset: -12px 0 auto; height: 12px; }
+@keyframes popover-in { from { opacity: 0; transform: translateY(-4px); } }
+@media (prefers-reduced-motion: reduce) { .popover-panel { animation: none; } }

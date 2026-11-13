@@ -7,7 +7,8 @@ import { avatars, ReaderBadgesContext } from './avatarOptions'
 
 type Settings = { nickname: string | null; isPublic: boolean; avatarId: string }
 
-export default function ReaderSettings() {
+/** `embedded`: only the form, for the settings panel in the reader band (the band shows identity and links). */
+export default function ReaderSettings({ embedded = false }: { embedded?: boolean }) {
     const authFetch = useAuthenticatedFetch()
     const achievements = useContext(ReaderBadgesContext)
     const [avatarId, setAvatarId] = useState('owl')
@@ -52,6 +53,32 @@ export default function ReaderSettings() {
             setMessage('Profil bağlantısı kopyalandı.')
         } catch { setError('Bağlantı kopyalanamadı. Profili açıp adres çubuğundan kopyalayabilirsin.') }
     }
+    const form = saved && <form onSubmit={save} className="reader-settings-form">
+                        <div className="avatar-preview">
+                            <ReaderAvatar avatarId={avatarId} achievements={achievements} size="large" />
+                            <div><strong>Okur avatarın</strong><small>Halkanın rengi okuma, yıldız değerlendirme rozetin.</small></div>
+                        </div>
+                        <fieldset className="avatar-picker" disabled={busy}>
+                            <legend>Avatar seç</legend>
+                            <div className="avatar-options">{avatars.map(avatar => <label key={avatar.id} className="avatar-option">
+                                <input type="radio" name="avatar" value={avatar.id} checked={avatarId === avatar.id} onChange={() => setAvatarId(avatar.id)} />
+                                <span aria-hidden="true"><ReaderAvatar avatarId={avatar.id} size="small" /></span>
+                                <span>{avatar.label}</span>
+                            </label>)}</div>
+                        </fieldset>
+                        <label htmlFor="reader-nickname">Kullanıcı adı</label>
+                        <input id="reader-nickname" autoComplete="username" value={nickname} onChange={e => setNickname(e.target.value)}
+                            minLength={3} maxLength={24} pattern="[a-zA-Z][a-zA-Z0-9_]{2,23}" required disabled={busy} aria-describedby="nickname-help" />
+                        <small id="nickname-help">3–24 karakter; a-z, rakam ve alt çizgi. Bir harfle başla.</small>
+                        <label className="reader-privacy"><input type="checkbox" checked={isPublic} disabled={busy} onChange={e => setIsPublic(e.target.checked)} /> Profilim herkese açık olsun</label>
+                        <small>Kitaplığın ve puanların paylaşılır. E-posta adresin ve kişisel notların gizli kalır. Kullanıcı adını değiştirirsen eski profil bağlantın kapanır.</small>
+                        <button className="button primary-button" disabled={busy}>{busy ? 'Kaydediliyor…' : 'Kaydet'}</button>
+                    </form>
+    if (embedded) return <section className="reader-settings reader-settings-embedded" aria-label="Profil ayarları">
+        {saved ? form : !error && <p role="status">Profil ayarları yükleniyor…</p>}
+        {error && <div role="alert">{error} {!saved && <button onClick={() => setVersion(v => v + 1)}>Tekrar dene</button>}</div>}
+        {message && <p role="status">{message}</p>}
+    </section>
     return <section className="reader-settings" aria-label="Profil kimliği ve gizlilik">
         {saved ? <>
             <div className="reader-settings-heading">
@@ -62,27 +89,7 @@ export default function ReaderSettings() {
             </div>
             <details open={!saved.nickname || undefined}>
                 <summary>Profil ayarları</summary>
-                <form onSubmit={save} className="reader-settings-form">
-                    <div className="avatar-preview">
-                        <ReaderAvatar avatarId={avatarId} achievements={achievements} size="large" />
-                        <div><strong>Okur avatarın</strong><small>Halkanın rengi okuma, yıldız değerlendirme rozetin.</small></div>
-                    </div>
-                    <fieldset className="avatar-picker" disabled={busy}>
-                        <legend>Avatar seç</legend>
-                        <div className="avatar-options">{avatars.map(avatar => <label key={avatar.id} className="avatar-option">
-                            <input type="radio" name="avatar" value={avatar.id} checked={avatarId === avatar.id} onChange={() => setAvatarId(avatar.id)} />
-                            <span aria-hidden="true"><ReaderAvatar avatarId={avatar.id} size="small" /></span>
-                            <span>{avatar.label}</span>
-                        </label>)}</div>
-                    </fieldset>
-                    <label htmlFor="reader-nickname">Kullanıcı adı</label>
-                    <input id="reader-nickname" autoComplete="username" value={nickname} onChange={e => setNickname(e.target.value)}
-                        minLength={3} maxLength={24} pattern="[a-zA-Z][a-zA-Z0-9_]{2,23}" required disabled={busy} aria-describedby="nickname-help" />
-                    <small id="nickname-help">3–24 karakter; a-z, rakam ve alt çizgi. Bir harfle başla.</small>
-                    <label className="reader-privacy"><input type="checkbox" checked={isPublic} disabled={busy} onChange={e => setIsPublic(e.target.checked)} /> Profilim herkese açık olsun</label>
-                    <small>Kitaplığın ve puanların paylaşılır. E-posta adresin ve kişisel notların gizli kalır. Kullanıcı adını değiştirirsen eski profil bağlantın kapanır.</small>
-                    <button className="button primary-button" disabled={busy}>{busy ? 'Kaydediliyor…' : 'Kaydet'}</button>
-                </form>
+                {form}
             </details>
         </> : !error && <p role="status">Profil ayarları yükleniyor…</p>}
         {error && <div role="alert">{error} {!saved && <button onClick={() => setVersion(v => v + 1)}>Tekrar dene</button>}</div>}
