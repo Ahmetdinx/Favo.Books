@@ -16,6 +16,7 @@
 .book-spread-original { margin: 8px 0 0; font: italic 1rem Georgia, serif; color: var(--library-muted); }
 .book-spread-author { margin: 14px 0 0; font: 400 1.15rem Georgia, serif; color: #6b4a33; }
 .book-spread-facts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 10px 0 0; font-size: .84rem; color: var(--library-muted); }
+.book-spread-summary { max-width: 62ch; margin: 18px 0 4px; padding-left: 14px; border-left: 2px solid #79563d40; font: 400 1rem/1.6 Georgia, serif; color: #4a3527; text-wrap: pretty; }
 .book-spread-facts a { color: #79563d; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #79563d55; }
 
 /* Reading status: a row of quiet choices instead of a boxed form. */
@@ -68,6 +69,7 @@
     .book-spread-cover .book-object { --w: 150px; }
     .book-spread-copy { padding: 18px 20px 26px; text-align: center; }
     .book-spread-facts { justify-content: center; }
+    .book-spread-summary { margin: 16px auto 4px; padding: 0; border: 0; text-align: left; font-size: .95rem; }
     .app .book-spread .reading-status-options { justify-content: center; }
     .app .book-spread .reading-status-heading { justify-content: center; align-items: center; }
     .app .book-spread .profile-book-actions > summary { text-align: left; }

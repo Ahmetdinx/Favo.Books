@@ -304,6 +304,10 @@ function BookDetailPage() {
                         </p>
                     )}
 
+                    {book.description && (
+                        <p className="book-spread-summary">{book.description}</p>
+                    )}
+
                     <ReadingStatusPanel bookId={book.bookId} />
                     <BookProfileActionsPanel bookId={book.bookId} />
                 </div>
