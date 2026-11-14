@@ -188,8 +188,9 @@ public sealed class CatalogBookSummariesEndpointTests
                         .GetGuid() ==
                     turkishPreferredBook.Id);
 
+        // The curated work title is shown; edition titles carry binding and series noise.
         Assert.Equal(
-            "Türkçe Profil Başlığı",
+            turkishPreferredBook.Title,
             turkishItem.GetProperty("title")
                 .GetString());
 
@@ -251,7 +252,7 @@ public sealed class CatalogBookSummariesEndpointTests
                     englishFallbackBook.Id);
 
         Assert.Equal(
-            "English Fallback Summary",
+            englishFallbackBook.Title,
             englishItem.GetProperty("title")
                 .GetString());
 

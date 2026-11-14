@@ -1,0 +1,209 @@
+[
+  {
+    "id": "a6ed73d3-d0b4-4fd7-bce5-ebcbc25b06a5",
+    "title": "Kızıl Dosya",
+    "author": "Arthur Conan Doyle",
+    "keep": "07942a1c-6c37-493d-9948-71ef6633e0bc",
+    "keepTitle": "Kızıl Dosya",
+    "note": "same work, author spelled with Sir",
+    "decision": "Unknown"
+  },
+  {
+    "id": "c984d13b-0eb4-4553-ba9a-56cf4354955e",
+    "title": "Ortadirek / Dağın Öte Yüzü 1",
+    "author": "Yaşar Kemal",
+    "keep": "0905de29-4dce-4216-ad95-b9d20ce50bed",
+    "keepTitle": "Ortadirek",
+    "note": "same work with series suffix",
+    "decision": "Unknown"
+  },
+  {
+    "id": "f26f5626-2ca3-42e9-863d-0f7ef6d5064c",
+    "title": "Zübük",
+    "author": "Aziz Nesin",
+    "keep": "0eab616e-b2dd-48e9-b72b-6b71fda46802",
+    "keepTitle": "Zübük/Kağnı Gölgesindeki İt",
+    "note": "same novel; Kağnı Gölgesindeki İt is its alternate title",
+    "decision": "Unknown"
+  },
+  {
+    "id": "2272c2ca-af3c-48d7-9515-2f27501be555",
+    "title": "Swann'ların Tarafı / Kayıp Zamanın İzinde",
+    "author": "Marcel Proust",
+    "keep": "1f6024ed-047c-4251-98b4-27a8de1fd10d",
+    "keepTitle": "Swann'ların Tarafı",
+    "note": "same work with series suffix",
+    "decision": "Unknown"
+  },
+  {
+    "id": "641cfff7-47f4-413b-83ba-3ac81325a4ef",
+    "title": "Açlık / Livaneli Kitaplığı",
+    "author": "Knut Hamsun",
+    "keep": "30e912d9-5124-49db-bbe7-b0af22669bcf",
+    "keepTitle": "Açlık",
+    "note": "same work, imprint suffix",
+    "decision": "Unknown"
+  },
+  {
+    "id": "d8e0ba7c-488e-45a5-a1d0-a660984e2e2c",
+    "title": "1984",
+    "author": "George Orwell",
+    "keep": "326ee9f0-ab71-4d89-aa63-1739292ff9bb",
+    "keepTitle": "Bin Dokuz Yüz Seksen Dört - 1984",
+    "note": "same work (1984)",
+    "decision": "Unknown"
+  },
+  {
+    "id": "34ae302a-02d8-4bb3-96e2-0d05512dfde8",
+    "title": "Ben Sonnur, Ben Saime : Hangimiz Gerçek?",
+    "author": "Ayşegül Çiçekoğlu",
+    "keep": "7d8a8e8d-5412-4b78-9ecc-66bacbf39e4a",
+    "keepTitle": "Ben Sonnur, Ben Saime",
+    "note": "same work with subtitle",
+    "decision": "Unknown"
+  },
+  {
+    "id": "65d7cd17-398f-43b4-b56c-acf239538824",
+    "title": "Demirciler Çarşısı Cinayeti",
+    "author": "Yaşar Kemal",
+    "keep": "c016f47e-da9c-401d-8107-e0e535d1f66e",
+    "keepTitle": "Demirciler Çarşısı Cinayeti / Akçasazın Ağaları 1",
+    "note": "same work",
+    "decision": "Unknown"
+  },
+  {
+    "id": "70bcb564-e515-4e07-8247-9cc20a941f39",
+    "title": "Veda",
+    "author": "Ayşe Kulin",
+    "keep": "d964ded9-30c3-4595-9fbe-b91a6ac1d16c",
+    "keepTitle": "Veda / Esir Şehirde Bir Konak",
+    "note": "same work",
+    "decision": "Unknown"
+  },
+  {
+    "id": "7957b84a-1a0d-411e-956b-031a44fa376a",
+    "title": "Ölmez Otu / Dağın Öte Yüzü 3",
+    "author": "Yaşar Kemal",
+    "keep": "cd237ed1-78b7-4208-beac-9d9fc6bf04f0",
+    "keepTitle": "Ölmez Otu",
+    "note": "same work with series suffix",
+    "decision": "Unknown"
+  },
+  {
+    "id": "7c4ba48c-38e9-4a96-90e2-85209e4c7ffd",
+    "title": "Maktule Borç 1 / Askıda Dehşet",
+    "author": "Ömer Enes Çatalbaş",
+    "keep": "f4fe6584-6781-421a-b226-ee69ba38b258",
+    "keepTitle": "Maktule Borç 1",
+    "note": "same work with subtitle",
+    "decision": "Unknown"
+  },
+  {
+    "id": "855ee5d8-7775-4994-b089-5fd3f5d916a6",
+    "title": "Ölmüş Bir Kadının Evrak-ı Metrukesi – Ölmüş Bir Kadının Günlüğü",
+    "author": "Güzide Sabri",
+    "keep": "9b039523-dddd-4cee-93c0-40305de8671f",
+    "keepTitle": "Ölmüş Bir Kadının Evrak-ı Metrukesi",
+    "note": "same work with subtitle",
+    "decision": "Unknown"
+  },
+  {
+    "id": "856a5514-fa41-4db9-98f7-a5c7ab9c98f1",
+    "title": "Baskerville'lerin Köpeği",
+    "author": "Arthur Conan Doyle",
+    "keep": "be403ed0-331e-4563-b820-a95876ededc9",
+    "keepTitle": "Baskervillelerin Köpeği",
+    "note": "same work",
+    "decision": "Unknown"
+  },
+  {
+    "id": "9246a3fd-decc-442d-a627-242f4a0eb825",
+    "title": "Acımak - Livaneli Kitaplığı",
+    "author": "Reşat Nuri Güntekin",
+    "keep": "b8d09702-4734-40a9-b348-97414ab356b6",
+    "keepTitle": "Acımak",
+    "note": "same work, imprint suffix",
+    "decision": "Unknown"
+  },
+  {
+    "id": "9d73fc5a-0687-45fb-8485-b79301b8a90f",
+    "title": "Sefiller – 2 Cilt",
+    "author": "Victor Hugo",
+    "keep": "dbb7fd5c-83f9-4501-99cd-525c49de8101",
+    "keepTitle": "Sefiller",
+    "note": "same work, two-volume edition",
+    "decision": "Unknown"
+  },
+  {
+    "id": "a6c513a4-55a0-4684-93d2-5a68ed6ab523",
+    "title": "Kuyrukluyıldız Altında Bir İzdivaç – Sert Kapak",
+    "author": "Hüseyin Rahmi Gürpınar",
+    "keep": "cc073d80-b2b4-427f-b3e9-32a6a9c6ef5c",
+    "keepTitle": "Kuyruklu Yıldız Altında Bir İzdivaç",
+    "note": "same work, hardcover edition",
+    "decision": "Unknown"
+  },
+  {
+    "id": "fe14d03f-b6a4-446f-b65a-afaba1320f4c",
+    "title": "Sonsuzluk",
+    "author": "Fatma Ünal",
+    "keep": "aad424f9-d6f1-4f8e-a117-d20810d85dc9",
+    "keepTitle": "Sonsuzluk",
+    "note": "same title and author",
+    "decision": "Unknown"
+  },
+  {
+    "id": "c08ecc19-6bf3-4da2-9972-5a844d50adaa",
+    "title": "Korku Vadisi",
+    "author": "Arthur Conan Doyle",
+    "keep": "ebed2dfa-2430-49e3-9afd-e0a59ad1d908",
+    "keepTitle": "Korku Vadisi",
+    "note": "same work, author spelled with Sir",
+    "decision": "Unknown"
+  },
+  {
+    "id": "fe696e6b-fe2f-4f74-9556-59859531dce5",
+    "title": "Halas – Kurtuluş – Sert Kapak",
+    "author": "Mehmet Rauf",
+    "keep": "cd13bde3-d384-4bd3-8040-945cfc74a61f",
+    "keepTitle": "Kurtuluş (İstiklal Harbi Romanı)",
+    "note": "Halas was later published as Kurtuluş",
+    "decision": "Unknown"
+  },
+  {
+    "id": "3687ce48-9a2a-4538-958c-5bdcde7e7e58",
+    "title": "Define - Kan Damlası",
+    "author": "Mehmed Rauf",
+    "keep": "fa139543-76b1-4455-a6a3-ea5c56c0ca97",
+    "keepTitle": "Define – Sert Kapak",
+    "note": "combined volume of Define and Kan Damlası, both kept separately",
+    "decision": "Unknown"
+  },
+  {
+    "id": "34838ef2-518b-4c9a-a8c2-d6f08a695b73",
+    "title": "Zehra - Karabibik",
+    "author": "Nabizade Nazım",
+    "keep": "8bd72373-9f8e-4734-81f5-344756ecb78a",
+    "keepTitle": "Zehra – Sert Kapak",
+    "note": "combined volume of Zehra and Karabibik; Zehra kept",
+    "decision": "Unknown"
+  },
+  {
+    "id": "cf5a2555-1809-4cb9-8789-6752907d6533",
+    "title": "Açlık Oyunları 1",
+    "author": "Suzanne Collins",
+    "keep": "a7e5d914-79fd-43c0-8ce3-521b0e8adbb2",
+    "keepTitle": "Açlık Oyunları",
+    "note": "same work, numbered as volume 1",
+    "decision": "Unknown"
+  },
+  {
+    "id": "348cff53-ec5d-4089-86b8-687b5d96d839",
+    "title": "Baba Evi - Avare Yıllar",
+    "author": "Orhan Kemal",
+    "keep": "c0ba54b1-be5e-46ea-9b85-85f7e97def70",
+    "keepTitle": "Baba Evi",
+    "note": "combined volume of Baba Evi and Avare Yıllar, both kept separately",
+    "decision": "Unknown"
+  }
+]

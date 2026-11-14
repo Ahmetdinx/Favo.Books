@@ -214,16 +214,14 @@ function BookDetailPage() {
                 book.primaryEditionId,
         ) ?? null
 
-    const displayTitle =
-        primaryEdition?.title || book.title
+    // The curated work title; edition titles carry binding and series noise ("– Sert Kapak", "/ Kara Kule 5").
+    const displayTitle = book.title
 
     const secondaryTitle =
         book.originalTitle &&
             book.originalTitle !== displayTitle
             ? book.originalTitle
-            : book.title !== displayTitle
-                ? book.title
-                : null
+            : null
 
     const displayCover =
         book.primaryCoverImageUrl ??

@@ -23,7 +23,7 @@ public sealed class BrowseBooksHandlerTests
 
     [Fact]
     public async Task
-        HandleAsync_ShouldPreferTurkishEdition_AndHideEnglishFallbackCover()
+        HandleAsync_ShouldShowWorkTitle_AndPreferTurkishCover()
     {
         // Arrange
         using IServiceScope scope =
@@ -140,8 +140,9 @@ public sealed class BrowseBooksHandlerTests
             turkishPreferredBook.Id,
             turkishItem.BookId);
 
+        // The curated work title is shown; edition titles carry binding and series noise.
         Assert.Equal(
-            "Türkçe Tercih Edilen Başlık",
+            turkishPreferredBook.Title,
             turkishItem.Title);
 
         Assert.Equal(

@@ -41,26 +41,7 @@ public sealed class GetBookSummariesHandler
                 .Select(book =>
                     new GetBookSummaryItemResult(
                         book.Id,
-                        book.Editions
-                            .Where(edition =>
-                                edition.LanguageCode == "tur" ||
-                                edition.LanguageCode == "tr")
-                            .OrderByDescending(edition =>
-                                edition.PublicationYear)
-                            .Select(edition =>
-                                edition.Title)
-                            .FirstOrDefault()
-                        ??
-                        book.Editions
-                            .Where(edition =>
-                                edition.LanguageCode == "eng" ||
-                                edition.LanguageCode == "en")
-                            .OrderByDescending(edition =>
-                                edition.PublicationYear)
-                            .Select(edition =>
-                                edition.Title)
-                            .FirstOrDefault()
-                        ??
+                        // The curated work title; edition titles carry binding and series noise ("– Sert Kapak", "/ Kara Kule 5").
                         book.Title,
                         book.FirstPublishedYear,
                         book.Editions
